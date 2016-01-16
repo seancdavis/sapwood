@@ -15,6 +15,7 @@ class Property < ActiveRecord::Base
 
   has_many :elements
   has_many :collections
+  has_many :documents
   has_many :property_users
   has_many :users, :through => :property_users
 

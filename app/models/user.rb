@@ -25,4 +25,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :validatable
 
+  # ---------------------------------------- Associations
+
+  has_many :property_users
+  has_many :properties, :through => :property_users
+
 end

@@ -10,6 +10,9 @@
 # The base url of your application (e.g. http://sapwood.org)
 url: ...
 
+# Email address you want notifications coming from (e.g. noreply@sapwood.org)
+default_from: ...
+
 # Your SendGrid credentials (for sending emails)
 send_grid:
   user_name:  ...

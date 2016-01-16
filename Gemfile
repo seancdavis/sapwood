@@ -22,6 +22,8 @@ gem 'jquery-rails'
 
 # ------------------------------------------ Utilities
 
+gem 'devise'
+
 group :development do
   gem 'mailcatcher'
 end

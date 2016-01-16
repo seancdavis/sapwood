@@ -23,6 +23,7 @@ gem 'jquery-rails'
 # ------------------------------------------ Utilities
 
 gem 'devise'
+gem 'ancestry'
 
 group :development do
   gem 'mailcatcher'

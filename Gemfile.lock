@@ -45,6 +45,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    ancestry (2.1.0)
+      activerecord (>= 3.0.0)
     annotate (2.7.0)
       activerecord (>= 3.2, < 6.0)
       rake (~> 10.4)
@@ -303,6 +305,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ancestry
   annotate
   awesome_print
   backbone-on-rails

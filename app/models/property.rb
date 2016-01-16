@@ -10,4 +10,9 @@
 #
 
 class Property < ActiveRecord::Base
+
+  # ---------------------------------------- Associations
+
+  has_many :elements
+
 end

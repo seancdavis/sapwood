@@ -15,3 +15,4 @@
 
 # Database config
 /config/database.yml
+/config/sapwood.yml

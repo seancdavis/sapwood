@@ -7,7 +7,6 @@ addons:
   postgresql: "9.3"
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - cp config/sapwood.travis.yml config/sapwood.yml
   - psql -c 'create database travis_ci_test;' -U postgres
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec

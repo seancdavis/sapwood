@@ -3,6 +3,8 @@ rvm:
  - '2.2.3'
 services:
   - postgresql
+addons:
+  postgresql: "9.3"
 before_script:
   - cp config/database.travis.yml config/database.yml
   - cp config/sapwood.travis.yml config/sapwood.yml

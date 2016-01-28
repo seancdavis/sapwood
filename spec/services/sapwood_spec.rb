@@ -68,9 +68,12 @@ RSpec.describe Sapwood do
     it 'will re-read the settings from file' do
       Sapwood.write!
       config = File.read(SapwoodConfig.file)
+      # Show that this starts as false
+      expect(Sapwood.installed?).to eq(false)
       config.gsub!(/installed\?\:\ false/, 'installed?: true')
       File.write(SapwoodConfig.file, config)
       Sapwood.reload!
+      # And then it changes to true
       expect(Sapwood.installed?).to eq(true)
     end
   end

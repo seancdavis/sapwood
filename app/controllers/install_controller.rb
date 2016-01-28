@@ -4,4 +4,9 @@ class InstallController < ApplicationController
     render '1'
   end
 
+  private
+
+    def verify_installation
+    end
+
 end

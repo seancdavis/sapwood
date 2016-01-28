@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  root :to => 'install#run'
+  get 'install/:step' => 'install#run', :as => :install
+
+  root :to => 'application#home'
 
 end

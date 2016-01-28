@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'fileutils'
 
 # This is listed as a service here, but it really acts as an initializer.
 #
@@ -11,23 +12,66 @@ require 'rails_helper'
 RSpec.describe Sapwood do
 
   before(:each) do
-    @init_config = File.read(SapwoodConfig.file)
+    file = SapwoodConfig.file
+    FileUtils.rm(file)
   end
 
   after(:each) do
-    File.write(SapwoodConfig.file, @init_config)
+    file = SapwoodConfig.file
+    FileUtils.rm(file)
   end
 
-  describe '#write!' do
-    it 'overwrites the rewrite the config file using config_to_h' do
-      Sapwood.write!
-      expect(File.read(SapwoodConfig.file)).to eq(Sapwood.config_to_h.to_yaml)
+  describe '#self.file and #self.default_file' do
+    it 'will create a file if it is missing' do
+      file = SapwoodConfig.file
+      FileUtils.rm(file)
+      # File should not exist
+      expect(File.exists?(file)).to eq(false)
+      SapwoodConfig.file
+      # File should be back
+      expect(File.exists?(file)).to eq(true)
+    end
+    it 'will copy the default file if missing' do
+      file = SapwoodConfig.file
+      FileUtils.rm(file)
+      SapwoodConfig.file
+      expect(File.read(file)).to eq(File.read(SapwoodConfig.default_file))
+    end
+    it 'uses the environment name in the filename' do
+      expect(SapwoodConfig.file.split('/').last).to eq('sapwood.test.yml')
     end
   end
 
   describe '#installed?' do
-    it 'is not installed by default' do
-      
+    it 'defaults to false when missing' do
+      expect(Sapwood.installed?).to eq(false)
+    end
+  end
+
+  describe '#config' do
+    it 'has default settings loaded' do
+      expect(Sapwood.config.installed?).to eq(false)
+    end
+    it 'can get to nested settings via OpenStruct' do
+      expect(Sapwood.config.send_grid.user_name).to eq('user')
+    end
+  end
+
+  describe '#write!' do
+    it 'will write all settings to file' do
+      Sapwood.write!
+      expect(File.read(SapwoodConfig.file)).to match('installed?')
+    end
+  end
+
+  describe '#reload!' do
+    it 'will re-read the settings from file' do
+      Sapwood.write!
+      config = File.read(SapwoodConfig.file)
+      config.gsub!(/installed\?\:\ false/, 'installed?: true')
+      File.write(SapwoodConfig.file, config)
+      Sapwood.reload!
+      expect(Sapwood.installed?).to eq(true)
     end
   end
 

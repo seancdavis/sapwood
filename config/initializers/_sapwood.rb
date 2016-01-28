@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class SapwoodConfig
 
   def config_to_h
@@ -15,8 +17,7 @@ class SapwoodConfig
   end
 
   def reload!
-    config = { 'installed?' => false, 'version' => '2.0' }
-    @config_to_h = config.merge(YAML.load_file(SapwoodConfig.file))
+    @config_to_h = default_settings.merge(YAML.load_file(SapwoodConfig.file))
   end
 
   def installed?
@@ -28,11 +29,20 @@ class SapwoodConfig
   end
 
   def self.file
-    filename = Rails.env.test? ? 'sapwood.test.yml' : 'sapwood.yml'
-    file = File.join(Rails.root, 'config', filename)
-    raise "Missing config file: #{file}" unless File.exists?(file)
+    file = File.join(Rails.root, 'config', "sapwood.#{Rails.env.to_s}.yml")
+    FileUtils.cp(default_file, file) unless File.exists?(file)
     file
   end
+
+  def self.default_file
+    File.join(Rails.root, 'config', "sapwood.default.yml")
+  end
+
+  private
+
+    def default_settings
+      { 'installed?' => false, 'version' => '2.0' }
+    end
 
 end
 

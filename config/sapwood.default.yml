@@ -1,0 +1,6 @@
+url:          http://example.com
+default_from: admin@example.com
+send_grid:
+  user_name:  user
+  password:   password
+  domain:     example.com

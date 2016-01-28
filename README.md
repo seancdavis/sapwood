@@ -1,4 +1,4 @@
-Sapwood
+Sapwood [![Build Status](https://travis-ci.org/seancdavis/sapwood.svg?branch=master)](https://travis-ci.org/seancdavis/sapwood)
 ==========
 
 Sapwood 2 is being actively developed. The README will be updated when it's

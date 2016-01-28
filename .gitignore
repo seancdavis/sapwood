@@ -16,3 +16,4 @@
 # Database config
 /config/database.yml
 /config/sapwood.yml
+config/sapwood.test.yml

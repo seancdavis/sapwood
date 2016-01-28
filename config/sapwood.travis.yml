@@ -1,0 +1,20 @@
+#
+# --------------------
+# Sapwood Config
+# --------------------
+#
+# This is the configuration for your application. Set all of the values below
+# with your settings.
+#
+
+# The base url of your application (e.g. http://sapwood.org)
+url: http://sapwood.org
+
+# Email address you want notifications coming from (e.g. noreply@sapwood.org)
+default_from: noreply@sapwood.org
+
+# Your SendGrid credentials (for sending emails)
+send_grid:
+  user_name:  ...
+  password:   ...
+  domain:     ...

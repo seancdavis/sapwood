@@ -1,5 +1,5 @@
 // Typography
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 $base-font-family: 'Roboto', $helvetica;
 $heading-font-family: $base-font-family;
 
@@ -49,3 +49,6 @@ $form-box-shadow-focus: $form-box-shadow, 0 0 5px adjust-color($action-color, $l
 // Animations
 $base-duration: 150ms;
 $base-timing: ease;
+
+// Shadows
+$box-shadow: 0 2px 8px rgba(30, 29, 25, 0.08);

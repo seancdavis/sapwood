@@ -1,0 +1,29 @@
+div.card {
+  width: rem(500);
+  margin: rem(50) auto 0;
+  overflow: hidden;
+  background: $light;
+  border-radius: $base-border-radius;
+  box-shadow: $box-shadow;
+
+  .title {
+    padding: rem(15);
+    text-align: center;
+    color: $light;
+    @include wood-background;
+    h1 {
+      &.small {
+        text-transform: uppercase;
+        font-size: 0.75em;
+      }
+    }
+  }
+
+  .content {
+    @include clearfix;
+    padding: rem(15);
+    .right {
+      float: right;
+    }
+  }
+}

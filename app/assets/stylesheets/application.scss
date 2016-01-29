@@ -3,4 +3,13 @@
 
 @import 'bourbon';
 @import 'normalize-rails';
-@import 'base/base'
+@import 'base/base';
+
+// ---------------------------------------- Components
+
+@import 'components/backgrounds';
+@import 'components/cards';
+
+// ---------------------------------------- Views
+
+@import 'views/base';

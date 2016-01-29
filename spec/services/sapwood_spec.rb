@@ -11,15 +11,8 @@ require 'fileutils'
 #
 RSpec.describe Sapwood do
 
-  before(:each) do
-    file = SapwoodConfig.file
-    FileUtils.rm(file)
-  end
-
-  after(:each) do
-    file = SapwoodConfig.file
-    FileUtils.rm(file)
-  end
+  before(:each) { remove_config }
+  after(:each) { remove_config }
 
   describe '#self.file and #self.default_file' do
     it 'will create a file if it is missing' do

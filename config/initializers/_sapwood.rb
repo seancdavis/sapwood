@@ -28,6 +28,10 @@ class SapwoodConfig
     end
   end
 
+  def set(key, value)
+    @config_to_h[key] = value
+  end
+
   def self.file
     file = File.join(Rails.root, 'config', "sapwood.#{Rails.env.to_s}.yml")
     FileUtils.cp(default_file, file) unless File.exists?(file)

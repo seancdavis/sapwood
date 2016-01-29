@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :verify_installation
 
+  helper_method :not_found
+
   def home
   end
 
@@ -12,6 +14,12 @@ class ApplicationController < ActionController::Base
 
     def verify_installation
       redirect_to install_path(1) unless Sapwood.installed?
+    end
+
+    # ------------------------------------------ Errors
+
+    def not_found
+      raise ActionController::RoutingError.new('Not found.')
     end
 
 end

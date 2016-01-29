@@ -78,4 +78,20 @@ RSpec.describe Sapwood do
     end
   end
 
+  describe '#set' do
+    it 'make setting available via config' do
+      Sapwood.set('hello', 'world')
+      expect(Sapwood.config.hello).to eq('world')
+    end
+    it 'will accept a hash as the value and be available via config' do
+      Sapwood.set('hw', 'hello' => 'cheese', 'world' => 'farts')
+      expect(Sapwood.config.hw.hello).to eq('cheese')
+    end
+    it 'will accept a hash as the value and write to file' do
+      Sapwood.set('hw', 'hello' => 'cheese', 'world' => 'farts')
+      Sapwood.write!
+      expect(File.read(SapwoodConfig.file)).to match('world: farts')
+    end
+  end
+
 end

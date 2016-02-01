@@ -20,3 +20,11 @@ en:
       user_name:  Username
       password:   Password
       domain:     Domain (e.g. example.com)
+    five:
+      title: Only one other third-party service.
+      message: "Sapwood uses Amazon S3 for storing uploaded files. Create an account with Amazon AWS and then fill in the form below."
+      amazon_label: Visit Amazon AWS
+      amazon_url: http://aws.amazon.com/
+      access_key_id: Access Key ID
+      secret_access_key: Secret Access Key
+      bucket: Your Amazon S3 Bucket

@@ -39,4 +39,8 @@ class SapwoodInstaller
       Sapwood.set('send_grid', @data.to_hash)
     end
 
+    def run_step_5
+      Sapwood.set('amazon_aws', @data.to_hash)
+    end
+
 end

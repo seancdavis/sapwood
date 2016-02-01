@@ -25,11 +25,13 @@ a {
   color: $action-color;
   text-decoration: none;
   transition: color $base-duration $base-timing;
+  outline: none;
 
   &:active,
   &:focus,
   &:hover {
     color: shade($action-color, 25%);
+    outline: none;
   }
 }
 

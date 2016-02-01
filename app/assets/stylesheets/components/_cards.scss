@@ -6,13 +6,18 @@ div.card {
   border-radius: $base-border-radius;
   box-shadow: $box-shadow;
 
+  .logo {
+    text-align: center;
+  }
+
   .title {
     padding: rem(15);
-    text-align: center;
     color: $light;
     @include wood-background;
     h1 {
+      margin-bottom: 0;
       &.small {
+        text-align: center;
         text-transform: uppercase;
         font-size: 0.75em;
       }
@@ -25,5 +30,11 @@ div.card {
     .right {
       float: right;
     }
+  }
+
+  input[type=submit] {
+    float: right;
+    margin-top: rem(10);
+    background: $dk-grey;
   }
 }

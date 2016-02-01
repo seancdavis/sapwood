@@ -1,11 +1,12 @@
 class InstallController < ApplicationController
 
+  before_filter :set_total_steps
+
   helper_method :current_step
 
   def show
-    Sapwood.reload!
+    # Sapwood.reload!
     if params[:step].to_i == current_step
-      @total_steps = 8
       render current_step.to_s
     else
       redirect_to install_path(current_step)
@@ -13,7 +14,7 @@ class InstallController < ApplicationController
   end
 
   def update
-    @current_step = SapwoodInstaller.run(current_step)
+    @current_step = SapwoodInstaller.run(current_step, params[:install])
     redirect_to install_path(current_step)
   end
 
@@ -30,6 +31,10 @@ class InstallController < ApplicationController
         Sapwood.write!
         step
       end
+    end
+
+    def set_total_steps
+      @total_steps = 8
     end
 
 end

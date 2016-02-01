@@ -3,3 +3,7 @@ en:
     next: Next
     one:
       title: "%{version} Installation Assistant"
+    two:
+      title: "Welcome to Sapwood!"
+      message: "We need a little information from you to get started. Let's begin with the URL at which you're going to host Sapwood."
+      url: http://example.com

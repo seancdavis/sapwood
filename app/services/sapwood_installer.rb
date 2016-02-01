@@ -1,7 +1,8 @@
 class SapwoodInstaller
 
-  def initialize(step)
+  def initialize(step, data)
     @step = step
+    @data = data
   end
 
   def run
@@ -9,8 +10,8 @@ class SapwoodInstaller
     complete_step
   end
 
-  def self.run(step)
-    SapwoodInstaller.new(step).run
+  def self.run(step, data = {})
+    SapwoodInstaller.new(step, data).run
   end
 
   private
@@ -24,6 +25,10 @@ class SapwoodInstaller
 
     def run_step_1
       true
+    end
+
+    def run_step_2
+      Sapwood.set('url', @data[:url])
     end
 
 end

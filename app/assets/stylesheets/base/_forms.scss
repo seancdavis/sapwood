@@ -27,14 +27,14 @@ select {
 #{$all-text-inputs},
 select[multiple] {
   background-color: $base-background-color;
-  border: $base-border;
-  border-radius: $base-border-radius;
-  box-shadow: $form-box-shadow;
+  border: none;
+  border-bottom: 1px solid $md-grey;
+  border-radius: 0;
   box-sizing: border-box;
   font-family: $base-font-family;
   font-size: $base-font-size;
   margin-bottom: $small-spacing;
-  padding: $base-spacing / 3;
+  padding: rem(5) 0;
   transition: border-color $base-duration $base-timing;
   width: 100%;
 
@@ -44,17 +44,19 @@ select[multiple] {
 
   &:focus {
     border-color: $action-color;
-    box-shadow: $form-box-shadow-focus;
     outline: none;
   }
 
   &:disabled {
     background-color: shade($base-background-color, 5%);
     cursor: not-allowed;
+  }
+}
 
-    &:hover {
-      border: $base-border;
-    }
+input[type=submit] {
+  outline: none;
+  &:hover, &:focus, &:active {
+    outline: none;
   }
 }
 

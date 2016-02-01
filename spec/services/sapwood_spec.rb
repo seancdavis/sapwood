@@ -72,6 +72,9 @@ RSpec.describe Sapwood do
   end
 
   describe '#set' do
+    it 'returns the value' do
+      expect(Sapwood.set('hello', 'world')).to eq('world')
+    end
     it 'make setting available via config' do
       Sapwood.set('hello', 'world')
       expect(Sapwood.config.hello).to eq('world')

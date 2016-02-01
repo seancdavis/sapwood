@@ -25,6 +25,7 @@ class InstallController < ApplicationController
   private
 
     def verify_installation
+      redirect_to root_path if Sapwood.installed?
     end
 
     def current_step

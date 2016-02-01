@@ -7,3 +7,8 @@ en:
       title: "Welcome to Sapwood!"
       message: "We need a little information from you to get started. Let's begin with the URL at which you're going to host Sapwood."
       url: http://example.com
+    three:
+      title: 'Next, your notifications email address.'
+      message: "Your users are going to receive emails from this app from time to time. Who should those messages come from?"
+      name: Sapwood Admin
+      email: noreply@example.com

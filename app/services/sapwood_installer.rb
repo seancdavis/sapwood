@@ -31,4 +31,8 @@ class SapwoodInstaller
       Sapwood.set('url', @data[:url])
     end
 
+    def run_step_3
+      Sapwood.set('default_from', "#{@data[:name]} <#{@data[:email]}>")
+    end
+
 end

@@ -1,11 +1,13 @@
 <div class="card">
   <div class="title">
     <h2>Logo Goes Here</h2>
-    <h1 class="small"><%= Sapwood.config.version %> Installation Assistant</h1>
+    <h1 class="small">
+      <%= t('install.one.title', :version => Sapwood.config.version) %>
+    </h1>
     <span class="progress" style="width: 0;"></span>
   </div>
   <div class="content">
-    <%= link_to 'Next', install_next_path, :method => :post,
+    <%= link_to t('install.next'), install_update_path, :method => :post,
                 :class => 'button right' %>
   </div>
 

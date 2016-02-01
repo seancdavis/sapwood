@@ -5,7 +5,7 @@ class InstallController < ApplicationController
   helper_method :current_step
 
   def show
-    # Sapwood.reload!
+    Sapwood.reload!
     if params[:step].to_i == current_step
       render current_step.to_s
     else

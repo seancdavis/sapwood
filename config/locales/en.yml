@@ -12,3 +12,11 @@ en:
       message: "Your users are going to receive emails from this app from time to time. Who should those messages come from?"
       name: Sapwood Admin
       email: noreply@example.com
+    four:
+      title: Now we need a way to send those enthralling emails.
+      message: "Sapwood uses SendGrid to send emails. It makes things really easy.\n\nAfter you create a SendGrid account, add your credentials here."
+      sendgrid_label: Visit SendGrid
+      sendgrid_url: https://sendgrid.com/
+      user_name:  Username
+      password:   Password
+      domain:     Domain (e.g. example.com)

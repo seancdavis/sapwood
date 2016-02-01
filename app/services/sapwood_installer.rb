@@ -35,4 +35,8 @@ class SapwoodInstaller
       Sapwood.set('default_from', "#{@data[:name]} <#{@data[:email]}>")
     end
 
+    def run_step_4
+      Sapwood.set('send_grid', @data.to_hash)
+    end
+
 end

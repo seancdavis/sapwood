@@ -11,6 +11,7 @@ div.card {
   }
 
   .title {
+    position: relative;
     padding: rem(15);
     color: $light;
     @include wood-background;
@@ -21,6 +22,11 @@ div.card {
         text-transform: uppercase;
         font-size: 0.75em;
       }
+    }
+    .progress {
+      @include position(absolute, null null 0 0);
+      @include size(100% rem(3));
+      background: $md-blue;
     }
   }
 
@@ -36,5 +42,12 @@ div.card {
     float: right;
     margin-top: rem(10);
     background: $dk-grey;
+  }
+
+  a.info {
+    float: left;
+    margin-top: rem(15);
+    font-size: 0.85em;
+    text-transform: uppercase;
   }
 }

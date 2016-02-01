@@ -1,0 +1,16 @@
+<%= install_card :title => t('install.four.title') do %>
+  <%= simple_format t('install.four.message') %>
+  <%= simple_form_for :install, :url => install_update_path,
+                      :method => :post do |f| %>
+    <%= f.input :user_name, :label => false, :required => true,
+                :placeholder => t('install.four.user_name') %>
+    <%= f.input :password, :label => false, :required => true,
+                :placeholder => t('install.four.password') %>
+    <%= f.input :domain, :label => false, :required => true,
+                :placeholder => t('install.four.domain') %>
+    <%= link_to t('install.four.sendgrid_label'),
+                t('install.four.sendgrid_url'), :target => :blank,
+                :class => 'info' %>
+    <%= f.submit t('install.next') %>
+  <% end %>
+<% end %>

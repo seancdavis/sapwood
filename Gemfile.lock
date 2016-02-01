@@ -251,6 +251,9 @@ GEM
     sendgrid (1.2.4)
       json
     shellany (0.0.1)
+    simple_form (3.2.1)
+      actionpack (> 4, < 5.1)
+      activemodel (> 4, < 5.1)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -332,6 +335,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   sendgrid
+  simple_form
   uglifier
   unicorn-rails
   web-console (~> 2.0)

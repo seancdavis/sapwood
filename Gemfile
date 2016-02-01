@@ -24,6 +24,7 @@ gem 'jquery-rails'
 
 gem 'devise'
 gem 'ancestry'
+gem 'simple_form'
 
 group :development do
   gem 'mailcatcher'

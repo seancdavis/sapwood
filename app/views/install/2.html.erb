@@ -3,7 +3,7 @@
   <%= simple_form_for :install, :url => install_update_path,
                       :method => :post do |f| %>
     <%= f.input :url, :label => false, :placeholder => t('install.two.url'),
-                :required => true %>
+                :autofocus => true, :required => true %>
     <%= f.submit t('install.next') %>
   <% end %>
 <% end %>

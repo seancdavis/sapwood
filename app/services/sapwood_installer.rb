@@ -14,6 +14,11 @@ class SapwoodInstaller
     SapwoodInstaller.new(step, data).run
   end
 
+  def self.complete!
+    Sapwood.set('installed?', true)
+    Sapwood.write!
+  end
+
   private
 
     def complete_step

@@ -3,7 +3,7 @@
   <%= simple_form_for :install, :url => install_update_path,
                       :method => :post do |f| %>
     <%= f.input :access_key_id, :as => :password, :label => false,
-                :required => true,
+                :autofocus => true, :required => true,
                 :placeholder => t('install.five.access_key_id') %>
     <%= f.input :secret_access_key, :as => :password, :label => false,
                 :required => true,

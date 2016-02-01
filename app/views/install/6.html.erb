@@ -2,7 +2,7 @@
   <%= simple_format t('install.six.message') %>
   <%= simple_form_for :install, :url => install_update_path,
                       :method => :post do |f| %>
-    <%= f.input :name, :label => false, :required => true,
+    <%= f.input :name, :label => false, :required => true, :autofocus => true,
                 :placeholder => t('install.six.name') %>
     <%= f.input :email, :label => false, :required => true,
                 :placeholder => t('install.six.email') %>

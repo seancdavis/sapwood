@@ -5,7 +5,6 @@ class InstallController < ApplicationController
   helper_method :current_step
 
   def show
-    Sapwood.reload!
     if params[:step].to_i == current_step
       render current_step.to_s
     else
@@ -14,8 +13,13 @@ class InstallController < ApplicationController
   end
 
   def update
-    @current_step = SapwoodInstaller.run(current_step, params[:install])
-    redirect_to install_path(current_step)
+    if current_step == @total_steps
+      SapwoodInstaller.complete!
+      redirect_to new_user_session_path
+    else
+      @current_step = SapwoodInstaller.run(current_step, params[:install])
+      redirect_to install_path(current_step)
+    end
   end
 
   private

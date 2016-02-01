@@ -3,6 +3,7 @@
   <%= simple_form_for :install, :url => install_update_path,
                       :method => :post do |f| %>
     <%= f.input :user_name, :label => false, :required => true,
+                :autofocus => true,
                 :placeholder => t('install.four.user_name') %>
     <%= f.input :password, :label => false, :required => true,
                 :placeholder => t('install.four.password') %>

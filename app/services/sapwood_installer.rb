@@ -43,4 +43,14 @@ class SapwoodInstaller
       Sapwood.set('amazon_aws', @data.to_hash)
     end
 
+    def run_step_6
+      User.create!(
+        :name => @data[:name],
+        :email => @data[:email],
+        :password => @data[:password],
+        :password_confirmation => @data[:password],
+        :is_admin => true
+      )
+    end
+
 end

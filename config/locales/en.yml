@@ -28,3 +28,9 @@ en:
       access_key_id: Access Key ID
       secret_access_key: Secret Access Key
       bucket: Your Amazon S3 Bucket
+    six:
+      title: One more thing. Let's create an admin user.
+      message: "This user will be a global adminstrator of the system. Be sure to set a secure passphrase."
+      name: Name
+      email: Email Address
+      password: Passphrase

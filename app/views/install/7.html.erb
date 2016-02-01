@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="title">
+    <h2 class="logo">Logo Goes Here</h2>
+    <h1 class="small">
+      <%= t('install.seven.title', :name => User.first.name) %>
+    </h1>
+    <span class="progress" style="width: 100%;"></span>
+  </div>
+  <div class="content center">
+    <%= simple_format t('install.seven.message') %>
+    <%= link_to t('install.finish'), install_update_path, :method => :post,
+                :class => 'button' %>
+  </div>
+</div>

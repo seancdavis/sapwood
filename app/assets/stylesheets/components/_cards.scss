@@ -33,6 +33,9 @@ div.card {
   .content {
     @include clearfix;
     padding: rem(15);
+    &.center {
+      text-align: center;
+    }
     .right {
       float: right;
     }

@@ -34,7 +34,7 @@ class InstallController < ApplicationController
     end
 
     def set_total_steps
-      @total_steps = 8
+      @total_steps = 7
     end
 
 end

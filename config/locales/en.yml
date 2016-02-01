@@ -1,6 +1,7 @@
 en:
   install:
     next: Next
+    finish: Start Using Sapwood!
     one:
       title: "%{version} Installation Assistant"
     two:
@@ -34,3 +35,6 @@ en:
       name: Name
       email: Email Address
       password: Passphrase
+    seven:
+      title: "Great job, %{name}! You're all set up."
+      message: "That's it! That wasn't so bad.\n\nYou are now free to explore Sapwood!"

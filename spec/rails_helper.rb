@@ -81,6 +81,8 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    Sapwood.set('installed?', true)
+    Sapwood.write!
   end
 
   config.after(:each) do

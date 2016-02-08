@@ -37,4 +37,12 @@ class Property < ActiveRecord::Base
     %w(elements documents collections responses)
   end
 
+  # ---------------------------------------- Instance Methods
+
+  def label(name)
+    return nil if labels.blank?
+    return name.titleize if labels[name].blank?
+    labels[name]
+  end
+
 end

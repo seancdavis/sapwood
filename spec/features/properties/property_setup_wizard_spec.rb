@@ -3,8 +3,6 @@ require 'rails_helper'
 feature 'Property Setup Wizard' do
 
   background do
-    Sapwood.set('installed?', true)
-    Sapwood.write!
     @property = build(:property)
     @user = create(:admin)
     sign_in @user

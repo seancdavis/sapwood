@@ -17,7 +17,7 @@
           <%= ff.input label.to_sym, :required => false,
                        :autofocus => (label == Property.labels.first),
                        :input_html => {
-                          :value => current_property.labels[label] },
+                          :value => current_property.label(label) },
                        :wrapper_html => { :class => 'half' } %>
         <% end %>
       <% end %>

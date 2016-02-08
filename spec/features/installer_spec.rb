@@ -231,7 +231,7 @@ feature 'Installer', :js => true do
     end
     scenario 'it will not let you visit an install path' do
       visit install_path(1)
-      expect(current_path).to eq(root_path)
+      expect(current_path).to eq(new_user_session_path)
     end
   end
 

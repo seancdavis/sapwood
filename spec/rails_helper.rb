@@ -87,6 +87,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.include Devise::TestHelpers, :type => :controller
   config.include SapwoodConfigHelpers
   config.include FeatureHelpers, :type => :feature
 

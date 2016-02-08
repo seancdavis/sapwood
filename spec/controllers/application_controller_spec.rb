@@ -12,11 +12,11 @@ describe ApplicationController do
       end
     end
     context 'when the app has been installed' do
-      it 'redirects to install' do
+      it 'redirects to sign in form' do
         Sapwood.set('installed?', true)
         Sapwood.write!
         get :home
-        expect(response).to_not redirect_to('/install/1')
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end

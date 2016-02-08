@@ -43,7 +43,7 @@ class PropertiesController < ApplicationController
 
     def property_params
       params.require(:property)
-        .permit(:title, :color,
+        .permit(:title, :color, :templates_raw, :forms_raw,
                 :labels => [:elements, :documents, :collections, :responses])
     end
 

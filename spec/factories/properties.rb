@@ -14,8 +14,11 @@
 
 FactoryGirl.define do
   factory :property do
-    title "MyString"
-config ""
+    title { Faker::Lorem.words(4).join(' ') }
+    color { Faker::Color.hex_color }
+    # labels
+    # templates_raw
+    # forms_raw
   end
 
 end

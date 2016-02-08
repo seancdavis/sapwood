@@ -6,7 +6,8 @@
   </p>
   <br>
   <%= minimal_form_for current_property do |f| %>
-    <%= f.input :templates_raw, :autofocus => true %>
+    <%= f.input :templates_raw, :autofocus => true,
+                :placeholder => 'Template Data (JSON)' %>
     <%= f.input :redirect_to, :as => :hidden, :input_html => {
                 :value => property_setup_path(current_property, :forms) } %>
     <%= f.submit 'Next' %>

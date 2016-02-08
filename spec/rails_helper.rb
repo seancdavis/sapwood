@@ -88,4 +88,6 @@ RSpec.configure do |config|
   end
 
   config.include SapwoodConfigHelpers
+  config.include FeatureHelpers, :type => :feature
+
 end

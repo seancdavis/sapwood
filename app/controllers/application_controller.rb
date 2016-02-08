@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_filter :verify_installation
   before_filter :authenticate_user!
 
-  helper_method :not_found
+  helper_method :current_property,
+                :not_found
 
   def home
     redirect_to deck_path
@@ -22,6 +23,14 @@ class ApplicationController < ActionController::Base
 
     def not_found
       raise ActionController::RoutingError.new('Not found.')
+    end
+
+    # ------------------------------------------ Properties
+
+    def current_property
+      @current_property ||= begin
+        Property.find_by_id(params[:property_id] || params[:id])
+      end
     end
 
 end

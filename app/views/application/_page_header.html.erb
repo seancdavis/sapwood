@@ -1,3 +1,5 @@
 <header class="page">
   <h1 class="title"><%= options[:title] %></h1>
+  <%= link_to options[:button][:label], options[:button][:path],
+              (options[:button][:options] || {}) if options[:button] %>
 </header>

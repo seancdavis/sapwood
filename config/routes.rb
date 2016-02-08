@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   get 'deck' => 'deck#show', :as => :deck
 
+  resources :properties, :except => [:index, :destroy] do
+    get 'setup/:step' => 'properties#edit', :as => :setup
+  end
+
   root :to => 'application#home'
 
 end

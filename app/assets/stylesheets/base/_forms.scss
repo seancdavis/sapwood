@@ -18,7 +18,9 @@ legend {
 label {
   display: block;
   font-weight: 600;
-  margin-bottom: $small-spacing / 2;
+  text-transform: uppercase;
+  margin-bottom: 0;
+  color: $dk-grey;
 }
 
 input,
@@ -65,6 +67,8 @@ input[type=submit] {
 }
 
 textarea {
+  padding: rem(5);
+  border: 1px solid $md-grey;
   resize: vertical;
 }
 
@@ -87,4 +91,9 @@ select {
   margin-bottom: $base-spacing;
   max-width: 100%;
   width: auto;
+}
+
+abbr[title] {
+  text-decoration: none;
+  border-bottom: none;
 }

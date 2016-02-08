@@ -1,0 +1,10 @@
+<%= card :title => "#{current_property.title}: Color", :progress => 20 do %>
+  <p>Pick a color to represent your site:</p>
+  <%= minimal_form_for current_property do |f| %>
+    <%= f.input :color, :autofocus => true %>
+    <%= f.input :redirect_to, :as => :hidden, :input_html => {
+                :value => property_setup_path(current_property, :labels) } %>
+    <%= f.submit 'Next' %>
+  <% end %>
+  <%= link_to 'Go To Property', current_property, :class => 'info' %>
+<% end %>

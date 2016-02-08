@@ -1,0 +1,5 @@
+<%= card :title => "#{current_property.title}: Complete", :centered => true,
+         :progress => 100 do %>
+  <p>That's it! You're ready to start using your property!</p>
+  <%= link_to 'Go To Property', current_property, :class => 'button' %>
+<% end %>

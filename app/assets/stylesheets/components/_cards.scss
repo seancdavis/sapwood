@@ -17,6 +17,7 @@ div.card {
     @include wood-background;
     h1 {
       margin-bottom: 0;
+      font-size: 1em;
       &.small {
         text-align: center;
         text-transform: uppercase;

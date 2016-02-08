@@ -1,5 +1,11 @@
 div.input {
   margin-bottom: rem(20);
+  &.half {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+    margin: 0 0.5% rem(20);
+  }
 }
 
 fieldset {
@@ -70,6 +76,7 @@ textarea {
   padding: rem(5);
   border: 1px solid $md-grey;
   resize: vertical;
+  border-radius: $base-border-radius;
 }
 
 [type="search"] {

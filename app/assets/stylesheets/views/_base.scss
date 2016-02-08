@@ -49,14 +49,8 @@ body {
 
 // ---------------------------------------- Body
 
-section.body {
-  margin-top: rem(25);
-  > div {
-    padding: rem(15);
-    border-radius: $base-border-radius;
-    background: $light;
-    box-shadow: $box-shadow;
-  }
+.page-content > section {
+  margin-top: rem(50);
 }
 
 // ---------------------------------------- Cards

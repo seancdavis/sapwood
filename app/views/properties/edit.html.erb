@@ -1,30 +1,40 @@
 <%= page_header :title => current_property.title %>
 
 <section class="body">
-  <div class="form">
-    <h2>Property Settings</h2>
-    <%= simple_form_for current_property do |f| %>
+  <%= simple_form_for current_property do |f| %>
+    <div class="block half">
       <h3>General</h3>
       <%= f.input :title, :autofocus => true %>
+    </div>
+    <div class="block half">
       <h3>Design</h3>
       <%= f.input :color %>
+    </div>
+    <div class="block">
       <h3>Labels</h3>
       <%= f.simple_fields_for :labels do |ff| %>
         <% Property.labels.each do |label| %>
           <%= ff.input label.to_sym, :required => false,
                        :autofocus => (label == Property.labels.first),
                        :input_html => {
-                          :value => current_property.labels[label] } %>
+                          :value => current_property.labels[label] },
+                       :wrapper_html => { :class => 'half' } %>
         <% end %>
       <% end %>
+    </div>
+    <div class="block half">
       <h3>Template Config</h3>
       <%= f.input :templates_raw, :autofocus => true, :label => false,
                   :placeholder => 'Template Data (JSON)' %>
+    </div>
+    <div class="block half">
       <h3>Form Config</h3>
       <%= f.input :forms_raw, :autofocus => true, :label => false,
                   :placeholder => 'Form Data (JSON)' %>
 
+    </div>
+    <div class="block quiet">
       <%= f.submit 'Save Changes' %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </section>

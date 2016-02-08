@@ -1,16 +1,20 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+<div class="card">
+  <div class="title">
+    <h2 class="logo">Logo Goes Here</h2>
+    <h1 class="small">Forgot Your Password?</h1>
   </div>
+  <div class="content">
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
+    <%= minimal_form_for resource, :as => resource_name,
+                         :url => password_path(resource_name),
+                         :html => { :method => :post } do |f| %>
+
+      <%= f.input :email, :autofocus => true %>
+      <%= f.input :password, :autocomplete => 'off' %>
+
+      <%= f.submit 'Send me reset password instructions' %>
+    <% end %>
+
+    <%= link_to 'Sign In', new_user_session_path, :class => 'info' %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

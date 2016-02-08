@@ -1,0 +1,22 @@
+body.deck section.sites {
+
+  article {
+    margin: rem(10) 0;
+    span {
+      display: inline-block;
+      &.color-block {
+        @include size(rem(14));
+        margin-right: rem(5);
+      }
+      &.edit {
+        float: right;
+        font-size: 0.85em;
+        a {
+          padding: rem(4) rem(10);
+          border: 1px solid;
+          background: transparent;
+        }
+      }
+    }
+  }
+}

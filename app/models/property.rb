@@ -27,6 +27,10 @@ class Property < ActiveRecord::Base
 
   validates :title, :presence => true
 
+  # ---------------------------------------- Scopes
+
+  scope :alpha, -> { order(:title => :asc) }
+
   # ---------------------------------------- Class Methods
 
   def self.labels

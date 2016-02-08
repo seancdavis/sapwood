@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
 
   helper_method :current_property,
-                :not_found
+                :not_found,
+                :my_properties
 
   def home
     redirect_to deck_path
@@ -26,6 +27,10 @@ class ApplicationController < ActionController::Base
     end
 
     # ------------------------------------------ Properties
+
+    def my_properties
+      @my_properties ||= Property.alpha
+    end
 
     def current_property
       @current_property ||= begin

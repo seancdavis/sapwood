@@ -1,0 +1,9 @@
+<article class="property">
+  <span class="color-block" style="background: <%= property.color %>"></span>
+  <span class="title"><%= property.title %></span>
+  <span class="edit">
+    <%= link_to 'Edit', edit_property_path(property), :class => 'edit button',
+                :style =>
+                  "border-color: #{property.color}; color: #{property.color}" %>
+  </span>
+</article>

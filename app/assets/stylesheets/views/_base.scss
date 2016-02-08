@@ -40,11 +40,22 @@ body {
     display: inline-block;
     vertical-align: middle;
     margin: 0 rem(15) 0 0;
-    font-size: rem(28);
   }
   a {
     display: inline-block;
     vertical-align: middle;
+  }
+}
+
+// ---------------------------------------- Body
+
+section.body {
+  margin-top: rem(25);
+  > div {
+    padding: rem(15);
+    border-radius: $base-border-radius;
+    background: $light;
+    box-shadow: $box-shadow;
   }
 }
 

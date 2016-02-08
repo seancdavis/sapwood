@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :not_found
 
   def home
+    redirect_to deck_path
   end
 
   private

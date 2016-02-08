@@ -9,7 +9,9 @@
 
     <div id="container">
       <%= render 'header' if user_signed_in? %>
-      <%= yield %>
+      <div class="page-content">
+        <%= yield %>
+      </div>
     </div>
 
     <%= javascript_include_tag 'application' %>

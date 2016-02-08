@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'install(/:step)' => 'install#show', :as => :install
   post 'install(/:step)' => 'install#update', :as => :install_update
 
+  get 'deck' => 'deck#show', :as => :deck
+
   root :to => 'application#home'
 
 end

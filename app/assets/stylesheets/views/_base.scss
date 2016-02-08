@@ -1,12 +1,37 @@
+
+// ---------------------------------------- Base
+
 body {
   background: $lt-grey;
+
+  #container {
+    max-width: rem(800);
+    margin: rem(25) auto;
+  }
 }
 
-#container {
-  max-width: rem(800);
-  margin: rem(25) auto;
+// ---------------------------------------- Header
 
-  > header {
-    float: right;
+#container header.main {
+  float: right;
+  a {
+    display: inline-block;
+    margin-left: rem(10);
+    font-size: 0.8em;
+    line-height: 1.25em;
+    &.user {
+      color: $dark;
+      font-size: 0.9em;
+    }
+  }
+}
+
+// ---------------------------------------- Content
+
+#container .page-content {
+
+  h1 {
+    margin: 0;
+    font-size: rem(28);
   }
 }

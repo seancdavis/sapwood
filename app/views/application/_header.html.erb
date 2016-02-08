@@ -1,0 +1,4 @@
+<header class="main">
+  <a href="#" class="user"><%= current_user.name %></a>
+  <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
+</header>

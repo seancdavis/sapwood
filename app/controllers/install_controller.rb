@@ -1,5 +1,7 @@
 class InstallController < ApplicationController
 
+  skip_before_filter :authenticate_user!
+
   before_filter :set_total_steps
 
   helper_method :current_step

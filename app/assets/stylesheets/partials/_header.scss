@@ -1,0 +1,12 @@
+header.main {
+  a {
+    display: inline-block;
+    margin-left: rem(10);
+    font-size: 0.8em;
+    line-height: 1.25em;
+    &.user {
+      color: $dark;
+      font-size: 0.9em;
+    }
+  }
+}

@@ -7,7 +7,10 @@
   </head>
   <body class="<%= controller_name %>">
 
-    <%= yield %>
+    <div id="container">
+      <%= render 'header' if user_signed_in? %>
+      <%= yield %>
+    </div>
 
     <%= javascript_include_tag 'application' %>
   </body>

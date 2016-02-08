@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery :with => :exception
 
   before_filter :verify_installation
+  before_filter :authenticate_user!
 
   helper_method :not_found
 

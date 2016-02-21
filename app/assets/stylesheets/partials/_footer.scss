@@ -1,0 +1,10 @@
+footer.main {
+
+  > a {
+    @include position(fixed, null null rem(10) rem(15));
+    img, svg {
+      width: rem(100);
+    }
+  }
+
+}

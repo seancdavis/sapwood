@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :properties, :except => [:index, :destroy] do
     get 'setup/:step' => 'properties#edit', :as => :setup
+
+    resources :elements
   end
 
   root :to => 'application#home'

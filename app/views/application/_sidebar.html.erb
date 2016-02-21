@@ -6,7 +6,8 @@
       <span class="color-block"
             style="background: <%= current_property.color %>"></span>
       <span class="title">
-        <%= link_to current_property.title, current_property %>
+        <%= link_to current_property.title,
+                    edit_property_path(current_property) %>
       </span>
     </div>
     <div class="search">
@@ -15,7 +16,10 @@
   </div>
   <nav>
     <ul>
-      <li><%= link_to current_property.label('elements'), '#' %></li>
+      <li>
+        <%= link_to current_property.label('elements'),
+                    property_elements_path(current_property) %>
+      </li>
       <li><%= link_to current_property.label('documents'), '#' %></li>
       <li><%= link_to current_property.label('collections'), '#' %></li>
       <li><%= link_to current_property.label('responses'), '#' %></li>

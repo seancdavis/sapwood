@@ -16,7 +16,14 @@ FactoryGirl.define do
   factory :property do
     title { Faker::Lorem.words(4).join(' ') }
     color { Faker::Color.hex_color }
-    # labels
+    # labels {
+    #   {
+    #     :elements => "Elements",
+    #     :documents => "Documents",
+    #     :collections => "Collections",
+    #     :responses => "Responses"
+    #   }
+    # }
     # templates_raw
     # forms_raw
   end

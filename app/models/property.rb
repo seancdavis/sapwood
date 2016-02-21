@@ -14,6 +14,10 @@
 
 class Property < ActiveRecord::Base
 
+  # ---------------------------------------- Plugins
+
+  include Presenter
+
   # ---------------------------------------- Associations
 
   has_many :elements
@@ -40,8 +44,7 @@ class Property < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def label(name)
-    return nil if labels.blank?
-    return name.titleize if labels[name].blank?
+    return name.titleize if labels.blank? || labels[name].blank?
     labels[name]
   end
 

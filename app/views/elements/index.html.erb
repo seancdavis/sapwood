@@ -1,0 +1,14 @@
+<%= page_header(
+  :title => current_property.p.label_title('elements'),
+  :button => {
+    :label => current_property.p.label_new('elements'),
+    :path => new_property_element_path(current_property),
+    :options => { :class => 'new button' }
+  }
+) %>
+
+<section class="body">
+  <div class="block">
+    <%= render current_property.elements %>
+  </div>
+</section>

@@ -1,4 +1,4 @@
-class SapwoodInstaller
+class InstallSapwood
 
   def initialize(step, data)
     @step = step
@@ -11,7 +11,7 @@ class SapwoodInstaller
   end
 
   def self.run(step, data = {})
-    SapwoodInstaller.new(step, data).run
+    InstallSapwood.new(step, data).run
   end
 
   def self.complete!

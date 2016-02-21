@@ -16,10 +16,10 @@ class InstallController < ApplicationController
 
   def update
     if current_step == @total_steps
-      SapwoodInstaller.complete!
+      InstallSapwood.complete!
       redirect_to new_user_session_path
     else
-      @current_step = SapwoodInstaller.run(current_step, params[:install])
+      @current_step = InstallSapwood.run(current_step, params[:install])
       redirect_to install_path(current_step)
     end
   end

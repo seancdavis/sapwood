@@ -8,8 +8,10 @@
   </head>
   <body class="<%= controller_name %> <%= action_name %>">
 
-    <div id="container">
+    <div id="container"
+         class="<%= 'sidebar' if current_property? %>">
       <%= render 'header' if user_signed_in? %>
+      <%= render 'sidebar' if current_property? %>
       <div class="page-content">
         <%= yield %>
       </div>

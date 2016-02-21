@@ -1,0 +1,62 @@
+aside.main {
+  @include position(fixed, 0 null null 0);
+  @include size(rem(250) 100vh);
+  box-sizing: border-box;
+  background: $light;
+  box-shadow: $box-shadow;
+
+  div.controls {
+    position: relative;
+    padding: rem(15);
+    @include wood-background;
+
+    > a {
+      @include position(absolute, 15px 15px null null);
+      text-transform: uppercase;
+      font-size: 0.8em;
+      color: $light;
+
+      &.menu-toggle {
+        left: 15px;
+        right: auto;
+      }
+    }
+
+    .current-property {
+      margin-top: rem(30);
+      span {
+        display: inline-block;
+        &.color-block {
+          @include size(rem(14));
+          margin-right: rem(5);
+        }
+        &.title a {
+          font-size: inherit;
+          color: $light;
+        }
+      }
+    }
+
+    .search {
+      margin-top: rem(50);
+      input {
+        margin: 0;
+        border-bottom: 0;
+        font-size: 1.25em;
+        color: $light;
+      }
+    }
+  }
+
+  nav {
+    padding: rem(15) rem(25);
+    ul li a {
+      display: block;
+      margin: 0 0 rem(15) 0;
+      font-size: 1.25em;
+      color: $dark;
+    }
+  }
+
+
+}

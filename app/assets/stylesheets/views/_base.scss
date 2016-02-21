@@ -7,6 +7,9 @@ body {
   #container {
     max-width: rem(800);
     margin: rem(25) auto;
+    &.sidebar {
+      padding-left: rem(250);
+    }
   }
 }
 

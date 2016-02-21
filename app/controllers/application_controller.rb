@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
 
   helper_method :current_property,
+                :current_property?,
                 :not_found,
                 :my_properties
 
@@ -36,6 +37,10 @@ class ApplicationController < ActionController::Base
       @current_property ||= begin
         Property.find_by_id(params[:property_id] || params[:id])
       end
+    end
+
+    def current_property?
+      current_property && current_property.id.present?
     end
 
 end

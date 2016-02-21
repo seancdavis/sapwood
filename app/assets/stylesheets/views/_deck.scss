@@ -8,6 +8,10 @@ body.deck section.properties {
         @include size(rem(14));
         margin-right: rem(5);
       }
+      &.title a {
+        font-size: inherit;
+        color: inherit;
+      }
       &.edit {
         float: right;
         font-size: 0.85em;

@@ -27,6 +27,9 @@ class PropertiesController < ApplicationController
     end
   end
 
+  def show
+  end
+
   def edit
     render "properties/setup/#{params[:step]}" if params[:step]
   end

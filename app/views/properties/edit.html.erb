@@ -1,40 +1,35 @@
 <%= page_header :title => current_property.title %>
 
 <section class="body">
-  <%= simple_form_for current_property do |f| %>
-    <div class="block half">
+  <%= minimal_form_for current_property do |f| %>
+    <div class="block aside">
       <h3>General</h3>
-      <%= f.input :title, :autofocus => true %>
-    </div>
-    <div class="block half">
+      <%= f.input :title, :label => false, :autofocus => true,
+                  :placeholder => 'Property Name' %>
+      <h3>Config</h3>
+      <%= f.input :templates_raw, :label => false,
+                  :placeholder => 'Template Data (JSON)' %>
+      <%= f.input :forms_raw, :label => false,
+                  :placeholder => 'Form Data (JSON)' %>
+
+    <aside>
       <h3>Design</h3>
-      <%= f.input :color %>
-    </div>
-    <div class="block">
+      <div class="input color">
+        <span class="color-block"></span>
+        <%= f.input :color, :label => false, :wrapper => false %>
+      </div>
       <h3>Labels</h3>
       <%= f.simple_fields_for :labels do |ff| %>
         <% Property.labels.each do |label| %>
           <%= ff.input label.to_sym, :required => false,
                        :autofocus => (label == Property.labels.first),
+                       :wrapper => false,
                        :input_html => {
-                          :value => current_property.label(label) },
-                       :wrapper_html => { :class => 'half' } %>
+                          :value => current_property.label(label) } %>
         <% end %>
       <% end %>
+    </aside>
     </div>
-    <div class="block half">
-      <h3>Template Config</h3>
-      <%= f.input :templates_raw, :autofocus => true, :label => false,
-                  :placeholder => 'Template Data (JSON)' %>
-    </div>
-    <div class="block half">
-      <h3>Form Config</h3>
-      <%= f.input :forms_raw, :autofocus => true, :label => false,
-                  :placeholder => 'Form Data (JSON)' %>
-
-    </div>
-    <div class="block quiet">
-      <%= f.submit 'Save Changes' %>
-    </div>
+    <%= f.submit 'Save Changes' %>
   <% end %>
 </section>

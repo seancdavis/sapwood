@@ -23,10 +23,10 @@ legend {
 
 label {
   display: block;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 400;
   margin-bottom: 0;
   color: $dk-grey;
+  font-size: 0.9em;
 }
 
 input,
@@ -38,7 +38,7 @@ select {
 
 #{$all-text-inputs},
 select[multiple] {
-  background-color: $base-background-color;
+  background-color: transparent;
   border: none;
   border-bottom: 1px solid $md-grey;
   border-radius: 0;

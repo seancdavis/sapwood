@@ -1,0 +1,42 @@
+
+// ---------------------------------------- Edit
+
+body.properties.edit {
+
+  form {
+    textarea {
+      height: rem(200);
+      margin-bottom: 0;
+    }
+
+    #{$all-text-inputs} {
+      margin-bottom: rem(5);
+    }
+
+    div.input {
+      label {
+        display: inline-block;
+      }
+    }
+
+    h3 {
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+  }
+
+  div.input.color {
+    span, input {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    span {
+      @include size(rem(20) rem(20));
+      background: $light;
+    }
+    input {
+      width: calc(100% - 30px);
+      margin-left: rem(3);
+    }
+  }
+}

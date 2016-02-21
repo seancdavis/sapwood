@@ -8,6 +8,9 @@ div.card {
 
   .logo {
     text-align: center;
+    img, svg {
+      max-width: 65%;
+    }
   }
 
   .title {

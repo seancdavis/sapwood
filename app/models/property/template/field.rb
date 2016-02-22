@@ -1,4 +1,6 @@
-class Property::Template
+class Property::Template::Field
+
+  include Presenter
 
   def initialize(options)
     @attributes ||= options
@@ -9,27 +11,29 @@ class Property::Template
     @attributes ||= {}
   end
 
-  def name
-    title
+  def type
+    attributes['type']
   end
 
-  def fields
-    return {} unless attributes['fields']
-    fields = []
-    attributes['fields'].each do |name, data|
-      fields << Property::Template::Field.new(data.merge('name' => name))
-    end
-    fields
+  def label
+    attributes['label'] || attributes['name'].titleize
+  end
+
+  def title
+    name
   end
 
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
-    return {} if method.to_s == 'fields'
     super
   end
 
   def respond_to?(method, include_private = false)
     attributes.keys.include?(method.to_s)
+  end
+
+  def html(form_obj)
+    form_obj.input name.to_sym, :required => false
   end
 
 end

@@ -1,0 +1,11 @@
+p.notice, p.alert {
+  display: none;
+  margin-top: rem(40);
+  padding: rem(5) rem(10);
+  border-radius: $base-border-radius;
+  background: $md-blue;
+  color: $light;
+  &.active {
+    display: block;
+  }
+}

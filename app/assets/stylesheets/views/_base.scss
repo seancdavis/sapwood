@@ -61,6 +61,10 @@ body {
   margin-top: rem(50);
 }
 
+.page-content > p + section {
+  margin-top: rem(10);
+}
+
 // ---------------------------------------- Cards
 
 #container .page-content .card {

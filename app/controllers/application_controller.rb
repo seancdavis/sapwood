@@ -6,8 +6,11 @@ class ApplicationController < ActionController::Base
   before_filter :verify_installation
   before_filter :authenticate_user!
 
-  helper_method :current_property,
+  helper_method :current_element,
+                :current_element?,
+                :current_property,
                 :current_property?,
+                :current_template,
                 :not_found,
                 :my_properties
 
@@ -41,6 +44,27 @@ class ApplicationController < ActionController::Base
 
     def current_property?
       current_property && current_property.id.present?
+    end
+
+    # ------------------------------------------ Templates
+
+    def current_template
+      @current_template ||= begin
+        return current_element.template if current_element.template
+        current_property.find_template(params[:template]) if params[:template]
+      end
+    end
+
+    # ------------------------------------------ Elements
+
+    def current_element
+      @current_element ||= begin
+        current_property.elements.find_by_id(params[:element_id] || params[:id])
+      end
+    end
+
+    def current_element?
+      current_element && current_element.id.present?
     end
 
 end

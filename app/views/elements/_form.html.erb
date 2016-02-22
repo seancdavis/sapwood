@@ -1,0 +1,23 @@
+<section class="body">
+  <%= minimal_form_for [current_property, current_element] do |f| %>
+    <div class="block aside">
+      <%= f.input :title %>
+      <%= f.input :body %>
+
+      <%= f.simple_fields_for :template_data,
+                              OpenStruct.new(f.object.template_data) do |fd| %>
+        <% current_template.fields.each do |field| %>
+          <%= field.html(fd) %>
+        <% end %>
+      <% end %>
+
+      <aside>
+        <p>These are the items, other than title and body, that are not
+        customizable.</p>
+        <%= f.input :template_name, :readonly => true,
+                    :input_html => { :value => current_template.title } %>
+      </aside>
+    </div>
+    <%= f.submit "Save #{current_template.title}" %>
+  <% end %>
+</section>

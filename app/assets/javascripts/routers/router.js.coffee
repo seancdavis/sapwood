@@ -1,7 +1,7 @@
 class App.Routers.Router extends Backbone.Router
 
   initialize: ->
-    return
+    new App.Components.Notices
 
   routes:
     'properties/:property_id/edit': 'editProperty'

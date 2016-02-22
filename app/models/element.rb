@@ -26,4 +26,10 @@ class Element < ActiveRecord::Base
 
   belongs_to :property
 
+  # ---------------------------------------- Instance Methods
+
+  def template
+    property.find_template(template_name)
+  end
+
 end

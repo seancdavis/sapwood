@@ -36,4 +36,38 @@ RSpec.describe Property, :type => :model do
     end
   end
 
+  describe '#templates' do
+    before(:each) do
+      file = File.expand_path('../../support/template_config.json', __FILE__)
+      @raw_templates = File.read(file)
+    end
+    it 'returns an empty array when there is no template' do
+      expect(property.templates).to eq([])
+    end
+    it 'returns an error message when the JSON is malformed' do
+      property.update!(:templates_raw => "#{@raw_templates}]]")
+      expect { property.templates }.to raise_error(JSON::ParserError)
+    end
+    context 'when there are templates' do
+      before(:each) { property.update!(:templates_raw => @raw_templates) }
+      it 'returns an array' do
+        expect(property.templates.class).to eq(Array)
+      end
+      it 'returns Property::Template objects within the array' do
+        expect(property.templates.first.class).to eq(Property::Template)
+      end
+    end
+  end
+
+  describe '#find_template' do
+    before(:each) do
+      file = File.expand_path('../../support/template_config.json', __FILE__)
+      @raw_templates = File.read(file)
+      property.update!(:templates_raw => @raw_templates)
+    end
+    it 'can find a template by its title' do
+      expect(property.find_template('Default').class).to eq(Property::Template)
+    end
+  end
+
 end

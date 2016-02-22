@@ -22,6 +22,7 @@ div.card {
       margin-bottom: 0;
       font-size: 1em;
       &.small {
+        margin: rem(10) 0;
         text-align: center;
         text-transform: uppercase;
         font-size: 0.75em;

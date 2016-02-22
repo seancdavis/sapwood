@@ -43,9 +43,30 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Instance Methods
 
+  def to_s
+    title
+  end
+
   def label(name)
     return name.titleize if labels.blank? || labels[name].blank?
     labels[name]
+  end
+
+  def templates
+    return [] if templates_raw.blank?
+    begin
+      templates = []
+      JSON.parse(Property.first.templates_raw).each do |t|
+        templates << Property::Template.new(t)
+      end
+      templates
+    # rescue
+    #   raise "Template data has invalid JSON."
+    end
+  end
+
+  def find_template(name)
+    templates.select { |t| t.title == name }.first
   end
 
 end

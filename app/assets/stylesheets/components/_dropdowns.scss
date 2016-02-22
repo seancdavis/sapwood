@@ -1,0 +1,24 @@
+nav.dropdown {
+  display: none;
+  position: absolute;
+  min-width: rem(200);
+  z-index: 9999;
+  box-shadow: $box-shadow;
+  border-radius: $base-border-radius;
+  background: $light;
+  &.active {
+    display: block;
+  }
+  li {
+    display: block;
+  }
+  a {
+    display: block;
+    padding: rem(5) rem(10);
+    @include transition(all 0.35s ease);
+    &:hover {
+      background: darken($light, 5%);
+      color: $md-blue;
+    }
+  }
+}

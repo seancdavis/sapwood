@@ -7,6 +7,7 @@ body.properties.edit {
     textarea {
       height: rem(200);
       margin-bottom: 0;
+      font-family: $code-font-family;
     }
 
     #{$all-text-inputs} {

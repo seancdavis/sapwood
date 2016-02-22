@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Default",
+    "fields": {
+      "subtitle": {
+        "type": "string",
+        "label": "Subtitle"
+      }
+    }
+  }
+]

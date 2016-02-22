@@ -1,5 +1,8 @@
 <header class="page">
   <h1 class="title"><%= options[:title] %></h1>
-  <%= link_to options[:button][:label], options[:button][:path],
-              (options[:button][:options] || {}) if options[:button] %>
+  <div class="primary-action">
+    <%= link_to options[:button][:label], options[:button][:path],
+                (options[:button][:options] || {}) if options[:button] %>
+    <%= render options[:dropdown] if options[:dropdown] %>
+  </div>
 </header>

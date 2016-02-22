@@ -44,7 +44,11 @@ body {
     vertical-align: middle;
     margin: 0 rem(15) 0 0;
   }
-  a {
+  .primary-action {
+    position: relative;
+    display: inline-block;
+  }
+  a.button {
     display: inline-block;
     vertical-align: middle;
     margin-top: 3px;

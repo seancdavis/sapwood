@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208200538) do
+ActiveRecord::Schema.define(version: 20160222195216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(version: 20160208200538) do
     t.string   "template_name"
     t.integer  "position",      default: 0
     t.text     "body"
-    t.json     "template_data"
+    t.json     "template_data", default: {}
     t.string   "ancestry"
     t.datetime "publish_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "properties", force: :cascade do |t|

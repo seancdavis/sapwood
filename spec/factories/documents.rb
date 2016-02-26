@@ -4,7 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  title       :string
-#  f           :string
+#  url         :string
 #  property_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

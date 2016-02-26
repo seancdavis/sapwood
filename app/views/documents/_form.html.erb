@@ -1,0 +1,18 @@
+<section class="body">
+  <%= minimal_form_for [current_property, current_document] do |f| %>
+    <div class="block aside">
+      <%= f.input :title %>
+      <aside>
+        <h3>File Details</h3>
+        <dl>
+          <dt>Uploaded:</dt>
+          <dd><%= current_document.p.uploaded_at %></dd>
+          <dt>URL:</dt>
+          <dd><%= link_to current_document.url, current_document.url %></dd>
+        </dl>
+
+      </aside>
+    </div>
+    <%= f.submit "Save #{current_document.title}" %>
+  <% end %>
+</section>

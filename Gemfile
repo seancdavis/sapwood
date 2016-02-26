@@ -25,6 +25,9 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'ancestry'
 gem 'simple_form'
+gem 'carrierwave_direct'
+gem 'jquery-fileupload-rails'
+gem 'jbuilder'
 
 group :development do
   gem 'mailcatcher'

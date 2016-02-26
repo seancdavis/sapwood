@@ -1,0 +1,31 @@
+<%= page_header(
+  :title => current_property.p.label_title('documents'),
+  :button => {
+    :label => 'Upload',
+    :path => new_property_document_path(current_property),
+    :options => { :class => 'new button' }
+  }
+) %>
+
+<section class="body">
+  <div class="block">
+    <%= render current_property.documents %>
+  </div>
+</section>
+
+<%= s3_uploader_form(
+  :post => property_documents_path(current_property),
+  :key => document_upload_key,
+  :as => "document[url]"
+) do %>
+  <%= file_field_tag :file, :multiple => false %>
+<% end %>
+
+<script id="template-upload" type="text/x-tmpl">
+<div class="upload">
+  <div class="content">
+    <h3>{%=o.name%}</h3>
+    <div class="progress"><div class="bar" style="width: 0%"></div></div>
+  </div>
+</div>
+</script>

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'setup/:step' => 'properties#edit', :as => :setup
 
     resources :elements
+    resources :documents
   end
 
   root :to => 'application#home'

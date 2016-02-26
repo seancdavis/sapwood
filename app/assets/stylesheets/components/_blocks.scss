@@ -30,5 +30,28 @@ div.block {
     padding: rem(15);
     box-sizing: border-box;
     @include linear-gradient(90deg, $xlt-blue, $light);
+    overflow: scroll;
+
+    h3 {
+      padding-bottom: rem(10);
+      font-size: 1em;
+      text-transform: uppercase;
+      border-bottom: $base-border;
+    }
+    dl {
+      white-space: nowrap;
+      font-size: 0.85em;
+      dt, dd {
+        display: inline;
+      }
+      dt {
+        font-weight: 600;
+        &:before {
+          display: block;
+          margin-top: rem(10);
+          content: '';
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,27 @@
+div.upload {
+  display: table;
+  @include position(fixed, 0 null null 0);
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background: rgba($dark, 0.8);
+
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+    .progress {
+      border: solid 1px #555;
+      border-radius: 3px;
+      background: $dark;
+      .bar {
+        height: 10px;
+        background: $md-blue;
+      }
+    }
+    h3 {
+      text-align: center;
+      font-size: modular-scale(1);
+      color: $light;
+    }
+  }
+}

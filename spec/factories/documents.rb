@@ -12,9 +12,8 @@
 
 FactoryGirl.define do
   factory :document do
-    title "MyString"
-f "MyString"
-property_id 1
+    title { nil }
+    url { "#{Rails.root}/spec/support/example.png" }
+    property
   end
-
 end

@@ -11,7 +11,7 @@ gem 'pg'
 # stylesheets helpers
 gem 'sass-rails'
 gem 'uglifier'
-gem 'bourbon', :github => 'thoughtbot/bourbon'
+gem 'bourbon'
 gem 'neat'
 gem 'normalize-rails'
 

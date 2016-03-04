@@ -1,0 +1,42 @@
+
+// ---------------------------------------- Form
+
+body.collections.edit, body.collections.new {
+
+  .collection-builder {
+
+    .new-item {
+      display: inline-block;
+      select {
+        margin: 0;
+        @include appearance(none);
+        font-size: 0.75em;
+        line-height: 1;
+        font-weight: 600;
+        border: none;
+        background-color: transparent;
+        color: $md-blue;
+        outline: none;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    article {
+      padding: rem(2.5) 0;
+
+      &.level-2, &.level-3 {
+        margin-left: rem(25);
+      }
+
+      .new-item {
+        margin-left: rem(10);
+      }
+      & + .new-item {
+        margin: 0 0 rem(15) rem(25);
+      }
+
+    }
+  }
+}

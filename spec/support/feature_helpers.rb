@@ -12,14 +12,23 @@ module FeatureHelpers
   end
 
   def upload_file(filename)
-    script = "$('#fileupload').toggle();"
-    page.execute_script(script)
-    attach_file 'file',
-                File.expand_path("#{Rails.root}/spec/support/#{filename}")
+    page.execute_script("$('#fileupload').toggle();")
+    attach_file 'file', ["#{Rails.root}/spec/support/#{filename}"]
+    wait_for_ajax
   end
 
   def upload_image
     upload_file('example.png')
+  end
+
+  def add_test_config
+    settings = File.expand_path('../sapwood.test.yml', __FILE__)
+    FileUtils.cp(settings, "#{Rails.root}/config/sapwood.test.yml")
+    Sapwood.reload!
+  end
+
+  def property_with_templates
+    create(:property, :templates_raw => File.read(template_config_file))
   end
 
   def wait_for_ajax

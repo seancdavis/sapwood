@@ -77,6 +77,7 @@ RSpec.configure do |config|
 
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
+    page.driver.resize(1600, 1200)
   end
 
   config.before(:each) do

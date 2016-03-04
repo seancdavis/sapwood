@@ -3,8 +3,8 @@ require 'rails_helper'
 feature 'User', :js => true do
 
   background do
-    file = File.expand_path('../../../support/template_config.json', __FILE__)
-    @property = create(:property, :templates_raw => File.read(file))
+    add_test_config
+    @property = property_with_templates
     @document = create(:document, :property => @property)
     @user = create(:admin)
     sign_in @user

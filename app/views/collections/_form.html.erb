@@ -6,7 +6,8 @@
            data-elements="<%= property_elements_path(current_property) %>">
       </div>
 
-      <%= f.input :item_data, :as => :text, :value => current_collection.item_data.to_json %>
+      <%= f.input :item_data, :as => :hidden,
+                  :value => current_collection.item_data.to_json %>
 
       <aside>
         <%= f.input :title %>

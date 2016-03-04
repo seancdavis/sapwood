@@ -83,3 +83,4 @@ class App.Components.CollectionBuilder extends Backbone.View
         @appendNewFormTo(elTwo)
       @appendNewFormTo(elOne)
     @appendNewFormTo(@container)
+    App.Components.Blocks.reset()

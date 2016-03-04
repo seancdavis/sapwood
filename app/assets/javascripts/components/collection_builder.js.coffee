@@ -11,6 +11,7 @@ class App.Components.CollectionBuilder extends Backbone.View
   events:
     'change .collection-builder select': 'addItem'
     'keydown form': 'preventEnter'
+    'click .collection-builder .remove': 'removeItem'
 
   initialize: ->
     @fetchElements()
@@ -84,3 +85,8 @@ class App.Components.CollectionBuilder extends Backbone.View
       @appendNewFormTo(elOne)
     @appendNewFormTo(@container)
     App.Components.Blocks.reset()
+
+  removeItem: (e) ->
+    e.preventDefault()
+    $(e.target).parent().remove()
+    @updateData()

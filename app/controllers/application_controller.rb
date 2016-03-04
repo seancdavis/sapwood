@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_filter :verify_installation
   before_filter :authenticate_user!
 
-  helper_method :current_document,
+  helper_method :current_collection,
+                :current_document,
                 :current_element,
                 :current_element?,
                 :current_property,
@@ -74,6 +75,15 @@ class ApplicationController < ActionController::Base
       @current_document ||= begin
         id = params[:document_id] || params[:id]
         current_property.documents.find_by_id(id)
+      end
+    end
+
+    # ------------------------------------------ Collections
+
+    def current_collection
+      @current_collection ||= begin
+        id = params[:collection_id] || params[:id]
+        current_property.collections.find_by_id(id)
       end
     end
 

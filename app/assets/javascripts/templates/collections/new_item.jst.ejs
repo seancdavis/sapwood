@@ -1,0 +1,8 @@
+<div class="new-item">
+  <select>
+    <option>Add New ...</option>
+    <% for( var i = 0; i < elements.length; i++ ) { %>
+      <option value="<%= elements[i].id %>"><%= elements[i].title %></option>
+     <% } %>
+  </select>
+</div>

@@ -1,0 +1,17 @@
+<section class="body">
+  <%= minimal_form_for [current_property, current_collection] do |f| %>
+    <div class="block aside">
+
+      <div class="collection-builder" data-level="0"
+           data-elements="<%= property_elements_path(current_property) %>">
+      </div>
+
+      <%= f.input :item_data, :as => :text %>
+
+      <aside>
+        <%= f.input :title %>
+      </aside>
+    </div>
+    <%= f.submit "Save" %>
+  <% end %>
+</section>

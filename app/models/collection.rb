@@ -16,4 +16,8 @@ class Collection < ActiveRecord::Base
 
   belongs_to :property
 
+  # ---------------------------------------- Validations
+
+  validates :title, :presence => true
+
 end

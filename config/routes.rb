@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
     resources :elements
     resources :documents
+    resources :collections
   end
 
   root :to => 'application#home'

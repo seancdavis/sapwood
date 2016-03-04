@@ -26,6 +26,10 @@ class Element < ActiveRecord::Base
 
   belongs_to :property
 
+  # ---------------------------------------- Scopes
+
+  scope :alpha, -> { order(:title => :asc) }
+
   # ---------------------------------------- Validations
 
   validates :title, :template_name, :presence => true

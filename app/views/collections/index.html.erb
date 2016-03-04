@@ -1,0 +1,14 @@
+<%= page_header(
+  :title => current_property.p.label_title('collections'),
+  :button => {
+    :label => current_property.p.label_new('collections'),
+    :path => new_property_collection_path(current_property),
+    :options => { :class => 'new button' }
+  }
+) %>
+
+<section class="body">
+  <div class="block">
+    <%= render current_property.collections %>
+  </div>
+</section>

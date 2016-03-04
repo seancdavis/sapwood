@@ -1,4 +1,46 @@
-div.upload {
+.batch-uploader {
+  display: none;
+  &.active {
+    display: block;
+  }
+}
+
+div.embedded.upload {
+  width: 100%;
+  margin: rem(5) 0;
+  padding: rem(5) 0 rem(15) 0;
+  border-bottom: 1px solid $md-grey;
+
+  .content {
+    .progress {
+      background: $md-grey;
+      .bar {
+        height: 10px;
+        background: $md-blue;
+      }
+    }
+    h3 {
+      margin-bottom: rem(10);
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+  }
+  p {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1;
+    &.error {
+      color: $error;
+    }
+    &.success {
+      padding: 0;
+      background: transparent;
+      color: $success;
+    }
+  }
+}
+
+div.full-screen.upload {
   display: table;
   @include position(fixed, 0 null null 0);
   width: 100%;

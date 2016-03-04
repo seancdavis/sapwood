@@ -42,15 +42,25 @@ class App.Components.Uploader extends Backbone.View
         content = {}
         content[$('#fileupload').data('as')] = domain + path
         $.post to, content
-        .done (data) =>
-          $('section.list').first()
-            .prepend(@template(document: data.document))
-          $('div.upload').remove()
-        .fail (data) =>
-          $('div.upload').remove()
-          $('header.page').after """
-            <p class="alert">There was a problem with your upload.</p>
-              """
+        .done (response) =>
+          # $('section.list').first()
+          #   .prepend(@template(document: data.document))
+          # $('div.upload').remove()
+          data.context.find('.progress').remove()
+          data.context.append """
+            <p class="success">Uploaded successfully.</p>
+          """
+          window.location.reload() if $('div.progress').length == 0
+        .fail (response) =>
+          data.context.find('.progress').remove()
+          data.context.append """
+            <p class="error">There was an error with this upload.</p>
+          """
+          window.location.reload() if $('div.progress').length == 0
+          # $('div.upload').remove()
+          # $('header.page').after """
+          #   <p class="alert">There was a problem with your upload.</p>
+          #     """
 
       fail: (e, data) ->
         $('div.upload').remove()

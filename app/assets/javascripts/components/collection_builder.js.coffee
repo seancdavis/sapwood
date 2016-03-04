@@ -3,6 +3,7 @@ class App.Components.CollectionBuilder extends Backbone.View
   el: 'body'
 
   container: $('.collection-builder')
+  jsonField: $('#collection_item_data')
 
   template: JST['templates/collections/item']
   newTemplate: JST['templates/collections/new_item']
@@ -17,7 +18,10 @@ class App.Components.CollectionBuilder extends Backbone.View
   fetchElements: ->
     $.getJSON @container.data('elements'), (data) =>
       @elements = data
-      @appendNewFormTo(@container)
+      if @jsonField.val() == ''
+        @appendNewFormTo(@container)
+      else
+        @loadFromJSON()
 
   preventEnter: (e) ->
     e.preventDefault() if e.keyCode == 13
@@ -63,4 +67,19 @@ class App.Components.CollectionBuilder extends Backbone.View
               data[i].children[j].children.push
                 id: parseInt($(three).attr('data-id'))
                 title: $(three).children('span.title').text()
-    $('#collection_item_data').val(JSON.stringify(data))
+    @jsonField.val(JSON.stringify(data))
+
+  loadFromJSON: ->
+    data = JSON.parse(@jsonField.val())
+    for one in data
+      one.level = 1
+      elOne = @appendElementTo(@container, one)
+      for two in one.children
+        two.level = 2
+        elTwo = @appendElementTo(elOne, two)
+        for three in two.children
+          three.level = 3
+          @appendElementTo(elTwo, three)
+        @appendNewFormTo(elTwo)
+      @appendNewFormTo(elOne)
+    @appendNewFormTo(@container)

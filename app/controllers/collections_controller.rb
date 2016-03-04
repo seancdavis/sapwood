@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id          :integer          not null, primary key
+#  title       :string
+#  property_id :integer
+#  item_data   :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class CollectionsController < ApplicationController
 
   def index
@@ -14,6 +26,18 @@ class CollectionsController < ApplicationController
                   :notice => "#{current_collection.title} saved successfully!"
     else
       render 'new'
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if current_collection.update(collection_params)
+      redirect_to property_collections_path,
+                  :notice => "#{current_collection.title} saved successfully!"
+    else
+      render 'edit'
     end
   end
 

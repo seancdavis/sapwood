@@ -3,8 +3,7 @@ require 'rails_helper'
 feature 'Elements', :js => true do
 
   background do
-    file = File.expand_path('../../../support/template_config.json', __FILE__)
-    @property = create(:property, :templates_raw => File.read(file))
+    @property = property_with_templates
     @element = build(:element)
     @user = create(:admin)
     sign_in @user

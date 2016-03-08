@@ -69,6 +69,7 @@ class App.Components.CollectionBuilder extends Backbone.View
                 id: parseInt($(three).attr('data-id'))
                 title: $(three).children('span.title').text()
     @jsonField.val(JSON.stringify(data))
+    App.Components.Blocks.reset()
 
   loadFromJSON: ->
     data = JSON.parse(@jsonField.val())

@@ -122,3 +122,9 @@ abbr[title] {
   text-decoration: none;
   border-bottom: none;
 }
+
+span.error {
+  display: block;
+  font-size: 0.9em;
+  color: $error;
+}

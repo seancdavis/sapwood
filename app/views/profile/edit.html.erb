@@ -1,3 +1,24 @@
 <%= page_header :title => 'My Profile' %>
 
-<%= render 'form' %>
+<section class="body">
+  <%= minimal_form_for current_user, :url => update_profile_path do |f| %>
+    <div class="block aside">
+      <%= f.input :name, :autofocus => true %>
+      <%= f.input :email, :required => true, :disabled => true %>
+      <h3>Change Your Password</h3>
+      <%= f.input :password %>
+      <%= f.input :password_confirmation %>
+      <aside>
+        <h3>Your Properties</h3>
+        <ul class="properties-list">
+          <% Property.alpha.each do |property| %>
+            <li>
+              <%= link_to property.title, property %>
+            </li>
+          <% end %>
+        </ul>
+      </aside>
+    </div>
+    <%= f.submit 'Save' %>
+  <% end %>
+</section>

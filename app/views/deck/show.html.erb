@@ -1,7 +1,11 @@
-<%= page_header :title => 'Deck',
-                :button => { :label => 'New Property',
-                             :path => new_property_path,
-                             :options => { :class => 'new button' } } %>
+<% if current_user.is_admin? %>
+  <%= page_header :title => 'Deck',
+                  :button => { :label => 'New Property',
+                               :path => new_property_path,
+                               :options => { :class => 'new button' } } %>
+<% else %>
+  <%= page_header :title => 'Deck' %>
+<% end %>
 
 <section class="body properties">
   <div class="block full">

@@ -18,6 +18,8 @@
 
 class ElementsController < ApplicationController
 
+  before_filter :verify_property_access
+
   def index
     respond_to do |format|
       format.html

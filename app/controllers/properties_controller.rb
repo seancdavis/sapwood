@@ -14,7 +14,10 @@
 
 class PropertiesController < ApplicationController
 
+  before_filter :verify_property_access, :except => [:new, :create]
+
   def new
+    not_found unless current_user.is_admin?
     @current_property = Property.new
   end
 
@@ -31,6 +34,7 @@ class PropertiesController < ApplicationController
   end
 
   def edit
+    not_found unless current_user.is_admin?
     render "properties/setup/#{params[:step]}" if params[:step]
   end
 

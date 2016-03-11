@@ -1,38 +1,40 @@
 class UsersController < ApplicationController
 
+  before_filter :verify_property_access
+
   def index
   end
 
   def new
-    @user = User.new
+    @focused_user = User.new
   end
 
   def create
-    @user = User.find_by_email(params[:user][:email])
-    if @user.nil?
-      if @user = User.create(user_params.merge(:password => 'password'))
-        @user.properties << current_property unless @user.is_admin?
+    @focused_user = User.find_by_email(params[:user][:email])
+    if focused_user.nil?
+      if @focused_user = User.create(user_params.merge(:password => 'password'))
+        focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
                     :notice => 'User added successfully!'
       else
         render 'new'
       end
     else
-      @user.properties << current_property
+      focused_user.properties << current_property
       redirect_to property_users_path(current_property),
                   :notice => 'User added successfully!'
     end
   end
 
   def edit
-    @user = User.find_by_id(params[:id])
+    verify_user_access
   end
 
   def update
-    @user = User.find_by_id(params[:id])
-    if @user.update(user_params)
-      unless @user.is_admin?
-        @user.set_properties!(params[:user][:access].keys.collect(&:to_i))
+    # focused_user = User.find_by_id(params[:id])
+    if focused_user.update(user_params)
+      unless focused_user.is_admin?
+        focused_user.set_properties!(params[:user][:access].keys.collect(&:to_i))
       end
       redirect_to property_users_path(current_property),
                   :notice => 'User updated successfully!'
@@ -45,6 +47,11 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :is_admin)
+    end
+
+    def verify_user_access
+      not_found if focused_user.nil?
+      not_found if focused_user.is_admin? && !current_user.is_admin?
     end
 
 end

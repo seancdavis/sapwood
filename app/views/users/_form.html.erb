@@ -1,5 +1,5 @@
 <section class="body">
-  <%= minimal_form_for [current_property, @user] do |f| %>
+  <%= minimal_form_for [current_property, focused_user] do |f| %>
     <div class="block aside">
       <%= f.input :name, :autofocus => true %>
       <%= f.input :email, :required => true %>
@@ -24,7 +24,7 @@
                 <span class="switch">
                   <input id="access-<%= property.id %>" type="checkbox"
                          name="user[access][<%= property.id %>]" value="1"
-                         <%= 'checked' if @user.has_access_to?(property) %>>
+                         <%= 'checked' if focused_user.has_access_to?(property) %>>
                   <label for="access-<%= property.id %>"></label>
                 </span>
               </li>

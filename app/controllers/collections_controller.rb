@@ -12,6 +12,8 @@
 
 class CollectionsController < ApplicationController
 
+  before_filter :verify_property_access
+
   def index
   end
 

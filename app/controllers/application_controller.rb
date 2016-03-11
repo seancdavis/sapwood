@@ -13,8 +13,10 @@ class ApplicationController < ActionController::Base
                 :current_property,
                 :current_property?,
                 :current_template,
+                :focused_user,
                 :not_found,
-                :my_properties
+                :my_properties,
+                :visible_property_users
 
   def home
     redirect_to deck_path
@@ -22,8 +24,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+    # ------------------------------------------ Checks
+
     def verify_installation
       redirect_to install_path(1) unless Sapwood.installed?
+    end
+
+    def verify_property_access
+      not_found if current_property.nil?
+      not_found unless current_user.has_access_to?(current_property)
     end
 
     # ------------------------------------------ Errors
@@ -35,7 +44,7 @@ class ApplicationController < ActionController::Base
     # ------------------------------------------ Properties
 
     def my_properties
-      @my_properties ||= Property.alpha
+      @my_properties ||= current_user.accessible_properties.sort_by(&:title)
     end
 
     def current_property
@@ -84,6 +93,26 @@ class ApplicationController < ActionController::Base
       @current_collection ||= begin
         id = params[:collection_id] || params[:id]
         current_property.collections.find_by_id(id)
+      end
+    end
+
+    # ------------------------------------------ Users
+
+    def visible_property_users
+      @visible_property_users ||= begin
+        users = if current_user.is_admin?
+          current_property.users_with_access
+        else
+          current_property.users
+        end
+        users.sort_by { |u| u.p.name }
+      end
+    end
+
+    def focused_user
+      @focused_user ||= begin
+        p = params[:user_id] || params[:id]
+        visible_property_users.select { |u| u.id.to_i == p.to_i }.first
       end
     end
 

@@ -4,7 +4,38 @@
       <%= f.input :name, :autofocus => true %>
       <%= f.input :email, :required => true %>
       <aside>
-        <%= f.input :is_admin, :label => 'Sapwood Admin' %>
+        <h3>Permissions</h3>
+        <ul>
+          <li>
+            Sapwood Admin
+            <span class="switch">
+              <%= f.check_box :is_admin %>
+              <label for="user_is_admin"></label>
+            </span>
+          </li>
+        </ul>
+        <hr>
+        <p><strong>Properties</strong></p>
+        <div class="non-admin">
+          <ul class="properties-list">
+            <% Property.alpha.each do |property| %>
+              <li>
+                <%= property.title %>
+                <span class="switch">
+                  <input id="access-<%= property.id %>" type="checkbox"
+                         name="user[access][<%= property.id %>]" value="1"
+                         <%= 'checked' if @user.has_access_to?(property) %>>
+                  <label for="access-<%= property.id %>"></label>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="admin">
+          <p><em>
+            Admin users have access to all properties.
+          </em></p>
+        </div>
       </aside>
     </div>
     <%= f.submit 'Save' %>

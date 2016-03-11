@@ -28,6 +28,7 @@ gem 'simple_form'
 gem 'carrierwave_direct'
 gem 'jquery-fileupload-rails'
 gem 'jbuilder'
+gem 'active_record_query_trace'
 
 group :development do
   gem 'mailcatcher'

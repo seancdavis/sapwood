@@ -40,4 +40,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.preview_path = "#{Rails.root}/test/mailers/previews"
+
+  config.action_controller.asset_host = Sapwood.config.url
+  config.action_mailer.asset_host = Sapwood.config.url
 end

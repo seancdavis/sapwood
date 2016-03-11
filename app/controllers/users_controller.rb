@@ -24,6 +24,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = User.find_by_id(params[:id])
+  end
+
+  def update
+    @user = User.find_by_id(params[:id])
+    if @user.update(user_params)
+      unless @user.is_admin?
+        @user.set_properties!(params[:user][:access].keys.collect(&:to_i))
+      end
+      redirect_to property_users_path(current_property),
+                  :notice => 'User updated successfully!'
+    else
+      render 'edit'
+    end
+  end
+
   private
 
     def user_params

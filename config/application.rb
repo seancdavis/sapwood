@@ -45,8 +45,5 @@ module App
     config.active_record.raise_in_transactional_callbacks = true
 
     config.autoload_paths << Rails.root.join('lib')
-
-    config.action_controller.asset_host = Sapwood.config.url
-    config.action_mailer.asset_host = Sapwood.config.url
   end
 end

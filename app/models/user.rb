@@ -36,12 +36,32 @@ class User < ActiveRecord::Base
   # ---------------------------------------- Scopes
 
   scope :admins, -> { where(:is_admin => true) }
+  scope :alpha, -> { order(:name => :asc) }
 
   # ---------------------------------------- Instance Methods
 
   def accessible_properties
-    return Property.all if is_admin?
-    properties
+    @accessible_properties ||= begin
+      return Property.all.to_a if is_admin?
+      properties.to_a
+    end
+  end
+
+  def has_access_to?(property)
+    accessible_properties.include?(property)
+  end
+
+  def property_ids
+    accessible_properties.collect(&:id)
+  end
+
+  def set_properties!(ids)
+    (property_ids - ids).each do |missing_id|
+      properties.delete(Property.find_by_id(missing_id))
+    end
+    (ids - property_ids).each do |new_id|
+      properties << Property.find_by_id(new_id)
+    end
   end
 
 end

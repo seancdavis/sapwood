@@ -1,0 +1,42 @@
+.switch {
+  display: inline-block;
+  float: right;
+  margin-top: rem(5);
+
+  input {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
+    &:checked + label:after {
+      margin-left: rem(22);
+      background: $md-blue;
+    }
+  }
+  label {
+    display: block;
+    position: relative;
+    @include size(rem(30) rem(3));
+    padding: 2px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 20px;
+
+    &:before, &:after {
+      display: block;
+      content: "";
+    }
+    &:before {
+      @include position(absolute, rem(1) rem(1) rem(1) rem(1));
+      border-radius: 60px;
+      border: 1px solid darken($lt-grey, 10%);
+      @include transition(background 0.4s);
+    }
+    &:after {
+      @include position(absolute, rem(-3) null rem(1) rem(1));
+      @include size(rem(12));
+      background-color: $md-grey;
+      border-radius: 100%;
+      @include transition(margin 0.4s);
+    }
+  }
+}

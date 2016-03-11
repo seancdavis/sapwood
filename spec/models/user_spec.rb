@@ -37,4 +37,27 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe '#has_access_to?(property)' do
+    before(:each) do
+      @properties = create_list(:property, 5)
+    end
+    it 'returns true for each property' do
+      admin = create(:admin)
+      @properties.each do |p|
+        expect(admin.has_access_to?(p)).to eq(true)
+      end
+    end
+    it 'returns true for non-admins if they have been added' do
+      user = create(:user)
+      user.properties << @properties.first
+      expect(user.has_access_to?(@properties.first)).to eq(true)
+    end
+    it 'returns false for non-admins if they have not been added' do
+      user = create(:user)
+      @properties.each do |p|
+        expect(user.has_access_to?(p)).to eq(false)
+      end
+    end
+  end
+
 end

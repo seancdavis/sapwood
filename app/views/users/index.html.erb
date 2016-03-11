@@ -9,6 +9,6 @@
 
 <section class="body">
   <div class="block">
-    <%= render current_property.users_with_access %>
+    <%= render current_property.users_with_access.sort_by { |u| u.p.name } %>
   </div>
 </section>

@@ -11,6 +11,8 @@ class App.Routers.Router extends Backbone.Router
     'properties/:property_id/documents': 'documents'
     'properties/:property_id/collections/new': 'collection'
     'properties/:property_id/collections/:collection_id/edit': 'collection'
+    'properties/:property_id/users/new': 'user'
+    'properties/:property_id/users/:user_id/edit': 'user'
 
   editProperty: ->
     new App.Views.EditProperty
@@ -23,3 +25,6 @@ class App.Routers.Router extends Backbone.Router
 
   collection: ->
     new App.Components.CollectionBuilder
+
+  user: ->
+    new App.Views.UserForm

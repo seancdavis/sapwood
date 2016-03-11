@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  get 'auth/:id/:key' => 'application#auth'
+  get 'auth/:user_id/:id/:key' => 'application#auth', :as => :auth
 
   get 'install(/:step)' => 'install#show', :as => :install
   post 'install(/:step)' => 'install#update', :as => :install_update

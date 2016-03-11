@@ -66,11 +66,15 @@ class User < ActiveRecord::Base
   end
 
   def set_sign_in_key!
-    update_columns(:sign_in_key => SecureRandom.hex(64))
+    update_columns(:sign_in_key => SecureRandom.hex(32))
   end
 
   def delete_sign_in_key!
     update_columns(:sign_in_key => nil)
+  end
+
+  def sign_in_id
+    Digest::MD5.hexdigest("#{id}//#{created_at}")
   end
 
 end

@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     @focused_user = User.find_by_email(params[:user][:email])
     if focused_user.nil?
       if @focused_user = User.create(user_params.merge(:password => 'password'))
+        UserMailer.welcome(focused_user).deliver
         focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
                     :notice => 'User added successfully!'
@@ -53,7 +54,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    # focused_user = User.find_by_id(params[:id])
     if focused_user.update(user_params)
       unless focused_user.is_admin?
         focused_user.set_properties!(params[:user][:access].keys.collect(&:to_i))

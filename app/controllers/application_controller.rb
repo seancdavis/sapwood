@@ -23,10 +23,20 @@ class ApplicationController < ActionController::Base
   end
 
   def auth
-    user = User.find_by_id(params[:id])
-    not_found if user.nil? || (user.sign_in_key != params[:key])
-    user.delete_sign_in_key!
-    sign_in_and_redirect user
+    if user_signed_in?
+      redirect_to root_path
+    else
+      user = User.find_by_id(params[:user_id])
+      if (
+        user.nil? ||
+        (user.sign_in_id != params[:id]) ||
+        (user.sign_in_key != params[:key])
+      )
+        not_found
+      end
+      user.delete_sign_in_key!
+      sign_in_and_redirect user
+    end
   end
 
   private

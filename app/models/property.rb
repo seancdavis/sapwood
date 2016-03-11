@@ -38,7 +38,7 @@ class Property < ActiveRecord::Base
   # ---------------------------------------- Class Methods
 
   def self.labels
-    %w(elements documents collections responses)
+    %w(elements documents collections responses users)
   end
 
   # ---------------------------------------- Instance Methods
@@ -67,6 +67,10 @@ class Property < ActiveRecord::Base
 
   def find_template(name)
     templates.select { |t| t.title == name }.first
+  end
+
+  def users_with_access
+    (users + User.admins).flatten.uniq
   end
 
 end

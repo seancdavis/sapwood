@@ -47,7 +47,7 @@ class PropertiesController < ApplicationController
     def property_params
       params.require(:property)
         .permit(:title, :color, :templates_raw, :forms_raw,
-                :labels => [:elements, :documents, :collections, :responses])
+                :labels => Property.labels)
     end
 
     def redirect_path

@@ -1,0 +1,14 @@
+<%= page_header(
+  :title => current_property.p.label_title('users'),
+  :button => {
+    :label => 'New User',
+    :path => new_property_user_path(current_property),
+    :options => { :class => 'new button' }
+  }
+) %>
+
+<section class="body">
+  <div class="block">
+    <%= render current_property.users_with_access %>
+  </div>
+</section>

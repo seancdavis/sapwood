@@ -30,6 +30,10 @@
                     property_collections_path(current_property)  %>
       </li>
       <li><%= link_to current_property.label('responses'), '#' %></li>
+      <li>
+        <%= link_to current_property.label('users'),
+                    property_users_path(current_property)  %>
+      </li>
     </ul>
   </nav>
 </aside>

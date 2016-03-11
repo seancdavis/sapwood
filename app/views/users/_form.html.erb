@@ -1,0 +1,12 @@
+<section class="body">
+  <%= minimal_form_for [current_property, @user] do |f| %>
+    <div class="block aside">
+      <%= f.input :name, :autofocus => true %>
+      <%= f.input :email, :required => true %>
+      <aside>
+        <%= f.input :is_admin, :label => 'Sapwood Admin' %>
+      </aside>
+    </div>
+    <%= f.submit 'Save' %>
+  <% end %>
+</section>

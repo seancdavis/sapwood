@@ -33,4 +33,15 @@ class User < ActiveRecord::Base
   has_many :property_users
   has_many :properties, :through => :property_users
 
+  # ---------------------------------------- Scopes
+
+  scope :admins, -> { where(:is_admin => true) }
+
+  # ---------------------------------------- Instance Methods
+
+  def accessible_properties
+    return Property.all if is_admin?
+    properties
+  end
+
 end

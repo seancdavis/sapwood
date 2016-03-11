@@ -28,7 +28,8 @@ RSpec.describe Property, :type => :model do
           :elements => "Elements 123",
           :documents => "Documents 123",
           :collections => "Collections 123",
-          :responses => "Responses 123"
+          :responses => "Responses 123",
+          :users => "Users 123"
         }
         property.update!(:labels => labels)
         expect(property.label(label)).to eq(labels[label.to_sym])
@@ -67,6 +68,25 @@ RSpec.describe Property, :type => :model do
     end
     it 'can find a template by its title' do
       expect(property.find_template('Default').class).to eq(Property::Template)
+    end
+  end
+
+  describe '#users_with_access' do
+    let(:property) { create(:property) }
+    it 'always includes admins' do
+      admins = create_list(:admin, 5)
+      expect(property.users_with_access).to eq(admins)
+    end
+    it 'does not include non-admins who have not been added' do
+      admin = create(:admin)
+      create(:user)
+      expect(property.users_with_access).to eq([admin])
+    end
+    it 'includes non-admins who have been added' do
+      admin = create(:admin)
+      user = create(:user)
+      user.properties << property
+      expect(property.users_with_access.include?(user)).to eq(true)
     end
   end
 

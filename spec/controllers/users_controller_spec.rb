@@ -98,6 +98,31 @@ describe UsersController do
     end
   end
 
+  # ---------------------------------------- Create
+
+# expect { create(:task_with_assignee) }
+        # .to change { ActionMailer::Base.deliveries.count }.by(2)
+  describe '#create' do
+    before(:each) do
+      @property = create(:property)
+      @admin = create(:admin)
+      sign_in @admin
+    end
+    it 'sends a notification when creating a new user' do
+      email = Faker::Internet.email
+      expect {
+        post :create, :property_id => @property.id, :user => { :email => email }
+      }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+    it 'does not send a notification when creating an existing user' do
+      user = create(:user)
+      email = user.email
+      expect {
+        post :create, :property_id => @property.id, :user => { :email => email }
+      }.to change { ActionMailer::Base.deliveries.count }.by(0)
+    end
+  end
+
   # ---------------------------------------- Edit
 
   describe '#edit' do

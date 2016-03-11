@@ -15,5 +15,5 @@
 
 # Database config
 /config/database.yml
-/config/sapwood.*
+/config/sapwood*yml
 !/config/sapwood.default.yml

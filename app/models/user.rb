@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
 
   # ---------------------------------------- Plugins
 
+  include Presenter
+
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :validatable
 

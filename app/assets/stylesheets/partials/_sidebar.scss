@@ -25,14 +25,19 @@ aside.main {
     .current-property {
       margin-top: rem(30);
       span {
-        display: inline-block;
         &.color-block {
+          display: inline-block;
           @include size(rem(14));
           margin-right: rem(5);
         }
         &.title a {
           font-size: inherit;
           color: $light;
+          &.edit {
+            float: right;
+            font-size: 0.8em;
+            text-transform: uppercase;
+          }
         }
       }
     }

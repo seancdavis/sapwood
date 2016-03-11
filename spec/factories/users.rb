@@ -17,6 +17,7 @@
 #  updated_at             :datetime         not null
 #  is_admin               :boolean          default(FALSE)
 #  name                   :string
+#  sign_in_key            :string
 #
 
 FactoryGirl.define do

@@ -21,4 +21,27 @@ describe ApplicationController do
     end
   end
 
+  describe '#auth' do
+    before(:each) do
+      @user = create(:user)
+      @user.set_sign_in_key!
+    end
+    it 'returns 500 when key is missing' do
+      expect { get :auth, :id => @user.id, :key => nil }
+          .to raise_error(ActionController::UrlGenerationError)
+    end
+    it 'returns 404 when key is wrong' do
+      expect { get :auth, :id => @user.id, :key => '123' }
+          .to raise_error(ActionController::RoutingError)
+    end
+    it 'returns 404 when id is wrong' do
+      expect { get :auth, :id => '123', :key => @user.sign_in_key }
+          .to raise_error(ActionController::RoutingError)
+    end
+    it 'signs in when id and key match' do
+      get :auth, :id => @user.id, :key => @user.sign_in_key
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
 end

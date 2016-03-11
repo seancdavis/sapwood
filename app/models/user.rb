@@ -17,6 +17,7 @@
 #  updated_at             :datetime         not null
 #  is_admin               :boolean          default(FALSE)
 #  name                   :string
+#  sign_in_key            :string
 #
 
 class User < ActiveRecord::Base
@@ -62,6 +63,14 @@ class User < ActiveRecord::Base
     (ids - property_ids).each do |new_id|
       properties << Property.find_by_id(new_id)
     end
+  end
+
+  def set_sign_in_key!
+    update_columns(:sign_in_key => SecureRandom.hex(64))
+  end
+
+  def delete_sign_in_key!
+    update_columns(:sign_in_key => nil)
   end
 
 end

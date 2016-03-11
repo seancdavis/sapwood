@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery :with => :exception
 
   before_filter :verify_installation
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:auth]
 
   helper_method :current_collection,
                 :current_document,
@@ -20,6 +20,13 @@ class ApplicationController < ActionController::Base
 
   def home
     redirect_to deck_path
+  end
+
+  def auth
+    user = User.find_by_id(params[:id])
+    not_found if user.nil? || (user.sign_in_key != params[:key])
+    user.delete_sign_in_key!
+    sign_in_and_redirect user
   end
 
   private

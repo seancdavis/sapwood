@@ -1,8 +1,20 @@
 <section class="body">
   <%= minimal_form_for [current_property, focused_user] do |f| %>
     <div class="block aside">
-      <%= f.input :name, :autofocus => true %>
-      <%= f.input :email, :required => true %>
+      <%= f.input :name, :autofocus => true,
+                  :disabled => focused_user.id.present? %>
+      <%= f.input :email, :required => true,
+                  :disabled => focused_user.id.present?  %>
+      <% if focused_user.id.present? %>
+        <p><em>
+          <% if focused_user == current_user %>
+            You need to visit <%= link_to 'your profile', edit_profile_path %>
+            to edit your profile settings.
+          <% else %>
+            Only <%= focused_user.p.name %> can edit their name and email.
+          <% end %>
+        </em></p>
+      <% end %>
       <aside>
         <h3>Permissions</h3>
         <ul>

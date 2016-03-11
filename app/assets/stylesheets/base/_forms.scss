@@ -2,6 +2,17 @@ form {
   &#fileupload {
     display: none;
   }
+
+  p em {
+    font-size: 0.9em;
+    font-style: italic;
+    color: $dk-grey;
+  }
+
+  aside ul li {
+    font-size: 0.9em;
+    margin: rem(7.5) 0;
+  }
 }
 
 div.input {
@@ -66,8 +77,9 @@ select[multiple] {
   }
 
   &:disabled {
-    background-color: shade($base-background-color, 5%);
     cursor: not-allowed;
+    color: $md-grey;
+    border-bottom-color: $md-grey;
   }
 }
 

@@ -1,6 +1,7 @@
 class InstallController < ApplicationController
 
   skip_before_filter :authenticate_user!
+  skip_before_filter :verify_profile_completion
 
   before_filter :set_total_steps
 

@@ -3,15 +3,23 @@
 <section class="body">
   <%= minimal_form_for current_user, :url => update_profile_path do |f| %>
     <div class="block aside">
-      <%= f.input :name, :autofocus => true %>
+      <%= f.input :name, :autofocus => true,
+                  :required => (params[:setup].to_bool == true) %>
+      <% if params[:setup].to_bool == true %>
+        <p class="error">Add your name.</p>
+      <% end %>
       <%= f.input :email, :required => true, :disabled => true %>
       <h3>Change Your Password</h3>
-      <%= f.input :password %>
-      <%= f.input :password_confirmation %>
+      <%= f.input :password, :required => (params[:setup].to_bool == true) %>
+      <%= f.input :password_confirmation,
+                  :required => (params[:setup].to_bool == true) %>
+      <% if params[:setup].to_bool == true %>
+        <p class="error">Set a password for your account.</p>
+      <% end %>
       <aside>
         <h3>Your Properties</h3>
         <ul class="properties-list">
-          <% Property.alpha.each do |property| %>
+          <% current_user.accessible_properties.each do |property| %>
             <li>
               <%= link_to property.title, property %>
             </li>

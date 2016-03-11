@@ -19,5 +19,10 @@ feature 'My Profile', :js => true do
     click_link @user.name
     expect(page).to have_content(property.title)
   end
+  scenario 'does not show properties I can not access' do
+    property = create(:property)
+    click_link @user.name
+    expect(page).to_not have_content(property.title)
+  end
 
 end

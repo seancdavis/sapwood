@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :verify_installation
   before_filter :authenticate_user!, :except => [:auth]
+  before_filter :verify_profile_completion, :except => [:auth]
 
   helper_method :current_collection,
                 :current_document,
@@ -50,6 +51,15 @@ class ApplicationController < ActionController::Base
     def verify_property_access
       not_found if current_property.nil?
       not_found unless current_user.has_access_to?(current_property)
+    end
+
+    def verify_profile_completion
+      if(user_signed_in? &&
+         controller_name != 'sessions' &&
+         current_user.name.blank?)
+        redirect_to edit_profile_path(:setup => true),
+                    :alert => 'You need to complete your profile.'
+      end
     end
 
     # ------------------------------------------ Errors

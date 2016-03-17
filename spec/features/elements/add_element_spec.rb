@@ -35,6 +35,9 @@ feature 'Elements', :js => true do
       expect(page).to_not have_content('Last Modified:')
       expect(page).to have_content('Template: Default')
     end
+    scenario 'has a body' do
+      expect(page).to have_css('textarea#element_body')
+    end
   end
 
   context 'using All Options template' do
@@ -44,6 +47,9 @@ feature 'Elements', :js => true do
     end
     scenario 'has the correct placeholder for title' do
       expect(page).to have_css('input[placeholder="Name"]')
+    end
+    scenario 'hides the body field' do
+      expect(page).to_not have_css('textarea#element_body')
     end
   end
 

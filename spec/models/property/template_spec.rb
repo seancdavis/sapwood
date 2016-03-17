@@ -22,8 +22,18 @@ describe Property::Template, :type => :model do
       expect(@template.element_title_label).to eq('Title')
     end
     it 'can be overwritten' do
-      @template = property.find_template('All Options')
-      expect(@template.element_title_label).to eq('Name')
+      template = property.find_template('All Options')
+      expect(template.element_title_label).to eq('Name')
+    end
+  end
+
+  describe '#show_body' do
+    it 'is true by default' do
+      expect(@template.show_body?).to eq(true)
+    end
+    it 'can be hidden' do
+      template = property.find_template('All Options')
+      expect(template.show_body?).to eq(false)
     end
   end
 

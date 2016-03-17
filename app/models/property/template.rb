@@ -17,6 +17,10 @@ class Property::Template
     attributes['element_title_label'] || 'Title'
   end
 
+  def show_body?
+    attributes['body'].nil? ? true : attributes['body'].to_bool
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []

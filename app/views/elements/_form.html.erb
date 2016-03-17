@@ -3,7 +3,7 @@
     <div class="block aside">
       <%= f.input :title,
                   :placeholder => current_template.element_title_label %>
-      <%= f.input :body %>
+      <%= f.input :body if current_template.show_body? %>
 
       <%= f.simple_fields_for :template_data,
                               OpenStruct.new(f.object.template_data) do |fd| %>

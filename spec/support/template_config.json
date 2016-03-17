@@ -10,6 +10,7 @@
   },
   {
     "title": "All Options",
-    "element_title_label": "Name"
+    "element_title_label": "Name",
+    "body": false
   }
 ]

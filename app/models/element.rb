@@ -20,7 +20,11 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Plugins
 
+  include Presenter
+
   has_ancestry
+
+  has_superslug :title, :slug, :context => :property
 
   # ---------------------------------------- Associations
 
@@ -38,6 +42,10 @@ class Element < ActiveRecord::Base
 
   def template
     property.find_template(template_name)
+  end
+
+  def to_param
+    id.to_s
   end
 
   def method_missing(method, *arguments, &block)

@@ -28,6 +28,13 @@ feature 'Elements', :js => true do
       click_button 'Save Default'
       expect(Element.find_by_title(@element.title).subtitle).to eq(subtitle)
     end
+    scenario 'only has template on info sidebar' do
+      expect(page).to_not have_content('ID:')
+      expect(page).to_not have_content('Slug:')
+      expect(page).to_not have_content('Created:')
+      expect(page).to_not have_content('Last Modified:')
+      expect(page).to have_content('Template: Default')
+    end
   end
 
   context 'using All Options template' do

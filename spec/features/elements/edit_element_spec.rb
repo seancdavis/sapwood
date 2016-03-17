@@ -20,4 +20,12 @@ feature 'Elements', :js => true do
     expect(page).to have_content(new_title)
   end
 
+  scenario 'has info on the sidebar' do
+    expect(page).to have_content("ID: #{@element.id}")
+    expect(page).to have_content("Slug: #{@element.slug}")
+    expect(page).to have_content("Created: #{@element.p.created_at}")
+    expect(page).to have_content("Last Modified: #{@element.p.updated_at}")
+    expect(page).to have_content("Template: Default")
+  end
+
 end

@@ -29,6 +29,7 @@ gem 'carrierwave_direct'
 gem 'jquery-fileupload-rails'
 gem 'jbuilder'
 gem 'active_record_query_trace'
+gem 'superslug'
 
 group :development do
   gem 'mailcatcher'

@@ -13,10 +13,23 @@
       <% end %>
 
       <aside>
-        <p>These are the items, other than title and body, that are not
-        customizable.</p>
-        <%= f.input :template_name, :readonly => true,
+        <%= f.input :template_name, :as => :hidden, :readonly => true,
                     :input_html => { :value => current_template.title } %>
+        <h3>Info</h3>
+        <dl>
+          <% if current_element? %>
+            <dt>ID:</dt>
+            <dd><%= current_element.id %></dd>
+            <dt>Slug:</dt>
+            <dd><%= current_element.slug %></dd>
+            <dt>Created:</dt>
+            <dd><%= current_element.p.created_at %></dd>
+            <dt>Last Modified:</dt>
+            <dd><%= current_element.p.updated_at %></dd>
+          <% end %>
+          <dt>Template:</dt>
+          <dd><%= current_template.title %></dd>
+        </dl>
       </aside>
     </div>
     <%= f.submit "Save #{current_template.title}" %>

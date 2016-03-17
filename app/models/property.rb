@@ -56,12 +56,12 @@ class Property < ActiveRecord::Base
     return [] if templates_raw.blank?
     begin
       templates = []
-      JSON.parse(Property.first.templates_raw).each do |t|
+      JSON.parse(templates_raw).each do |t|
         templates << Property::Template.new(t)
       end
       templates
-    # rescue
-    #   raise "Template data has invalid JSON."
+    rescue
+      raise "Template data has invalid JSON."
     end
   end
 

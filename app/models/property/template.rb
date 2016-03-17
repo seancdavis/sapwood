@@ -13,6 +13,10 @@ class Property::Template
     title
   end
 
+  def element_title_label
+    attributes['element_title_label'] || 'Title'
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []

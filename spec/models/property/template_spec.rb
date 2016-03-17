@@ -17,4 +17,14 @@ describe Property::Template, :type => :model do
     end
   end
 
+  describe '#element_title_label' do
+    it 'defaults to "title"' do
+      expect(@template.element_title_label).to eq('Title')
+    end
+    it 'can be overwritten' do
+      @template = property.find_template('All Options')
+      expect(@template.element_title_label).to eq('Name')
+    end
+  end
+
 end

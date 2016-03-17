@@ -1,7 +1,8 @@
 <section class="body">
   <%= minimal_form_for [current_property, current_element] do |f| %>
     <div class="block aside">
-      <%= f.input :title %>
+      <%= f.input :title,
+                  :placeholder => current_template.element_title_label %>
       <%= f.input :body %>
 
       <%= f.simple_fields_for :template_data,

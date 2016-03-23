@@ -30,6 +30,7 @@ gem 'jquery-fileupload-rails'
 gem 'jbuilder'
 gem 'active_record_query_trace'
 gem 'superslug'
+gem 'geokit'
 
 group :development do
   gem 'mailcatcher'

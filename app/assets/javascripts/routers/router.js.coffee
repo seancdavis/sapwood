@@ -8,6 +8,8 @@ class App.Routers.Router extends Backbone.Router
   routes:
     'properties/:property_id/edit': 'editProperty'
     'properties/:property_id/elements': 'elements'
+    'properties/:property_id/elements/new': 'editElement'
+    'properties/:property_id/elements/:element_id/edit': 'editElement'
     'properties/:property_id/documents': 'documents'
     'properties/:property_id/collections/new': 'collection'
     'properties/:property_id/collections/:collection_id/edit': 'collection'
@@ -19,6 +21,9 @@ class App.Routers.Router extends Backbone.Router
 
   elements: ->
     new App.Views.Elements
+
+  editElement: ->
+    new App.Views.EditElement
 
   documents: ->
     new App.Components.Uploader

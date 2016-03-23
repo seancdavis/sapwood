@@ -1,0 +1,15 @@
+div.geocoder {
+  margin-bottom: rem(25);
+
+  div.input {
+    margin-bottom: rem(10);
+  }
+
+  textarea {
+    margin-bottom: 0;
+  }
+
+  .map {
+    @include size(100% 200px);
+  }
+}

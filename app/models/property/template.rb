@@ -34,6 +34,10 @@ class Property::Template
     fields.select { |f| f.name == name }.first
   end
 
+  def geocode_fields
+    fields.select { |f| f.type == 'geocode' }
+  end
+
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
     return {} if method.to_s == 'fields'

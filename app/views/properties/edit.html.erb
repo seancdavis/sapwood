@@ -7,8 +7,12 @@
       <%= f.input :title, :label => false, :autofocus => true,
                   :placeholder => 'Property Name' %>
       <h3>Config</h3>
+      <% unless current_property.valid_templates? %>
+        <span class="error">Your template config is invalid.</span>
+      <% end %>
       <%= f.input :templates_raw, :label => false,
-                  :placeholder => 'Template Data (JSON)' %>
+                  :placeholder => 'Template Data (JSON)',
+                  :input_html => { :class => ('error' unless current_property.valid_templates?) } %>
       <%= f.input :forms_raw, :label => false,
                   :placeholder => 'Form Data (JSON)' %>
 

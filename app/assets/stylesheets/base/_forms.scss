@@ -66,16 +66,13 @@ select[multiple] {
   padding: rem(5) 0;
   transition: border-color $base-duration $base-timing;
   width: 100%;
-
   &:hover {
     border-color: shade($base-border-color, 20%);
   }
-
   &:focus {
     border-color: $action-color;
     outline: none;
   }
-
   &:disabled {
     cursor: not-allowed;
     color: $md-grey;
@@ -95,6 +92,11 @@ textarea {
   border: 1px solid $md-grey;
   resize: vertical;
   border-radius: $base-border-radius;
+}
+
+form textarea.error {
+  border-color: $error;
+  color: $dark;
 }
 
 [type="search"] {

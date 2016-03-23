@@ -65,6 +65,14 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def valid_templates?
+    begin
+      return true if templates
+    rescue
+      false
+    end
+  end
+
   def find_template(name)
     templates.select { |t| t.title == name }.first
   end

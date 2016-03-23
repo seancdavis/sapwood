@@ -50,7 +50,23 @@ class Element < ActiveRecord::Base
 
   def method_missing(method, *arguments, &block)
     return super unless template.fields.collect(&:name).include?(method.to_s)
-    template_data[method.to_s]
+    field = template.find_field(method.to_s)
+    case field.type
+    when 'geocode'
+      {
+        :raw => template_data[method.to_s],
+        :full_address => template_data["#{method.to_s}_full_address"],
+        :street_address => template_data["#{method.to_s}_street_address"],
+        :city => template_data["#{method.to_s}_city"],
+        :state => template_data["#{method.to_s}_state"],
+        :country_code => template_data["#{method.to_s}_country_code"],
+        :zip => template_data["#{method.to_s}_zip"],
+        :lat => template_data["#{method.to_s}_lat"],
+        :lng => template_data["#{method.to_s}_lng"]
+      }.to_ostruct
+    else
+      template_data[method.to_s]
+    end
   end
 
 end

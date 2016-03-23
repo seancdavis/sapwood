@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   get 'deck' => 'deck#show', :as => :deck
 
+  get 'geocoder/search' => 'geocoder#search'
+
   resources :properties, :except => [:index, :destroy] do
     get 'setup/:step' => 'properties#edit', :as => :setup
 

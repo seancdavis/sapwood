@@ -30,6 +30,10 @@ class Property::Template
     fields
   end
 
+  def find_field(name)
+    fields.select { |f| f.name == name }.first
+  end
+
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
     return {} if method.to_s == 'fields'

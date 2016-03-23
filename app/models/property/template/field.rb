@@ -49,19 +49,25 @@ class Property::Template::Field
     unless respond_to?(:mapbox_key)
       raise "mapbox_key missing from field: #{name}"
     end
-    content_tag(:div, :class => 'geocoder',
-                :data => { :mapbox => mapbox_key }) do
-      o = """
-        <script src=\"https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js\">
-        </script>
-      """
-      o += """
-        <link href=\"https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css\"
-              rel=\"stylesheet\">
-      """
-      o += form_obj.input name.to_sym, :as => :text, :required => false,
-                          :input_html => { :class => 'geocode' }
-      o.html_safe
+    content_tag(:div, :class => 'geocoder') do
+      o = form_obj.input name.to_sym, :as => :text, :required => false,
+                        :input_html => { :class => 'geocode' }
+      o += form_obj.input "#{name}_full_address".to_sym, :as => :hidden,
+                          :input_html => { :class => 'full_address' }
+      o += form_obj.input "#{name}_street_address".to_sym, :as => :hidden,
+                          :input_html => { :class => 'street_address' }
+      o += form_obj.input "#{name}_city".to_sym, :as => :hidden,
+                          :input_html => { :class => 'city' }
+      o += form_obj.input "#{name}_state".to_sym, :as => :hidden,
+                          :input_html => { :class => 'state' }
+      o += form_obj.input "#{name}_country_code".to_sym, :as => :hidden,
+                          :input_html => { :class => 'country_code' }
+      o += form_obj.input "#{name}_zip".to_sym, :as => :hidden,
+                          :input_html => { :class => 'zip' }
+      o += form_obj.input "#{name}_lat".to_sym, :as => :hidden,
+                          :input_html => { :class => 'lat' }
+      o += form_obj.input "#{name}_lng".to_sym, :as => :hidden,
+                          :input_html => { :class => 'lng' }
     end
   end
 

@@ -2,14 +2,15 @@ div.geocoder {
   margin-bottom: rem(25);
 
   div.input {
-    margin-bottom: rem(10);
+    margin-bottom: 0;
   }
 
   textarea {
     margin-bottom: 0;
   }
 
-  .map {
-    @include size(100% 200px);
+  .geocode-results {
+    font-size: 0.8em;
+    font-weight: 600;
   }
 }

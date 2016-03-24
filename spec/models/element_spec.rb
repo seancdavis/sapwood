@@ -20,16 +20,16 @@ require 'rails_helper'
 
 RSpec.describe Element, :type => :model do
 
-  let(:property) {
-    create(:property, :templates_raw => File.read(template_config_file))
-  }
+  before(:all) do
+    @property = create(:property, :templates_raw => File.read(template_config_file))
+  end
 
   describe '#geocode_addresses' do
     context 'for a valid address' do
-      before(:each) do
+      before(:all) do
         @address = '1216 Central, 45202'
         @element = create(:element, :template_name => 'All Options',
-                          :property => property,
+                          :property => @property,
                           :template_data => { :address => @address })
       end
       it 'converts the value to a geocoded hash' do
@@ -72,10 +72,10 @@ RSpec.describe Element, :type => :model do
       end
     end
     context 'for an empty address' do
-      before(:each) do
+      before(:all) do
         @address = ''
         @element = create(:element, :template_name => 'All Options',
-                          :property => property,
+                          :property => @property,
                           :template_data => { :address => @address })
       end
       it 'returns a OpenStruct object when accessed through dynamic method' do
@@ -86,10 +86,10 @@ RSpec.describe Element, :type => :model do
       end
     end
     context 'for an address that can not be geocoded' do
-      before(:each) do
+      before(:all) do
         @address = 'skjdhfwixmncask'
         @element = create(:element, :template_name => 'All Options',
-                          :property => property,
+                          :property => @property,
                           :template_data => { :address => @address })
       end
       it 'returns a OpenStruct object when accessed through dynamic method' do

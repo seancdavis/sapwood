@@ -60,6 +60,24 @@ RSpec.describe Property, :type => :model do
     end
   end
 
+  describe '#valid_templates?' do
+    before(:each) do
+      file = File.expand_path('../../support/template_config.json', __FILE__)
+      @raw_templates = File.read(file)
+    end
+    it 'returns true when there is no template' do
+      expect(property.valid_templates?).to eq(true)
+    end
+    it 'returns an error message when the JSON is malformed' do
+      property.update!(:templates_raw => "#{@raw_templates}]]")
+      expect(property.valid_templates?).to eq(false)
+    end
+    it 'returns an array for valid JSON' do
+      property.update!(:templates_raw => @raw_templates)
+      expect(property.valid_templates?).to eq(true)
+    end
+  end
+
   describe '#find_template' do
     before(:each) do
       file = File.expand_path('../../support/template_config.json', __FILE__)

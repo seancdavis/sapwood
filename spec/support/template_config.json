@@ -11,6 +11,12 @@
   {
     "title": "All Options",
     "element_title_label": "Name",
-    "body": false
+    "body": false,
+    "fields": {
+      "address": {
+        "type": "geocode",
+        "label": "Address"
+      }
+    }
   }
 ]

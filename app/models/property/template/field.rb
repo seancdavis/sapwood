@@ -46,18 +46,13 @@ class Property::Template::Field
   end
 
   def geocoded_html(form_obj)
-    unless respond_to?(:mapbox_key)
-      raise "mapbox_key missing from field: #{name}"
-    end
+    value = form_obj.object[name].nil? ? nil : form_obj.object[name]['raw']
     content_tag(:div, :class => 'geocoder') do
       o = form_obj.input(
         name.to_sym,
         :as => :text,
         :required => false,
-        :input_html => {
-          :class => 'geocode',
-          :value => form_obj.object[name]['raw']
-        }
+        :input_html => { :class => 'geocode', :value => value }
       )
     end
   end

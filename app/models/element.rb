@@ -43,6 +43,7 @@ class Element < ActiveRecord::Base
   after_save :geocode_addresses
 
   def geocode_addresses
+    return unless template?
     template.geocode_fields.each do |field|
       val = template_data[field.name]
       template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
@@ -55,6 +56,10 @@ class Element < ActiveRecord::Base
 
   def template
     property.find_template(template_name)
+  end
+
+  def template?
+    template.present?
   end
 
   def to_param

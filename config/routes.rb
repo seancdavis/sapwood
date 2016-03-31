@@ -17,7 +17,10 @@ Rails.application.routes.draw do
   resources :properties, :except => [:index, :destroy] do
     get 'setup/:step' => 'properties#edit', :as => :setup
 
-    resources :elements
+    resources :elements do
+      resources :documents, :controller => 'elements/documents',
+                :only => [:new, :create]
+    end
     resources :documents
     resources :collections
     resources :users

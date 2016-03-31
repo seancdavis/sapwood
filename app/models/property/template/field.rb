@@ -23,6 +23,10 @@ class Property::Template::Field
     name
   end
 
+  def is_document?
+    type == 'document'
+  end
+
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
     super
@@ -36,24 +40,24 @@ class Property::Template::Field
 
   # TODO: Refactor all this nonsense into something more legible
 
-  def content_tag(element, options = {}, &block)
-    ActionController::Base.helpers.content_tag(element, options, &block)
+  # def content_tag(element, options = {}, &block)
+  #   ActionController::Base.helpers.content_tag(element, options, &block)
+  # end
+
+  def html
+    "field_#{type}_html"
+    # return document_html(form_obj) if type == 'document'
+    # return geocode_html(form_obj) if type == 'geocode'
+    # form_obj.input name.to_sym, :required => false
   end
 
-  def html(form_obj)
-    return geocoded_html(form_obj) if type == 'geocode'
-    form_obj.input name.to_sym, :required => false
+  def html_options
+    attributes
   end
 
-  def geocoded_html(form_obj)
-    value = form_obj.object[name].nil? ? nil : form_obj.object[name]['raw']
-    content_tag(:div, :class => 'geocoder') do
-      o = form_obj.input(
-        name.to_sym,
-        :as => :text,
-        :required => false,
-        :input_html => { :class => 'geocode', :value => value }
-      )
+  def document_html(form_obj)
+    content_tag(:div, :class => 'document-uploader') do
+      form_obj.input "#{name}_id".to_sym, :required => false
     end
   end
 

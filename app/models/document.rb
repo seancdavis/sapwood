@@ -24,6 +24,12 @@ class Document < ActiveRecord::Base
 
   after_save :set_title_if_blank
 
+  # ---------------------------------------- Instance Methods
+
+  def image?
+    %(jpeg jpg png gif svg).include?(url.split('.').last.downcase)
+  end
+
   # ---------------------------------------- Private Methods
 
   private

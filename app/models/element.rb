@@ -62,16 +62,27 @@ class Element < ActiveRecord::Base
     template.present?
   end
 
+  def field_names
+    template.fields.collect(&:name)
+  end
+
+  def has_field?(name)
+    field_names.include?(name.to_s)
+  end
+
   def to_param
     id.to_s
   end
 
   def method_missing(method, *arguments, &block)
-    return super unless template.fields.collect(&:name).include?(method.to_s)
+    return super unless has_field?(method.to_s)
     field = template.find_field(method.to_s)
     case field.type
     when 'geocode'
       template_data[method.to_s].to_ostruct
+    when 'document'
+      return nil if template_data[method.to_s].blank?
+      Document.find_by_id(template_data[method.to_s])
     else
       template_data[method.to_s]
     end

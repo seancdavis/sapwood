@@ -1,7 +1,13 @@
-.batch-uploader {
+.batch-uploader, .uploader {
   display: none;
   &.active {
     display: block;
+  }
+}
+
+.document-uploader {
+  .upload-trigger {
+    background-color: $dk-grey;
   }
 }
 

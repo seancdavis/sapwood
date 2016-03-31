@@ -1,0 +1,20 @@
+<% uid = SecureRandom.hex(12) %>
+<section class="uploader" id="uploader-<%= uid %>" data-uid="<%= uid %>">
+  <%= s3_uploader_form(
+    :post => property_element_documents_path(current_property, current_element),
+    :key => document_upload_key,
+    :as => "document[url]",
+    :id => "fileupload-#{uid}"
+  ) do %>
+    <%= file_field_tag :file %>
+  <% end %>
+
+  <script id="template-upload" type="text/x-tmpl">
+  <div class="embedded upload">
+    <div class="content">
+      <h3>{%=o.name%}</h3>
+      <div class="progress"><div class="bar" style="width: 0%"></div></div>
+    </div>
+  </div>
+  </script>
+</section>

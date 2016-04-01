@@ -28,6 +28,7 @@ class ElementsController < ApplicationController
   end
 
   def new
+    not_found if params[:template].blank?
     @current_element = current_property.elements.build
   end
 

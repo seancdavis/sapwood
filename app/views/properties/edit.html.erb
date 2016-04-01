@@ -27,13 +27,24 @@
       <h3>Labels</h3>
       <%= f.simple_fields_for :labels do |ff| %>
         <% Property.labels.each do |label| %>
-          <%= ff.input label.to_sym, :required => false,
-                       :autofocus => (label == Property.labels.first),
-                       :wrapper => false,
-                       :input_html => {
-                          :value => current_property.label(label) } %>
+          <div class="label-input">
+            <%= ff.input label.to_sym, :required => false,
+                         :autofocus => (label == Property.labels.first),
+                         :wrapper => false,
+                         :input_html => {
+                            :value => current_property.label(label) } %>
+            <span class="switch">
+              <input type="checkbox" value="1" id="label-visibility-<%= label %>"
+                     class="label-visibility" data-label="<%= label %>"
+                     <%= 'checked' if !current_property.label_hidden?(label) %>>
+              <label for="label-visibility-<%= label %>"></label>
+            </span>
+          </div>
+          <br>
         <% end %>
       <% end %>
+      <br><br><br>
+      <%= f.input :hidden_labels, :as => :hidden %>
     </aside>
     </div>
     <%= f.submit 'Save Changes' %>

@@ -10,6 +10,7 @@
 #  labels        :json
 #  templates_raw :text
 #  forms_raw     :text
+#  hidden_labels :text             default([]), is an Array
 #
 
 class Property < ActiveRecord::Base
@@ -50,6 +51,20 @@ class Property < ActiveRecord::Base
   def label(name)
     return name.titleize if labels.blank? || labels[name].blank?
     labels[name]
+  end
+
+  def hide_label!(name)
+    return false unless label(name).present?
+    update_columns(:hidden_labels => hidden_labels << name)
+  end
+
+  def unhide_label!(name)
+    return false unless label(name).present?
+    update_columns(:hidden_labels => hidden_labels - [name])
+  end
+
+  def label_hidden?(name)
+    hidden_labels.include?(name)
   end
 
   def templates

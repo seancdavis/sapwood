@@ -10,6 +10,7 @@
 #  labels        :json
 #  templates_raw :text
 #  forms_raw     :text
+#  hidden_labels :text             default([]), is an Array
 #
 
 require 'rails_helper'
@@ -34,6 +35,35 @@ RSpec.describe Property, :type => :model do
         property.update!(:labels => labels)
         expect(property.label(label)).to eq(labels[label.to_sym])
       end
+    end
+  end
+
+  describe '#hide_label' do
+    let(:property) { create(:property, :with_labels) }
+    it 'adds a label to the hidden labels array' do
+      property.hide_label!('elements')
+      expect(property.hidden_labels).to eq(%w(elements))
+    end
+  end
+
+  describe '#unhide_label' do
+    let(:property) { create(:property, :with_labels) }
+    it 'removes a label to the hidden labels array' do
+      property.hide_label!('elements')
+      property.hide_label!('documents')
+      property.unhide_label!('elements')
+      expect(property.hidden_labels).to eq(%w(documents))
+    end
+  end
+
+  describe '#label_hidden?' do
+    let(:property) { create(:property, :with_labels) }
+    it 'returns true when it has been added to the hidden_labels array' do
+      property.hide_label!('elements')
+      expect(property.label_hidden?('elements')).to eq(true)
+    end
+    it 'returns false when it has not been added to the hidden_labels array' do
+      expect(property.label_hidden?('elements')).to eq(false)
     end
   end
 

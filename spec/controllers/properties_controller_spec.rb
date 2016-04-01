@@ -10,6 +10,7 @@
 #  labels        :json
 #  templates_raw :text
 #  forms_raw     :text
+#  hidden_labels :text             default([]), is an Array
 #
 
 require 'rails_helper'

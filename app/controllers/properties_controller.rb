@@ -10,6 +10,7 @@
 #  labels        :json
 #  templates_raw :text
 #  forms_raw     :text
+#  hidden_labels :text             default([]), is an Array
 #
 
 class PropertiesController < ApplicationController
@@ -49,9 +50,11 @@ class PropertiesController < ApplicationController
   private
 
     def property_params
+      hidden_labels = params[:property][:hidden_labels].split(',')
       params.require(:property)
         .permit(:title, :color, :templates_raw, :forms_raw,
                 :labels => Property.labels)
+        .merge(:hidden_labels => hidden_labels)
     end
 
     def redirect_path

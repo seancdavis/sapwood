@@ -20,6 +20,13 @@ body.properties.edit {
       }
     }
 
+    div.label-input {
+      @include transition(all 0.35s ease);
+      &.hidden {
+        opacity: 0.5;
+      }
+    }
+
     h3 {
       font-size: 1em;
       text-transform: uppercase;

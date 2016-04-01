@@ -17,23 +17,33 @@
   </div>
   <nav>
     <ul>
-      <li>
-        <%= link_to current_property.label('elements'),
-                    property_elements_path(current_property) %>
-      </li>
-      <li>
-        <%= link_to current_property.label('documents'),
-                    property_documents_path(current_property)  %>
-      </li>
-      <li>
-        <%= link_to current_property.label('collections'),
-                    property_collections_path(current_property)  %>
-      </li>
-      <li><%= link_to current_property.label('responses'), '#' %></li>
-      <li>
-        <%= link_to current_property.label('users'),
-                    property_users_path(current_property)  %>
-      </li>
+      <% unless current_property.label_hidden?('elements') %>
+        <li>
+          <%= link_to current_property.label('elements'),
+                      property_elements_path(current_property) %>
+        </li>
+      <% end %>
+      <% unless current_property.label_hidden?('documents') %>
+        <li>
+          <%= link_to current_property.label('documents'),
+                      property_documents_path(current_property)  %>
+        </li>
+      <% end %>
+      <% unless current_property.label_hidden?('collections') %>
+        <li>
+          <%= link_to current_property.label('collections'),
+                      property_collections_path(current_property)  %>
+        </li>
+      <% end %>
+      <% unless current_property.label_hidden?('responses') %>
+        <li><%= link_to current_property.label('responses'), '#' %></li>
+      <% end %>
+      <% unless current_property.label_hidden?('users') %>
+        <li>
+          <%= link_to current_property.label('users'),
+                      property_users_path(current_property)  %>
+        </li>
+      <% end %>
     </ul>
   </nav>
 </aside>

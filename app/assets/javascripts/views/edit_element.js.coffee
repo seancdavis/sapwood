@@ -7,3 +7,4 @@ class App.Views.EditElement extends Backbone.View
     for uploader in $('form .document-uploader')
       new App.Components.ElementUploader($(uploader))
     $(wysiwyg).trumbowyg() for wysiwyg in $('textarea.wysiwyg')
+    App.Components.Blocks.set()

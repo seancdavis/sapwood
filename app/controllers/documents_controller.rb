@@ -17,6 +17,10 @@ class DocumentsController < ApplicationController
   def index
   end
 
+  def new
+    render :layout => false
+  end
+
   def create
     respond_to do |format|
       format.json { @document = Document.create!(create_params) }

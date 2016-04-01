@@ -36,12 +36,16 @@ feature 'Elements', :js => true do
       expect(page).to have_content('Template: Default')
     end
     scenario 'has a body' do
-      expect(page).to have_css('textarea#element_body')
+      expect(page).to have_css('textarea#element_body', :visible => false)
+    end
+    scenario 'uses a wysiwyg editor for the body' do
+      expect(page).to have_css('div.trumbowyg-box')
     end
   end
 
   context 'using All Options template' do
     background do
+      add_test_config
       click_link 'New'
       click_link 'All Options'
     end
@@ -50,6 +54,12 @@ feature 'Elements', :js => true do
     end
     scenario 'hides the body field' do
       expect(page).to_not have_css('textarea#element_body')
+    end
+    scenario 'adds upload trigger button for document field' do
+      expect(page).to have_css('.document-uploader a.upload-trigger')
+    end
+    scenario 'adds a form for uploading' do
+      expect(page).to have_css('section.uploader > form', :visible => false)
     end
   end
 

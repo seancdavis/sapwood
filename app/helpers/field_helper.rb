@@ -5,7 +5,7 @@ module FieldHelper
   end
 
   def field_document_html(form_obj, options = {})
-    path = new_property_element_document_path(current_property, current_element)
+    path = new_property_document_path(current_property)
     document = Document.find_by_id(form_obj.object.send(options['name']))
     content_tag(:div, :class => 'document-uploader',
                 :data => { :uploader => path }) do
@@ -14,6 +14,7 @@ module FieldHelper
       o += link_to("Upload #{options['label']}", '#', :class => 'upload-trigger button')
       o += content_tag(:div, link_to(document.title, document.url),
                        :class => 'document-url') if document.present?
+      o.html_safe
     end
   end
 

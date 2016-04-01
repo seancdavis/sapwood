@@ -1,7 +1,7 @@
 <% uid = SecureRandom.hex(12) %>
 <section class="uploader" id="uploader-<%= uid %>" data-uid="<%= uid %>">
   <%= s3_uploader_form(
-    :post => property_element_documents_path(current_property, current_element),
+    :post => property_documents_path(current_property),
     :key => document_upload_key,
     :as => "document[url]",
     :id => "fileupload-#{uid}"

@@ -414,6 +414,10 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.2)
     trollop (2.1.2)
+    trumbowyg_rails (1.1.3)
+      rails (>= 3.1)
+      railties (>= 3.1)
+      sass (>= 3.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -481,6 +485,7 @@ DEPENDENCIES
   sendgrid
   simple_form
   superslug
+  trumbowyg_rails
   uglifier
   unicorn-rails
   web-console (~> 2.0)

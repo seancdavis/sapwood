@@ -4,6 +4,7 @@
 #= require backbone
 #= require jquery-fileupload/basic
 #= require jquery-fileupload/vendor/tmpl
+#= require trumbowyg/trumbowyg
 #= require_self
 #= require_tree ./templates
 #= require_tree ./components

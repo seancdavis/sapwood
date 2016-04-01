@@ -22,15 +22,16 @@ gem 'jquery-rails'
 
 # ------------------------------------------ Utilities
 
-gem 'devise'
-gem 'ancestry'
-gem 'simple_form'
-gem 'carrierwave_direct'
-gem 'jquery-fileupload-rails'
-gem 'jbuilder'
 gem 'active_record_query_trace'
-gem 'superslug'
+gem 'ancestry'
+gem 'carrierwave_direct'
+gem 'devise'
 gem 'geokit'
+gem 'jbuilder'
+gem 'jquery-fileupload-rails'
+gem 'simple_form'
+gem 'superslug'
+gem 'trumbowyg_rails'
 
 group :development do
   gem 'mailcatcher'

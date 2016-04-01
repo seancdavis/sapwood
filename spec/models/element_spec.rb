@@ -140,7 +140,7 @@ RSpec.describe Element, :type => :model do
     it 'returns an array of field names' do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
-      expect(element.field_names).to eq(%w(description address image))
+      expect(element.field_names).to eq(%w(description address image comments))
     end
     it 'returns an empty array when the template does not exist' do
       element = create(:element, :template_name => 'A', :property => @property)

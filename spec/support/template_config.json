@@ -24,6 +24,10 @@
       "image": {
         "type": "document",
         "label": "Image"
+      },
+      "comments": {
+        "type": "wysiwyg",
+        "label": "Comments"
       }
     }
   }

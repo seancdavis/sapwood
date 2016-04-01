@@ -34,4 +34,9 @@ module FieldHelper
     end
   end
 
+  def field_wysiwyg_html(form_obj, options = {})
+    form_obj.input options['name'].to_sym, :as => :text, :required => false,
+                   :input_html => { :class => 'wysiwyg' }
+  end
+
 end

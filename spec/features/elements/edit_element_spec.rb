@@ -63,6 +63,15 @@ feature 'Elements', :js => true do
     scenario 'adds a form for uploading' do
       expect(page).to have_css('section.uploader > form', :visible => false)
     end
+    scenario 'has a textarea' do
+      expect(page).to have_css('textarea#element_template_data_comments',
+                               :visible => false)
+    end
+    scenario 'uses a wysiwyg editor for comments' do
+      # we know there should be only one wysiwyg editor because the body is
+      # hidden for this template
+      expect(page).to have_css('div.trumbowyg-box')
+    end
   end
 
 end

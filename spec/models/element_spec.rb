@@ -161,7 +161,7 @@ RSpec.describe Element, :type => :model do
     end
 
     describe '#method_missing (dynamic field responses)' do
-      before(:all) do
+      before(:each) do
         @document = create(:document, :property => @property)
         @element = create(
           :element,
@@ -170,7 +170,7 @@ RSpec.describe Element, :type => :model do
           :template_data => {
             :description => 'This is a description',
             :address => '1216 Central, 45202',
-            :image => '1'
+            :image => @document.id.to_s
           }
         )
       end

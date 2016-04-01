@@ -50,7 +50,11 @@ class PropertiesController < ApplicationController
   private
 
     def property_params
-      hidden_labels = params[:property][:hidden_labels].split(',')
+      hidden_labels = if params[:property] && params[:property][:hidden_labels]
+        params[:property][:hidden_labels].split(',')
+      else
+        []
+      end
       params.require(:property)
         .permit(:title, :color, :templates_raw, :forms_raw,
                 :labels => Property.labels)

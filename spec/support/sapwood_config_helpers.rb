@@ -10,4 +10,10 @@ module SapwoodConfigHelpers
     File.expand_path('../template_config.json', __FILE__)
   end
 
+  def add_test_config
+    settings = File.expand_path('../sapwood.test.yml', __FILE__)
+    FileUtils.cp(settings, "#{Rails.root}/config/sapwood.test.yml")
+    Sapwood.reload!
+  end
+
 end

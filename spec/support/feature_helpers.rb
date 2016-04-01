@@ -21,12 +21,6 @@ module FeatureHelpers
     upload_file('example.png')
   end
 
-  def add_test_config
-    settings = File.expand_path('../sapwood.test.yml', __FILE__)
-    FileUtils.cp(settings, "#{Rails.root}/config/sapwood.test.yml")
-    Sapwood.reload!
-  end
-
   def property_with_templates
     create(:property, :templates_raw => File.read(template_config_file))
   end

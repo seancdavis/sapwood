@@ -13,9 +13,17 @@
     "element_title_label": "Name",
     "body": false,
     "fields": {
+      "description": {
+        "type": "string",
+        "label": "Description"
+      },
       "address": {
         "type": "geocode",
         "label": "Address"
+      },
+      "image": {
+        "type": "document",
+        "label": "Image"
       }
     }
   }

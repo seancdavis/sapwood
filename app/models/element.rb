@@ -46,6 +46,10 @@ class Element < ActiveRecord::Base
     return unless template?
     template.geocode_fields.each do |field|
       val = template_data[field.name]
+      if val.blank?
+        template_data[field.name] = { :raw => nil }
+        next
+      end
       template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
         .geocode(val).to_hash.merge(:raw => val)
     end
@@ -63,6 +67,7 @@ class Element < ActiveRecord::Base
   end
 
   def field_names
+    return [] unless template?
     template.fields.collect(&:name)
   end
 

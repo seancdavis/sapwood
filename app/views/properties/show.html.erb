@@ -1,8 +1,32 @@
 <%= page_header :title => current_property.title %>
 
 <section>
-  <div class="block">
-    <h3>Some content goes here?</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae iste expedita quisquam, explicabo nam, nobis alias veritatis qui, deserunt ipsum aut voluptatum beatae voluptatibus dignissimos repellat ducimus mollitia enim blanditiis?</p>
+  <div class="block half">
+    <span class="count"><%= current_property_elements.size %></span>
+    <h3>
+      <%= current_property.label('elements').singularize
+                          .pluralize(current_property_elements.size) %>
+    </h3>
+  </div>
+  <div class="block half">
+    <span class="count"><%= current_property_documents.size %></span>
+    <h3>
+      <%= current_property.label('documents').singularize
+                          .pluralize(current_property_documents.size) %>
+    </h3>
+  </div>
+  <div class="block half">
+    <span class="count"><%= current_property_collections.size %></span>
+    <h3>
+      <%= current_property.label('collections').singularize
+                          .pluralize(current_property_collections.size) %>
+    </h3>
+  </div>
+  <div class="block half">
+    <span class="count"><%= visible_property_users.size %></span>
+    <h3>
+      <%= current_property.label('users').singularize
+                          .pluralize(visible_property_users.size) %>
+    </h3>
   </div>
 </section>

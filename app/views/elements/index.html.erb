@@ -9,8 +9,11 @@
 ) %>
 
 <section class="body">
-  <div class="block">
-    <%= render current_property_elements.present? ?
-               current_property_elements : 'empty' %>
-  </div>
+  <% if current_property_elements.present? %>
+    <div class="block">
+      <%= render current_property_elements %>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
 </section>

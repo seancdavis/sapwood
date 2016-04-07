@@ -8,8 +8,11 @@
 ) %>
 
 <section class="body">
-  <div class="block">
-    <%= render current_property_collections.present? ?
-               current_property_collections : 'empty' %>
-  </div>
+  <% if current_property_collections.present? %>
+    <div class="block">
+      <%= render current_property_collections %>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
 </section>

@@ -9,6 +9,7 @@
 
 <section class="body">
   <div class="block">
-    <%= render current_property.collections %>
+    <%= render current_property_collections.present? ?
+               current_property_collections : 'empty' %>
   </div>
 </section>

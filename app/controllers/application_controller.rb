@@ -13,6 +13,9 @@ class ApplicationController < ActionController::Base
                 :current_element?,
                 :current_property,
                 :current_property?,
+                :current_property_collections,
+                :current_property_documents,
+                :current_property_elements,
                 :current_template,
                 :focused_user,
                 :not_found,
@@ -105,6 +108,10 @@ class ApplicationController < ActionController::Base
       current_element && current_element.id.present?
     end
 
+    def current_property_elements
+      @current_property_elements ||= current_property.elements
+    end
+
     # ------------------------------------------ Documents
 
     def current_document
@@ -114,6 +121,10 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def current_property_documents
+      @current_property_documents ||= current_property.documents
+    end
+
     # ------------------------------------------ Collections
 
     def current_collection
@@ -121,6 +132,10 @@ class ApplicationController < ActionController::Base
         id = params[:collection_id] || params[:id]
         current_property.collections.find_by_id(id)
       end
+    end
+
+    def current_property_collections
+      @current_property_collections ||= current_property.collections
     end
 
     # ------------------------------------------ Users

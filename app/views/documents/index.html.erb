@@ -29,6 +29,7 @@
 
 <section class="body">
   <div class="block">
-    <%= render current_property.documents %>
+    <%= render current_property_documents.present? ?
+               current_property_documents : 'empty' %>
   </div>
 </section>

@@ -9,3 +9,11 @@ p.notice, p.alert {
     display: block;
   }
 }
+
+p.empty {
+  margin: 0;
+  text-align: center;
+  font-size: 1.5em;
+  font-style: italic;
+  color: $md-grey;
+}

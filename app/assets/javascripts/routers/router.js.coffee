@@ -4,6 +4,7 @@ class App.Routers.Router extends Backbone.Router
     new App.Components.Notices
     new App.Components.Blocks
     new App.Components.Helpers
+    new App.Components.SidebarToggle
 
   routes:
     'properties/:property_id/edit': 'editProperty'

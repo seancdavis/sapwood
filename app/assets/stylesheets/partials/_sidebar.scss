@@ -1,9 +1,26 @@
+#sidebar-trigger {
+  @include position(fixed, 15px null null 15px);
+  z-index: 99999;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: $light;
+  &.active {
+    color: $dark;
+    span {
+      display: none;
+    }
+  }
+}
+
 aside.main {
   @include position(fixed, 0 null null 0);
   @include size(rem(250) 100vh);
   box-sizing: border-box;
   background: $light;
   box-shadow: $box-shadow;
+  &.hidden {
+    display: none;
+  }
 
   div.controls {
     position: relative;
@@ -15,11 +32,6 @@ aside.main {
       text-transform: uppercase;
       font-size: 0.8em;
       color: $light;
-
-      &.menu-toggle {
-        left: 15px;
-        right: auto;
-      }
     }
 
     .current-property {

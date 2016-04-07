@@ -1,7 +1,8 @@
 div.block {
   position: relative;
   box-sizing: border-box;
-  margin-bottom: rem(15);
+  width: 97.5%;
+  margin: 0 0.5% rem(15);
   padding: rem(15);
   font-size: 16px;
   border-radius: $base-border-radius;

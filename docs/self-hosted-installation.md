@@ -123,7 +123,7 @@ The low-level installation is all wrapped up in a rake task.
 **Be sure to read the prompts carefully and to fill them all out.**
 
 ```text
-$ bundle exec rake sapwood:install
+$ RAILS_ENV=production bundle exec rake sapwood:install
 ```
 
 If this went according to plan, then you'll see a message at the end telling you to visit your domain name to finish the installation process.

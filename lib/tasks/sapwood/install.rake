@@ -34,6 +34,31 @@ namespace :sapwood do
     db_name = cli.ask(q)
     db_username = cli.ask("What about the PostgreSQL user? (default: sapwood) ")
 
+    q = "\nWhat is the email address from which you'd like to send notifications?"
+    default_from_email = cli.ask(q)
+    q = "What name do you want to display on the email notification?"
+    default_from_name = cli.ask(q)
+
+    cli.say "\nNow let's get your SendGrid credentials ..."
+    user_name = cli.ask("SendGrid Username: ")
+    password = cli.ask("SendGrid Password: ") { |q| q.echo = "*" }
+    domain = cli.ask("SendGrid Domain: ")
+    send_grid = {
+      'user_name' => user_name,
+      'password' => password,
+      'domain' => domain
+    }
+
+    cli.say "\nAwesomesauce! Moving on to Amazon AWS ..."
+    access_key_id = cli.ask("Amazon AWS Access Key ID: ") { |q| q.echo = "*" }
+    secret_access_key = cli.ask("Amazon AWS Secret Access Key: ") { |q| q.echo = "*" }
+    bucket = cli.ask("Amazon S3 Bucket Name: ")
+    amazon_aws = {
+      'access_key_id' => access_key_id,
+      'secret_access_key' => secret_access_key,
+      'bucket' => bucket
+    }
+
     # ---------------------------------------- Database
 
     cli.say "\n----------------------------------------\n\n"
@@ -88,6 +113,17 @@ namespace :sapwood do
 
     cli.say "\nGood. Got all the gems we need."
 
+    # ---------------------------------------- Sapwood Config
+
+    Sapwood.set('url', fqdn)
+    Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
+    Sapwood.set('send_grid', send_grid)
+    Sapwood.set('amazon_aws', amazon_aws)
+
+    Sapwood.write!
+
+    system("sudo service unicorn_sapwood start")
+
     # ---------------------------------------- Assets
 
     cli.say "\n----------------------------------------\n\n"
@@ -107,12 +143,14 @@ namespace :sapwood do
 
     # ---------------------------------------- Errors
 
-    rescue
+    rescue Exception => e
 
       cli.say "\n----------------------------------------\n\n"
       cli.say "Hmmm ... something didn't work quite right. If you're having"
       cli.say "trouble, double-check the installation instructions. And if that"
       cli.say "doesn't work, log an issue at https://github.com/seancdavis/sapwood/issues/new"
+
+      raise e
 
     end
 

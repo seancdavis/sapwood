@@ -111,10 +111,18 @@ Then let's clone the sapwood project.
 $ git clone https://github.com/seancdavis/sapwood.git
 ```
 
-The low-level installation is all wrapped up in a rake task. Change into the project directory and then run the installation task. **Be sure to read the prompts carefully and to fill them all out.**
+Before we can run the installation wizard, the one thing we need to do is install our gems. This may take a few minutes.
 
 ```text
 $ cd /home/sapwood/sapwood
+$ bundle install --without development test
+```
+
+The low-level installation is all wrapped up in a rake task.
+
+**Be sure to read the prompts carefully and to fill them all out.**
+
+```text
 $ bundle exec rake sapwood:install
 ```
 

@@ -34,8 +34,6 @@ namespace :sapwood do
     db_name = cli.ask(q)
     db_username = cli.ask("What about the PostgreSQL user? (default: sapwood) ")
 
-    exit
-
     # ---------------------------------------- Database
 
     cli.say "\n----------------------------------------\n\n"

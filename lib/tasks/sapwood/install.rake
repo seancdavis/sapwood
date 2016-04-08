@@ -139,7 +139,7 @@ namespace :sapwood do
     cli.say "That's it!! If everything went according to plan, and you've"
     cli.say "followed directions, then we're all set!"
     cli.say "\nVisit #{fqdn} and you can move on to the UI version of"
-    cli.say "the installation."
+    cli.say "the installation.\n\n"
 
     # ---------------------------------------- Errors
 
@@ -152,7 +152,7 @@ namespace :sapwood do
       cli.say "\n----------------------------------------\n\n"
       cli.say "Hmmm ... something didn't work quite right. If you're having"
       cli.say "trouble, double-check the installation instructions. And if that"
-      cli.say "doesn't work, log an issue at https://github.com/seancdavis/sapwood/issues/new"
+      cli.say "doesn't work, log an issue at https://github.com/seancdavis/sapwood/issues/new\n\n"
 
     end
 

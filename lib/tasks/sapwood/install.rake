@@ -6,6 +6,8 @@ namespace :sapwood do
   desc 'Install Sapwood to a production environment'
   task :install do
 
+    begin
+
     # ---------------------------------------- Setup
 
     root = Rails.root.to_s
@@ -20,9 +22,7 @@ namespace :sapwood do
     cli.say "we need to do all this first."
     cli.say "\nYou'll have to answer just a few questions so we know where to"
     cli.say "put some important values."
-    cli.say "\nAnd one last thing. When you see the prompt for \"Password\","
-    cli.say "we want the sudo password for the sapwood user."
-    cli.say "\nOK, that's enough! Let's go!"
+    cli.say "\nLet's go!"
     cli.say "\n----------------------------------------\n\n"
 
     q  = "What is the FQDN (fully-qualified domain name) on which you're going "
@@ -54,7 +54,6 @@ namespace :sapwood do
     system("sudo -u postgres psql -c \"CREATE ROLE #{db_username} LOGIN CREATEDB PASSWORD '#{db_password}';\"")
     system("sudo -u postgres psql -c \"CREATE DATABASE #{db_name} OWNER #{db_username};\"")
 
-    system("RAILS_ENV=production bundle exec rake db:create")
     system("RAILS_ENV=production bundle exec rake db:schema:load")
 
     cli.say "\nAll done with the database."
@@ -105,6 +104,17 @@ namespace :sapwood do
     cli.say "followed directions, then we're all set!"
     cli.say "\nVisit #{fqdn} and you can move on to the UI version of"
     cli.say "the installation."
+
+    # ---------------------------------------- Errors
+
+    rescue
+
+      cli.say "\n----------------------------------------\n\n"
+      cli.say "Hmmm ... something didn't work quite right. If you're having"
+      cli.say "trouble, double-check the installation instructions. And if that"
+      cli.say "doesn't work, log an issue at https://github.com/seancdavis/sapwood/issues/new"
+
+    end
 
   end
 

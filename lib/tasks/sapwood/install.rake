@@ -135,6 +135,8 @@ namespace :sapwood do
 
     # ---------------------------------------- Finish Up
 
+    system("sudo service unicorn_sapwood restart")
+
     cli.say "\n----------------------------------------\n\n"
     cli.say "That's it!! If everything went according to plan, and you've"
     cli.say "followed directions, then we're all set!"

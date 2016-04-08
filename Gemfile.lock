@@ -249,6 +249,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    highline (1.7.8)
     hirb (0.7.3)
     i18n (0.7.0)
     inflecto (0.0.2)
@@ -469,6 +470,7 @@ DEPENDENCIES
   faker
   geokit
   guard-rspec
+  highline
   hirb
   jbuilder
   jquery-fileupload-rails

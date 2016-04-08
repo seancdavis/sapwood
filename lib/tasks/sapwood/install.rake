@@ -115,7 +115,7 @@ namespace :sapwood do
 
     # ---------------------------------------- Sapwood Config
 
-    Sapwood.set('url', fqdn)
+    Sapwood.set('url', "http://#{fqdn.gsub(/https?\:\/\//, '')}")
     Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
     Sapwood.set('send_grid', send_grid)
     Sapwood.set('amazon_aws', amazon_aws)

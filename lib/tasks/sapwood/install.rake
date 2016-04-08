@@ -59,6 +59,17 @@ namespace :sapwood do
       'bucket' => bucket
     }
 
+    # ---------------------------------------- Sapwood Config
+
+    Sapwood.reload!
+
+    Sapwood.set('url', "http://#{fqdn.gsub(/https?\:\/\//, '')}")
+    Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
+    Sapwood.set('send_grid', send_grid)
+    Sapwood.set('amazon_aws', amazon_aws)
+
+    Sapwood.write!
+
     # ---------------------------------------- Database
 
     cli.say "\n----------------------------------------\n\n"
@@ -112,19 +123,6 @@ namespace :sapwood do
     system("bundle install --without development test")
 
     cli.say "\nGood. Got all the gems we need."
-
-    # ---------------------------------------- Sapwood Config
-
-    Sapwood.reload!
-
-    Sapwood.set('url', "http://#{fqdn.gsub(/https?\:\/\//, '')}")
-    Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
-    Sapwood.set('send_grid', send_grid)
-    Sapwood.set('amazon_aws', amazon_aws)
-
-    Sapwood.write!
-
-    system("sudo service unicorn_sapwood start")
 
     # ---------------------------------------- Assets
 

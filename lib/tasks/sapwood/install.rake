@@ -18,11 +18,11 @@ namespace :sapwood do
     cli.say "\n----------------------------------------\n\n"
     cli.say "This wizard will do all the heavy lifting, so you don't have to"
     cli.say "worry about all this installation nonsense. There will be"
-    cli.say "another installation wizard when you begin running the app, but"
+    cli.say "a few more things to do once the app is running, but"
     cli.say "we need to do all this first."
     cli.say "\nYou'll have to answer just a few questions so we know where to"
     cli.say "put some important values."
-    cli.say "\nLet's go!"
+    cli.say "\nCool? Cool. Let's go!"
     cli.say "\n----------------------------------------\n\n"
 
     q  = "What is the FQDN (fully-qualified domain name) on which you're going "
@@ -34,9 +34,9 @@ namespace :sapwood do
     db_name = cli.ask(q)
     db_username = cli.ask("What about the PostgreSQL user? (default: sapwood) ")
 
-    q = "\nWhat is the email address from which you'd like to send notifications?"
+    q = "\nWhat is the email address from which you'd like to send notifications? "
     default_from_email = cli.ask(q)
-    q = "What name do you want to display on the email notification?"
+    q = "What name do you want to display on the email notification? "
     default_from_name = cli.ask(q)
 
     cli.say "\nNow let's get your SendGrid credentials ..."
@@ -115,6 +115,8 @@ namespace :sapwood do
 
     # ---------------------------------------- Sapwood Config
 
+    Sapwood.reload!
+
     Sapwood.set('url', "http://#{fqdn.gsub(/https?\:\/\//, '')}")
     Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
     Sapwood.set('send_grid', send_grid)
@@ -146,11 +148,13 @@ namespace :sapwood do
     rescue Exception => e
 
       cli.say "\n----------------------------------------\n\n"
+
+      raise e
+
+      cli.say "\n----------------------------------------\n\n"
       cli.say "Hmmm ... something didn't work quite right. If you're having"
       cli.say "trouble, double-check the installation instructions. And if that"
       cli.say "doesn't work, log an issue at https://github.com/seancdavis/sapwood/issues/new"
-
-      raise e
 
     end
 

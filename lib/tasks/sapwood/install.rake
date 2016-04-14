@@ -70,6 +70,18 @@ namespace :sapwood do
 
     Sapwood.write!
 
+    # ---------------------------------------- Keys
+
+    devise_key = SecureRandom.hex(48)
+    ENV['DEVISE_SECRET_KEY'] = devise_key
+    Sapwood.set('devise_key', devise_key)
+
+    rails_key = SecureRandom.hex(48)
+    ENV['RAILS_SECRET_KEY'] = rails_key
+    Sapwood.set('rails_key', rails_key)
+
+    Sapwood.write!
+
     # ---------------------------------------- Database
 
     cli.say "\n----------------------------------------\n\n"

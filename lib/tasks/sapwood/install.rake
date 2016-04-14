@@ -67,18 +67,8 @@ namespace :sapwood do
     Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
     Sapwood.set('send_grid', send_grid)
     Sapwood.set('amazon_aws', amazon_aws)
-
-    Sapwood.write!
-
-    # ---------------------------------------- Keys
-
-    devise_key = SecureRandom.hex(48)
-    ENV['DEVISE_SECRET_KEY'] = devise_key
-    Sapwood.set('devise_key', devise_key)
-
-    rails_key = SecureRandom.hex(48)
-    ENV['RAILS_SECRET_KEY'] = rails_key
-    Sapwood.set('rails_key', rails_key)
+    Sapwood.set('devise_key', SecureRandom.hex(48))
+    Sapwood.set('rails_key', SecureRandom.hex(48))
 
     Sapwood.write!
 

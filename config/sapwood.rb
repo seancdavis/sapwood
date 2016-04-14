@@ -20,14 +20,6 @@ class SapwoodConfig
     @config_to_h = default_settings.merge(YAML.load_file(SapwoodConfig.file))
   end
 
-  def installed?
-    begin
-      config.installed?
-    rescue
-      false
-    end
-  end
-
   def set(key, value)
     @config_to_h[key] = value
   end
@@ -45,7 +37,7 @@ class SapwoodConfig
   private
 
     def default_settings
-      { 'installed?' => false, 'version' => '2.0' }
+      { 'version' => '2.0' }
     end
 
 end

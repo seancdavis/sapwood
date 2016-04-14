@@ -4,9 +4,6 @@ Rails.application.routes.draw do
 
   get 'auth/:user_id/:id/:key' => 'application#auth', :as => :auth
 
-  get 'install(/:step)' => 'install#show', :as => :install
-  post 'install(/:step)' => 'install#update', :as => :install_update
-
   get 'profile/edit' => 'profile#edit', :as => :edit_profile
   patch 'profile/edit' => 'profile#update', :as => :update_profile
 

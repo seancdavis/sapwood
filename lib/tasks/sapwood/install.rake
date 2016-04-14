@@ -63,6 +63,7 @@ namespace :sapwood do
 
     Sapwood.reload!
 
+    Sapwood.set('fqdn', fqdn)
     Sapwood.set('url', "http://#{fqdn.gsub(/https?\:\/\//, '')}")
     Sapwood.set('default_from', "#{default_from_name} <#{default_from_email}>")
     Sapwood.set('send_grid', send_grid)
@@ -144,6 +145,12 @@ namespace :sapwood do
     cli.say "followed directions, then we're all set!"
     cli.say "\nVisit #{fqdn} and you can move on to the UI version of"
     cli.say "the installation.\n\n"
+
+    cli.say "Oh, one more thing! You need a user so you can log into the system."
+
+    system("RAILS_ENV=production bundle exec rake sapwood:create_admin")
+
+    cli.say "\n\n"
 
     # ---------------------------------------- Errors
 

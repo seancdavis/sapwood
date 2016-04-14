@@ -8,11 +8,7 @@ class InstallController < ApplicationController
   helper_method :current_step
 
   def show
-    if params[:step].to_i <= current_step
-      render current_step.to_s
-    else
-      redirect_to install_path(current_step)
-    end
+    render current_step.to_s
   end
 
   def update
@@ -20,8 +16,13 @@ class InstallController < ApplicationController
       InstallSapwood.complete!
       redirect_to new_user_session_path
     else
-      @current_step = InstallSapwood.run(current_step, params[:install])
-      redirect_to install_path(current_step)
+      begin
+        @current_step = InstallSapwood.run(current_step, params[:install])
+        redirect_to install_path
+      rescue
+        redirect_to install_path,
+                    :alert => 'An error occurred. Please redo this step.'
+      end
     end
   end
 
@@ -33,8 +34,8 @@ class InstallController < ApplicationController
 
     def current_step
       @current_step ||= begin
-        step = Sapwood.config.current_step
-        step = 1 if step.blank?
+        step = Sapwood.config.current_step.to_i
+        step = 1 if step < 1
         Sapwood.set('current_step', step)
         Sapwood.write!
         step

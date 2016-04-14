@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     # ------------------------------------------ Checks
 
     def verify_installation
-      redirect_to install_path(1) unless Sapwood.installed?
+      redirect_to install_path unless Sapwood.installed?
     end
 
     def verify_property_access

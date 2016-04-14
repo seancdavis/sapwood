@@ -2,12 +2,12 @@
   <div class="title">
     <h2 class="logo"><%= svg 'sapwood-wordmark-light' %></h2>
     <h1 class="small">
-      <%= t('install.one.title', :version => Sapwood.config.version) %>
+      <%= Sapwood.config.version %> Installation Assistant
     </h1>
     <span class="progress" style="width: 0;"></span>
   </div>
   <div class="content">
-    <%= link_to t('install.next'), install_update_path, :method => :post,
+    <%= link_to t('install.next'), install_path(:step => 'user'),
                 :class => 'button right' %>
   </div>
 

@@ -1,9 +1,0 @@
-<%= install_card :title => t('install.two.title') do %>
-  <%= simple_format t('install.two.message') %>
-  <%= simple_form_for :install, :url => install_update_path,
-                      :method => :post do |f| %>
-    <%= f.input :url, :label => false, :placeholder => t('install.two.url'),
-                :autofocus => true, :required => true %>
-    <%= f.submit t('install.next') %>
-  <% end %>
-<% end %>

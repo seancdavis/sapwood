@@ -1,0 +1,18 @@
+<%= install_card :title => "Let's create an admin user." do %>
+
+  <p>This user will be a global adminstrator of the system. Be sure to set a
+  secure passphrase.</p>
+
+  <%= simple_form_for :install, :url => install_update_path(:step => 'user'),
+                      :method => :post do |f| %>
+    <%= f.input :name, :label => false, :required => true, :autofocus => true,
+                :placeholder => 'Name' %>
+    <%= f.input :email, :label => false, :required => true,
+                :placeholder => 'Email Address' %>
+    <%= f.input :password, :label => false, :required => true,
+                :placeholder => 'Passphrase' %>
+    <%= f.input :password_confirmation, :label => false, :required => true,
+                :placeholder => 'Confirm passphrase' %>
+    <%= f.submit 'Create Admin' %>
+  <% end %>
+<% end %>

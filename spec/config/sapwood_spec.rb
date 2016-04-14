@@ -35,15 +35,9 @@ RSpec.describe Sapwood do
     end
   end
 
-  describe '#installed?' do
-    it 'defaults to false when missing' do
-      expect(Sapwood.installed?).to eq(false)
-    end
-  end
-
   describe '#config' do
     it 'has default settings loaded' do
-      expect(Sapwood.config.installed?).to eq(false)
+      expect(Sapwood.config.version.class).to eq(String)
     end
     it 'can get to nested settings via OpenStruct' do
       expect(Sapwood.config.send_grid.user_name).to eq('user')
@@ -53,7 +47,7 @@ RSpec.describe Sapwood do
   describe '#write!' do
     it 'will write all settings to file' do
       Sapwood.write!
-      expect(File.read(SapwoodConfig.file)).to match('installed?')
+      expect(File.read(SapwoodConfig.file)).to match('version')
     end
   end
 
@@ -62,12 +56,12 @@ RSpec.describe Sapwood do
       Sapwood.write!
       config = File.read(SapwoodConfig.file)
       # Show that this starts as false
-      expect(Sapwood.installed?).to eq(false)
-      config.gsub!(/installed\?\:\ false/, 'installed?: true')
+      version = Sapwood.config.version
+      config.gsub!(/version\:\ '#{version}'/, "version: '123.123'")
       File.write(SapwoodConfig.file, config)
       Sapwood.reload!
       # And then it changes to true
-      expect(Sapwood.installed?).to eq(true)
+      expect(Sapwood.config.version).to eq('123.123')
     end
   end
 

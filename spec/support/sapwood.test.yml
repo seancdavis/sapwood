@@ -1,9 +1,7 @@
 ---
-installed?: true
 version: '2.0'
 url: http://localhost:3000
 default_from: Sapwood <noreply@sapwood.org>
-current_step: 7
 amazon_aws:
   access_key_id: <%= ENV['aws_access_key_id'] %>
   secret_access_key: <%= ENV['aws_secret_access_key'] %>

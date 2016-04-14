@@ -8,7 +8,8 @@ RSpec.describe UserMailer, :type => :mailer do
       @mail = UserMailer.welcome(@user)
     end
     it 'sends from the settings default' do
-      expect(@mail.from).to eq([Sapwood.config.default_from])
+      email = Sapwood.config.default_from.split('<')[-1][0..-2]
+      expect(@mail.from).to eq([email])
     end
     it 'sends to the user' do
       expect(@mail.to).to eq([@user.email])

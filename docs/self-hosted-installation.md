@@ -50,7 +50,7 @@ And then you can install these programs:
 And whenever you're done installing, it's a good idea to check everything you've done. Make sure `sapwood` is the owner of everything in their home directory:
 
 ```text
-$ chmod -R sapwood:sapwood /home/sapwood
+$ sudo chown -R sapwood:sapwood /home/sapwood
 ```
 
 And make sure you can ssh into the server as the `sapwood` user.
@@ -128,7 +128,7 @@ $ RAILS_ENV=production bundle exec rake sapwood:install
 
 If this went according to plan, then you'll see a message at the end telling you to visit your domain name to finish the installation process.
 
-The app's Installation Wizard will get you started with an admin user, and that's also where you'll fill in your SendGrid and Amazon AWS credentials.
+**The most important piece comes at the end of the installation process. You are given an email and password for your admin user. Use these credentials to sign into your new Sapwood installation.**
 
 ## Issues?
 

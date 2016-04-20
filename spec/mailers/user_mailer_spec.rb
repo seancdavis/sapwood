@@ -4,6 +4,7 @@ RSpec.describe UserMailer, :type => :mailer do
 
   describe '#welcome' do
     before(:each) do
+      remove_config
       @user = create(:user)
       @mail = UserMailer.welcome(@user)
     end

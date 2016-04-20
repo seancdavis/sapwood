@@ -11,7 +11,7 @@
 url: http://localhost:3000
 
 # Email address you want notifications coming from
-default_from: admin@example.com
+default_from: Sapwood <noreply@example.com>
 
 # Your SendGrid credentials (for sending emails)
 send_grid:

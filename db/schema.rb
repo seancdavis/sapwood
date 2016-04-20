@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160401151255) do
+ActiveRecord::Schema.define(version: 20160420142725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20160401151255) do
     t.text     "templates_raw"
     t.text     "forms_raw"
     t.text     "hidden_labels", default: [],              array: true
+    t.string   "api_key"
   end
 
   create_table "property_users", force: :cascade do |t|

@@ -11,6 +11,7 @@
 #  templates_raw :text
 #  forms_raw     :text
 #  hidden_labels :text             default([]), is an Array
+#  api_key       :string
 #
 
 class Property < ActiveRecord::Base
@@ -35,6 +36,14 @@ class Property < ActiveRecord::Base
   # ---------------------------------------- Scopes
 
   scope :alpha, -> { order(:title => :asc) }
+
+  # ---------------------------------------- Callbacks
+
+  after_create :generate_api_key!
+
+  def generate_api_key!
+    update_columns(:api_key => SecureRandom.hex(25))
+  end
 
   # ---------------------------------------- Class Methods
 

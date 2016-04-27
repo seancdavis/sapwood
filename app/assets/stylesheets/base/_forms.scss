@@ -130,3 +130,9 @@ form .error {
   font-size: 0.9em;
   color: $error;
 }
+
+#error_explanation {
+  margin-bottom: 15px;
+  font-size: 90%;
+  color: $error;
+}

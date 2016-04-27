@@ -12,6 +12,9 @@ form {
   aside ul li {
     font-size: 0.9em;
     margin: rem(7.5) 0;
+    &.clickable:hover {
+      cursor: pointer;
+    }
   }
 }
 
@@ -128,5 +131,11 @@ abbr[title] {
 form .error {
   display: block;
   font-size: 0.9em;
+  color: $error;
+}
+
+#error_explanation {
+  margin-bottom: 15px;
+  font-size: 90%;
   color: $error;
 }

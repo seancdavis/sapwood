@@ -28,18 +28,20 @@ class UsersController < ApplicationController
   end
 
   def new
+    @properties = Property.alpha.to_a - [current_property]
     @focused_user = User.new
   end
 
   def create
     @focused_user = User.find_by_email(params[:user][:email])
     if focused_user.nil?
-      if @focused_user = User.create(user_params.merge(:password => 'password'))
+      if @focused_user = User.create(user_params_with_password)
         UserMailer.welcome(focused_user).deliver_now
         focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
                     :notice => 'User added successfully!'
       else
+        @properties = Property.alpha.to_a - [current_property]
         render 'new'
       end
     else
@@ -51,16 +53,23 @@ class UsersController < ApplicationController
 
   def edit
     verify_user_access
+    @properties = Property.alpha
   end
 
   def update
     if focused_user.update(user_params)
       unless focused_user.is_admin?
-        focused_user.set_properties!(params[:user][:access].keys.collect(&:to_i))
+        ids = if params[:user][:access]
+          params[:user][:access].keys.collect(&:to_i)
+        else
+          []
+        end
+        focused_user.set_properties!(ids)
       end
       redirect_to property_users_path(current_property),
                   :notice => 'User updated successfully!'
     else
+      @properties = Property.alpha
       render 'edit'
     end
   end
@@ -69,6 +78,10 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :is_admin)
+    end
+
+    def user_params_with_password
+      user_params.merge(:password => SecureRandom.hex(32))
     end
 
     def verify_user_access

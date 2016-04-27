@@ -29,11 +29,6 @@ namespace :sapwood do
     q += "to run Sapwood? (e.g. example.com) "
     fqdn = cli.ask(q)
 
-    q  = "What shall we call your PostgreSQL database? "
-    q += "(default: sapwood_production) "
-    db_name = cli.ask(q)
-    db_username = cli.ask("What about the PostgreSQL user? (default: sapwood) ")
-
     q = "\nWhat is the email address from which you'd like to send notifications? "
     default_from_email = cli.ask(q)
     q = "What name do you want to display on the email notification? "
@@ -78,8 +73,8 @@ namespace :sapwood do
     cli.say "\n----------------------------------------\n\n"
     cli.say "Setting up your PostgreSQL database ..."
 
-    db_name = 'sapwood_production' if db_name.blank?
-    db_username = 'sapwood' if db_username.blank?
+    db_name = 'sapwood_production'
+    db_username = 'sapwood'
     db_password = SecureRandom.hex(24)
 
     config = File.read("#{root}/config/database.sample.yml")

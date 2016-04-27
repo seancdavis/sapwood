@@ -59,7 +59,12 @@ class UsersController < ApplicationController
   def update
     if focused_user.update(user_params)
       unless focused_user.is_admin?
-        focused_user.set_properties!(params[:user][:access].keys.collect(&:to_i))
+        ids = if params[:user][:access]
+          params[:user][:access].keys.collect(&:to_i)
+        else
+          []
+        end
+        focused_user.set_properties!(ids)
       end
       redirect_to property_users_path(current_property),
                   :notice => 'User updated successfully!'

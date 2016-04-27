@@ -25,7 +25,7 @@
         <h3>Permissions</h3>
         <ul>
           <li>
-            Sapwood Admin
+            <span class="label">Sapwood Admin</span>
             <span class="switch">
               <%= f.check_box :is_admin %>
               <label for="user_is_admin"></label>
@@ -38,7 +38,7 @@
           <ul class="properties-list">
             <% @properties.each do |property| %>
               <li>
-                <%= property.title %>
+                <span class="label"><%= property.title %></span>
                 <span class="switch">
                   <input id="access-<%= property.id %>" type="checkbox"
                          name="user[access][<%= property.id %>]" value="1"

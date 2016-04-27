@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   def create
     @focused_user = User.find_by_email(params[:user][:email])
     if focused_user.nil?
-      if @focused_user = User.create(user_params.merge(:password => 'password'))
+      if @focused_user = User.create(user_params_with_password)
         UserMailer.welcome(focused_user).deliver_now
         focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
@@ -69,6 +69,10 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :is_admin)
+    end
+
+    def user_params_with_password
+      user_params.merge(:password => SecureRandom.hex(32))
     end
 
     def verify_user_access

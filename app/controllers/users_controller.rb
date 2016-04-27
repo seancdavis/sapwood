@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   end
 
   def new
+    @properties = Property.alpha.to_a - [current_property]
     @focused_user = User.new
   end
 
@@ -40,6 +41,7 @@ class UsersController < ApplicationController
         redirect_to property_users_path(current_property),
                     :notice => 'User added successfully!'
       else
+        @properties = Property.alpha.to_a - [current_property]
         render 'new'
       end
     else
@@ -51,6 +53,7 @@ class UsersController < ApplicationController
 
   def edit
     verify_user_access
+    @properties = Property.alpha
   end
 
   def update
@@ -61,6 +64,7 @@ class UsersController < ApplicationController
       redirect_to property_users_path(current_property),
                   :notice => 'User updated successfully!'
     else
+      @properties = Property.alpha
       render 'edit'
     end
   end

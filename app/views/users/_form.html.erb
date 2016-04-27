@@ -1,9 +1,15 @@
 <section class="body">
   <%= minimal_form_for [current_property, focused_user] do |f| %>
     <div class="block aside">
-      <%= f.input :name, :autofocus => true,
-                  :disabled => focused_user.id.present? %>
-      <%= f.input :email, :required => true,
+      <% if action_name == 'new' %>
+        <p><em>This will prompt an email notification to the new user.
+        There will be a button in that notification to let the user sign in
+        and set their name and password.</em></p>
+      <% else %>
+        <%= f.input :name, :autofocus => true,
+                    :disabled => focused_user.id.present? %>
+      <% end %>
+      <%= f.input :email, :autofocus => action_name == 'new', :required => true,
                   :disabled => focused_user.id.present?  %>
       <% if focused_user.id.present? %>
         <p><em>
@@ -30,7 +36,7 @@
         <p><strong>Properties</strong></p>
         <div class="non-admin">
           <ul class="properties-list">
-            <% (Property.alpha.to_a - [current_property]).each do |property| %>
+            <% @properties.each do |property| %>
               <li>
                 <%= property.title %>
                 <span class="switch">

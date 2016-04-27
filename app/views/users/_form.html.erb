@@ -30,7 +30,7 @@
         <p><strong>Properties</strong></p>
         <div class="non-admin">
           <ul class="properties-list">
-            <% Property.alpha.each do |property| %>
+            <% (Property.alpha.to_a - [current_property]).each do |property| %>
               <li>
                 <%= property.title %>
                 <span class="switch">
@@ -43,7 +43,8 @@
             <% end %>
           </ul>
           <% if action_name == 'new' %>
-            <p><em>New user will automatically be added to this property.</em></p>
+            <p><em>New user will automatically be added to the
+            <%= current_property.title %> property.</em></p>
           <% end %>
         </div>
         <div class="admin">

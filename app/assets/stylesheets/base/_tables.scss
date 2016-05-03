@@ -6,14 +6,14 @@ table {
 }
 
 th {
-  border-bottom: 1px solid shade($base-border-color, 25%);
-  font-weight: 600;
+  font-size: 0.75em;
+  font-weight: 400;
   padding: $small-spacing 0;
   text-align: left;
+  text-transform: uppercase;
 }
 
 td {
-  border-bottom: $base-border;
   padding: $small-spacing 0;
 }
 

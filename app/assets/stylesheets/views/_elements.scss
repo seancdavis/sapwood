@@ -1,0 +1,28 @@
+body.elements.index {
+
+  th {
+    color: $md-grey;
+  }
+
+  th.icon, td.icon {
+    width: rem(25);
+  }
+
+  td {
+    padding: rem(5);
+  }
+
+  .element {
+    td {
+      font-size: 0.8em;
+      font-weight: 200;
+      color: $md-grey;
+      &.icon {
+        font-size: 1em;
+      }
+      &.title {
+        font-size: 1em;
+      }
+    }
+  }
+}

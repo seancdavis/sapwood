@@ -11,7 +11,19 @@
 <section class="body">
   <% if current_property_elements.present? %>
     <div class="block">
-      <%= render current_property_elements %>
+      <table>
+        <thead>
+          <tr>
+            <th class="icon"></th>
+            <th>Title</th>
+            <th>Slug</th>
+            <th>Template</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render current_property_elements %>
+        </tbody>
+      </table>
     </div>
   <% else %>
     <%= render 'empty' %>

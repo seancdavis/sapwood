@@ -10,10 +10,10 @@
 #  position      :integer          default(0)
 #  body          :text
 #  template_data :json             default({})
-#  ancestry      :string
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  folder_id     :integer
 #
 
 class Element < ActiveRecord::Base
@@ -22,13 +22,12 @@ class Element < ActiveRecord::Base
 
   include Presenter
 
-  has_ancestry
-
   has_superslug :title, :slug, :context => :property
 
   # ---------------------------------------- Associations
 
   belongs_to :property
+  belongs_to :folder
 
   # ---------------------------------------- Scopes
 

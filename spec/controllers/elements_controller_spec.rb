@@ -10,10 +10,10 @@
 #  position      :integer          default(0)
 #  body          :text
 #  template_data :json             default({})
-#  ancestry      :string
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  folder_id     :integer
 #
 
 require 'rails_helper'

@@ -11,6 +11,7 @@
 #  templates_raw :text
 #  forms_raw     :text
 #  hidden_labels :text             default([]), is an Array
+#  api_key       :string
 #
 
 class Property < ActiveRecord::Base
@@ -25,6 +26,7 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
+  has_many :folders
   has_many :elements
   has_many :collections
   has_many :documents

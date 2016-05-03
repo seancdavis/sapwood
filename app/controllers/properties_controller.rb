@@ -47,6 +47,24 @@ class PropertiesController < ApplicationController
     end
   end
 
+  def import
+  end
+
+  def process_import
+    begin
+      elements = ImportElements.call(
+        :property_id => current_property.id,
+        :csv => File.read(params[:property][:csv].path),
+        :template_name => params[:property][:template_name]
+      )
+      redirect_to edit_property_path(current_property),
+                  :notice => "#{elements.size} elements imported!"
+    rescue
+      redirect_to edit_property_path(current_property),
+                  :alert => 'Something went wrong during the import process.'
+    end
+  end
+
   private
 
     def property_params

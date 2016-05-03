@@ -43,6 +43,10 @@
           <br>
         <% end %>
       <% end %>
+      <br>
+      <h3>Import Via CSV</h3>
+      <p>Import via CSV is a new feature.
+      <%= link_to 'Try it out.', property_import_path(current_property) %></p>
       <br><br><br>
       <%= f.input :hidden_labels, :as => :hidden %>
     </aside>

@@ -1,0 +1,17 @@
+<%= page_header :title => current_property.title %>
+
+<section class="body">
+  <%= minimal_form_for(
+    current_property,
+    :url => property_process_import_path(current_property)) do |f| %>
+    <div class="block">
+      <h3>CSV File</h3>
+      <%= f.input :csv, :as => :file, :required => true %>
+      <h3>Template Name</h3>
+      <%= f.input :template_name, :required => true,
+                  :collection => current_property
+                    .templates.map { |t| [t.name, t.name] } %>
+    </div>
+    <%= f.submit 'Import Elements' %>
+  <% end %>
+</section>

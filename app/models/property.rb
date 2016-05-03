@@ -19,6 +19,10 @@ class Property < ActiveRecord::Base
 
   include Presenter
 
+  # ---------------------------------------- Attributes
+
+  attr_accessor :template_name, :csv
+
   # ---------------------------------------- Associations
 
   has_many :elements

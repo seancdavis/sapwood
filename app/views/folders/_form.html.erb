@@ -1,5 +1,7 @@
 <section class="body">
   <%= minimal_form_for [current_property, current_folder] do |f| %>
+    <%= f.input :parent_id, :as => :hidden,
+                :input_html => { :value => @parent_folder.try(:id) } %>
     <div class="block">
       <div class="input half">
         <p><em>Give your folder a name.</em></p>

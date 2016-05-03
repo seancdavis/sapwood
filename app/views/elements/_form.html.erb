@@ -1,5 +1,9 @@
 <section class="body">
   <%= minimal_form_for [current_property, current_element] do |f| %>
+
+    <%= f.input :folder_id, :as => :hidden,
+                :input_html => { :value => current_folder.try(:id) } %>
+
     <div class="block aside">
       <%= f.input :title,
                   :placeholder => current_template.element_title_label %>

@@ -15,6 +15,7 @@
 class FoldersController < ApplicationController
 
   def new
+    @parent_folder = current_folder
     @current_folder = Folder.new
   end
 
@@ -36,7 +37,7 @@ class FoldersController < ApplicationController
   private
 
     def folder_params
-      params.require(:folder).permit(:title)
+      params.require(:folder).permit(:title, :parent_id)
     end
 
     def create_params

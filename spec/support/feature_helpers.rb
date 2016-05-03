@@ -21,10 +21,6 @@ module FeatureHelpers
     upload_file('example.png')
   end
 
-  def property_with_templates
-    create(:property, :templates_raw => File.read(template_config_file))
-  end
-
   def wait_for_ajax
     Timeout.timeout(Capybara.default_max_wait_time) do
       loop until finished_all_ajax_requests?

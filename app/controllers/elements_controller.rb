@@ -21,6 +21,8 @@ class ElementsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    @elements = current_property.elements.roots
+    @folders = current_property.folders.roots
     respond_to do |format|
       format.html
       format.json

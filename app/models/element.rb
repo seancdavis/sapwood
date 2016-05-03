@@ -32,6 +32,7 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Scopes
 
   scope :alpha, -> { order(:title => :asc) }
+  scope :roots, -> { where(:folder_id => nil) }
 
   # ---------------------------------------- Validations
 

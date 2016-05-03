@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
                 :current_property?,
                 :current_property_collections,
                 :current_property_documents,
-                :current_property_elements,
                 :current_template,
                 :focused_user,
                 :not_found,
@@ -111,10 +110,6 @@ class ApplicationController < ActionController::Base
 
     def current_element?
       current_element && current_element.id.present?
-    end
-
-    def current_property_elements
-      @current_property_elements ||= current_property.elements
     end
 
     # ------------------------------------------ Documents

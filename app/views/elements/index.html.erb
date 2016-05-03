@@ -9,7 +9,7 @@
 ) %>
 
 <section class="body">
-  <% if current_property_elements.present? %>
+  <% if @folders.present? || @elements.present? %>
     <div class="block">
       <table>
         <thead>
@@ -20,9 +20,16 @@
             <th>Template</th>
           </tr>
         </thead>
-        <tbody>
-          <%= render current_property_elements %>
-        </tbody>
+        <% if @folders.present? %>
+          <tbody class="folders">
+            <%= render @folders %>
+          </tbody>
+        <% end %>
+        <% if @elements.present? %>
+          <tbody class="elements">
+            <%= render @elements %>
+          </tbody>
+        <% end %>
       </table>
     </div>
   <% else %>

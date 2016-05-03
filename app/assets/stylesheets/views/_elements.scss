@@ -12,7 +12,7 @@ body.elements.index {
     padding: rem(5) 0;
   }
 
-  .element {
+  .elements, .folders {
     td {
       font-size: 0.8em;
       font-weight: 200;
@@ -22,6 +22,39 @@ body.elements.index {
       }
       &.title {
         font-size: 1em;
+      }
+    }
+  }
+
+  .elements {
+    // -- if there are NOT any folders before this
+    &:nth-child(2):before {
+      content: none;
+    }
+    // -- if there are also folders
+    &:before {
+      display: block;
+      content: '';
+      height: rem(10);
+    }
+  }
+
+  .folders {
+    // -- if there are ONLY folders in the table
+    &:last-child {
+      tr:last-child {
+        border-bottom: none;
+        td { padding-bottom: rem(5); }
+      }
+    }
+    // -- if there are also elements
+    td.icon {
+      color: $md-blue;
+    }
+    tr:last-child {
+      border-bottom: $base-border;
+      td {
+        padding-bottom: rem(15);
       }
     }
   }

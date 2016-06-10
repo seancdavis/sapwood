@@ -11,7 +11,6 @@
 #  templates_raw :text
 #  forms_raw     :text
 #  hidden_labels :text             default([]), is an Array
-#  api_key       :string
 #
 
 class Property < ActiveRecord::Base

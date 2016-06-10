@@ -51,8 +51,16 @@ class Element < ActiveRecord::Base
         template_data[field.name] = { :raw => nil }
         next
       end
-      template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-        .geocode(val).to_hash.merge(:raw => val)
+      begin
+        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
+          .geocode(val).to_hash.merge(:raw => val)
+      rescue
+        # If we hit too many queries, we can sleep for a second and then try
+        # again.
+        sleep 1
+        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
+          .geocode(val).to_hash.merge(:raw => val)
+      end
     end
     update_columns(:template_data => template_data)
   end

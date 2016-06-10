@@ -31,6 +31,8 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Scopes
 
+  default_scope { order(:position => :asc, :id => :asc) }
+
   scope :alpha, -> { order(:title => :asc) }
   scope :roots, -> { where(:folder_id => nil) }
   scope :with_template, ->(name) { where(:template_name => name) }

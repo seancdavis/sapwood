@@ -15,26 +15,25 @@ require 'rails_helper'
 RSpec.describe Collection, :type => :model do
 
   context 'with items' do
-    let(:collection) { create(:collection, :with_items) }
+    before(:each) { @collection = create(:collection, :with_items) }
 
     # These specs are testing nesting items three levels deep within a
     # collection.
 
     describe '#element_ids' do
       it 'can retrieve its element_ids' do
-        expect(collection.element_ids).to eq(Element.all.collect(&:id))
+        expect(@collection.element_ids).to eq(Element.all.collect(&:id))
       end
     end
 
     describe '#elements' do
       it 'can retrieve its elements' do
-        expect(collection.elements).to eq(Element.all)
+        expect(@collection.elements).to eq(Element.all)
       end
     end
 
     describe '#as_json' do
       it 'retrieves the items and nests them properly' do
-        collection
         e = Element.all.to_a
         items = [
           e[0].as_json({}).merge(
@@ -45,9 +44,9 @@ RSpec.describe Collection, :type => :model do
           ),
           e[4].as_json({}).merge(:children => [])
         ]
-        as_json = { :id => collection.id, :title => collection.title,
+        as_json = { :id => @collection.id, :title => @collection.title,
           :items => items }
-        expect(collection.as_json({})).to eq(as_json)
+        expect(@collection.as_json({})).to eq(as_json)
       end
     end
   end

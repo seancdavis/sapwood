@@ -10,13 +10,31 @@ feature 'Importing Elements', :js => true do
     click_link 'Try it out.'
   end
 
-  scenario 'enable a user to update the title' do
+  scenario 'can be done via csv' do
     attach_file 'property_csv', "#{Rails.root}/spec/support/import.csv"
     select 'All Options', :from => 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('3 elements imported')
     click_link 'Elements'
     expect(page).to have_content('Great American Ballpark')
+  end
+
+  scenario 'rescues from a bad column name' do
+    attach_file 'property_csv', "#{Rails.root}/spec/support/import_bad_col.csv"
+    select 'All Options', :from => 'property_template_name'
+    click_button 'Import Elements'
+    expect(page).to have_content('one of your column headings does not match')
+    click_link 'Elements'
+  end
+
+  scenario 'rescues from a bad column name' do
+    attach_file 'property_csv', "#{Rails.root}/spec/support/import_bad_data.csv"
+    select 'All Options', :from => 'property_template_name'
+    click_button 'Import Elements'
+    expect(page).to have_content('Data in one of your rows is not valid')
+    # Check that it rolls back the entire transaction.
+    expect(Element.count).to eq(0)
+    click_link 'Elements'
   end
 
   scenario 'requires file to import' do

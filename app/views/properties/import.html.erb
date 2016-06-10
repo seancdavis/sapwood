@@ -2,12 +2,12 @@
 
 <% if @error.present? %>
   <p class="alert">
-    <% if @error.is_a? NoMethodError %>
+    <% if @error == NoMethodError %>
       We have a problem here. It's possible one of your column headings does
       not match the field name exactly. Double-check your CSV file and try
       again.
     <% elsif @error == ActiveRecord::RecordInvalid %>
-      Data is one of your rows is not valid. Please double-check your data and
+      Data in one of your rows is not valid. Please double-check your data and
       try again.
     <% else %>
       Something went wrong during the import process. Please check that your

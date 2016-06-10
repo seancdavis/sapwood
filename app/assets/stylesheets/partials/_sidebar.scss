@@ -47,8 +47,9 @@ aside.main {
           color: $light;
           &.edit {
             float: right;
-            font-size: 0.8em;
-            text-transform: uppercase;
+          }
+          i {
+            font-size: 1.25em;
           }
         }
       }

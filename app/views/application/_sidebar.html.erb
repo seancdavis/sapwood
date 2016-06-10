@@ -8,8 +8,10 @@
             style="background: <%= current_property.color %>"></span>
       <span class="title">
         <%= link_to current_property.title, current_property %>
-        <%= link_to 'Settings', edit_property_path(current_property),
-                    :class => 'edit' %>
+        <%= link_to(edit_property_path(current_property),
+                    :class => 'edit') do %>
+          <i class="icon-settings"></i>
+        <% end %>
       </span>
     </div>
     <div class="search">

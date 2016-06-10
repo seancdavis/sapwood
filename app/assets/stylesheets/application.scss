@@ -8,6 +8,7 @@
 
 // ---------------------------------------- Components
 
+@import 'components/icons';
 @import 'components/backgrounds';
 @import 'components/cards';
 @import 'components/blocks';
@@ -26,6 +27,7 @@
 // ---------------------------------------- Views
 
 @import 'views/base';
+@import 'views/elements';
 @import 'views/deck';
 @import 'views/property';
 @import 'views/collection';

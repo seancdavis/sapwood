@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     patch 'import' => 'properties#process_import', :as => :process_import
 
     resources :elements
+    resources :folders
     resources :documents
     resources :collections
     resources :users

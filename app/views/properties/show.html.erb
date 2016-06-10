@@ -2,10 +2,10 @@
 
 <section>
   <div class="block half">
-    <span class="count"><%= current_property_elements.size %></span>
+    <span class="count"><%= current_property.elements.size %></span>
     <h3>
       <%= current_property.label('elements').singularize
-                          .pluralize(current_property_elements.size) %>
+                          .pluralize(current_property.elements.size) %>
     </h3>
   </div>
   <div class="block half">

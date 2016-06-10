@@ -9,9 +9,28 @@
 ) %>
 
 <section class="body">
-  <% if current_property_elements.present? %>
+  <% if @folders.present? || @elements.present? %>
     <div class="block">
-      <%= render current_property_elements %>
+      <table>
+        <thead>
+          <tr>
+            <th class="icon"></th>
+            <th>Title</th>
+            <th>Slug</th>
+            <th>Template</th>
+          </tr>
+        </thead>
+        <% if @folders.present? %>
+          <tbody class="folders">
+            <%= render @folders %>
+          </tbody>
+        <% end %>
+        <% if @elements.present? %>
+          <tbody class="elements">
+            <%= render @elements %>
+          </tbody>
+        <% end %>
+      </table>
     </div>
   <% else %>
     <%= render 'empty' %>

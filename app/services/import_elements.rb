@@ -26,7 +26,11 @@ class ImportElements
             element.send("#{attr}=", value)
           end
         end
-        element.save!
+        unless element.save
+          Rails.logger.error "Import failure on #{element.title}. Trying again in 1 second ..."
+          sleep 1
+          element.save!
+        end
         elements << element
       end
     end

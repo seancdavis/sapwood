@@ -11,6 +11,7 @@
 #  templates_raw :text
 #  forms_raw     :text
 #  hidden_labels :text             default([]), is an Array
+#  api_key       :string
 #
 
 require 'rails_helper'
@@ -18,6 +19,19 @@ require 'rails_helper'
 RSpec.describe Property, :type => :model do
 
   let(:property) { create(:property) }
+
+  describe '#generate_api_key' do
+    it 'generates an api key on create' do
+      p = create(:property, :api_key => nil)
+      expect(p.api_key).to_not eq(nil)
+    end
+    it 'does not update the api key on update' do
+      key = property.api_key
+      property.update(:title => Faker::Company.bs)
+      property.reload
+      expect(property.api_key).to eq(key)
+    end
+  end
 
   describe '#label' do
     Property.labels.each do |label|

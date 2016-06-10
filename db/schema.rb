@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20160503121307) do
     t.text     "templates_raw"
     t.text     "forms_raw"
     t.text     "hidden_labels", default: [],              array: true
+    t.string   "api_key"
   end
 
   create_table "property_users", force: :cascade do |t|

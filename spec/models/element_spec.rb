@@ -198,4 +198,25 @@ RSpec.describe Element, :type => :model do
     end
   end
 
+  describe '#as_json' do
+    before(:all) do
+      @element = create(:element, :with_options, :property => @property)
+    end
+    it 'has references to all necessary attributes' do
+      json = @element.as_json({})
+      expect(json[:id]).to eq(@element.id)
+      expect(json[:title]).to eq(@element.title)
+      expect(json[:slug]).to eq(@element.slug)
+      expect(json[:body]).to eq(@element.body)
+      expect(json[:template_name]).to eq('All Options')
+      expect(json[:position]).to eq(@element.position)
+      expect(json[:publish_at]).to eq(@element.publish_at)
+      expect(json[:created_at]).to eq(@element.created_at)
+      expect(json[:updated_at]).to eq(@element.updated_at)
+      # Custom template_data is brought to the top level.
+      expect(json[:comments]).to eq(@element.comments)
+      expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
+    end
+  end
+
 end

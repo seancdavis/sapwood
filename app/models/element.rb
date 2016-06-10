@@ -31,8 +31,11 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Scopes
 
+  default_scope { order(:position => :asc, :id => :asc) }
+
   scope :alpha, -> { order(:title => :asc) }
   scope :roots, -> { where(:folder_id => nil) }
+  scope :with_template, ->(name) { where(:template_name => name) }
 
   # ---------------------------------------- Validations
 
@@ -50,8 +53,16 @@ class Element < ActiveRecord::Base
         template_data[field.name] = { :raw => nil }
         next
       end
-      template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-        .geocode(val).to_hash.merge(:raw => val)
+      begin
+        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
+          .geocode(val).to_hash.merge(:raw => val)
+      rescue
+        # If we hit too many queries, we can sleep for a second and then try
+        # again.
+        sleep 1
+        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
+          .geocode(val).to_hash.merge(:raw => val)
+      end
     end
     update_columns(:template_data => template_data)
   end
@@ -77,6 +88,25 @@ class Element < ActiveRecord::Base
 
   def to_param
     id.to_s
+  end
+
+  def as_json(options)
+    response = {
+      :id => id,
+      :title => title,
+      :slug => slug,
+      # :property_id => property_id,
+      :body => body,
+      :template_name => template_name,
+      :position => position,
+      # :template_data => template_data,
+      :publish_at => publish_at,
+      :created_at => created_at,
+      :updated_at => updated_at,
+      # :folder_id => folder_id
+    }
+    template_data.each { |k,v| response[k.to_sym] = v }
+    response
   end
 
   def method_missing(method, *arguments, &block)

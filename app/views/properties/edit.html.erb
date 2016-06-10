@@ -18,6 +18,13 @@
       <%= f.input :forms_raw, :label => false,
                   :placeholder => 'Form Data (JSON)' %>
 
+      <h3>API Key</h3>
+      <p>
+        <code><%= current_property.api_key %></code>
+      </p>
+      <p><em>This property's API key is what enables you to retrieve data from
+      the property.</em></p>
+
     <aside>
       <h3>Design</h3>
       <div class="input color">

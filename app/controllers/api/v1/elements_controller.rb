@@ -2,7 +2,14 @@ class Api::V1::ElementsController < ApiController
 
   def index
     respond_to do |f|
-      f.json { render(:json => current_property.elements) }
+      f.json do
+        @elements = if params[:template]
+          current_property.elements.with_template(params[:template])
+        else
+          current_property.elements
+        end
+        render(:json => @elements)
+      end
     end
   end
 

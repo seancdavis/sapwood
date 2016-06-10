@@ -11,6 +11,20 @@ nav.dropdown {
   }
   li {
     display: block;
+    &.section {
+      border-bottom: $base-border;
+      a {
+        padding: rem(10);
+      }
+    }
+    h3 {
+      margin-bottom: rem(5);
+      padding: rem(10) rem(10) 0 rem(10);
+      font-size: 0.75em;
+      font-weight: 200;
+      text-transform: uppercase;
+      color: $md-grey;
+    }
   }
   a {
     display: block;
@@ -19,6 +33,10 @@ nav.dropdown {
     &:hover {
       background: darken($light, 5%);
       color: $md-blue;
+    }
+    i {
+      display: inline-block;
+      font-size: 0.8em;
     }
   }
 }

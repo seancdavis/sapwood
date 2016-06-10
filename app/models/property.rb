@@ -25,6 +25,7 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
+  has_many :folders
   has_many :elements
   has_many :collections
   has_many :documents

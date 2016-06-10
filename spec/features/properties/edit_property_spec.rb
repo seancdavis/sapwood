@@ -10,6 +10,9 @@ feature 'Property Settings', :js => true do
 
   scenario 'enable a user to update the title' do
     within('.properties') { click_link 'Edit' }
+    # Check that the API key is visible.
+    expect(page).to have_content(@property.api_key)
+    # Fill in the title and submit.
     new_title = Faker::Lorem.words(5).join(' ')
     fill_in 'property[title]', :with => new_title
     click_button 'Save Changes'

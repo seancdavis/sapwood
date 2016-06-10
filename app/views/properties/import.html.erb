@@ -1,5 +1,18 @@
 <%= page_header :title => current_property.title %>
 
+<% if @error.present? %>
+  <p class="alert">
+    <% if @error.is_a? NoMethodError %>
+      We have a problem here. It's possible one of your column headings does
+      not match the field name exactly. Double-check your CSV file and try
+      again.
+    <% else %>
+      Something went wrong during the import process. Please check that your
+      file follows the correct format and retry.
+    <% end %>
+  </p>
+<% end %>
+
 <section class="body">
   <%= minimal_form_for(
     current_property,

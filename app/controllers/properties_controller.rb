@@ -59,9 +59,9 @@ class PropertiesController < ApplicationController
       )
       redirect_to edit_property_path(current_property),
                   :notice => "#{elements.size} elements imported!"
-    rescue
-      redirect_to edit_property_path(current_property),
-                  :alert => 'Something went wrong during the import process.'
+    rescue => e
+      @error = e.class
+      render 'import'
     end
   end
 

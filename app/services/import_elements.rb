@@ -15,18 +15,20 @@ class ImportElements
 
   def call
     elements = []
-    CSV.parse(csv, :headers => true) do |row|
-      attrs = {}
-      element = property.elements.new(:template_name => template.name)
-      row.to_hash.each do |attr, value|
-        if template.find_field(attr).present?
-          element.template_data = element.template_data.merge(attr => value)
-        else
-          element.send("#{attr}=", value)
+    ActiveRecord::Base.transaction do
+      CSV.parse(csv, :headers => true) do |row|
+        attrs = {}
+        element = property.elements.new(:template_name => template.name)
+        row.to_hash.each do |attr, value|
+          if template.find_field(attr).present?
+            element.template_data = element.template_data.merge(attr => value)
+          else
+            element.send("#{attr}=", value)
+          end
         end
+        element.save!
+        elements << element
       end
-      element.save!
-      elements << element
     end
     elements
   end

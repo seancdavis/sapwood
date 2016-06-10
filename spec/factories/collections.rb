@@ -12,8 +12,33 @@
 
 FactoryGirl.define do
   factory :collection do
-    title "MyString"
-item_data ""
+    property
+    title { Faker::App.name }
+    item_data {{}}
+    trait :with_items do
+      after(:create) do |collection|
+        e = create_list(:element, 5, :property => collection.property)
+        item_data = [
+          {
+            'id' => e[0].id,
+            'title' => e[0].title,
+            'children' => [
+              {
+                'id' => e[1].id,
+                'title' => e[1].title,
+                'children' => [
+                  { 'id' => e[2].id, 'title' => e[2].title },
+                  { 'id' => e[3].id, 'title' => e[3].title }
+                ]
+              }
+            ]
+          },
+          { 'id' => e[4].id, 'title' => e[4].title, 'children' => [] }
+        ]
+        collection.item_data_will_change!
+        collection.update!(:item_data => item_data.to_json)
+      end
+    end
   end
 
 end

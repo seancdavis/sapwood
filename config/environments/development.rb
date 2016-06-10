@@ -43,4 +43,6 @@ Rails.application.configure do
 
   config.action_controller.asset_host = Sapwood.config.url
   config.action_mailer.asset_host = Sapwood.config.url
+
+  ActiveRecordQueryTrace.enabled = false
 end

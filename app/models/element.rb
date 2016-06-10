@@ -79,6 +79,25 @@ class Element < ActiveRecord::Base
     id.to_s
   end
 
+  def as_json(options)
+    response = {
+      :id => id,
+      :title => title,
+      :slug => slug,
+      # :property_id => property_id,
+      :body => body,
+      :template_name => template_name,
+      :position => position,
+      # :template_data => template_data,
+      :publish_at => publish_at,
+      :created_at => created_at,
+      :updated_at => updated_at,
+      # :folder_id => folder_id
+    }
+    template_data.each { |k,v| response[k.to_sym] = v }
+    response
+  end
+
   def method_missing(method, *arguments, &block)
     return super unless has_field?(method.to_s)
     field = template.find_field(method.to_s)

@@ -10,16 +10,16 @@ class ApiController < ActionController::Base
       raise ActionController::RoutingError.new('Forbidden')
     end
 
+    def not_found
+      raise ActionController::RoutingError.new('Not found.')
+    end
+
     def authenticate_api_user!
       forbidden unless current_property.present?
-      forbidden unless params[:api_key].present?
-      forbidden unless params[:api_key] == current_property.api_key
     end
 
     def current_property
-      @current_property ||= begin
-        Property.find_by_id(params[:property_id] || params[:id])
-      end
+      @current_property ||= Property.find_by_api_key(params[:api_key])
     end
 
 end

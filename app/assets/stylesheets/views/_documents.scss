@@ -1,0 +1,50 @@
+.document-tiles {
+  position: relative;
+  font-size: 0;
+
+  .document {
+    position: relative;
+    display: inline-block;
+    width: 24%;
+    height: 200px;
+    margin: 0 1% 1% 0;
+    box-sizing: border-box;
+    font-size: $em-base;
+    text-align: center;
+    background-color: $light;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    a {
+      @include position(absolute, 0 null null 0);
+      @include size(100%);
+    }
+
+    span.title {
+      @include position(absolute, null null 0 0);
+      width: 100%;
+      padding: rem(10px) rem(5px);
+      background: rgba($light, 0.9);
+      box-sizing: border-box;
+    }
+  }
+
+  .document.img {
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .document.doc {
+    &:before {
+      @include icon;
+      content: $icon-file;
+      @include position(absolute, 50px null null 0);
+      @include size(100%);
+      font-size: 72px;
+      color: $md-grey;
+    }
+  }
+}

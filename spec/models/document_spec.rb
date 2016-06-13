@@ -25,4 +25,13 @@ RSpec.describe Document, :type => :model do
     end
   end
 
+  describe '#as_json' do
+    it 'has references to all necessary attributes' do
+      json = document.as_json({})
+      expect(json[:id]).to eq(document.id)
+      expect(json[:title]).to eq(document.title)
+      expect(json[:url]).to eq(document.url)
+    end
+  end
+
 end

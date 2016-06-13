@@ -216,6 +216,8 @@ RSpec.describe Element, :type => :model do
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(@element.comments)
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
+      # Document fields should return a document object.
+      expect(json[:image][:url]).to eq("#{Rails.root}/spec/support/example.png")
     end
   end
 

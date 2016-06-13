@@ -30,6 +30,14 @@ class Document < ActiveRecord::Base
     %(jpeg jpg png gif svg).include?(url.split('.').last.downcase)
   end
 
+  def as_json(options = {})
+    {
+      :id => id,
+      :title => title,
+      :url => url
+    }
+  end
+
   # ---------------------------------------- Private Methods
 
   private

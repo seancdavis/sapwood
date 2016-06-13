@@ -28,6 +28,10 @@
       "comments": {
         "type": "wysiwyg",
         "label": "Comments"
+      },
+      "image": {
+        "type": "document",
+        "label": "Image"
       }
     }
   }

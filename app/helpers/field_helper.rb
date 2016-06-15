@@ -21,8 +21,16 @@ module FieldHelper
             o2.html_safe
           end
         end
+      else
+        o += content_tag(:div, :class => 'document-url hidden') do
+          link_to('#') do
+            o2  = image_tag('')
+            o2 += content_tag(:span, '')
+          end
+        end
       end
-      # o += link_to("Choose Existing File", '#', :class => 'file-chooser button')
+      o += link_to("Choose Existing File", '#',
+                   :class => 'document-chooser button')
       o += link_to("Upload New File", '#', :class => 'upload-trigger button')
       o.html_safe
     end

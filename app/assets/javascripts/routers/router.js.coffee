@@ -23,8 +23,9 @@ class App.Routers.Router extends Backbone.Router
   elements: ->
     new App.Views.Elements
 
-  editElement: ->
+  editElement: (property_id) ->
     new App.Views.EditElement
+      property_id: property_id
 
   documents: ->
     new App.Components.Uploader

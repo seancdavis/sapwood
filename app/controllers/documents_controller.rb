@@ -15,6 +15,7 @@ class DocumentsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    render :partial => 'list' if request.xhr?
   end
 
   def new

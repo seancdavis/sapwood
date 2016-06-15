@@ -28,11 +28,5 @@
 </section>
 
 <section class="body">
-  <% if current_property_documents.present? %>
-    <div class="block">
-      <%= render current_property_documents %>
-    </div>
-  <% else %>
-    <%= render 'empty' %>
-  <% end %>
+  <%= render 'list' %>
 </section>

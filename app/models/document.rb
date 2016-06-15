@@ -26,8 +26,24 @@ class Document < ActiveRecord::Base
 
   # ---------------------------------------- Instance Methods
 
+  def filename
+    url.split('/').last
+  end
+
+  def file_ext
+    url.split('.').last.downcase
+  end
+
   def image?
-    %(jpeg jpg png gif svg).include?(url.split('.').last.downcase)
+    %(jpeg jpg png gif svg).include?(file_ext)
+  end
+
+  def as_json(options = {})
+    {
+      :id => id,
+      :title => title,
+      :url => url
+    }
   end
 
   # ---------------------------------------- Private Methods

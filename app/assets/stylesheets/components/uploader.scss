@@ -5,9 +5,34 @@
   }
 }
 
+.document-url {
+  margin-bottom: 10px;
+  &.hidden {
+    display: none;
+  }
+  img, span {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  img {
+    max-width: 50px;
+    margin-right: 10px;
+  }
+  span {
+    line-height: 1;
+  }
+}
+
 .document-uploader {
+  margin-bottom: rem(20);
+  .document-chooser {
+    margin-right: 5px;
+  }
   .upload-trigger {
     background-color: $dk-grey;
+  }
+  label {
+    margin-bottom: rem(5px);
   }
 }
 

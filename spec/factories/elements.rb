@@ -27,8 +27,16 @@ FactoryGirl.define do
       body { Faker::Lorem.paragraph }
       template_name 'All Options'
       template_data {{
+        # 'address' => '1216 Central Pkwy, 45202',
+        'comments' => Faker::Lorem.paragraph,
+        'image' => create(:document, :title => Faker::Company.bs.titleize).id
+      }}
+    end
+    trait :with_address do
+      template_data {{
         'address' => '1216 Central Pkwy, 45202',
-        'comments' => Faker::Lorem.paragraph
+        'comments' => Faker::Lorem.paragraph,
+        'image' => create(:document, :title => Faker::Company.bs.titleize).id
       }}
     end
   end

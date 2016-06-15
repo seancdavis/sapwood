@@ -169,7 +169,7 @@ RSpec.describe Element, :type => :model do
           :property => @property,
           :template_data => {
             :description => 'This is a description',
-            :address => '1216 Central, 45202',
+            # :address => '1216 Central, 45202',
             :image => @document.id.to_s
           }
         )
@@ -200,7 +200,8 @@ RSpec.describe Element, :type => :model do
 
   describe '#as_json' do
     before(:all) do
-      @element = create(:element, :with_options, :property => @property)
+      @element = create(:element, :with_options, :with_address,
+                        :property => @property)
     end
     it 'has references to all necessary attributes' do
       json = @element.as_json({})
@@ -216,6 +217,8 @@ RSpec.describe Element, :type => :model do
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(@element.comments)
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
+      # Document fields should return a document object.
+      expect(json[:image][:url]).to eq(example_image_url)
     end
   end
 

@@ -90,7 +90,7 @@ class Element < ActiveRecord::Base
     id.to_s
   end
 
-  def as_json(options)
+  def as_json(options = {})
     response = {
       :id => id,
       :title => title,
@@ -105,7 +105,13 @@ class Element < ActiveRecord::Base
       :updated_at => updated_at,
       # :folder_id => folder_id
     }
-    template_data.each { |k,v| response[k.to_sym] = v }
+    template_data.each do |k,v|
+      response[k.to_sym] = if template.find_field(k).is_document?
+         Document.find_by_id(v)
+       else
+        v
+      end
+    end
     response
   end
 

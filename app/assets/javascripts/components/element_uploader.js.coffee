@@ -26,7 +26,7 @@ class App.Components.ElementUploader extends Backbone.View
         file = data.files[0]
         if types.test(file.type) || types.test(file.name)
           data.context = $(tmpl("template-upload", file))
-          @container.after(data.context)
+          @container.find('label').first().after(data.context)
           data.context.find('.processing').hide()
           data.form.find('#content_type').attr('name','Content-Type')
           data.form.find('#content_type').val(file.type)

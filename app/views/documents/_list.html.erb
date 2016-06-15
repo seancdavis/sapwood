@@ -1,0 +1,7 @@
+<% if current_property_documents.present? %>
+  <div class="document-tiles">
+    <%= render current_property_documents %>
+  </div>
+<% else %>
+  <%= render 'empty' %>
+<% end %>

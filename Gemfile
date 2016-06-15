@@ -72,4 +72,5 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'poltergeist'
   gem 'capybara-screenshot'
+  gem 'parallel_tests'
 end

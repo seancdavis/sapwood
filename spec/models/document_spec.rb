@@ -14,7 +14,7 @@ require 'rails_helper'
 
 RSpec.describe Document, :type => :model do
 
-  let(:document) { create(:document) }
+  let(:document) { create(:document, :from_system) }
 
   describe '#set_title_if_blank' do
     it 'sets the title automatically' do

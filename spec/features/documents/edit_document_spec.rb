@@ -16,7 +16,7 @@ feature 'User', :js => true do
   scenario 'can edit a document title' do
     new_title = Faker::Book.title
     fill_in 'document[title]', :with => new_title
-    click_button "Save Example"
+    click_button "Save Document"
     expect(page).to have_content(new_title)
   end
 

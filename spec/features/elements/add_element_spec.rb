@@ -49,6 +49,19 @@ feature 'Elements', :js => true do
       click_link 'New'
       click_link 'All Options'
     end
+    scenario 'can add an existing image for its image' do
+      document = create(:document, :property => @property)
+      click_link 'Choose Existing File'
+      wait_for_ajax
+      click_link document.title
+      sleep 0.35
+      within('form') { expect(page).to have_content(document.title) }
+      fill_in 'element[title]', :with => @element.title
+      click_button 'Save All Options'
+      # Let's see if it persisted.
+      click_link @element.title
+      expect(page).to have_content(document.title)
+    end
     scenario 'has the correct placeholder for title' do
       expect(page).to have_css('input[placeholder="Name"]')
     end

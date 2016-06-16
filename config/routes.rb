@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :properties, :only => [:show]
       resources :elements, :only => [:index, :show]
-      resources :collections, :only => [:show]
+      resources :collections, :only => [:index, :show]
     end
   end
 

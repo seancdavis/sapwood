@@ -8,6 +8,7 @@
 #  property_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  archived    :boolean          default(FALSE)
 #
 
 class DocumentsController < ApplicationController
@@ -38,6 +39,12 @@ class DocumentsController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    current_document.archive!
+    redirect_to property_documents_path(current_property),
+                :notice => "#{current_document.title} archived successfully!"
   end
 
   private

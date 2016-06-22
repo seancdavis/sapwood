@@ -8,6 +8,7 @@
 #  property_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  archived    :boolean          default(FALSE)
 #
 
 class Document < ActiveRecord::Base
@@ -19,6 +20,10 @@ class Document < ActiveRecord::Base
   # ---------------------------------------- Associations
 
   belongs_to :property
+
+  # ---------------------------------------- Scopes
+
+  default_scope { where(:archived => false) }
 
   # ---------------------------------------- Callbacks
 
@@ -36,6 +41,10 @@ class Document < ActiveRecord::Base
 
   def image?
     %(jpeg jpg png gif svg).include?(file_ext)
+  end
+
+  def archive!
+    update_columns(:archived => true)
   end
 
   def as_json(options = {})

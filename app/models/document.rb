@@ -67,12 +67,6 @@ class Document < ActiveRecord::Base
     "#{s3_base}/#{s3_dir}/#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
   end
 
-  def thumb
-    return nil unless image?
-    return safe_url unless processed?
-    version(:small, true)
-  end
-
   def image?
     %(jpeg jpg png gif svg).include?(file_ext)
   end

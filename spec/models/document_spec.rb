@@ -63,19 +63,4 @@ RSpec.describe Document, :type => :model do
     end
   end
 
-  describe '#thumb' do
-    let(:document) { build(:document, :from_s3) }
-    it 'returns the safe url when not processed' do
-      expect(document.thumb).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
-    end
-    it 'returns nil when not an image' do
-      expect(build(:document, :url => 'hello.pdf').thumb).to eq(nil)
-    end
-    it 'returns the small, cropped url when processed' do
-      document = create(:document, :from_s3)
-      document.processed!
-      expect(document.thumb).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_small_crop.jpg')
-    end
-  end
-
 end

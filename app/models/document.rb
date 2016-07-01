@@ -9,6 +9,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  archived    :boolean          default(FALSE)
+#  processed   :boolean          default(FALSE)
 #
 
 class Document < ActiveRecord::Base
@@ -26,6 +27,8 @@ class Document < ActiveRecord::Base
   default_scope { where(:archived => false) }
 
   # ---------------------------------------- Callbacks
+
+  after_create :process_images!
 
   after_save :set_title_if_blank
 
@@ -57,6 +60,14 @@ class Document < ActiveRecord::Base
       :title => title,
       :url => url
     }
+  end
+
+  def process_images!
+    ProcessImages.delay.call(:document => self) if image? && !processed?
+  end
+
+  def processed!
+    update_columns(:processed => true)
   end
 
   # ---------------------------------------- Private Methods

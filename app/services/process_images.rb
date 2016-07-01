@@ -1,7 +1,7 @@
 require 'aws-sdk'
 require 'rmagick'
 
-class ProcessImage
+class ProcessImages
 
   include Magick
 
@@ -17,8 +17,11 @@ class ProcessImage
   def call
     download_file
     orient_image
-    upload_file
-    delete_file
+    create_image_versions
+    upload_files
+    delete_files
+    @document.processed!
+    true
   end
 
   private
@@ -70,6 +73,10 @@ class ProcessImage
       @temp_filename ||= SecureRandom.hex(24) + '.' + @document.file_ext
     end
 
+    def temp_filename_no_ext
+      @temp_filename_no_ext ||= temp_filename.split('.').first
+    end
+
     def temp_file_path
       @temp_file_path ||= begin
         FileUtils.mkdir_p(Rails.root.join('tmp', 'sapwood').to_s)
@@ -77,12 +84,46 @@ class ProcessImage
       end
     end
 
+    def temp_version_path(name)
+      filename = "#{temp_filename_no_ext}_#{name.to_s}.#{@document.file_ext}"
+      Rails.root.join('tmp', 'sapwood', filename)
+    end
+
+    def temp_cropped_version_path(name)
+      f = "#{temp_filename_no_ext}_#{name.to_s}_crop.#{@document.file_ext}"
+      Rails.root.join('tmp', 'sapwood', f)
+    end
+
     def s3_dir
       @s3_dir ||= document_url.split('/')[3..-2].join('/')
     end
 
-    def s3_file_path
-      @s3_file_path ||= "#{s3_dir}/#{@document.filename}"
+    def s3_file_path(version = nil)
+      if version.nil?
+        "#{s3_dir}/#{@document.filename}"
+      else
+        f = "#{@document.filename_no_ext}_#{version}.#{@document.file_ext}"
+        "#{s3_dir}/#{f}"
+      end
+    end
+
+    def image_versions
+      @image_versions ||= {
+        :xsmall => 50,
+        :small => 200,
+        :medium => 450,
+        :large => 800,
+        :xlarge => 1400
+      }
+    end
+
+    def upload_paths
+      paths = { temp_file_path => s3_file_path }
+      image_versions.each do |name, dim|
+        paths[temp_version_path(name)] = s3_file_path(name.to_s)
+        paths[temp_cropped_version_path(name)] = s3_file_path("crop_#{name.to_s}")
+      end
+      paths
     end
 
     # ---------------------------------------- Actions
@@ -96,15 +137,25 @@ class ProcessImage
       system("convert -auto-orient #{temp_file_path} #{temp_file_path}")
     end
 
-    def upload_file
-      File.open(temp_file_path, 'rb') do |file|
-        s3.put_object :bucket => bucket, :key => s3_file_path, :body => file,
-                      :acl => 'public-read'
+    def create_image_versions
+      image_versions.each do |name, dimension|
+        img = Image.read(temp_file_path)[0]
+        img.resize_to_fit(dimension).write(temp_version_path(name))
+        img.resize_to_fill(dimension).write(temp_cropped_version_path(name))
       end
     end
 
-    def delete_file
-      FileUtils.rm(temp_file_path)
+    def upload_files
+      upload_paths.each do |temp_path, s3_path|
+        File.open(temp_path, 'rb') do |file|
+          s3.put_object :bucket => bucket, :key => s3_path, :body => file,
+                        :acl => 'public-read'
+        end
+      end
+    end
+
+    def delete_files
+      upload_paths.each { |temp_path, s3_path| FileUtils.rm(temp_path) }
     end
 
 end

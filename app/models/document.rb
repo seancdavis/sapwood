@@ -35,6 +35,10 @@ class Document < ActiveRecord::Base
     url.split('/').last
   end
 
+  def filename_no_ext
+    filename.split('.')[0..-2].join('.')
+  end
+
   def file_ext
     url.split('.').last.downcase
   end

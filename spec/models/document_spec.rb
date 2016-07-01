@@ -35,4 +35,13 @@ RSpec.describe Document, :type => :model do
     end
   end
 
+  describe '#filename, #filename_no_ext, #file_ext' do
+    let(:document) { build(:document) }
+    it 'returns appropriate filename parts' do
+      expect(document.filename).to eq('178947853882959841_1454569459.jpg')
+      expect(document.filename_no_ext).to eq('178947853882959841_1454569459')
+      expect(document.file_ext).to eq('jpg')
+    end
+  end
+
 end

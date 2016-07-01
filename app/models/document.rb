@@ -46,6 +46,33 @@ class Document < ActiveRecord::Base
     url.split('.').last.downcase
   end
 
+  def safe_url
+    URI.encode(url)
+  end
+
+  def uri
+    URI.parse(safe_url)
+  end
+
+  def s3_base
+    "#{uri.scheme}://#{uri.host}"
+  end
+
+  def s3_dir
+    uri.path.split('/').reject(&:blank?)[0..-2].join('/')
+  end
+
+  def version(name, crop = false)
+    alt = crop ? '_crop' : nil
+    "#{s3_base}/#{s3_dir}/#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
+  end
+
+  def thumb
+    return nil unless image?
+    return safe_url unless processed?
+    version(:small, true)
+  end
+
   def image?
     %(jpeg jpg png gif svg).include?(file_ext)
   end
@@ -63,6 +90,7 @@ class Document < ActiveRecord::Base
   end
 
   def process_images!
+    return nil if Rails.env.test?
     ProcessImages.delay.call(:document => self) if image? && !processed?
   end
 

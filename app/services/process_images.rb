@@ -121,7 +121,7 @@ class ProcessImages
       paths = { temp_file_path => s3_file_path }
       image_versions.each do |name, dim|
         paths[temp_version_path(name)] = s3_file_path(name.to_s)
-        paths[temp_cropped_version_path(name)] = s3_file_path("crop_#{name.to_s}")
+        paths[temp_cropped_version_path(name)] = s3_file_path("#{name.to_s}_crop")
       end
       paths
     end

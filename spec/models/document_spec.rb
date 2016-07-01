@@ -45,4 +45,37 @@ RSpec.describe Document, :type => :model do
     end
   end
 
+  describe '#safe_url, #uri, #s3_base, #s3_dir' do
+    let(:document) { build(:document, :from_s3) }
+    it 'returns appropraite uri segments' do
+      expect(document.safe_url).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+      expect(document.uri).to eq(URI.parse(document.safe_url))
+      expect(document.s3_base).to eq('https://sapwood.s3.amazonaws.com')
+      expect(document.s3_dir).to eq('development/properties/1/xxxxxx-xxxxxx')
+    end
+  end
+
+  describe '#version' do
+    let(:document) { build(:document, :from_s3) }
+    it 'returns the correct url for a version with and without crop' do
+      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large.jpg')
+      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large_crop.jpg')
+    end
+  end
+
+  describe '#thumb' do
+    let(:document) { build(:document, :from_s3) }
+    it 'returns the safe url when not processed' do
+      expect(document.thumb).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+    end
+    it 'returns nil when not an image' do
+      expect(build(:document, :url => 'hello.pdf').thumb).to eq(nil)
+    end
+    it 'returns the small, cropped url when processed' do
+      document = create(:document, :from_s3)
+      document.processed!
+      expect(document.thumb).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_small_crop.jpg')
+    end
+  end
+
 end

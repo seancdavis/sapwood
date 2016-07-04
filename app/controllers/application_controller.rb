@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_property_documents
-      @current_property_documents ||= current_property.documents
+      @current_property_documents ||= current_property.documents.alpha
     end
 
     # ------------------------------------------ Collections

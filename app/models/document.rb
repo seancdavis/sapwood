@@ -26,6 +26,9 @@ class Document < ActiveRecord::Base
 
   default_scope { where(:archived => false) }
 
+  scope :alpha, -> { order(:title => :asc) }
+  scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
+
   # ---------------------------------------- Callbacks
 
   after_create :process_images!

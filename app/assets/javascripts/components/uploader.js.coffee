@@ -21,7 +21,7 @@ class App.Components.Uploader extends Backbone.View
         file = data.files[0]
         if types.test(file.type) || types.test(file.name)
           data.context = $(tmpl("template-upload", file))
-          $('#fileupload').after(data.context)
+          $('.batch-uploader').append(data.context)
           data.context.find('.processing').hide()
           data.form.find('#content_type').attr('name','Content-Type')
           data.form.find('#content_type').val(file.type)
@@ -43,9 +43,6 @@ class App.Components.Uploader extends Backbone.View
         content[$('#fileupload').data('as')] = domain + path
         $.post to, content
         .done (response) =>
-          # $('section.list').first()
-          #   .prepend(@template(document: data.document))
-          # $('div.upload').remove()
           data.context.find('.progress').remove()
           data.context.append """
             <p class="success">Uploaded successfully.</p>
@@ -57,10 +54,6 @@ class App.Components.Uploader extends Backbone.View
             <p class="error">There was an error with this upload.</p>
           """
           window.location.reload() if $('div.progress').length == 0
-          # $('div.upload').remove()
-          # $('header.page').after """
-          #   <p class="alert">There was a problem with your upload.</p>
-          #     """
 
       fail: (e, data) ->
         $('div.upload').remove()

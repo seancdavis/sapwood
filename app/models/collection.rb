@@ -9,7 +9,7 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  collection_type_name :string
-#  field_data           :json
+#  field_data           :json             default({})
 #
 
 class Collection < ActiveRecord::Base
@@ -63,21 +63,33 @@ class Collection < ActiveRecord::Base
     els = elements
     ids = element_ids
     items = []
-    JSON.parse(item_data).each do |k1, v1|
-      e1 = els.select { |e| e.id == k1['id'] }.first
-      c1 = []
-      k1['children'].each do |k2, v2|
-        e2 = els.select { |e| e.id == k2['id'] }.first
-        c2 = []
-        k2['children'].each do |k3, v3|
-          e3 = els.select { |e| e.id == k3['id'] }.first
-          c2 << e3.as_json({})
+    if item_data.present?
+      JSON.parse(item_data).each do |k1, v1|
+        e1 = els.select { |e| e.id == k1['id'] }.first
+        c1 = []
+        k1['children'].each do |k2, v2|
+          e2 = els.select { |e| e.id == k2['id'] }.first
+          c2 = []
+          k2['children'].each do |k3, v3|
+            e3 = els.select { |e| e.id == k3['id'] }.first
+            c2 << e3.as_json({})
+          end
+          c1 << e2.as_json({}).merge(:children => c2)
         end
-        c1 << e2.as_json({}).merge(:children => c2)
+        items << e1.as_json({}).merge(:children => c1)
       end
-      items << e1.as_json({}).merge(:children => c1)
     end
-    { :id => id, :title => title, :items => items }
+    response = { :id => id, :title => title }
+    if field_data.present?
+      field_data.each do |k,v|
+        response[k.to_sym] = if collection_type.find_field(k).is_document?
+           Document.find_by_id(v)
+         else
+          v
+        end
+      end
+    end
+    response.merge(:items => items)
   end
 
   def method_missing(method, *arguments, &block)

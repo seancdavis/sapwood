@@ -20,10 +20,10 @@ ActiveRecord::Schema.define(version: 20160704104700) do
     t.string   "title"
     t.integer  "property_id"
     t.text     "item_data"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "collection_type_name"
-    t.json     "field_data"
+    t.json     "field_data",           default: {}
   end
 
   create_table "delayed_jobs", force: :cascade do |t|

@@ -2,17 +2,17 @@
 #
 # Table name: properties
 #
-#  id              :integer          not null, primary key
-#  title           :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  color           :string
-#  labels          :json
-#  templates_raw   :text
-#  forms_raw       :text
-#  hidden_labels   :text             default([]), is an Array
-#  api_key         :string
-#  collections_raw :text
+#  id                   :integer          not null, primary key
+#  title                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  color                :string
+#  labels               :json
+#  templates_raw        :text
+#  forms_raw            :text
+#  hidden_labels        :text             default([]), is an Array
+#  api_key              :string
+#  collection_types_raw :text
 #
 
 require 'rails_helper'
@@ -34,9 +34,9 @@ RSpec.describe Property, :type => :model do
     end
   end
 
-  describe '#set_default_collections, #collection_data' do
-    it 'sets default permissions when none are set' do
-      expect(property.collection_data).to eq([{ 'title' => 'Collection' }])
+  describe '#set_default_collections' do
+    it 'sets default collections when none are set' do
+      expect(property.collection_types[0].title).to eq('Collection')
     end
   end
 
@@ -87,6 +87,8 @@ RSpec.describe Property, :type => :model do
       expect(property.label_hidden?('elements')).to eq(false)
     end
   end
+
+  # ---------------------------------------- Templates
 
   describe '#templates' do
     before(:each) do
@@ -139,6 +141,67 @@ RSpec.describe Property, :type => :model do
       expect(property.find_template('Default').class).to eq(Property::Template)
     end
   end
+
+  # ---------------------------------------- Templates
+
+  describe '#collection_types' do
+    before(:each) do
+      file = File
+        .expand_path('../../support/collection_type_config.json', __FILE__)
+      @config = File.read(file)
+    end
+    it 'returns an default collection when there is no collection_type' do
+      expect(property.collection_types[0].title).to eq('Collection')
+    end
+    it 'returns an error message when the JSON is malformed' do
+      property.update!(:collection_types_raw => "#{@config}]]")
+      expect { property.collection_types }.to raise_error(JSON::ParserError)
+    end
+    context 'when there are collection types' do
+      before(:each) { property.update!(:collection_types_raw => @config) }
+      it 'returns an array' do
+        expect(property.collection_types.class).to eq(Array)
+      end
+      it 'returns Property::CollectionType objects within the array' do
+        expect(property.collection_types.first.class)
+          .to eq(Property::CollectionType)
+      end
+    end
+  end
+
+  describe '#valid_collection_types?' do
+    before(:each) do
+      file = File
+        .expand_path('../../support/collection_type_config.json', __FILE__)
+      @config = File.read(file)
+    end
+    it 'returns true when there is no collection_type' do
+      expect(property.valid_collection_types?).to eq(true)
+    end
+    it 'returns an error message when the JSON is malformed' do
+      property.update!(:collection_types_raw => "#{@config}]]")
+      expect(property.valid_collection_types?).to eq(false)
+    end
+    it 'returns an array for valid JSON' do
+      property.update!(:collection_types_raw => @config)
+      expect(property.valid_collection_types?).to eq(true)
+    end
+  end
+
+  describe '#find_collection_type' do
+    before(:each) do
+      file = File
+        .expand_path('../../support/collection_type_config.json', __FILE__)
+      @config = File.read(file)
+      property.update!(:collection_types_raw => @config)
+    end
+    it 'can find a collection_type by its title' do
+      expect(property.find_collection_type('Default').class)
+        .to eq(Property::CollectionType)
+    end
+  end
+
+  # ---------------------------------------- Users
 
   describe '#users_with_access' do
     let(:property) { create(:property) }

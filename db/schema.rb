@@ -76,15 +76,15 @@ ActiveRecord::Schema.define(version: 20160704094501) do
 
   create_table "properties", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "color"
     t.json     "labels"
     t.text     "templates_raw"
     t.text     "forms_raw"
-    t.text     "hidden_labels",   default: [],              array: true
+    t.text     "hidden_labels",        default: [],              array: true
     t.string   "api_key"
-    t.text     "collections_raw"
+    t.text     "collection_types_raw"
   end
 
   create_table "property_users", force: :cascade do |t|

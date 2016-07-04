@@ -2,17 +2,17 @@
 #
 # Table name: properties
 #
-#  id              :integer          not null, primary key
-#  title           :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  color           :string
-#  labels          :json
-#  templates_raw   :text
-#  forms_raw       :text
-#  hidden_labels   :text             default([]), is an Array
-#  api_key         :string
-#  collections_raw :text
+#  id                   :integer          not null, primary key
+#  title                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  color                :string
+#  labels               :json
+#  templates_raw        :text
+#  forms_raw            :text
+#  hidden_labels        :text             default([]), is an Array
+#  api_key              :string
+#  collection_types_raw :text
 #
 
 class Property < ActiveRecord::Base
@@ -51,12 +51,12 @@ class Property < ActiveRecord::Base
     update_columns(:api_key => SecureRandom.hex(25))
   end
 
-  after_save :set_default_collections
+  after_save :set_default_collection_type
 
-  def set_default_collections
-    if collections_raw.blank?
+  def set_default_collection_type
+    if collection_types_raw.blank?
       c = [{ :title => 'Collection' }]
-      update_columns(:collections_raw => JSON.pretty_generate(c))
+      update_columns(:collection_types_raw => JSON.pretty_generate(c))
     end
   end
 
@@ -112,9 +112,25 @@ class Property < ActiveRecord::Base
     templates.select { |t| t.title == name }.first
   end
 
-  def collection_data
-    return [] if collections_raw.blank?
-    JSON.parse(collections_raw)
+  def collection_types
+    return [] if collection_types_raw.blank?
+    types = []
+    JSON.parse(collection_types_raw).each do |ct|
+      types << Property::CollectionType.new(ct)
+    end
+    types
+  end
+
+  def valid_collection_types?
+    begin
+      return true if collection_types
+    rescue
+      false
+    end
+  end
+
+  def find_collection_type(name)
+    collection_types.select { |t| t.title == name }.first
   end
 
   def users_with_access

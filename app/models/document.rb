@@ -69,7 +69,8 @@ class Document < ActiveRecord::Base
   def version(name, crop = false)
     return safe_url.to_s if !processed? || !image?
     alt = crop ? '_crop' : nil
-    "#{s3_base}/#{s3_dir}/#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
+    filename = "#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
+    URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
   end
 
   def image?
@@ -81,11 +82,18 @@ class Document < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    {
+    response = {
       :id => id,
       :title => title,
       :url => url
     }
+    return response if !processed? || !image?
+    response[:versions] = {}
+    %w(xsmall small medium large xlarge).each do |v|
+      response[:versions][:"#{v}"] = version(v, false)
+      response[:versions][:"#{v}_crop"] = version(v, true)
+    end
+    response
   end
 
   def process_images!

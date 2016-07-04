@@ -62,8 +62,8 @@ RSpec.describe Document, :type => :model do
     end
     it 'returns the correct url for a version with and without crop' do
       document.processed = true
-      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large.jpg')
-      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large_crop.jpg')
+      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large.jpg')
+      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large_crop.jpg')
     end
   end
 

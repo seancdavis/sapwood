@@ -39,6 +39,7 @@ gem 'trumbowyg_rails'
 
 group :development do
   gem 'mailcatcher'
+  gem 'quiet_assets'
 end
 
 group :production do

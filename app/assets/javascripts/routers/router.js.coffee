@@ -5,10 +5,11 @@ class App.Routers.Router extends Backbone.Router
     new App.Components.Blocks
     new App.Components.Helpers
     new App.Components.SidebarToggle
+    new App.Components.Dropdown
 
   routes:
     'properties/:property_id/edit': 'editProperty'
-    'properties/:property_id/elements': 'elements'
+    # 'properties/:property_id/elements': 'elements'
     'properties/:property_id/elements/new': 'editElement'
     'properties/:property_id/elements/:element_id/edit': 'editElement'
     'properties/:property_id/documents': 'documents'
@@ -20,8 +21,8 @@ class App.Routers.Router extends Backbone.Router
   editProperty: ->
     new App.Views.EditProperty
 
-  elements: ->
-    new App.Views.Elements
+  # elements: ->
+  #   new App.Views.Elements
 
   editElement: (property_id) ->
     new App.Views.EditElement

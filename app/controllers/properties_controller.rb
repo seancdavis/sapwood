@@ -76,7 +76,7 @@ class PropertiesController < ApplicationController
         []
       end
       params.require(:property)
-        .permit(:title, :color, :templates_raw, :collections_raw, :forms_raw,
+        .permit(:title, :color, :templates_raw, :collection_types_raw, :forms_raw,
                 :labels => Property.labels)
         .merge(:hidden_labels => hidden_labels)
     end

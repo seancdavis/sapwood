@@ -1,10 +1,11 @@
 <%= page_header(
   :title => current_property.p.label_title('collections'),
   :button => {
-    :label => current_property.p.label_new('collections'),
+    :label => 'New',
     :path => new_property_collection_path(current_property),
     :options => { :class => 'new button' }
-  }
+  },
+  :dropdown => 'collection_types_dropdown'
 ) %>
 
 <section class="body">

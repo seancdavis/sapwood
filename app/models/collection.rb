@@ -2,12 +2,14 @@
 #
 # Table name: collections
 #
-#  id          :integer          not null, primary key
-#  title       :string
-#  property_id :integer
-#  item_data   :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                   :integer          not null, primary key
+#  title                :string
+#  property_id          :integer
+#  item_data            :text
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  collection_type_name :string
+#  field_data           :json
 #
 
 class Collection < ActiveRecord::Base
@@ -18,7 +20,7 @@ class Collection < ActiveRecord::Base
 
   # ---------------------------------------- Validations
 
-  validates :title, :presence => true
+  validates :title, :collection_type_name, :presence => true
 
   # ---------------------------------------- Instance Methods
 
@@ -37,6 +39,11 @@ class Collection < ActiveRecord::Base
 
   def elements
     property.elements.where(:id => element_ids)
+  end
+
+  def collection_type
+    return nil if property.nil?
+    property.find_collection_type(collection_type_name)
   end
 
   def as_json(options)

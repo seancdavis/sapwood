@@ -6,7 +6,7 @@
   </p>
   <br>
   <%= minimal_form_for current_property do |f| %>
-    <%= f.input :collections_raw, :autofocus => true,
+    <%= f.input :collection_types_raw, :autofocus => true,
                 :placeholder => 'Collections Config (JSON)' %>
     <%= f.input :redirect_to, :as => :hidden, :input_html => {
                 :value => property_setup_path(current_property, :forms) } %>

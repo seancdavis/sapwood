@@ -1,0 +1,13 @@
+<nav class="collection-types dropdown">
+  <ul>
+    <% current_property.collection_types.each do |ct| %>
+      <li>
+        <%= link_to(
+          ct.title,
+          new_property_collection_path(current_property,
+                                       :collection_type => ct.title)
+        ) %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

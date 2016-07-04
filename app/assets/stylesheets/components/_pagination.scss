@@ -1,0 +1,10 @@
+.pagination {
+  margin-top: 15px;
+  a {
+    display: inline-block;
+    margin: 5px;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

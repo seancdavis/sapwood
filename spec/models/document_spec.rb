@@ -57,9 +57,13 @@ RSpec.describe Document, :type => :model do
 
   describe '#version' do
     let(:document) { build(:document, :from_s3) }
+    it 'returns the main URL if it has not been processed' do
+      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+    end
     it 'returns the correct url for a version with and without crop' do
-      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large.jpg')
-      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large_crop.jpg')
+      document.processed = true
+      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large.jpg')
+      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large_crop.jpg')
     end
   end
 

@@ -47,7 +47,7 @@ RSpec.describe Collection, :type => :model do
           e[4].as_json({}).merge(:children => [])
         ]
         as_json = { :id => @collection.id, :title => @collection.title,
-          :items => items }
+                    :type => 'Collection', :items => items }
         expect(@collection.as_json({})).to eq(as_json)
       end
     end

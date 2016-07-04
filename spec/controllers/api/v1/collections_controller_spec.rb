@@ -19,7 +19,6 @@ describe Api::V1::CollectionsController do
       c_01 = create(:collection, :with_items, :property => @property)
       c_02 = create(:collection, :with_items, :property => @property)
       c_03 = create(:collection, :with_items)
-      puts c_01.collection_type.title
       response = get :index, :api_key => @property.api_key,
                      :format => :json
       expect(response.body).to include(c_01.to_json)

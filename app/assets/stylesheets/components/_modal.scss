@@ -3,6 +3,7 @@
   @include size(100%);
   z-index: 9999999;
   background: $lt-grey;
+  overflow-y: scroll;
   @include transition(all 0.35s ease);
   &.active {
     bottom: 0;

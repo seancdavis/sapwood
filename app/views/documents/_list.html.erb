@@ -1,7 +1,17 @@
-<% if current_property_documents.present? %>
+<div class="document-filters">
+  <%= link_to 'All', property_documents_path(current_property),
+              :class => ('active' if params[:f].blank?) %>
+  <% (['0-9'] + ('A'..'Z').to_a).each do |f| %>
+    <%= link_to f, property_documents_path(current_property, :f => f),
+                :class => ('active' if params[:f] == f) %>
+  <% end %>
+</div>
+
+<% if @documents.present? %>
   <div class="document-tiles">
-    <%= render current_property_documents %>
+    <%= render @documents %>
   </div>
+  <%= paginate @documents %>
 <% else %>
   <%= render 'empty' %>
 <% end %>

@@ -19,7 +19,7 @@ class App.Components.DocumentChooser extends Backbone.View
         @bindClickEvents()
 
   bindClickEvents: =>
-    @modal.modal().find('.modal-content a').click (e) =>
+    @modal.modal().find('.modal-content .document > a').click (e) =>
       e.preventDefault()
       doc = $(e.target).parents('article.document').first()
       @uploader.find('input.hidden').first().val(doc.data('id'))
@@ -31,3 +31,9 @@ class App.Components.DocumentChooser extends Backbone.View
       preview.find('span').text(doc.data('title'))
       preview.removeClass('hidden')
       @modal.close()
+    @modal.modal().find('.pagination a, .document-filters a').click (e) =>
+      e.preventDefault()
+      $.get $(e.target).attr('href'), (data) =>
+        @modal.content = data
+        @modal.updateContent()
+        @bindClickEvents()

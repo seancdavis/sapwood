@@ -26,7 +26,9 @@ class App.Components.Modal extends Backbone.View
 
   open: =>
     @modal().addClass('active')
+    $('body, html').addClass('no-scroll')
 
   close: (e = null) =>
     e.preventDefault() if e
     @modal().removeClass('active')
+    $('body, html').removeClass('no-scroll')

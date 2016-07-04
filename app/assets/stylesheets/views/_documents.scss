@@ -48,3 +48,19 @@
     }
   }
 }
+
+.document-filters {
+  margin-bottom: 15px;
+  a {
+    display: inline-block;
+    margin: 5px;
+    font-size: 1.1em;
+    &:first-child {
+      margin-left: 0;
+    }
+    &.active {
+      font-weight: 600;
+      color: $dark;
+    }
+  }
+}

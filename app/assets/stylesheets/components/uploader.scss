@@ -60,13 +60,19 @@ div.embedded.upload {
     margin: 0;
     font-weight: 600;
     line-height: 1;
-    &.error {
+    &.error, &.alert {
       color: $error;
     }
     &.success {
       padding: 0;
       background: transparent;
       color: $success;
+    }
+    &.waiting {
+      margin-top: 10px;
+      font-weight: 200;
+      font-style: italic;
+      font-size: 0.8em;
     }
   }
 }

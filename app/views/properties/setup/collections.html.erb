@@ -1,15 +1,15 @@
-<%= card :title => "#{current_property.title}: Templates",
+<%= card :title => "#{current_property.title}: Collections",
          :progress => 60 do %>
-  <p>This is your raw template config.</p>
+  <p>This is your raw collections config.</p>
   <p>
     If you don't know what you're looking at, <a href="#">read more here.</a>
   </p>
   <br>
   <%= minimal_form_for current_property do |f| %>
-    <%= f.input :templates_raw, :autofocus => true,
-                :placeholder => 'Templates Config (JSON)' %>
+    <%= f.input :collections_raw, :autofocus => true,
+                :placeholder => 'Collections Config (JSON)' %>
     <%= f.input :redirect_to, :as => :hidden, :input_html => {
-                :value => property_setup_path(current_property, :collections) } %>
+                :value => property_setup_path(current_property, :forms) } %>
     <%= f.submit 'Next' %>
   <% end %>
   <%= link_to 'Go To Property', current_property, :class => 'info' %>

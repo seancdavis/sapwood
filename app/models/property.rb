@@ -2,16 +2,17 @@
 #
 # Table name: properties
 #
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  labels        :json
-#  templates_raw :text
-#  forms_raw     :text
-#  hidden_labels :text             default([]), is an Array
-#  api_key       :string
+#  id              :integer          not null, primary key
+#  title           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  color           :string
+#  labels          :json
+#  templates_raw   :text
+#  forms_raw       :text
+#  hidden_labels   :text             default([]), is an Array
+#  api_key         :string
+#  collections_raw :text
 #
 
 class Property < ActiveRecord::Base
@@ -48,6 +49,15 @@ class Property < ActiveRecord::Base
 
   def generate_api_key!
     update_columns(:api_key => SecureRandom.hex(25))
+  end
+
+  after_save :set_default_collections
+
+  def set_default_collections
+    if collections_raw.blank?
+      c = [{ :title => 'Collection' }]
+      update_columns(:collections_raw => JSON.pretty_generate(c))
+    end
   end
 
   # ---------------------------------------- Class Methods
@@ -100,6 +110,11 @@ class Property < ActiveRecord::Base
 
   def find_template(name)
     templates.select { |t| t.title == name }.first
+  end
+
+  def collection_data
+    return [] if collections_raw.blank?
+    JSON.parse(collections_raw)
   end
 
   def users_with_access

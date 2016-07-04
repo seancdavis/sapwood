@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701141928) do
+ActiveRecord::Schema.define(version: 20160704094501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,14 +76,15 @@ ActiveRecord::Schema.define(version: 20160701141928) do
 
   create_table "properties", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "color"
     t.json     "labels"
     t.text     "templates_raw"
     t.text     "forms_raw"
-    t.text     "hidden_labels", default: [],              array: true
+    t.text     "hidden_labels",   default: [],              array: true
     t.string   "api_key"
+    t.text     "collections_raw"
   end
 
   create_table "property_users", force: :cascade do |t|

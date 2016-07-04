@@ -2,16 +2,17 @@
 #
 # Table name: properties
 #
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  labels        :json
-#  templates_raw :text
-#  forms_raw     :text
-#  hidden_labels :text             default([]), is an Array
-#  api_key       :string
+#  id              :integer          not null, primary key
+#  title           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  color           :string
+#  labels          :json
+#  templates_raw   :text
+#  forms_raw       :text
+#  hidden_labels   :text             default([]), is an Array
+#  api_key         :string
+#  collections_raw :text
 #
 
 require 'rails_helper'
@@ -30,6 +31,12 @@ RSpec.describe Property, :type => :model do
       property.update(:title => Faker::Company.bs)
       property.reload
       expect(property.api_key).to eq(key)
+    end
+  end
+
+  describe '#set_default_collections, #collection_data' do
+    it 'sets default permissions when none are set' do
+      expect(property.collection_data).to eq([{ 'title' => 'Collection' }])
     end
   end
 

@@ -11,7 +11,19 @@
 <section class="body">
   <% if current_property_collections.present? %>
     <div class="block">
-      <%= render current_property_collections %>
+      <table>
+        <thead>
+          <tr>
+            <!-- <th class="icon"></th> -->
+            <th>Title</th>
+            <th>Type</th>
+            <th>Last Modified</th>
+          </tr>
+        </thead>
+        <tbody class="collections">
+          <%= render current_property_collections %>
+        </tbody>
+      </table>
     </div>
   <% else %>
     <%= render 'empty' %>

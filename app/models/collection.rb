@@ -14,6 +14,10 @@
 
 class Collection < ActiveRecord::Base
 
+  # ---------------------------------------- Plugins
+
+  include Presenter
+
   # ---------------------------------------- Associations
 
   belongs_to :property

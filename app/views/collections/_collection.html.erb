@@ -1,5 +1,11 @@
-<article class="collection">
-  <span class="title">
+<tr class="collection">
+  <td class="title">
     <%= link_to collection.title, [:edit, current_property, collection] %>
-  </span>
+  </td>
+  <td>
+    <%= collection.collection_type.title %>
+  </td>
+  <td>
+    <%= collection.p.updated_at %>
+  </td>
 </article>

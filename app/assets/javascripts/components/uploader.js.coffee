@@ -33,6 +33,7 @@ class App.Components.Uploader extends Backbone.View
         if data.context
           progress = parseInt(data.loaded / data.total * 100, 10)
           data.context.find('.bar').css('width', progress + '%')
+          data.context.find('.waiting').remove()
 
       done: (e, data) =>
         file = data.files[0]

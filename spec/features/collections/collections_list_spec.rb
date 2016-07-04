@@ -12,7 +12,7 @@ feature 'Collections List', :js => true do
 
   context 'when there are no collections' do
     scenario 'displays a message when there are no collections' do
-      expect(page).to have_content('Nothing here yet!')
+      expect(page).to have_content('Nothing here!')
     end
   end
 

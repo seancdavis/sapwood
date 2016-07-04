@@ -28,6 +28,7 @@ class Document < ActiveRecord::Base
 
   scope :alpha, -> { order(:title => :asc) }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
+  scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
 
   # ---------------------------------------- Callbacks
 

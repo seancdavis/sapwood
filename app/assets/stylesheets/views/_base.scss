@@ -1,6 +1,10 @@
 
 // ---------------------------------------- Base
 
+html.no-scroll, body.no-scroll {
+  overflow: hidden;
+}
+
 body {
   background: $lt-grey;
 

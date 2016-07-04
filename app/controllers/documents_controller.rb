@@ -17,6 +17,17 @@ class DocumentsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    @documents = if params[:f]
+      if params[:f] == '0-9'
+        current_property.documents.starting_with_number.alpha
+          .page(params[:page] || 1).per(12)
+      else
+        current_property.documents.starting_with(params[:f]).alpha
+          .page(params[:page] || 1).per(12)
+      end
+    else
+      current_property.documents.alpha.page(params[:page] || 1).per(12)
+    end
     render :partial => 'list' if request.xhr?
   end
 

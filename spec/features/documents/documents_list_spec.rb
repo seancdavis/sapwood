@@ -13,7 +13,7 @@ feature 'Documents List', :js => true do
 
   context 'when there are no documents' do
     scenario 'displays a message when there are no documents' do
-      expect(page).to have_content('Nothing here yet!')
+      expect(page).to have_content('Nothing here!')
     end
   end
 

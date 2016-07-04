@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Default"
+  },
+  {
+    "title": "All Options",
+    "fields": {
+      "description": {
+        "type": "string",
+        "label": "Description"
+      }
+    }
+  }
+]

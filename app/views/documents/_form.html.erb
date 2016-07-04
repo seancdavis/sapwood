@@ -14,5 +14,8 @@
       </aside>
     </div>
     <%= f.submit "Save Document" %>
+    <%= link_to 'Archive Document', [current_property, current_document],
+                :class => 'button delete', :method => :delete,
+                :data => { :confirm => 'Are you sure?' } %>
   <% end %>
 </section>

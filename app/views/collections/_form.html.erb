@@ -11,6 +11,16 @@
 
       <aside>
         <%= f.input :title %>
+
+        <%= f.input :collection_type_name, :as => :hidden, :readonly => true,
+                    :input_html => { :value => current_collection_type.title } %>
+
+        <%= f.simple_fields_for :field_data,
+                              OpenStruct.new(f.object.field_data) do |fd| %>
+          <% current_collection_type.fields.each do |field| %>
+            <%= send(field.html, fd, field.html_options) %>
+          <% end %>
+        <% end %>
       </aside>
     </div>
     <%= f.submit "Save" %>

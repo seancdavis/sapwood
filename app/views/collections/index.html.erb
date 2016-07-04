@@ -1,16 +1,29 @@
 <%= page_header(
   :title => current_property.p.label_title('collections'),
   :button => {
-    :label => current_property.p.label_new('collections'),
+    :label => 'New',
     :path => new_property_collection_path(current_property),
     :options => { :class => 'new button' }
-  }
+  },
+  :dropdown => 'collection_types_dropdown'
 ) %>
 
 <section class="body">
   <% if current_property_collections.present? %>
     <div class="block">
-      <%= render current_property_collections %>
+      <table>
+        <thead>
+          <tr>
+            <!-- <th class="icon"></th> -->
+            <th>Title</th>
+            <th>Type</th>
+            <th>Last Modified</th>
+          </tr>
+        </thead>
+        <tbody class="collections">
+          <%= render current_property_collections %>
+        </tbody>
+      </table>
     </div>
   <% else %>
     <%= render 'empty' %>

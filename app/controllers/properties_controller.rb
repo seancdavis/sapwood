@@ -2,16 +2,17 @@
 #
 # Table name: properties
 #
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  labels        :json
-#  templates_raw :text
-#  forms_raw     :text
-#  hidden_labels :text             default([]), is an Array
-#  api_key       :string
+#  id                   :integer          not null, primary key
+#  title                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  color                :string
+#  labels               :json
+#  templates_raw        :text
+#  forms_raw            :text
+#  hidden_labels        :text             default([]), is an Array
+#  api_key              :string
+#  collection_types_raw :text
 #
 
 class PropertiesController < ApplicationController
@@ -75,7 +76,7 @@ class PropertiesController < ApplicationController
         []
       end
       params.require(:property)
-        .permit(:title, :color, :templates_raw, :forms_raw,
+        .permit(:title, :color, :templates_raw, :collection_types_raw, :forms_raw,
                 :labels => Property.labels)
         .merge(:hidden_labels => hidden_labels)
     end

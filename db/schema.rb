@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503121307) do
+ActiveRecord::Schema.define(version: 20160704104700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,16 +20,36 @@ ActiveRecord::Schema.define(version: 20160503121307) do
     t.string   "title"
     t.integer  "property_id"
     t.text     "item_data"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "collection_type_name"
+    t.json     "field_data",           default: {}
   end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "title"
     t.string   "url"
     t.integer  "property_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "archived",    default: false
+    t.boolean  "processed",   default: false
   end
 
   create_table "elements", force: :cascade do |t|
@@ -58,14 +78,15 @@ ActiveRecord::Schema.define(version: 20160503121307) do
 
   create_table "properties", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "color"
     t.json     "labels"
     t.text     "templates_raw"
     t.text     "forms_raw"
-    t.text     "hidden_labels", default: [],              array: true
+    t.text     "hidden_labels",        default: [],              array: true
     t.string   "api_key"
+    t.text     "collection_types_raw"
   end
 
   create_table "property_users", force: :cascade do |t|

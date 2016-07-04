@@ -1,4 +1,4 @@
-class Property::Template
+class Property::CollectionType
 
   def initialize(options)
     @attributes ||= options
@@ -7,18 +7,6 @@ class Property::Template
 
   def attributes
     @attributes ||= {}
-  end
-
-  def name
-    title
-  end
-
-  def element_title_label
-    attributes['element_title_label'] || 'Title'
-  end
-
-  def show_body?
-    attributes['body'].nil? ? true : attributes['body'].to_bool
   end
 
   def fields
@@ -32,10 +20,6 @@ class Property::Template
 
   def find_field(name)
     fields.select { |f| f.name == name }.first
-  end
-
-  def geocode_fields
-    fields.select { |f| f.type == 'geocode' }
   end
 
   def method_missing(method, *arguments, &block)

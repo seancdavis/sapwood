@@ -11,12 +11,14 @@
         <span class="error">Your template config is invalid.</span>
       <% end %>
       <%= f.input :templates_raw, :label => false,
-                  :placeholder => 'Template Data (JSON)',
+                  :placeholder => 'Templates Config (JSON)',
                   :input_html => {
                     :class => ('error' unless current_property.valid_templates?)
                   } %>
+      <%= f.input :collection_types_raw, :label => false,
+                  :placeholder => 'Collections Config (JSON)' %>
       <%= f.input :forms_raw, :label => false,
-                  :placeholder => 'Form Data (JSON)' %>
+                  :placeholder => 'Responses Config (JSON)' %>
 
       <h3>API Key</h3>
       <p>

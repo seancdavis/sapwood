@@ -16,7 +16,7 @@ module FieldHelper
         o += content_tag(:div, :class => 'document-url') do
           link_to(document.url) do
             o2  = ''
-            o2 += image_tag(document.url) if document.image?
+            o2 += image_tag(document.version(:xsmall, true)) if document.image?
             o2 += content_tag(:span, document.title)
             o2.html_safe
           end

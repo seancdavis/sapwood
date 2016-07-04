@@ -1,4 +1,4 @@
-body.elements.index {
+body.elements.index, body.collections.index {
 
   th {
     color: $md-grey;
@@ -12,15 +12,12 @@ body.elements.index {
     padding: rem(5) 0;
   }
 
-  .elements, .folders {
+  .elements, .folders, .collections {
     td {
       font-size: 0.8em;
       font-weight: 200;
       color: $md-grey;
-      &.icon {
-        font-size: 1em;
-      }
-      &.title {
+      &.icon, &.title {
         font-size: 1em;
       }
     }

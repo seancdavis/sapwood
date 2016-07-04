@@ -2,18 +2,21 @@
 #
 # Table name: collections
 #
-#  id          :integer          not null, primary key
-#  title       :string
-#  property_id :integer
-#  item_data   :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                   :integer          not null, primary key
+#  title                :string
+#  property_id          :integer
+#  item_data            :text
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  collection_type_name :string
+#  field_data           :json             default({})
 #
 
 FactoryGirl.define do
   factory :collection do
     property
     title { Faker::App.name }
+    collection_type_name 'Collection'
     item_data {{}}
     trait :with_items do
       after(:create) do |collection|

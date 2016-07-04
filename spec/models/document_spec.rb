@@ -8,6 +8,8 @@
 #  property_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  archived    :boolean          default(FALSE)
+#  processed   :boolean          default(FALSE)
 #
 
 require 'rails_helper'
@@ -31,6 +33,33 @@ RSpec.describe Document, :type => :model do
       expect(json[:id]).to eq(document.id)
       expect(json[:title]).to eq(document.title)
       expect(json[:url]).to eq(document.url)
+    end
+  end
+
+  describe '#filename, #filename_no_ext, #file_ext' do
+    let(:document) { build(:document) }
+    it 'returns appropriate filename parts' do
+      expect(document.filename).to eq('178947853882959841_1454569459.jpg')
+      expect(document.filename_no_ext).to eq('178947853882959841_1454569459')
+      expect(document.file_ext).to eq('jpg')
+    end
+  end
+
+  describe '#safe_url, #uri, #s3_base, #s3_dir' do
+    let(:document) { build(:document, :from_s3) }
+    it 'returns appropraite uri segments' do
+      expect(document.safe_url).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+      expect(document.uri).to eq(URI.parse(document.safe_url))
+      expect(document.s3_base).to eq('https://sapwood.s3.amazonaws.com')
+      expect(document.s3_dir).to eq('development/properties/1/xxxxxx-xxxxxx')
+    end
+  end
+
+  describe '#version' do
+    let(:document) { build(:document, :from_s3) }
+    it 'returns the correct url for a version with and without crop' do
+      expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large.jpg')
+      expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray_large_crop.jpg')
     end
   end
 

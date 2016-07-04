@@ -24,18 +24,22 @@ gem 'jquery-rails'
 
 gem 'active_record_query_trace'
 gem 'ancestry'
+gem 'aws-sdk'
 gem 'carrierwave_direct'
+gem 'delayed_job_active_record'
 gem 'devise'
 gem 'geokit'
 gem 'highline'
 gem 'jbuilder'
 gem 'jquery-fileupload-rails'
+gem 'rmagick'
 gem 'simple_form'
 gem 'superslug'
 gem 'trumbowyg_rails'
 
 group :development do
   gem 'mailcatcher'
+  gem 'quiet_assets'
 end
 
 group :production do

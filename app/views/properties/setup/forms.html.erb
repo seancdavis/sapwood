@@ -6,7 +6,8 @@
   </p>
   <br>
   <%= minimal_form_for current_property do |f| %>
-    <%= f.input :forms_raw, :autofocus => true %>
+    <%= f.input :forms_raw, :autofocus => true,
+                :placeholder => 'Responses Config (JSON)' %>
     <%= f.input :redirect_to, :as => :hidden, :input_html => {
                 :value => property_setup_path(current_property, :complete) } %>
     <%= f.submit 'Next' %>

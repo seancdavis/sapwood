@@ -1,7 +1,7 @@
 <article class="document <%= document.image? ? 'img' : 'doc' %>"
          data-id="<%= document.id %>" data-title="<%= document.title %>"
          data-url="<%= document.url %>" data-image="<%= document.image? %>"
-         style="background-image: url(<%= document.url if document.image? %>)">
+         style="background-image: url('<%= document.version(:small) if document.image? %>')">
   <%= link_to [:edit, current_property, document] do %>
     <span class="title">
       <%=  document.title %>

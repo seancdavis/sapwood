@@ -67,7 +67,7 @@ class Document < ActiveRecord::Base
   end
 
   def version(name, crop = false)
-    return safe_url.to_s unless processed?
+    return safe_url.to_s if !processed? || !image?
     alt = crop ? '_crop' : nil
     "#{s3_base}/#{s3_dir}/#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
   end

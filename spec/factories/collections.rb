@@ -16,6 +16,7 @@ FactoryGirl.define do
   factory :collection do
     property
     title { Faker::App.name }
+    collection_type_name 'Collection'
     item_data {{}}
     trait :with_items do
       after(:create) do |collection|

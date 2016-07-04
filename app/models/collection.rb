@@ -41,9 +41,22 @@ class Collection < ActiveRecord::Base
     property.elements.where(:id => element_ids)
   end
 
+  def field_names
+    return [] unless collection_type?
+    collection_type.fields.collect(&:name)
+  end
+
+  def has_field?(name)
+    field_names.include?(name.to_s)
+  end
+
   def collection_type
     return nil if property.nil?
     property.find_collection_type(collection_type_name)
+  end
+
+  def collection_type?
+    collection_type.present?
   end
 
   def as_json(options)
@@ -65,6 +78,11 @@ class Collection < ActiveRecord::Base
       items << e1.as_json({}).merge(:children => c1)
     end
     { :id => id, :title => title, :items => items }
+  end
+
+  def method_missing(method, *arguments, &block)
+    return super unless has_field?(method.to_s)
+    field_data[method.to_s]
   end
 
 end

@@ -46,7 +46,7 @@ class App.Components.Uploader extends Backbone.View
         .done (response) =>
           data.context.find('.progress').remove()
           data.context.append """
-            <p class="success">Uploaded successfully.</p>
+            <p class="success">Uploaded successfully!</p>
           """
           window.location.reload() if $('div.progress').length == 0
         .fail (response) =>

@@ -485,6 +485,7 @@ DEPENDENCIES
   capybara-screenshot
   carrierwave_direct
   coffee-rails
+  daemons
   database_cleaner
   delayed_job_active_record
   devise

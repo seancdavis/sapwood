@@ -19,7 +19,7 @@ feature 'Property Setup Wizard' do
     click_button 'Next'
     fill_in 'property[templates_raw]', :with => 'TEMPLATE_DATA'
     click_button 'Next'
-    fill_in 'property[collections_raw]', :with => 'COLLECTION_DATA'
+    fill_in 'property[collection_types_raw]', :with => 'COLLECTION_DATA'
     click_button 'Next'
     fill_in 'property[forms_raw]', :with => 'FORM_DATA'
     click_button 'Next'
@@ -29,7 +29,7 @@ feature 'Property Setup Wizard' do
     expect(property.color).to eq(@property.color)
     expect(property.labels['elements']).to eq('Pages')
     expect(property.templates_raw).to eq('TEMPLATE_DATA')
-    expect(property.collections_raw).to eq('COLLECTION_DATA')
+    expect(property.collection_types_raw).to eq('COLLECTION_DATA')
     expect(property.forms_raw).to eq('FORM_DATA')
   end
 

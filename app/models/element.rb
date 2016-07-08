@@ -31,11 +31,11 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Scopes
 
-  default_scope { order(:position => :asc, :id => :asc) }
-
   scope :alpha, -> { order(:title => :asc) }
   scope :roots, -> { where(:folder_id => nil) }
   scope :with_template, ->(name) { where(:template_name => name) }
+  scope :by_title, -> { order(:title => :asc) }
+  scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
 
   # ---------------------------------------- Validations
 
@@ -134,6 +134,7 @@ class Element < ActiveRecord::Base
   private
 
     def init_webhook
+      return false unless template?
       Webhook.delay.call(:element => self) if template.has_webhook?
     end
 

@@ -8,6 +8,11 @@ class Api::V1::ElementsController < ApiController
         else
           current_property.elements
         end
+        @elements = if params[:order]
+          @elements.by_field(params[:order])
+        else
+          @elements.by_title
+        end
         render(:json => @elements)
       end
     end

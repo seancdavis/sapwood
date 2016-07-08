@@ -67,6 +67,8 @@ class Element < ActiveRecord::Base
     update_columns(:template_data => template_data)
   end
 
+  after_save :init_webhook
+
   # ---------------------------------------- Instance Methods
 
   def template
@@ -128,5 +130,11 @@ class Element < ActiveRecord::Base
       template_data[method.to_s]
     end
   end
+
+  private
+
+    def init_webhook
+      Webhook.delay.call(:element => self) if template.has_webhook?
+    end
 
 end

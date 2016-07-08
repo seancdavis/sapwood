@@ -37,4 +37,13 @@ describe Property::Template, :type => :model do
     end
   end
 
+  describe '#has_webhook?' do
+    it 'is true when it has the option' do
+      expect(property.find_template('All Options').has_webhook?).to eq(true)
+    end
+    it 'is false when it does not have the option' do
+      expect(property.find_template('Default').has_webhook?).to eq(false)
+    end
+  end
+
 end

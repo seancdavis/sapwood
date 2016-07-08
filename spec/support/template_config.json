@@ -12,6 +12,7 @@
     "title": "All Options",
     "element_title_label": "Name",
     "body": false,
+    "webhook_url": "http://localhost:3000/webhook",
     "fields": {
       "description": {
         "type": "string",

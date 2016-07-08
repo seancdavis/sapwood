@@ -21,6 +21,10 @@ class Property::Template
     attributes['body'].nil? ? true : attributes['body'].to_bool
   end
 
+  def has_webhook?
+    attributes['webhook_url'].present?
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []

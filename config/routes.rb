@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :properties, :only => [:show]
-      resources :elements, :only => [:index, :show]
+      resources :elements, :only => [:index, :show] do
+        post 'webhook', :on => :collection if Rails.env.development?
+      end
       resources :collections, :only => [:index, :show]
     end
   end

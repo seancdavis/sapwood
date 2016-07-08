@@ -22,4 +22,12 @@ class Api::V1::ElementsController < ApiController
     end
   end
 
+  def webhook
+    Rails.logger.debug "****************************************"
+    Rails.logger.debug "\n----- INCOMING WEBHOOK -----\n"
+    Rails.logger.debug params.to_yaml
+    Rails.logger.debug "****************************************"
+    render :nothing => true
+  end
+
 end

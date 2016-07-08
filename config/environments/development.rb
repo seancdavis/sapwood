@@ -45,4 +45,9 @@ Rails.application.configure do
   config.action_mailer.asset_host = Sapwood.config.url
 
   ActiveRecordQueryTrace.enabled = false
+
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.add_footer = true
+  end
 end

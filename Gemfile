@@ -40,6 +40,7 @@ gem 'superslug'
 gem 'trumbowyg_rails'
 
 group :development do
+  gem 'bullet'
   gem 'mailcatcher'
   gem 'quiet_assets'
 end

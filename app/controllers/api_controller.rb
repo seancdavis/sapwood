@@ -3,7 +3,26 @@ class ApiController < ActionController::Base
   before_filter :allow_cors
   before_filter :authenticate_api_user!
 
+  caches_action :index, :cache_path => :index_cache_path.to_proc
+  caches_action :show, :cache_path => :show_cache_path.to_proc
+
   helper_method :current_property
+
+  protected
+
+    def index_cache_path
+      "p#{current_property.id}_#{controller_name}#{q_to_s}"
+    end
+
+    def show_cache_path
+      "p#{current_property.id}_#{controller_name}_#{params[:id]}#{q_to_s}"
+    end
+
+    def q_to_s
+      q = ''
+      request.query_parameters.each { |k,v| q += "_#{k}_#{v}" }
+      q
+    end
 
   private
 

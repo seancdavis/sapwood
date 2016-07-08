@@ -23,6 +23,7 @@ gem 'jquery-rails'
 # ------------------------------------------ Utilities
 
 gem 'active_record_query_trace'
+gem 'actionpack-action_caching'
 gem 'ancestry'
 gem 'aws-sdk'
 gem 'carrierwave_direct'

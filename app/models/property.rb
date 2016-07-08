@@ -27,12 +27,12 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  has_many :folders
-  has_many :elements
-  has_many :collections
-  has_many :documents
-  has_many :responses
-  has_many :property_users
+  has_many :folders, :dependent => :destroy
+  has_many :elements, :dependent => :destroy
+  has_many :collections, :dependent => :destroy
+  has_many :documents, :dependent => :destroy
+  has_many :responses, :dependent => :destroy
+  has_many :property_users, :dependent => :destroy
   has_many :users, :through => :property_users
 
   # ---------------------------------------- Validations
@@ -58,6 +58,13 @@ class Property < ActiveRecord::Base
       c = [{ :title => 'Collection' }]
       update_columns(:collection_types_raw => JSON.pretty_generate(c))
     end
+  end
+
+  after_touch :expire_caches
+  after_save :expire_caches
+
+  def expire_caches
+    Rails.cache.delete_matched(/p#{id}\_(.*)/)
   end
 
   # ---------------------------------------- Class Methods

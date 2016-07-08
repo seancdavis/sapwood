@@ -13,6 +13,6 @@ class Response < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  belongs_to :property
+  belongs_to :property, :touch => true
 
 end

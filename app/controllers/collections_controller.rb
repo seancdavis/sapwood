@@ -17,6 +17,7 @@ class CollectionsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    not_found if current_collection_type.blank?
     @collections = current_property.collections.by_title
       .with_type(current_collection_type.name)
   end

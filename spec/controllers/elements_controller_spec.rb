@@ -18,10 +18,6 @@ require 'rails_helper'
 
 describe ElementsController do
 
-  # Note: We're using the "__all" override here for templates in every case,
-  # since ommitting a template results in not found. There is one test for
-  # valid/invalid template.
-
   # ---------------------------------------- Index
 
   describe '#index' do
@@ -61,7 +57,8 @@ describe ElementsController do
     context 'with templates' do
       before(:each) do
         @property.update(:templates_raw => File.read(template_config_file))
-        @user = create(:admin)
+        @user = create(:user)
+        @user.properties << @property
         sign_in @user
       end
       it 'returns 200 when template is found' do

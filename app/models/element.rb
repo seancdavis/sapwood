@@ -120,6 +120,11 @@ class Element < ActiveRecord::Base
         v
       end
     end
+    if options[:includes].present?
+      options[:includes].split(',').each do |association|
+        response[association] = send(association)
+      end
+    end
     response
   end
 

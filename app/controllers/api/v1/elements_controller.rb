@@ -13,7 +13,7 @@ class Api::V1::ElementsController < ApiController
         else
           @elements.by_title
         end
-        render(:json => @elements)
+        render(:json => @elements.to_json(:includes => params[:includes]))
       end
     end
   end

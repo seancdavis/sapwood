@@ -73,6 +73,9 @@ aside.main {
       margin: 0 0 rem(15) 0;
       font-size: 1.25em;
       color: $dark;
+      &.active {
+        font-weight: 600;
+      }
     }
   }
 

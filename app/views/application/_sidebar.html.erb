@@ -20,22 +20,25 @@
   </div>
   <nav>
     <ul>
-      <% current_property.templates.each do |template| %>
+      <% current_property.templates.each do |t| %>
         <li>
-          <%= link_to template.name,
-                      property_template_elements_path(current_property, template) %>
+          <%= link_to t.name.pluralize,
+                      property_template_elements_path(current_property, t),
+                      :class => ('active' if current_template && current_template.name == t.name) %>
         </li>
       <% end %>
       <% unless current_property.label_hidden?('documents') %>
         <li>
           <%= link_to current_property.label('documents'),
-                      property_documents_path(current_property)  %>
+                      property_documents_path(current_property),
+                      :class => ('active' if controller_name == 'documents') %>
         </li>
       <% end %>
       <% unless current_property.label_hidden?('collections') %>
         <li>
           <%= link_to current_property.label('collections'),
-                      property_collections_path(current_property)  %>
+                      property_collections_path(current_property),
+                      :class => ('active' if controller_name == 'collections') %>
         </li>
       <% end %>
       <% unless current_property.label_hidden?('responses') %>

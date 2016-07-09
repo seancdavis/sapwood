@@ -12,7 +12,6 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  folder_id     :integer
 #
 
 require 'rails_helper'
@@ -209,7 +208,6 @@ RSpec.describe Element, :type => :model do
       expect(json[:slug]).to eq(@element.slug)
       expect(json[:body]).to eq(@element.body)
       expect(json[:template_name]).to eq('All Options')
-      expect(json[:position]).to eq(@element.position)
       expect(json[:publish_at]).to eq(@element.publish_at)
       expect(json[:created_at]).to eq(@element.created_at)
       expect(json[:updated_at]).to eq(@element.updated_at)

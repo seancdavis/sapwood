@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
                 :current_document,
                 :current_element,
                 :current_element?,
-                :current_folder,
                 :current_property,
                 :current_property?,
                 :current_property_collections,
@@ -90,15 +89,6 @@ class ApplicationController < ActionController::Base
       @current_template ||= begin
         return current_element.template if current_element.template
         current_property.find_template(params[:template]) if params[:template]
-      end
-    end
-
-    # ------------------------------------------ Folders
-
-    def current_folder
-      @current_folder ||= begin
-        id = params[:folder_id] || params[:id]
-        current_property.folders.find_by_id(id)
       end
     end
 

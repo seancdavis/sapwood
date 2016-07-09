@@ -27,7 +27,6 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  has_many :folders, :dependent => :destroy
   has_many :elements, :dependent => :destroy
   has_many :collections, :dependent => :destroy
   has_many :documents, :dependent => :destroy

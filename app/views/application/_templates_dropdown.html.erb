@@ -1,20 +1,9 @@
 <nav class="template dropdown">
   <ul>
-    <li class="section">
-      <%= link_to(new_property_folder_path(current_property,
-                  :folder_id => params[:folder_id])) do %>
-        <i class="icon-folder"></i>
-        Folder
-      <% end %>
-    </li>
-    <li><h3><%= current_property.label('elements') %></h3></li>
     <% current_property.templates.each do |t| %>
       <li>
-        <%= link_to(
-          t.title,
-          new_property_element_path(current_property, :template => t.title,
-                                    :folder_id => params[:folder_id])
-        ) %>
+        <%= link_to t.title,
+                    [:new, current_property, :element, :template => t.title] %>
       </li>
     <% end %>
   </ul>

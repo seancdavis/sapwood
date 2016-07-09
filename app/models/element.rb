@@ -12,7 +12,6 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  folder_id     :integer
 #
 
 class Element < ActiveRecord::Base
@@ -26,12 +25,10 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Associations
 
   belongs_to :property, :touch => true
-  belongs_to :folder
 
   # ---------------------------------------- Scopes
 
   scope :alpha, -> { order(:title => :asc) }
-  scope :roots, -> { where(:folder_id => nil) }
   scope :with_template, ->(name) { where(:template_name => name) }
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
@@ -103,7 +100,6 @@ class Element < ActiveRecord::Base
       :publish_at => publish_at,
       :created_at => created_at,
       :updated_at => updated_at,
-      # :folder_id => folder_id
     }
     template_data.each do |k,v|
       response[k.to_sym] = if template.find_field(k).is_document?

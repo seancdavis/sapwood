@@ -12,7 +12,6 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  folder_id     :integer
 #
 
 class ElementsController < ApplicationController
@@ -20,13 +19,7 @@ class ElementsController < ApplicationController
   before_filter :verify_property_access
 
   def index
-    if current_folder.present?
-      @elements = current_folder.elements
-      @folders = current_folder.children
-    else
-      @elements = current_property.elements.roots
-      @folders = current_property.folders.roots
-    end
+    @elements = current_property.elements.by_title
     respond_to do |format|
       format.html
       format.json
@@ -41,7 +34,7 @@ class ElementsController < ApplicationController
   def create
     @current_element = current_property.elements.build(element_params)
     if current_element.save
-      redirect_to redirect_path,
+      redirect_to property_elements_path(current_property),
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'new'
@@ -53,7 +46,7 @@ class ElementsController < ApplicationController
 
   def update
     if current_element.update(element_params)
-      redirect_to redirect_path,
+      redirect_to property_elements_path(current_property),
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'edit'
@@ -70,21 +63,13 @@ class ElementsController < ApplicationController
     def element_params
       p = params
         .require(:element)
-        .permit(:title, :body, :template_name, :folder_id)
+        .permit(:title, :body, :template_name)
       new_data = params[:element][:template_data]
       if new_data.present?
         old_data = current_element? ? current_element.template_data : {}
         p = p.merge(:template_data => old_data.merge(new_data))
       end
       p
-    end
-
-    def redirect_path
-      if current_element.folder.nil?
-        property_elements_path(current_property)
-      else
-        property_folder_path(current_property, current_element.folder)
-      end
     end
 
 end

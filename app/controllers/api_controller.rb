@@ -11,11 +11,11 @@ class ApiController < ActionController::Base
   protected
 
     def index_cache_path
-      "p#{current_property.id}_#{controller_name}#{q_to_s}"
+      "_p#{current_property.id}_#{controller_name}#{q_to_s}"
     end
 
     def show_cache_path
-      "p#{current_property.id}_#{controller_name}_#{params[:id]}#{q_to_s}"
+      "_p#{current_property.id}_#{controller_name}_#{params[:id]}#{q_to_s}"
     end
 
     def q_to_s

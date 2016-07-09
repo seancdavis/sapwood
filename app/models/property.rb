@@ -63,7 +63,7 @@ class Property < ActiveRecord::Base
   after_save :expire_caches
 
   def expire_caches
-    Rails.cache.delete_matched(/p#{id}\_(.*)/)
+    Rails.cache.delete_matched(/\_p#{id}\_(.*)/)
   end
 
   # ---------------------------------------- Class Methods

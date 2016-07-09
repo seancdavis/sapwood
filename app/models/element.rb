@@ -68,7 +68,9 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def template
-    property.find_template(template_name)
+    Rails.cache.fetch("_p#{property_id}_e#{id}_template") do
+      property.find_template(template_name)
+    end
   end
 
   def template?
@@ -111,10 +113,9 @@ class Element < ActiveRecord::Base
       :updated_at => updated_at,
     }
     template_data.each do |k,v|
-      response[k.to_sym] = if template.find_field(k).is_document?
-         Document.find_by_id(v)
-       elsif template.find_field(k).is_element?
-         Element.find_by_id(v)
+      field = template.find_field(k)
+      response[k.to_sym] = if field.is_document? || field.is_element?
+         send(k)
        else
         v
       end
@@ -129,10 +130,14 @@ class Element < ActiveRecord::Base
       case field.type
       when 'element'
         return nil if template_data[method.to_s].blank?
-        Element.find_by_id(template_data[method.to_s])
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          Element.find_by_id(template_data[method.to_s])
+        end
       when 'document'
         return nil if template_data[method.to_s].blank?
-        Document.find_by_id(template_data[method.to_s])
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          Document.find_by_id(template_data[method.to_s])
+        end
       when 'geocode'
         template_data[method.to_s].to_ostruct
       else
@@ -140,10 +145,12 @@ class Element < ActiveRecord::Base
       end
     elsif has_association?(method.to_s)
       association = template.find_association(method.to_s)
-      property
-        .elements.by_title.with_template(association.template)
-        .select { |e| e.template_data[association.field].split(',')
-            .collect(&:to_i).include?(id) }
+      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        property
+          .elements.by_title.with_template(association.template)
+          .select { |e| e.template_data[association.field].split(',')
+              .collect(&:to_i).include?(id) }
+      end
     end
   end
 

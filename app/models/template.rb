@@ -14,7 +14,7 @@ class Template
   end
 
   def slug
-    title.gsub(/[^0-9a-z\_\-\ ]/i, '').gsub(/\ +?/, ' ').downcase
+    title.gsub(/[^0-9a-z\_\-]/i, '-').gsub(/\-+?/, '-').downcase
   end
 
   def to_param

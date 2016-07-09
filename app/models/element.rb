@@ -7,7 +7,6 @@
 #  slug          :string
 #  property_id   :integer
 #  template_name :string
-#  position      :integer          default(0)
 #  body          :text
 #  template_data :json             default({})
 #  publish_at    :datetime
@@ -100,7 +99,6 @@ class Element < ActiveRecord::Base
       # :property_id => property_id,
       :body => body,
       :template_name => template_name,
-      :position => position,
       # :template_data => template_data,
       :publish_at => publish_at,
       :created_at => created_at,

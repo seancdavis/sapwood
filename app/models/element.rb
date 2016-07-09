@@ -115,11 +115,14 @@ class Element < ActiveRecord::Base
     return super unless has_field?(method.to_s)
     field = template.find_field(method.to_s)
     case field.type
-    when 'geocode'
-      template_data[method.to_s].to_ostruct
+    when 'element'
+      return nil if template_data[method.to_s].blank?
+      Element.find_by_id(template_data[method.to_s])
     when 'document'
       return nil if template_data[method.to_s].blank?
       Document.find_by_id(template_data[method.to_s])
+    when 'geocode'
+      template_data[method.to_s].to_ostruct
     else
       template_data[method.to_s]
     end

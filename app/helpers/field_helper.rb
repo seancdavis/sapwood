@@ -52,6 +52,14 @@ module FieldHelper
     end
   end
 
+  def field_element_html(form_obj, options = {})
+    elements = current_property.elements.by_title
+    if options['templates']
+      elements = elements.where(:template_name => options['templates'])
+    end
+    form_obj.input options['name'].to_sym, :collection => elements
+  end
+
   def field_wysiwyg_html(form_obj, options = {})
     form_obj.input options['name'].to_sym, :as => :text, :required => false,
                    :input_html => { :class => 'wysiwyg' }

@@ -73,6 +73,22 @@ feature 'Elements', :js => true do
     scenario 'adds a form for uploading' do
       expect(page).to have_css('section.uploader > form', :visible => false)
     end
+    scenario 'enables selecting a belongs_to relationship' do
+      # This element should be in the dropdown menu.
+      element = create(:element, :property => @property,
+                       :template_name => 'More Options')
+      # This element should not.
+      default_element = create(:element, :property => @property)
+      visit current_path
+      expect(page).to have_css(
+        "select#element_template_data_option option[value='#{element.id}']")
+      expect(page).to have_no_css(
+        "select#element_template_data_option option[value='#{default_element.id}']")
+      fill_in 'element[title]', :with => @element.title
+      select element.title, :from => 'element[template_data][option]'
+      click_button 'Save All Options'
+      expect(Element.all.order(:id).last.option).to eq(element)
+    end
     scenario 'has a textarea' do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)

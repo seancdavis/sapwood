@@ -13,6 +13,12 @@
     "element_title_label": "Name",
     "body": false,
     "webhook_url": "http://localhost:3000/webhook",
+    "associations": {
+      "options": {
+        "template": "More Options",
+        "field": "option"
+      }
+    },
     "fields": {
       "description": {
         "type": "string",
@@ -33,6 +39,25 @@
       "image": {
         "type": "document",
         "label": "Image"
+      },
+      // This duplicates the one below just so we can use this template for all
+      // our custom template data testing.
+      "option": {
+        "type": "element",
+        "templates": ["More Options"],
+        "label": "Option"
+      }
+    }
+  },
+  {
+    "title": "More Options",
+    "element_title_label": "Name",
+    "body": false,
+    "fields": {
+      "option": {
+        "type": "element",
+        "templates": ["All Options"],
+        "label": "Option"
       }
     }
   }

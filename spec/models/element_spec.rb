@@ -118,7 +118,7 @@ RSpec.describe Element, :type => :model do
                         :property => @property)
     end
     it 'returns a Template object' do
-      expect(@element.template.class).to eq(Property::Template)
+      expect(@element.template.class).to eq(Template)
     end
   end
 
@@ -138,7 +138,8 @@ RSpec.describe Element, :type => :model do
     it 'returns an array of field names' do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
-      expect(element.field_names).to eq(%w(description address image comments))
+      expect(element.field_names)
+        .to eq(%w(description address image comments option))
     end
     it 'returns an empty array when the template does not exist' do
       element = create(:element, :template_name => 'A', :property => @property)
@@ -197,25 +198,34 @@ RSpec.describe Element, :type => :model do
   end
 
   describe '#as_json' do
-    before(:all) do
-      @element = create(:element, :with_options, :with_address,
-                        :property => @property)
-    end
     it 'has references to all necessary attributes' do
-      json = @element.as_json({})
-      expect(json[:id]).to eq(@element.id)
-      expect(json[:title]).to eq(@element.title)
-      expect(json[:slug]).to eq(@element.slug)
-      expect(json[:body]).to eq(@element.body)
+      # Create a couple elements that we can use in an association.
+      other_element = create(:element, :property => @property,
+                             :template_name => 'More Options')
+      element = create(:element, :with_options, :with_address,
+                        :property => @property)
+      other_element[:template_data]['option'] = element.id.to_s
+      other_element.save!
+      element[:template_data]['option'] = other_element.id.to_s
+      element.save!
+      json = element.as_json(:includes => 'options')
+      expect(json[:id]).to eq(element.id)
+      expect(json[:title]).to eq(element.title)
+      expect(json[:slug]).to eq(element.slug)
+      expect(json[:body]).to eq(element.body)
       expect(json[:template_name]).to eq('All Options')
-      expect(json[:publish_at]).to eq(@element.publish_at)
-      expect(json[:created_at]).to eq(@element.created_at)
-      expect(json[:updated_at]).to eq(@element.updated_at)
+      expect(json[:publish_at]).to eq(element.publish_at)
+      expect(json[:created_at]).to eq(element.created_at)
+      expect(json[:updated_at]).to eq(element.updated_at)
       # Custom template_data is brought to the top level.
-      expect(json[:comments]).to eq(@element.comments)
+      expect(json[:comments]).to eq(element.comments)
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
       # Document fields should return a document object.
       expect(json[:image][:url]).to eq(example_image_url)
+      # It includes an array of the specified association.
+      expect(json[:options][0]).to eq(other_element)
+      # And it also has its belongs_to element reference.
+      expect(json[:option]).to eq(other_element)
     end
   end
 

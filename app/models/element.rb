@@ -50,6 +50,7 @@ class Element < ActiveRecord::Base
         next
       end
       begin
+        val = val[:raw] if val.is_a?(Hash) && val[:raw].present?
         template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
           .geocode(val).to_hash.merge(:raw => val)
       rescue
@@ -114,6 +115,7 @@ class Element < ActiveRecord::Base
     }
     template_data.each do |k,v|
       field = template.find_field(k)
+      next if field.nil?
       response[k.to_sym] = if field.is_document? || field.is_element?
          send(k)
        else
@@ -122,7 +124,7 @@ class Element < ActiveRecord::Base
     end
     if options[:includes].present?
       options[:includes].split(',').each do |association|
-        response[association] = send(association)
+        response[association.to_sym] = send(association)
       end
     end
     response

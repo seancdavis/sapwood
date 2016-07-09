@@ -1,9 +1,9 @@
 <section class="body">
-  <%= minimal_form_for [current_property, current_collection] do |f| %>
+  <%= minimal_form_for [current_property, current_collection_type, current_collection] do |f| %>
     <div class="block aside">
 
       <div class="collection-builder" data-level="0"
-           data-elements="<%= property_elements_path(current_property) %>">
+           data-elements="<%= property_template_elements_path(current_property, '__all') %>">
       </div>
 
       <%= f.input :item_data, :as => :hidden,
@@ -24,5 +24,11 @@
       </aside>
     </div>
     <%= f.submit "Save" %>
+    <% if current_collection? %>
+      <%= link_to "Delete #{current_collection_type.title}",
+                  [current_property, current_collection_type, current_collection],
+                  :class => 'button delete', :method => :delete,
+                  :data => { :confirm => 'Are you sure?' } %>
+    <% end %>
   <% end %>
 </section>

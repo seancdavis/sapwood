@@ -31,12 +31,14 @@ Rails.application.routes.draw do
     get 'setup/:step' => 'properties#edit', :as => :setup
     get 'import' => 'properties#import', :as => :import
     patch 'import' => 'properties#process_import', :as => :process_import
-
-    resources :documents
-    resources :collections
     resources :users
+
     resources :templates, :only => [], :path => 'elements' do
       resources :elements, :path => ''
+    end
+    resources :documents
+    resources :collection_types, :only => [], :path => 'collections' do
+      resources :collections, :path => ''
     end
   end
 

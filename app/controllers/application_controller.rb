@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
                 :current_element?,
                 :current_property,
                 :current_property?,
-                :current_property_collections,
                 :current_property_documents,
                 :current_template,
                 :focused_user,
@@ -127,19 +126,9 @@ class ApplicationController < ActionController::Base
       current_collection && current_collection.id.present?
     end
 
-    def current_property_collections
-      @current_property_collections ||= current_property.collections
-    end
-
     def current_collection_type
       @current_collection_type ||= begin
-        if current_collection.collection_type
-          current_collection.collection_type
-        elsif params[:collection_type]
-          current_property.find_collection_type(params[:collection_type])
-        else
-          nil
-        end
+        current_property.find_collection_type(params[:collection_type_id])
       end
     end
 

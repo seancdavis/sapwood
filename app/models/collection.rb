@@ -22,6 +22,11 @@ class Collection < ActiveRecord::Base
 
   belongs_to :property, :touch => true
 
+  # ---------------------------------------- Scopes
+
+  scope :by_title, -> { order(:title => :asc) }
+  scope :with_type, ->(name) { where(:collection_type_name => name) }
+
   # ---------------------------------------- Validations
 
   validates :title, :collection_type_name, :presence => true

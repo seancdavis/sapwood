@@ -34,11 +34,11 @@
                       :class => ('active' if controller_name == 'documents') %>
         </li>
       <% end %>
-      <% unless current_property.label_hidden?('collections') %>
+      <% current_property.collection_types.each do |c| %>
         <li>
-          <%= link_to current_property.label('collections'),
-                      property_collections_path(current_property),
-                      :class => ('active' if controller_name == 'collections') %>
+          <%= link_to c.name.pluralize,
+                      [current_property, c, :collections],
+                      :class => ('active' if current_collection_type && current_collection_type.name == c.name) %>
         </li>
       <% end %>
       <% unless current_property.label_hidden?('responses') %>

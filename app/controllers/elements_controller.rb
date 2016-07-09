@@ -19,8 +19,11 @@ class ElementsController < ApplicationController
   before_filter :verify_property_access
 
   def index
-    @elements = current_property.elements.by_title
-      .with_template(current_template.name)
+    @elements = if params[:template_id] == '__all'
+      current_property.elements.by_title
+    else
+      current_property.elements.by_title.with_template(current_template.name)
+    end
     respond_to do |format|
       format.html
       format.json

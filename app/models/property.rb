@@ -136,7 +136,7 @@ class Property < ActiveRecord::Base
   end
 
   def find_collection_type(name)
-    collection_types.select { |t| t.title == name }.first
+    collection_types.select { |t| t.title == name || t.slug == name }.first
   end
 
   def users_with_access

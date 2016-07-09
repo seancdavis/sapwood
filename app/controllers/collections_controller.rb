@@ -17,17 +17,20 @@ class CollectionsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    @collections = current_property.collections.by_title
+      .with_type(current_collection_type.name)
   end
 
   def new
-    not_found if params[:collection_type].blank?
-    @current_collection = current_property.collections.build
+    not_found if current_collection_type.blank?
+    @current_collection = current_property.collections
+      .build(:collection_type_name => current_collection_type.name)
   end
 
   def create
     @current_collection = current_property.collections.build(collection_params)
     if current_collection.save
-      redirect_to property_collections_path,
+      redirect_to [current_property, current_collection_type, :collections],
                   :notice => "#{current_collection.title} saved successfully!"
     else
       render 'new'
@@ -39,11 +42,16 @@ class CollectionsController < ApplicationController
 
   def update
     if current_collection.update(collection_params)
-      redirect_to property_collections_path,
+      redirect_to [current_property, current_collection_type, :collections],
                   :notice => "#{current_collection.title} saved successfully!"
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    current_collection.destroy
+    redirect_to [current_property, current_collection_type, :collections]
   end
 
   private

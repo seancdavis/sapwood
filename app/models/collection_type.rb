@@ -9,6 +9,26 @@ class CollectionType
     @attributes ||= {}
   end
 
+  def name
+    title
+  end
+
+  def slug
+    title.gsub(/[^0-9a-z\_\-\ ]/i, '').gsub(/\ +?/, ' ').downcase
+  end
+
+  def to_param
+    slug
+  end
+
+  def to_model
+    CollectionType.new(attributes)
+  end
+
+  def model_name
+    ActiveModel::Name.new(CollectionType)
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []

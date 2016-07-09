@@ -101,7 +101,7 @@ class Property < ActiveRecord::Base
     return [] if templates_raw.blank?
     templates = []
     JSON.parse(templates_raw).each do |t|
-      templates << Property::Template.new(t)
+      templates << Template.new(t)
     end
     templates
   end
@@ -115,14 +115,14 @@ class Property < ActiveRecord::Base
   end
 
   def find_template(name)
-    templates.select { |t| t.title == name }.first
+    templates.select { |t| t.title == name || t.slug == name }.first
   end
 
   def collection_types
     return [] if collection_types_raw.blank?
     types = []
     JSON.parse(collection_types_raw).each do |ct|
-      types << Property::CollectionType.new(ct)
+      types << CollectionType.new(ct)
     end
     types
   end

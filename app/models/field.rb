@@ -1,4 +1,4 @@
-class Property::Field
+class Field
 
   include Presenter, ActionView::Helpers
 

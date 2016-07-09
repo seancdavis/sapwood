@@ -20,6 +20,7 @@ class ElementsController < ApplicationController
 
   def index
     @elements = current_property.elements.by_title
+      .with_template(current_template.name)
     respond_to do |format|
       format.html
       format.json
@@ -27,14 +28,15 @@ class ElementsController < ApplicationController
   end
 
   def new
-    not_found if params[:template].blank?
-    @current_element = current_property.elements.build
+    not_found if current_template.blank?
+    @current_element = current_property.elements
+      .build(:template_name => current_template.name)
   end
 
   def create
     @current_element = current_property.elements.build(element_params)
     if current_element.save
-      redirect_to property_elements_path(current_property),
+      redirect_to [current_property, current_template, :elements],
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'new'
@@ -46,7 +48,7 @@ class ElementsController < ApplicationController
 
   def update
     if current_element.update(element_params)
-      redirect_to property_elements_path(current_property),
+      redirect_to [current_property, current_template, :elements],
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'edit'
@@ -55,7 +57,7 @@ class ElementsController < ApplicationController
 
   def destroy
     current_element.destroy
-    redirect_to property_elements_path(current_property)
+    redirect_to [current_property, current_template, :elements]
   end
 
   private

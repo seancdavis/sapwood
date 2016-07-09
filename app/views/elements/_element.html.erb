@@ -1,7 +1,11 @@
 <tr class="element">
   <td class="icon"><i class="icon-file"></i></td>
   <td class="title">
-    <%= link_to element.title, [:edit, current_property, element] %>
+    <%= link_to(
+      element.title,
+      edit_property_template_element_path(current_property, current_template,
+                                          element)
+    ) %>
   </td>
   <td><%= element.slug %></td>
   <td><%= element.template.name %></td>

@@ -1,5 +1,5 @@
 <section class="body">
-  <%= simple_form_for [current_property, current_element] do |f| %>
+  <%= simple_form_for [current_property, current_template, current_element] do |f| %>
 
     <div class="block aside">
       <%= f.input :title,
@@ -36,9 +36,11 @@
       </aside>
     </div>
     <%= f.submit "Save #{current_template.title}" %>
-    <%= link_to "Delete #{current_template.title}",
-                [current_property, current_element],
-                :class => 'button delete', :method => :delete,
-                :data => { :confirm => 'Are you sure?' } %>
+    <% if current_element? %>
+      <%= link_to "Delete #{current_template.title}",
+                  [current_property, current_template, current_element],
+                  :class => 'button delete', :method => :delete,
+                  :data => { :confirm => 'Are you sure?' } %>
+    <% end %>
   <% end %>
 </section>

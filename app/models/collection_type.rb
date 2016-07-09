@@ -1,4 +1,4 @@
-class Property::CollectionType
+class CollectionType
 
   def initialize(options)
     @attributes ||= options
@@ -13,7 +13,7 @@ class Property::CollectionType
     return {} unless attributes['fields']
     fields = []
     attributes['fields'].each do |name, data|
-      fields << Property::Field.new(data.merge('name' => name))
+      fields << Field.new(data.merge('name' => name))
     end
     fields
   end

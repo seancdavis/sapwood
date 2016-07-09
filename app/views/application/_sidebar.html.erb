@@ -20,10 +20,10 @@
   </div>
   <nav>
     <ul>
-      <% unless current_property.label_hidden?('elements') %>
+      <% current_property.templates.each do |template| %>
         <li>
-          <%= link_to current_property.label('elements'),
-                      property_elements_path(current_property) %>
+          <%= link_to template.name,
+                      property_template_elements_path(current_property, template) %>
         </li>
       <% end %>
       <% unless current_property.label_hidden?('documents') %>

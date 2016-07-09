@@ -1,6 +1,6 @@
-class Property::Template
+class Template
 
-  def initialize(options)
+  def initialize(options = {})
     @attributes ||= options
     self
   end
@@ -11,6 +11,22 @@ class Property::Template
 
   def name
     title
+  end
+
+  def slug
+    title.gsub(/[^0-9a-z\_\-\ ]/i, '').gsub(/\ +?/, ' ').downcase
+  end
+
+  def to_param
+    slug
+  end
+
+  def to_model
+    Template.new(attributes)
+  end
+
+  def model_name
+    ActiveModel::Name.new(Template)
   end
 
   def element_title_label
@@ -29,7 +45,7 @@ class Property::Template
     return {} unless attributes['fields']
     fields = []
     attributes['fields'].each do |name, data|
-      fields << Property::Field.new(data.merge('name' => name))
+      fields << Field.new(data.merge('name' => name))
     end
     fields
   end

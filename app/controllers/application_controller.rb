@@ -86,10 +86,7 @@ class ApplicationController < ActionController::Base
     # ------------------------------------------ Templates
 
     def current_template
-      @current_template ||= begin
-        return current_element.template if current_element.template
-        current_property.find_template(params[:template]) if params[:template]
-      end
+      @current_template ||= current_property.find_template(params[:template_id])
     end
 
     # ------------------------------------------ Elements

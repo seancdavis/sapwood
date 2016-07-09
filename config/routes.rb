@@ -32,11 +32,12 @@ Rails.application.routes.draw do
     get 'import' => 'properties#import', :as => :import
     patch 'import' => 'properties#process_import', :as => :process_import
 
-    resources :elements
-    resources :folders
     resources :documents
     resources :collections
     resources :users
+    resources :templates, :only => [], :path => 'elements' do
+      resources :elements, :path => ''
+    end
   end
 
   root :to => 'application#home'

@@ -1,12 +1,10 @@
 <%= page_header(
-  :title => current_property.p.label_title('elements'),
+  :title => current_template.name.pluralize,
   :button => {
-    :label => 'New',
-    :path => new_property_element_path(current_property),
+    :label => "New #{current_template.name}",
+    :path => new_property_template_element_path(current_property, current_template),
     :options => { :class => 'new button' }
-  },
-  :dropdown => 'templates_dropdown'
-) %>
+  }) %>
 
 <section class="body">
   <% if @elements.present? %>

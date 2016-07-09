@@ -8,7 +8,7 @@ feature 'Elements', :js => true do
     @user = create(:admin)
     element = create(:element, :property => property)
     sign_in @user
-    visit property_elements_path(property)
+    visit property_template_elements_path(property, 'default')
     expect(page).to have_content(element.title)
     click_link element.title
     click_link 'Delete Default'

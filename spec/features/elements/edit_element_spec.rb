@@ -13,7 +13,7 @@ feature 'Elements', :js => true do
   context 'using Default template' do
     background do
       @element = create(:element, :property => @property)
-      click_link 'Elements'
+      click_link 'Defaults'
       click_link @element.title
     end
     scenario 'title can be updated' do
@@ -46,7 +46,7 @@ feature 'Elements', :js => true do
     background do
       @element = create(:element, :property => @property,
                         :template_name => 'All Options')
-      click_link 'Elements'
+      click_link 'All Options'
       click_link @element.title
     end
     scenario 'can add an existing image for its image' do

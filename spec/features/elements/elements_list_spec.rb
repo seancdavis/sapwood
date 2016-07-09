@@ -7,7 +7,7 @@ feature 'Elements List', :js => true do
     @user = create(:admin)
     sign_in @user
     click_link @property.title
-    click_link 'Elements'
+    click_link 'Defaults'
   end
 
   context 'when there are no elements' do

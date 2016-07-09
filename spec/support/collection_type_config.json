@@ -1,9 +1,9 @@
 [
   {
-    "title": "Default"
+    "title": "Default Collection"
   },
   {
-    "title": "All Options",
+    "title": "Loaded Collection",
     "fields": {
       "description": {
         "type": "string",

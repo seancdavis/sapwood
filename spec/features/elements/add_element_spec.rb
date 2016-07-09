@@ -8,13 +8,12 @@ feature 'Elements', :js => true do
     @user = create(:admin)
     sign_in @user
     click_link @property.title
-    click_link 'Elements'
   end
 
   context 'using Default template' do
     background do
-      click_link 'New'
-      click_link 'Default'
+      click_link 'Defaults'
+      click_link 'New Default'
     end
     scenario 'can be created by a user with the basics' do
       fill_in 'element[title]', :with => @element.title
@@ -46,8 +45,8 @@ feature 'Elements', :js => true do
   context 'using All Options template' do
     background do
       add_test_config
-      click_link 'New'
       click_link 'All Options'
+      click_link 'New All Options'
     end
     scenario 'can add an existing image for its image' do
       document = create(:document, :property => @property)

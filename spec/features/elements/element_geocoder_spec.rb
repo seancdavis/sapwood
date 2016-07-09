@@ -9,9 +9,8 @@ feature 'Geocoder', :js => true do
       @user = create(:admin)
       sign_in @user
       click_link @property.title
-      click_link 'Elements'
-      click_link 'New'
       click_link 'All Options'
+      click_link 'New All Options'
     end
     scenario 'provides geocode feedback for a valid address' do
       fill_in 'element[template_data][address]', :with => '1216 Central, 45202'
@@ -47,7 +46,7 @@ feature 'Geocoder', :js => true do
       @user = create(:admin)
       sign_in @user
       click_link @property.title
-      click_link 'Elements'
+      click_link 'All Options'
       click_link @element.title
     end
     scenario 'adds the content to textarea' do

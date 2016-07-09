@@ -8,22 +8,21 @@ feature 'Collections', :js => true do
     @user = create(:admin)
     sign_in @user
     click_link @property.title
-    click_link 'Collections'
-    click_link 'New'
   end
 
   # ---------------------------------------- Default
 
   context 'using the Default collection type' do
 
-    before(:each) { click_link('Default') }
-
-    scenario 'can not be created without a title' do
-      click_button 'Save'
-      expect(current_path).to eq(new_property_collection_path(@property))
+    before(:each) do
+      click_link 'Default Collection'
+      click_link 'New Default Collection'
     end
 
-    scenario 'it can be created with only a title' do
+    scenario 'can be created with only a title, but title is required' do
+      expect(page).to have_no_content(title)
+      click_button 'Save'
+      expect(page).to have_no_content(title)
       title = Faker::Lorem.words(4).join(' ')
       fill_in 'collection[title]', :with => title
       click_button 'Save'
@@ -132,7 +131,10 @@ feature 'Collections', :js => true do
 
   context 'using the Default collection type' do
 
-    before(:each) { click_link('All Options') }
+    before(:each) do
+      click_link 'Loaded Collection'
+      click_link 'New Loaded Collection'
+    end
 
     scenario 'can have custom fields from collection type' do
       title = Faker::Lorem.words(4).join(' ')

@@ -18,6 +18,10 @@ require 'rails_helper'
 
 describe ElementsController do
 
+  # Note: We're using the "__all" override here for templates in every case,
+  # since ommitting a template results in not found. There is one test for
+  # valid/invalid template.
+
   # ---------------------------------------- Index
 
   describe '#index' do
@@ -26,14 +30,15 @@ describe ElementsController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id, :template_id => '__all'
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :index, :property_id => @property.id }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :index, :property_id => @property.id, :template_id => '__all'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
     context 'for an assigned property' do
@@ -41,7 +46,7 @@ describe ElementsController do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id, :template_id => '__all'
         expect(response.status).to eq(200)
       end
     end
@@ -49,8 +54,24 @@ describe ElementsController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :index, :property_id => '123' }
+        expect { get :index, :property_id => '123', :template_id => '__all' }
           .to raise_error(ActionController::RoutingError)
+      end
+    end
+    context 'with templates' do
+      before(:each) do
+        @property.update(:templates_raw => File.read(template_config_file))
+        @user = create(:admin)
+        sign_in @user
+      end
+      it 'returns 200 when template is found' do
+        get :index, :property_id => @property.id, :template_id => 'default'
+        expect(response.status).to eq(200)
+      end
+      it 'returns 404 when template is not found' do
+        expect {
+          get :index, :property_id => @property.id, :template_id => 'wrong'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end
@@ -66,14 +87,14 @@ describe ElementsController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :new, :property_id => @property.id, :template => 'Default'
+        get :new, :property_id => @property.id, :template_id => 'default'
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
         expect {
-          get :new, :property_id => @property.id, :template => 'Default'
+          get :new, :property_id => @property.id, :template_id => 'default'
         }.to raise_error(ActionController::RoutingError)
       end
     end
@@ -84,12 +105,8 @@ describe ElementsController do
         sign_in @user
       end
       it 'returns 200 for a user' do
-        get :new, :property_id => @property.id, :template => 'Default'
+        get :new, :property_id => @property.id, :template_id => 'default'
         expect(response.status).to eq(200)
-      end
-      it 'returns 404 when no template' do
-        expect { get :new, :property_id => @property.id }
-          .to raise_error(ActionController::RoutingError)
       end
     end
     context 'for a non-existant property' do
@@ -97,7 +114,7 @@ describe ElementsController do
         @user = create(:admin)
         sign_in @user
         expect {
-          get :new, :property_id => '123', :template => 'Default'
+          get :new, :property_id => '123', :template_id => 'default'
         }.to raise_error(ActionController::RoutingError)
       end
     end
@@ -108,21 +125,25 @@ describe ElementsController do
   describe '#edit' do
     context 'for an existing element' do
       before(:each) do
-        @property = create(:property)
+        @property = create(:property,
+                           :templates_raw => File.read(template_config_file))
         @element = create(:element, :property => @property)
       end
       context 'for an unassigned property' do
         it 'returns 200 for an admin' do
           @user = create(:admin)
           sign_in @user
-          get :edit, :property_id => @property.id, :id => @element.id
+          get :edit, :property_id => @property.id, :template_id => 'default',
+              :id => @element.id
           expect(response.status).to eq(200)
         end
         it 'returns 404 for a user' do
           @user = create(:user)
           sign_in @user
-          expect { get :edit, :property_id => @property.id, :id => @element.id }
-            .to raise_error(ActionController::RoutingError)
+          expect {
+            get :edit, :property_id => @property.id, :template_id => 'default',
+                :id => @element.id
+          }.to raise_error(ActionController::RoutingError)
         end
       end
       context 'for an assigned property' do
@@ -130,7 +151,8 @@ describe ElementsController do
           @user = create(:user)
           @user.properties << @property
           sign_in @user
-          get :edit, :property_id => @property.id, :id => @element.id
+          get :edit, :property_id => @property.id, :template_id => 'default',
+              :id => @element.id
           expect(response.status).to eq(200)
         end
       end
@@ -138,8 +160,10 @@ describe ElementsController do
         it 'returns 404 for an admin' do
           @user = create(:admin)
           sign_in @user
-          expect { get :edit, :property_id => '123', :id => @element.id }
-            .to raise_error(ActionController::RoutingError)
+          expect {
+            get :edit, :property_id => '123', :template_id => 'default',
+                :id => @element.id
+          }.to raise_error(ActionController::RoutingError)
         end
       end
     end
@@ -148,8 +172,10 @@ describe ElementsController do
         @property = create(:property)
         @user = create(:user)
         sign_in @user
-        expect { get :edit, :property_id => @property.id, :id => '123' }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :edit, :property_id => @property.id, :template_id => 'default',
+              :id => '123'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end

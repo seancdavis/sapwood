@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-describe Property::CollectionType, :type => :model do
+describe CollectionType, :type => :model do
 
   let(:property) { create(:property) }
 
   before(:each) do
     file = File
-      .expand_path('../../../support/collection_type_config.json', __FILE__)
+      .expand_path('../../support/collection_type_config.json', __FILE__)
     @config = File.read(file)
     property.update!(:collection_types_raw => @config)
     @collection_type = property.find_collection_type('Default Collection')

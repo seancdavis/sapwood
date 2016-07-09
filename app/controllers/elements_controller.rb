@@ -60,6 +60,11 @@ class ElementsController < ApplicationController
     end
   end
 
+  def destroy
+    current_element.destroy
+    redirect_to property_elements_path(current_property)
+  end
+
   private
 
     def element_params

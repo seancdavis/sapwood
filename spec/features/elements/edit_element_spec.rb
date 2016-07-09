@@ -38,8 +38,6 @@ feature 'Elements', :js => true do
     end
     scenario 'has a body' do
       expect(page).to have_css('textarea#element_body', :visible => false)
-    end
-    scenario 'uses a wysiwyg editor for the body' do
       expect(page).to have_css('div.trumbowyg-box')
     end
   end

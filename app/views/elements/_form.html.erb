@@ -39,5 +39,9 @@
       </aside>
     </div>
     <%= f.submit "Save #{current_template.title}" %>
+    <%= link_to "Delete #{current_template.title}",
+                [current_property, current_element],
+                :class => 'button delete', :method => :delete,
+                :data => { :confirm => 'Are you sure?' } %>
   <% end %>
 </section>

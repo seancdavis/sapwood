@@ -75,6 +75,15 @@ class Element < ActiveRecord::Base
     template.present?
   end
 
+  def association_names
+    return [] unless template?
+    template.associations.collect(&:name)
+  end
+
+  def has_association?(name)
+    association_names.include?(name.to_s)
+  end
+
   def field_names
     return [] unless template?
     template.fields.collect(&:name)
@@ -104,6 +113,8 @@ class Element < ActiveRecord::Base
     template_data.each do |k,v|
       response[k.to_sym] = if template.find_field(k).is_document?
          Document.find_by_id(v)
+       elsif template.find_field(k).is_element?
+         Element.find_by_id(v)
        else
         v
       end
@@ -112,19 +123,27 @@ class Element < ActiveRecord::Base
   end
 
   def method_missing(method, *arguments, &block)
-    return super unless has_field?(method.to_s)
-    field = template.find_field(method.to_s)
-    case field.type
-    when 'element'
-      return nil if template_data[method.to_s].blank?
-      Element.find_by_id(template_data[method.to_s])
-    when 'document'
-      return nil if template_data[method.to_s].blank?
-      Document.find_by_id(template_data[method.to_s])
-    when 'geocode'
-      template_data[method.to_s].to_ostruct
-    else
-      template_data[method.to_s]
+    return super unless has_field?(method.to_s) || has_association?(method.to_s)
+    if has_field?(method.to_s)
+      field = template.find_field(method.to_s)
+      case field.type
+      when 'element'
+        return nil if template_data[method.to_s].blank?
+        Element.find_by_id(template_data[method.to_s])
+      when 'document'
+        return nil if template_data[method.to_s].blank?
+        Document.find_by_id(template_data[method.to_s])
+      when 'geocode'
+        template_data[method.to_s].to_ostruct
+      else
+        template_data[method.to_s]
+      end
+    elsif has_association?(method.to_s)
+      association = template.find_association(method.to_s)
+      property
+        .elements.by_title.with_template(association.template)
+        .select { |e| e.template_data[association.field].split(',')
+            .collect(&:to_i).include?(id) }
     end
   end
 

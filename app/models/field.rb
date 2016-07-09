@@ -27,6 +27,10 @@ class Field
     type == 'document'
   end
 
+  def is_element?
+    type == 'element'
+  end
+
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
     super

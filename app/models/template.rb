@@ -41,6 +41,19 @@ class Template
     attributes['webhook_url'].present?
   end
 
+  def associations
+    return {} unless attributes['associations']
+    associations = []
+    attributes['associations'].each do |name, data|
+      associations << Association.new(data.merge('name' => name))
+    end
+    associations
+  end
+
+  def find_association(name)
+    associations.select { |f| f.name == name }.first
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []

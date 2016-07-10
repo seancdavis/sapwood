@@ -138,7 +138,7 @@ RSpec.describe Element, :type => :model do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
       expect(element.field_names)
-        .to eq(%w(description address image comments option))
+        .to eq(%w(name description address image comments option))
     end
     it 'returns an empty array when the template does not exist' do
       element = create(:element, :template_name => 'A', :property => @property)
@@ -211,9 +211,7 @@ RSpec.describe Element, :type => :model do
       expect(json[:id]).to eq(element.id)
       expect(json[:title]).to eq(element.title)
       expect(json[:slug]).to eq(element.slug)
-      expect(json[:body]).to eq(element.body)
       expect(json[:template_name]).to eq('All Options')
-      expect(json[:publish_at]).to eq(element.publish_at)
       expect(json[:created_at]).to eq(element.created_at)
       expect(json[:updated_at]).to eq(element.updated_at)
       # Custom template_data is brought to the top level.

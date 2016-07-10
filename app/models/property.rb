@@ -112,6 +112,7 @@ class Property < ActiveRecord::Base
 
   def valid_templates?
     begin
+      return true if templates_raw.blank?
       JSON.parse(templates_raw)
       true
     rescue

@@ -2,16 +2,11 @@
   {
     "title": "Default",
     "fields": {
-      "subtitle": {
-        "type": "string",
-        "label": "Subtitle"
-      }
+      "name": {}
     }
   },
   {
     "title": "All Options",
-    "element_title_label": "Name",
-    "body": false,
     "webhook_url": "http://localhost:3000/webhook",
     "associations": {
       "options": {
@@ -20,6 +15,9 @@
       }
     },
     "fields": {
+      "name": {
+        "primary": true
+      },
       "description": {
         "type": "string",
         "label": "Description"
@@ -56,8 +54,10 @@
     "fields": {
       "option": {
         "type": "element",
-        "templates": ["All Options"],
-        "label": "Option"
+        "templates": ["All Options"]
+      },
+      "name": {
+        "primary": true
       }
     }
   }

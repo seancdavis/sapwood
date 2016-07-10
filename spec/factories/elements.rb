@@ -16,12 +16,13 @@
 FactoryGirl.define do
   factory :element do
     property
-    title { Faker::Lorem.words(4).join(' ').titleize }
+    title { Faker::Lorem.words(4).join(' ') }
     template_name 'Default'
-    # position 1
+    template_data {{
+      'name' => Faker::Lorem.words(4).join(' ')
+    }}
     # publish_at "2016-01-16 16:15:28"
     trait :with_options do
-      body { Faker::Lorem.paragraph }
       template_name 'All Options'
       template_data {{
         # 'address' => '1216 Central Pkwy, 45202',

@@ -38,7 +38,7 @@ class ElementsController < ApplicationController
 
   def create
     @current_element = current_property.elements.build(element_params)
-    if current_element.save
+    if current_element.save!
       redirect_to [current_property, current_template, :elements],
                   :notice => "#{current_template.title} saved successfully!"
     else
@@ -66,13 +66,17 @@ class ElementsController < ApplicationController
   private
 
     def element_params
-      p = params.require(:element).permit(:title, :template_name)
-      new_data = params[:element][:template_data]
-      if new_data.present?
-        old_data = current_element? ? current_element.template_data : {}
-        p = p.merge(:template_data => old_data.merge(new_data))
-      end
-      p
+      # raise '123'
+      params
+        .require(:element)
+        .permit(:title, :template_name,
+                :template_data => current_template.fields.collect(&:name))
+      # new_data = params[:element][:template_data]
+      # if new_data.present?
+      #   old_data = current_element? ? current_element.template_data : {}
+      #   p = p.merge(:template_data => old_data.merge(new_data))
+      # end
+      # p
     end
 
 end

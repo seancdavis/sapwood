@@ -65,10 +65,12 @@ class Element < ActiveRecord::Base
 
   after_save :init_webhook
 
-  before_save :set_title
+  before_validation :set_title
 
   def set_title
-    self.title = send(template.primary_field.name)
+    return if template.blank? || template.primary_field.blank? ||
+              self.send(template.primary_field.name).blank?
+    self.title = self.send(template.primary_field.name)
   end
 
   # ---------------------------------------- Instance Methods

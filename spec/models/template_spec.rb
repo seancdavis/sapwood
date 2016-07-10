@@ -17,26 +17,6 @@ describe Template, :type => :model do
     end
   end
 
-  describe '#element_title_label' do
-    it 'defaults to "title"' do
-      expect(@template.element_title_label).to eq('Title')
-    end
-    it 'can be overwritten' do
-      template = property.find_template('All Options')
-      expect(template.element_title_label).to eq('Name')
-    end
-  end
-
-  describe '#show_body' do
-    it 'is true by default' do
-      expect(@template.show_body?).to eq(true)
-    end
-    it 'can be hidden' do
-      template = property.find_template('All Options')
-      expect(template.show_body?).to eq(false)
-    end
-  end
-
   describe '#has_webhook?' do
     it 'is true when it has the option' do
       expect(property.find_template('All Options').has_webhook?).to eq(true)

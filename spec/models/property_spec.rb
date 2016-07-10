@@ -98,10 +98,6 @@ RSpec.describe Property, :type => :model do
     it 'returns an empty array when there is no template' do
       expect(property.templates).to eq([])
     end
-    it 'returns an error message when the JSON is malformed' do
-      property.update!(:templates_raw => "#{@raw_templates}]]")
-      expect { property.templates }.to raise_error(JSON::ParserError)
-    end
     context 'when there are templates' do
       before(:each) { property.update!(:templates_raw => @raw_templates) }
       it 'returns an array' do

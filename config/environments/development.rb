@@ -50,4 +50,7 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.add_footer = true
   end
+
+  # To help clear the cache after every request.
+  config.middleware.use ClearCache
 end

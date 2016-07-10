@@ -129,7 +129,7 @@ feature 'Collections', :js => true do
 
   # ---------------------------------------- All Options
 
-  context 'using the Default collection type' do
+  context 'using the Loaded collection type' do
 
     before(:each) do
       click_link 'Loaded Collection'

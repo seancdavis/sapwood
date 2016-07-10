@@ -17,7 +17,10 @@ require 'rails_helper'
 RSpec.describe Collection, :type => :model do
 
   context 'with items' do
-    before(:each) { @collection = create(:collection, :with_items) }
+    before(:each) do
+      @collection = create(:collection, :with_items,
+                           :property => property_with_templates)
+    end
 
     # These specs are testing nesting items three levels deep within a
     # collection.

@@ -5,6 +5,7 @@ feature 'Elements', :js => true do
   background do
     @property = property_with_templates
     @element = build(:element)
+    @title = Faker::Lorem.words(4).join(' ')
     @user = create(:admin)
     sign_in @user
     click_link @property.title
@@ -15,30 +16,24 @@ feature 'Elements', :js => true do
       click_link 'Defaults'
       click_link 'New Default'
     end
-    scenario 'can be created by a user with the basics' do
-      fill_in 'element[title]', :with => @element.title
+    scenario 'can be created by a user requiring the primary field' do
+      # This shows a few things:
+      #   - We can save custom field data.
+      #   - The index listing shows the primary field by default.
+      #   - The primary field is required.
+      expect(page).to have_no_content(@title)
       click_button 'Save Default'
-      expect(page).to have_content(@element.title)
-    end
-    scenario 'will save custom fields' do
-      fill_in 'element[title]', :with => @element.title
-      subtitle = Faker::Lorem.sentence
-      fill_in 'element[template_data][subtitle]', :with => subtitle
+      expect(page).to have_no_content(@title)
+      fill_in 'element[template_data][name]', :with => @title
       click_button 'Save Default'
-      expect(Element.find_by_title(@element.title).subtitle).to eq(subtitle)
+      expect(page).to have_content(@title)
     end
     scenario 'only has template on info sidebar' do
-      expect(page).to_not have_content('ID:')
-      expect(page).to_not have_content('Slug:')
-      expect(page).to_not have_content('Created:')
-      expect(page).to_not have_content('Last Modified:')
+      expect(page).to have_no_content('ID:')
+      expect(page).to have_no_content('Slug:')
+      expect(page).to have_no_content('Created:')
+      expect(page).to have_no_content('Last Modified:')
       expect(page).to have_content('Template: Default')
-    end
-    scenario 'has a body' do
-      expect(page).to have_css('textarea#element_body', :visible => false)
-    end
-    scenario 'uses a wysiwyg editor for the body' do
-      expect(page).to have_css('div.trumbowyg-box')
     end
   end
 
@@ -55,23 +50,14 @@ feature 'Elements', :js => true do
       click_link document.title
       sleep 0.35
       within('form') { expect(page).to have_content(document.title) }
-      fill_in 'element[title]', :with => @element.title
+      fill_in 'element[template_data][name]', :with => @title
       click_button 'Save All Options'
       # Let's see if it persisted.
-      click_link @element.title
+      click_link @title
       expect(page).to have_content(document.title)
-    end
-    scenario 'has the correct placeholder for title' do
-      expect(page).to have_css('input[placeholder="Name"]')
-    end
-    scenario 'hides the body field' do
-      expect(page).to_not have_css('textarea#element_body')
     end
     scenario 'adds upload trigger button for document field' do
       expect(page).to have_css('.document-uploader a.upload-trigger')
-    end
-    scenario 'adds a form for uploading' do
-      expect(page).to have_css('section.uploader > form', :visible => false)
     end
     scenario 'enables selecting a belongs_to relationship' do
       # This element should be in the dropdown menu.
@@ -84,18 +70,14 @@ feature 'Elements', :js => true do
         "select#element_template_data_option option[value='#{element.id}']")
       expect(page).to have_no_css(
         "select#element_template_data_option option[value='#{default_element.id}']")
-      fill_in 'element[title]', :with => @element.title
+      fill_in 'element[template_data][name]', :with => @title
       select element.title, :from => 'element[template_data][option]'
       click_button 'Save All Options'
       expect(Element.all.order(:id).last.option).to eq(element)
     end
-    scenario 'has a textarea' do
+    scenario 'has a textarea and wysiwyg editor' do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)
-    end
-    scenario 'uses a wysiwyg editor for comments' do
-      # we know there should be only one wysiwyg editor because the body is
-      # hidden for this template
       expect(page).to have_css('div.trumbowyg-box')
     end
   end

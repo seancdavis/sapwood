@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::CollectionsController do
 
   before(:each) do
-    @property = create(:property)
+    @property = property_with_templates
   end
 
   describe '#index' do
@@ -18,7 +18,8 @@ describe Api::V1::CollectionsController do
     it 'responds with the collections as json' do
       c_01 = create(:collection, :with_items, :property => @property)
       c_02 = create(:collection, :with_items, :property => @property)
-      c_03 = create(:collection, :with_items)
+      c_03 = create(:collection, :with_items,
+                    :property => property_with_templates)
       response = get :index, :api_key => @property.api_key,
                      :format => :json
       expect(response.body).to include(c_01.to_json)

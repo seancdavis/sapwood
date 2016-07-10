@@ -18,14 +18,14 @@ require 'rails_helper'
 
 RSpec.describe Element, :type => :model do
 
-  before(:all) do
+  before(:each) do
     @property = create(:property,
                        :templates_raw => File.read(template_config_file))
   end
 
   describe '#geocode_addresses' do
     context 'for a valid address' do
-      before(:all) do
+      before(:each) do
         @address = '1216 Central, 45202'
         @element = create(:element, :template_name => 'All Options',
                           :property => @property,
@@ -71,7 +71,7 @@ RSpec.describe Element, :type => :model do
       end
     end
     context 'for an empty address' do
-      before(:all) do
+      before(:each) do
         @address = ''
         @element = create(:element, :template_name => 'All Options',
                           :property => @property,
@@ -85,7 +85,7 @@ RSpec.describe Element, :type => :model do
       end
     end
     context 'for a missing address' do
-      before(:all) do
+      before(:each) do
         @element = create(:element, :template_name => 'All Options',
                           :property => @property)
       end
@@ -97,7 +97,7 @@ RSpec.describe Element, :type => :model do
       end
     end
     context 'for an address that can not be geocoded' do
-      before(:all) do
+      before(:each) do
         @address = 'skjdhfwixmncask'
         @element = create(:element, :template_name => 'All Options',
                           :property => @property,
@@ -113,7 +113,7 @@ RSpec.describe Element, :type => :model do
   end
 
   describe '#template' do
-    before(:all) do
+    before(:each) do
       @element = create(:element, :template_name => 'All Options',
                         :property => @property)
     end
@@ -148,7 +148,7 @@ RSpec.describe Element, :type => :model do
   end
 
   describe '#has_field?' do
-    before(:all) do
+    before(:each) do
       @element = create(:element, :template_name => 'All Options',
                         :property => @property)
     end

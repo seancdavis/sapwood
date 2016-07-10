@@ -15,7 +15,7 @@ feature 'Importing Elements', :js => true do
     select 'All Options', :from => 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('3 elements imported')
-    click_link 'Elements'
+    click_link 'All Options'
     expect(page).to have_content('Great American Ballpark')
   end
 
@@ -24,7 +24,7 @@ feature 'Importing Elements', :js => true do
     select 'All Options', :from => 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('one of your column headings does not match')
-    click_link 'Elements'
+    click_link 'All Options'
   end
 
   scenario 'rescues from a bad column name' do
@@ -34,7 +34,7 @@ feature 'Importing Elements', :js => true do
     expect(page).to have_content('Data in one of your rows is not valid')
     # Check that it rolls back the entire transaction.
     expect(Element.count).to eq(0)
-    click_link 'Elements'
+    click_link 'All Options'
   end
 
   scenario 'requires file to import' do

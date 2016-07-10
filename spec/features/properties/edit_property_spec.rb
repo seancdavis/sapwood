@@ -29,12 +29,6 @@ feature 'Property Settings', :js => true do
       first('.label-input label').click
       expect(page).to have_css('.label-input.hidden', :count => 1)
     end
-    scenario 'will hide the sidebar item' do
-      expect(page).to have_content('Elements')
-      first('.label-input label').click
-      click_button 'Save Changes'
-      expect(page).to_not have_content('Elements')
-    end
   end
 
 end

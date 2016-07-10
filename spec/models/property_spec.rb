@@ -98,17 +98,13 @@ RSpec.describe Property, :type => :model do
     it 'returns an empty array when there is no template' do
       expect(property.templates).to eq([])
     end
-    it 'returns an error message when the JSON is malformed' do
-      property.update!(:templates_raw => "#{@raw_templates}]]")
-      expect { property.templates }.to raise_error(JSON::ParserError)
-    end
     context 'when there are templates' do
       before(:each) { property.update!(:templates_raw => @raw_templates) }
       it 'returns an array' do
         expect(property.templates.class).to eq(Array)
       end
-      it 'returns Property::Template objects within the array' do
-        expect(property.templates.first.class).to eq(Property::Template)
+      it 'returns Template objects within the array' do
+        expect(property.templates.first.class).to eq(Template)
       end
     end
   end
@@ -138,7 +134,7 @@ RSpec.describe Property, :type => :model do
       property.update!(:templates_raw => @raw_templates)
     end
     it 'can find a template by its title' do
-      expect(property.find_template('Default').class).to eq(Property::Template)
+      expect(property.find_template('Default').class).to eq(Template)
     end
   end
 
@@ -162,9 +158,9 @@ RSpec.describe Property, :type => :model do
       it 'returns an array' do
         expect(property.collection_types.class).to eq(Array)
       end
-      it 'returns Property::CollectionType objects within the array' do
+      it 'returns CollectionType objects within the array' do
         expect(property.collection_types.first.class)
-          .to eq(Property::CollectionType)
+          .to eq(CollectionType)
       end
     end
   end
@@ -196,8 +192,8 @@ RSpec.describe Property, :type => :model do
       property.update!(:collection_types_raw => @config)
     end
     it 'can find a collection_type by its title' do
-      expect(property.find_collection_type('Default').class)
-        .to eq(Property::CollectionType)
+      expect(property.find_collection_type('Default Collection').class)
+        .to eq(CollectionType)
     end
   end
 

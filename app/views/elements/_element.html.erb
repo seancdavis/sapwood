@@ -1,8 +1,15 @@
 <tr class="element">
   <td class="icon"><i class="icon-file"></i></td>
-  <td class="title">
-    <%= link_to element.title, [:edit, current_property, element] %>
-  </td>
-  <td><%= element.slug %></td>
-  <td><%= element.template.name %></td>
+  <% current_template.columns.each do |col| %>
+    <% if col.primary? %>
+      <td class="primary">
+        <%= link_to col.output(element),
+                    edit_property_template_element_path(current_property,
+                                                        current_template,
+                                                        element) %>
+      </td>
+    <% else %>
+      <td><%= col.output(element) %></td>
+    <% end %>
+  <% end %>
 </tr>

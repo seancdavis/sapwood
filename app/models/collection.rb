@@ -20,7 +20,12 @@ class Collection < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  belongs_to :property
+  belongs_to :property, :touch => true
+
+  # ---------------------------------------- Scopes
+
+  scope :by_title, -> { order(:title => :asc) }
+  scope :with_type, ->(name) { where(:collection_type_name => name) }
 
   # ---------------------------------------- Validations
 
@@ -86,7 +91,7 @@ class Collection < ActiveRecord::Base
     response = { :id => id, :title => title, :type => collection_type_name }
     if field_data.present?
       field_data.each do |k,v|
-        response[k.to_sym] = if collection_type.find_field(k).is_document?
+        response[k.to_sym] = if collection_type.find_field(k).document?
            Document.find_by_id(v)
          else
           v

@@ -17,17 +17,13 @@ class App.Components.Uploader extends Backbone.View
   initUploader: ->
     $("#fileupload").fileupload
       add: (e, data) ->
-        types = /(\.|\/)(gif|jpe?g|png|pdf|xlsx?|docx?|pptx?|csv)$/i
         file = data.files[0]
-        if types.test(file.type) || types.test(file.name)
-          data.context = $(tmpl("template-upload", file))
-          $('.batch-uploader').append(data.context)
-          data.context.find('.processing').hide()
-          data.form.find('#content_type').attr('name','Content-Type')
-          data.form.find('#content_type').val(file.type)
-          data.submit()
-        else
-          alert("#{file.name} is not a supported format.")
+        data.context = $(tmpl("template-upload", file))
+        $('.batch-uploader').append(data.context)
+        data.context.find('.processing').hide()
+        data.form.find('#content_type').attr('name','Content-Type')
+        data.form.find('#content_type').val(file.type)
+        data.submit()
 
       progress: (e, data) ->
         if data.context

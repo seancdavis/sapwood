@@ -119,9 +119,18 @@ form textarea.error {
 }
 
 select {
-  margin-bottom: $base-spacing;
   max-width: 100%;
   width: auto;
+  padding: rem(5) rem(30) rem(5) rem(5);
+  margin-bottom: $base-spacing;
+  overflow: hidden;
+  background-color: transparent;
+  background-image: image-url('arrow-down.png');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 5px);
+  background-size: 16px;
+  border: 1px solid $md-grey;
+  -webkit-appearance: none;
 }
 
 abbr[title] {

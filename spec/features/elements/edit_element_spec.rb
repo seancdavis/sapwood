@@ -13,21 +13,14 @@ feature 'Elements', :js => true do
   context 'using Default template' do
     background do
       @element = create(:element, :property => @property)
-      click_link 'Elements'
+      click_link 'Defaults'
       click_link @element.title
     end
-    scenario 'title can be updated' do
+    scenario 'name (custom field) can be updated' do
       new_title = Faker::Lorem.words(5).join(' ').titleize
-      fill_in 'element[title]', :with => new_title
+      fill_in 'element[template_data][name]', :with => new_title
       click_button 'Save Default'
       expect(page).to have_content(new_title)
-    end
-    scenario 'will save custom fields' do
-      fill_in 'element[title]', :with => @element.title
-      subtitle = Faker::Lorem.sentence
-      fill_in 'element[template_data][subtitle]', :with => subtitle
-      click_button 'Save Default'
-      expect(Element.find_by_title(@element.title).subtitle).to eq(subtitle)
     end
     scenario 'has info on the sidebar' do
       expect(page).to have_content("ID: #{@element.id}")
@@ -36,19 +29,13 @@ feature 'Elements', :js => true do
       expect(page).to have_content("Last Modified: #{@element.p.updated_at}")
       expect(page).to have_content("Template: Default")
     end
-    scenario 'has a body' do
-      expect(page).to have_css('textarea#element_body', :visible => false)
-    end
-    scenario 'uses a wysiwyg editor for the body' do
-      expect(page).to have_css('div.trumbowyg-box')
-    end
   end
 
   context 'using All Options template' do
     background do
       @element = create(:element, :property => @property,
                         :template_name => 'All Options')
-      click_link 'Elements'
+      click_link 'All Options'
       click_link @element.title
     end
     scenario 'can add an existing image for its image' do
@@ -63,12 +50,6 @@ feature 'Elements', :js => true do
       click_link @element.title
       expect(page).to have_content(document.title)
     end
-    scenario 'has the correct placeholder for title' do
-      expect(page).to have_css('input[placeholder="Name"]')
-    end
-    scenario 'hides the body field' do
-      expect(page).to_not have_css('textarea#element_body')
-    end
     scenario 'adds upload trigger button for document field' do
       expect(page).to have_css('.document-uploader a.upload-trigger')
     end
@@ -78,10 +59,6 @@ feature 'Elements', :js => true do
     scenario 'has a textarea' do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)
-    end
-    scenario 'uses a wysiwyg editor for comments' do
-      # we know there should be only one wysiwyg editor because the body is
-      # hidden for this template
       expect(page).to have_css('div.trumbowyg-box')
     end
   end

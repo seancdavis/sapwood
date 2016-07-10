@@ -22,7 +22,7 @@ describe Api::V1::ElementsController do
     end
     it 'responds with the element as json' do
       response = get :index, :api_key => @property.api_key, :format => :json
-      expect(response.body).to eq(@property.elements.to_json)
+      expect(response.body).to eq(@property.elements.by_title.to_json)
     end
     context 'when specifying a template' do
       it 'returns an empty array when template does not exist' do
@@ -36,8 +36,19 @@ describe Api::V1::ElementsController do
         response = get :index, :template => 'All Options',
                        :api_key => @property.api_key, :format => :json
         expect(@property.elements.count).to eq(6)
-        expect(response.body).to eq(@elements.to_json)
+        elements = @property.elements.with_template('All Options').by_title
+        expect(response.body).to eq(elements.to_json)
       end
+    end
+    describe 'ordering' do
+      it 'orders by attribute when told so' do
+        create(:element, :property => @property)
+        response = get :index, :order => 'comments',
+                       :api_key => @property.api_key, :format => :json
+        expect(response.body)
+          .to eq(@property.elements.by_field('comments').to_json)
+      end
+      # Note: We've test responses without ordering above.
     end
   end
 

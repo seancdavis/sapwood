@@ -1,4 +1,4 @@
-class Property::Template
+class CollectionType
 
   def initialize(options)
     @attributes ||= options
@@ -13,29 +13,33 @@ class Property::Template
     title
   end
 
-  def element_title_label
-    attributes['element_title_label'] || 'Title'
+  def slug
+    title.gsub(/[^0-9a-z\_\-]/i, '-').gsub(/\-+?/, '-').downcase
   end
 
-  def show_body?
-    attributes['body'].nil? ? true : attributes['body'].to_bool
+  def to_param
+    slug
+  end
+
+  def to_model
+    CollectionType.new(attributes)
+  end
+
+  def model_name
+    ActiveModel::Name.new(CollectionType)
   end
 
   def fields
     return {} unless attributes['fields']
     fields = []
     attributes['fields'].each do |name, data|
-      fields << Property::Field.new(data.merge('name' => name))
+      fields << Field.new(data.merge('name' => name))
     end
     fields
   end
 
   def find_field(name)
     fields.select { |f| f.name == name }.first
-  end
-
-  def geocode_fields
-    fields.select { |f| f.type == 'geocode' }
   end
 
   def method_missing(method, *arguments, &block)

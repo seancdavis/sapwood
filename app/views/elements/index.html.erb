@@ -1,35 +1,26 @@
 <%= page_header(
-  :title => current_property.p.label_title('elements'),
+  :title => current_template.name.pluralize,
   :button => {
-    :label => 'New',
-    :path => new_property_element_path(current_property),
+    :label => "New #{current_template.name}",
+    :path => new_property_template_element_path(current_property, current_template),
     :options => { :class => 'new button' }
-  },
-  :dropdown => 'templates_dropdown'
-) %>
+  }) %>
 
 <section class="body">
-  <% if @folders.present? || @elements.present? %>
+  <% if @elements.present? %>
     <div class="block">
       <table>
         <thead>
           <tr>
             <th class="icon"></th>
-            <th>Title</th>
-            <th>Slug</th>
-            <th>Template</th>
+            <% current_template.columns.each do |col| %>
+              <th><%= col.label %></th>
+            <% end %>
           </tr>
         </thead>
-        <% if @folders.present? %>
-          <tbody class="folders">
-            <%= render @folders %>
-          </tbody>
-        <% end %>
-        <% if @elements.present? %>
-          <tbody class="elements">
-            <%= render @elements %>
-          </tbody>
-        <% end %>
+        <tbody class="elements">
+          <%= render @elements %>
+        </tbody>
       </table>
     </div>
   <% else %>

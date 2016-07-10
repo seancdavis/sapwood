@@ -7,13 +7,10 @@
 #  slug          :string
 #  property_id   :integer
 #  template_name :string
-#  position      :integer          default(0)
-#  body          :text
 #  template_data :json             default({})
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  folder_id     :integer
 #
 
 class Element < ActiveRecord::Base
@@ -26,16 +23,14 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  belongs_to :property
-  belongs_to :folder
+  belongs_to :property, :touch => true
 
   # ---------------------------------------- Scopes
 
-  default_scope { order(:position => :asc, :id => :asc) }
-
   scope :alpha, -> { order(:title => :asc) }
-  scope :roots, -> { where(:folder_id => nil) }
   scope :with_template, ->(name) { where(:template_name => name) }
+  scope :by_title, -> { order(:title => :asc) }
+  scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
 
   # ---------------------------------------- Validations
 
@@ -54,6 +49,7 @@ class Element < ActiveRecord::Base
         next
       end
       begin
+        val = val[:raw] if val.is_a?(Hash) && val[:raw].present?
         template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
           .geocode(val).to_hash.merge(:raw => val)
       rescue
@@ -67,14 +63,36 @@ class Element < ActiveRecord::Base
     update_columns(:template_data => template_data)
   end
 
+  after_save :init_webhook
+
+  before_validation :set_title
+
+  def set_title
+    return if template.blank? || template.primary_field.blank? ||
+              self.send(template.primary_field.name).blank?
+    self.title = self.send(template.primary_field.name)
+  end
+
   # ---------------------------------------- Instance Methods
 
   def template
-    property.find_template(template_name)
+    return property.find_template(template_name) unless Rails.env.production?
+    Rails.cache.fetch("_p#{property_id}_e#{id}_template") do
+      property.find_template(template_name)
+    end
   end
 
   def template?
     template.present?
+  end
+
+  def association_names
+    return [] unless template?
+    template.associations.collect(&:name)
+  end
+
+  def has_association?(name)
+    association_names.include?(name.to_s)
   end
 
   def field_names
@@ -96,37 +114,77 @@ class Element < ActiveRecord::Base
       :title => title,
       :slug => slug,
       # :property_id => property_id,
-      :body => body,
       :template_name => template_name,
-      :position => position,
       # :template_data => template_data,
       :publish_at => publish_at,
       :created_at => created_at,
       :updated_at => updated_at,
-      # :folder_id => folder_id
     }
     template_data.each do |k,v|
-      response[k.to_sym] = if template.find_field(k).is_document?
-         Document.find_by_id(v)
+      field = template.find_field(k)
+      next if field.nil?
+      response[k.to_sym] = if field.document? || field.element?
+         send(k)
        else
         v
+      end
+    end
+    if options[:includes].present?
+      options[:includes].split(',').each do |association|
+        response[association.to_sym] = send(association)
       end
     end
     response
   end
 
   def method_missing(method, *arguments, &block)
-    return super unless has_field?(method.to_s)
-    field = template.find_field(method.to_s)
-    case field.type
-    when 'geocode'
-      template_data[method.to_s].to_ostruct
-    when 'document'
-      return nil if template_data[method.to_s].blank?
-      Document.find_by_id(template_data[method.to_s])
-    else
-      template_data[method.to_s]
+    return super unless has_field?(method.to_s) || has_association?(method.to_s)
+    if has_field?(method.to_s)
+      field = template.find_field(method.to_s)
+      case field.type
+      when 'element'
+        return nil if template_data[method.to_s].blank?
+        unless Rails.env.production?
+          return Element.find_by_id(template_data[method.to_s])
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          Element.find_by_id(template_data[method.to_s])
+        end
+      when 'document'
+        return nil if template_data[method.to_s].blank?
+        unless Rails.env.production?
+          return Document.find_by_id(template_data[method.to_s])
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          Document.find_by_id(template_data[method.to_s])
+        end
+      when 'geocode'
+        template_data[method.to_s].to_ostruct
+      else
+        template_data[method.to_s]
+      end
+    elsif has_association?(method.to_s)
+      association = template.find_association(method.to_s)
+      unless Rails.env.production?
+        return property
+          .elements.by_title.with_template(association.template)
+          .select { |e| e.template_data[association.field].split(',')
+              .collect(&:to_i).include?(id) }
+      end
+      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        property
+          .elements.by_title.with_template(association.template)
+          .select { |e| e.template_data[association.field].split(',')
+              .collect(&:to_i).include?(id) }
+      end
     end
   end
+
+  private
+
+    def init_webhook
+      return false unless template?
+      Webhook.delay.call(:element => self) if template.webhook?
+    end
 
 end

@@ -23,6 +23,7 @@ gem 'jquery-rails'
 # ------------------------------------------ Utilities
 
 gem 'active_record_query_trace'
+gem 'actionpack-action_caching'
 gem 'ancestry'
 gem 'aws-sdk'
 gem 'carrierwave_direct'
@@ -40,6 +41,7 @@ gem 'superslug'
 gem 'trumbowyg_rails'
 
 group :development do
+  gem 'bullet'
   gem 'mailcatcher'
   gem 'quiet_assets'
 end

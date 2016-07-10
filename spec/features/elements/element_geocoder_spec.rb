@@ -9,9 +9,8 @@ feature 'Geocoder', :js => true do
       @user = create(:admin)
       sign_in @user
       click_link @property.title
-      click_link 'Elements'
-      click_link 'New'
       click_link 'All Options'
+      click_link 'New All Options'
     end
     scenario 'provides geocode feedback for a valid address' do
       fill_in 'element[template_data][address]', :with => '1216 Central, 45202'
@@ -27,7 +26,7 @@ feature 'Geocoder', :js => true do
       expect(page).to_not have_content('Could not locate')
     end
     scenario 'will save the address and populate it upon return' do
-      fill_in 'element[title]', :with => @element.title
+      fill_in 'element[template_data][name]', :with => @element.title
       fill_in 'element[template_data][address]', :with => '1216 Central, 45202'
       click_button 'Save All Options'
       click_link @element.title
@@ -43,11 +42,14 @@ feature 'Geocoder', :js => true do
       @property = property_with_templates
       @element = create(:element, :property => @property,
                         :template_name => 'All Options',
-                        :template_data => { :address => @address })
+                        :template_data => {
+                          :name => Faker::Lorem.words(4).join(' '),
+                          :address => @address
+                        })
       @user = create(:admin)
       sign_in @user
       click_link @property.title
-      click_link 'Elements'
+      click_link 'All Options'
       click_link @element.title
     end
     scenario 'adds the content to textarea' do
@@ -71,7 +73,7 @@ feature 'Geocoder', :js => true do
       expect(page).to_not have_content('Could not locate')
     end
     scenario 'will save the address and populate it upon return' do
-      fill_in 'element[title]', :with => @element.title
+      fill_in 'element[template_data][name]', :with => @element.title
       fill_in 'element[template_data][address]', :with => 'lytle place, 45202'
       click_button 'Save All Options'
       click_link @element.title

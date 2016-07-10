@@ -8,7 +8,12 @@ class Api::V1::ElementsController < ApiController
         else
           current_property.elements
         end
-        render(:json => @elements)
+        @elements = if params[:order]
+          @elements.by_field(params[:order])
+        else
+          @elements.by_title
+        end
+        render(:json => @elements.to_json(:includes => params[:includes]))
       end
     end
   end
@@ -20,6 +25,14 @@ class Api::V1::ElementsController < ApiController
         @element.nil? ? not_found : render(:json => @element)
       end
     end
+  end
+
+  def webhook
+    Rails.logger.debug "****************************************"
+    Rails.logger.debug "\n----- INCOMING WEBHOOK -----\n"
+    Rails.logger.debug params.to_yaml
+    Rails.logger.debug "****************************************"
+    render :nothing => true
   end
 
 end

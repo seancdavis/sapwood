@@ -2,17 +2,32 @@
   {
     "title": "Default",
     "fields": {
-      "subtitle": {
-        "type": "string",
-        "label": "Subtitle"
-      }
+      "name": {}
     }
   },
   {
     "title": "All Options",
-    "element_title_label": "Name",
-    "body": false,
+    "webhook_url": "http://localhost:3000/webhook",
+    "list": {
+      "columns": {
+        "description": {},
+        "name": { "primary": true },
+        "updated_at": {
+          "label": "Date Last Modified",
+          "format": "%b %d, %y"
+        }
+      }
+    },
+    "associations": {
+      "options": {
+        "template": "More Options",
+        "field": "option"
+      }
+    },
     "fields": {
+      "name": {
+        "primary": true
+      },
       "description": {
         "type": "string",
         "label": "Description"
@@ -32,7 +47,36 @@
       "image": {
         "type": "document",
         "label": "Image"
+      },
+      // This duplicates the one below just so we can use this template for all
+      // our custom template data testing.
+      "option": {
+        "type": "element",
+        "templates": ["More Options"],
+        "label": "Option"
       }
+    }
+  },
+  {
+    "title": "More Options",
+    "fields": {
+      "option": {
+        "type": "element",
+        "templates": ["All Options"]
+      },
+      "name": {
+        "primary": true
+      }
+    }
+  },
+  {
+    "title": "-A & __ Fun(ny) - +Title^"
+  },
+  {
+    "title": "Required",
+    "fields": {
+      "name": {},
+      "subtitle": { "required": true }
     }
   }
 ]

@@ -12,10 +12,8 @@ class ApplicationController < ActionController::Base
                 :current_document,
                 :current_element,
                 :current_element?,
-                :current_folder,
                 :current_property,
                 :current_property?,
-                :current_property_collections,
                 :current_property_documents,
                 :current_template,
                 :focused_user,
@@ -87,19 +85,7 @@ class ApplicationController < ActionController::Base
     # ------------------------------------------ Templates
 
     def current_template
-      @current_template ||= begin
-        return current_element.template if current_element.template
-        current_property.find_template(params[:template]) if params[:template]
-      end
-    end
-
-    # ------------------------------------------ Folders
-
-    def current_folder
-      @current_folder ||= begin
-        id = params[:folder_id] || params[:id]
-        current_property.folders.find_by_id(id)
-      end
+      @current_template ||= current_property.find_template(params[:template_id])
     end
 
     # ------------------------------------------ Elements
@@ -140,19 +126,9 @@ class ApplicationController < ActionController::Base
       current_collection && current_collection.id.present?
     end
 
-    def current_property_collections
-      @current_property_collections ||= current_property.collections
-    end
-
     def current_collection_type
       @current_collection_type ||= begin
-        if current_collection.collection_type
-          current_collection.collection_type
-        elsif params[:collection_type]
-          current_property.find_collection_type(params[:collection_type])
-        else
-          nil
-        end
+        current_property.find_collection_type(params[:collection_type_id])
       end
     end
 

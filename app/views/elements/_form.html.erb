@@ -1,20 +1,12 @@
 <section class="body">
-  <%= simple_form_for [current_property, current_element] do |f| %>
-
-    <%= f.input :folder_id, :as => :hidden,
-                :input_html => { :value => current_folder.try(:id) } %>
+  <%= simple_form_for [current_property, current_template, current_element] do |f| %>
 
     <div class="block aside">
-      <%= f.input :title,
-                  :placeholder => current_template.element_title_label %>
-      <% if current_template.show_body? %>
-        <%= f.input :body, :input_html => { :class => 'wysiwyg' } %>
-      <% end %>
 
       <%= f.simple_fields_for :template_data,
                               OpenStruct.new(f.object.template_data) do |fd| %>
         <% current_template.fields.each do |field| %>
-          <%= send(field.html, fd, field.html_options) %>
+          <%= send(field.html, fd, field) %>
         <% end %>
       <% end %>
 
@@ -39,5 +31,11 @@
       </aside>
     </div>
     <%= f.submit "Save #{current_template.title}" %>
+    <% if current_element? %>
+      <%= link_to "Delete #{current_template.title}",
+                  [current_property, current_template, current_element],
+                  :class => 'button delete', :method => :delete,
+                  :data => { :confirm => 'Are you sure?' } %>
+    <% end %>
   <% end %>
 </section>

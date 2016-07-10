@@ -1,15 +1,13 @@
 <%= page_header(
-  :title => current_property.p.label_title('collections'),
+  :title => current_collection_type.title.pluralize,
   :button => {
-    :label => 'New',
-    :path => new_property_collection_path(current_property),
+    :label => "New #{current_collection_type.title}",
+    :path => [:new, current_property, current_collection_type, :collection],
     :options => { :class => 'new button' }
-  },
-  :dropdown => 'collection_types_dropdown'
-) %>
+  }) %>
 
 <section class="body">
-  <% if current_property_collections.present? %>
+  <% if @collections.present? %>
     <div class="block">
       <table>
         <thead>
@@ -21,7 +19,7 @@
           </tr>
         </thead>
         <tbody class="collections">
-          <%= render current_property_collections %>
+          <%= render @collections %>
         </tbody>
       </table>
     </div>

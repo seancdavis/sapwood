@@ -16,10 +16,10 @@
     </h3>
   </div>
   <div class="block half">
-    <span class="count"><%= current_property_collections.size %></span>
+    <span class="count"><%= current_property.collections.size %></span>
     <h3>
       <%= current_property.label('collections').singularize
-                          .pluralize(current_property_collections.size) %>
+                          .pluralize(current_property.collections.size) %>
     </h3>
   </div>
   <div class="block half">

@@ -1,10 +1,11 @@
-$icon-briefcase: "\e900";
-$icon-file: "\e901";
-$icon-folder: "\e902";
-$icon-image: "\e903";
-$icon-search: "\e904";
-$icon-settings: "\e905";
-$icon-user: "\e906";
+$icon-arrow-down: "\e900";
+$icon-briefcase: "\e901";
+$icon-file: "\e902";
+$icon-folder: "\e903";
+$icon-image: "\e904";
+$icon-search: "\e905";
+$icon-settings: "\e906";
+$icon-user: "\e907";
 
 @font-face {
     font-family: 'justicons';
@@ -35,38 +36,27 @@ $icon-user: "\e906";
     @include icon;
 }
 
-.icon-briefcase {
-    &:before {
-        content: $icon-briefcase;
-    }
+.icon-arrow-down:before {
+  content: $icon-arrow-down;
 }
-.icon-file {
-    &:before {
-        content: $icon-file;
-    }
+.icon-briefcase:before {
+  content: $icon-briefcase;
 }
-.icon-folder {
-    &:before {
-        content: $icon-folder;
-    }
+.icon-file:before {
+  content: $icon-file;
 }
-.icon-image {
-    &:before {
-        content: $icon-image;
-    }
+.icon-folder:before {
+  content: $icon-folder;
 }
-.icon-search {
-    &:before {
-        content: $icon-search;
-    }
+.icon-image:before {
+  content: $icon-image;
 }
-.icon-settings {
-    &:before {
-        content: $icon-settings;
-    }
+.icon-search:before {
+  content: $icon-search;
 }
-.icon-user {
-    &:before {
-        content: $icon-user;
-    }
+.icon-settings:before {
+  content: $icon-settings;
+}
+.icon-user:before {
+  content: $icon-user;
 }

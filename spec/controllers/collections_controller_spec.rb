@@ -24,14 +24,17 @@ describe CollectionsController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id,
+            :collection_type_id => 'collection'
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :index, :property_id => @property.id }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :index, :property_id => @property.id,
+              :collection_type_id => 'collection'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
     context 'for an assigned property' do
@@ -39,7 +42,8 @@ describe CollectionsController do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id,
+            :collection_type_id => 'collection'
         expect(response.status).to eq(200)
       end
     end
@@ -47,8 +51,27 @@ describe CollectionsController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :index, :property_id => '123' }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :index, :property_id => '123', :collection_type_id => 'collection'
+        }.to raise_error(ActionController::RoutingError)
+      end
+    end
+    context 'with collection type' do
+      before(:each) do
+        @user = create(:user)
+        @user.properties << @property
+        sign_in @user
+      end
+      it 'returns 200 when collection type is found' do
+        get :index, :property_id => @property.id,
+            :collection_type_id => 'collection'
+        expect(response.status).to eq(200)
+      end
+      it 'returns 404 when collection type is not found' do
+        expect {
+          get :index, :property_id => @property.id,
+              :collection_type_id => 'wrong'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end
@@ -58,24 +81,20 @@ describe CollectionsController do
   describe '#new' do
     before(:each) { @property = create(:property) }
     context 'for an unassigned property' do
-      it 'returns 404 for an admin when no collection_type is specified' do
-        @user = create(:admin)
-        sign_in @user
-        expect { get :new, :property_id => @property.id }
-          .to raise_error(ActionController::RoutingError)
-      end
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :new, :property_id => @property.id, :collection_type => 'Collection'
+        get :new, :property_id => @property.id,
+            :collection_type_id => 'collection'
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :new, :property_id => @property.id,
-                     :collection_type => 'Collection' }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :new, :property_id => @property.id,
+              :collection_type_id => 'collection'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
     context 'for an assigned property' do
@@ -83,7 +102,8 @@ describe CollectionsController do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        get :new, :property_id => @property.id, :collection_type => 'Collection'
+        get :new, :property_id => @property.id,
+            :collection_type_id => 'collection'
         expect(response.status).to eq(200)
       end
     end
@@ -91,9 +111,9 @@ describe CollectionsController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :new, :property_id => '123',
-                     :collection_type => 'Collection' }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :new, :property_id => '123', :collection_type_id => 'collection'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end
@@ -110,14 +130,16 @@ describe CollectionsController do
         it 'returns 200 for an admin' do
           @user = create(:admin)
           sign_in @user
-          get :edit, :property_id => @property.id, :id => @collection.id
+          get :edit, :property_id => @property.id,
+              :collection_type_id => 'collection', :id => @collection.id
           expect(response.status).to eq(200)
         end
         it 'returns 404 for a user' do
           @user = create(:user)
           sign_in @user
           expect {
-            get :edit, :property_id => @property.id, :id => @collection.id
+            get :edit, :property_id => @property.id,
+                :collection_type_id => 'collection', :id => @collection.id
           }.to raise_error(ActionController::RoutingError)
         end
       end
@@ -126,7 +148,8 @@ describe CollectionsController do
           @user = create(:user)
           @user.properties << @property
           sign_in @user
-          get :edit, :property_id => @property.id, :id => @collection.id
+          get :edit, :property_id => @property.id,
+              :collection_type_id => 'collection', :id => @collection.id
           expect(response.status).to eq(200)
         end
       end
@@ -134,8 +157,10 @@ describe CollectionsController do
         it 'returns 404 for an admin' do
           @user = create(:admin)
           sign_in @user
-          expect { get :edit, :property_id => '123', :id => @collection.id }
-            .to raise_error(ActionController::RoutingError)
+          expect {
+            get :edit, :property_id => '123',
+                :collection_type_id => 'collection', :id => @collection.id
+          }.to raise_error(ActionController::RoutingError)
         end
       end
     end
@@ -144,8 +169,10 @@ describe CollectionsController do
         @property = create(:property)
         @user = create(:user)
         sign_in @user
-        expect { get :edit, :property_id => @property.id, :id => '123' }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :edit, :property_id => @property.id,
+              :collection_type_id => 'collection', :id => '123'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end

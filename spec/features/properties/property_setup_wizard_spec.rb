@@ -17,9 +17,10 @@ feature 'Property Setup Wizard' do
     fill_in 'Elements', :with => 'Pages'
     # leave the remaining labels as defaults
     click_button 'Next'
-    fill_in 'property[templates_raw]', :with => 'TEMPLATE_DATA'
+    fill_in 'property[templates_raw]', :with => File.read(template_config_file)
     click_button 'Next'
-    fill_in 'property[collection_types_raw]', :with => 'COLLECTION_DATA'
+    fill_in 'property[collection_types_raw]',
+            :with => File.read(collection_type_config_file)
     click_button 'Next'
     fill_in 'property[forms_raw]', :with => 'FORM_DATA'
     click_button 'Next'
@@ -28,8 +29,10 @@ feature 'Property Setup Wizard' do
     expect(property.title).to eq(@property.title)
     expect(property.color).to eq(@property.color)
     expect(property.labels['elements']).to eq('Pages')
-    expect(property.templates_raw).to eq('TEMPLATE_DATA')
-    expect(property.collection_types_raw).to eq('COLLECTION_DATA')
+    expect(JSON.parse(property.templates_raw))
+      .to eq(JSON.parse(File.read(template_config_file)))
+    expect(JSON.parse(property.collection_types_raw))
+      .to eq(JSON.parse(File.read(collection_type_config_file)))
     expect(property.forms_raw).to eq('FORM_DATA')
   end
 

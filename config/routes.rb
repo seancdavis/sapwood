@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :properties, :only => [:show]
-      resources :elements, :only => [:index, :show]
+      resources :elements, :only => [:index, :show] do
+        post 'webhook', :on => :collection if Rails.env.development?
+      end
       resources :collections, :only => [:index, :show]
     end
   end
@@ -29,12 +31,15 @@ Rails.application.routes.draw do
     get 'setup/:step' => 'properties#edit', :as => :setup
     get 'import' => 'properties#import', :as => :import
     patch 'import' => 'properties#process_import', :as => :process_import
-
-    resources :elements
-    resources :folders
-    resources :documents
-    resources :collections
     resources :users
+
+    resources :templates, :only => [], :path => 'elements' do
+      resources :elements, :path => ''
+    end
+    resources :documents
+    resources :collection_types, :only => [], :path => 'collections' do
+      resources :collections, :path => ''
+    end
   end
 
   root :to => 'application#home'

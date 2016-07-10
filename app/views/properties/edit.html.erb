@@ -4,21 +4,17 @@
   <%= minimal_form_for current_property do |f| %>
     <div class="block aside">
       <h3>General</h3>
-      <%= f.input :title, :label => false, :autofocus => true,
-                  :placeholder => 'Property Name' %>
+      <%= f.input :title, :autofocus => true, :label => 'Property Name' %>
       <h3>Config</h3>
       <% unless current_property.valid_templates? %>
         <span class="error">Your template config is invalid.</span>
       <% end %>
-      <%= f.input :templates_raw, :label => false,
-                  :placeholder => 'Templates Config (JSON)',
+      <%= f.input :templates_raw, :label => 'Templates Config (JSON)',
                   :input_html => {
                     :class => ('error' unless current_property.valid_templates?)
                   } %>
-      <%= f.input :collection_types_raw, :label => false,
-                  :placeholder => 'Collections Config (JSON)' %>
-      <%= f.input :forms_raw, :label => false,
-                  :placeholder => 'Responses Config (JSON)' %>
+      <%= f.input :collection_types_raw, :label => 'Collections Config (JSON)' %>
+      <%= f.input :forms_raw, :label => 'Responses Config (JSON)' %>
 
       <h3>API Key</h3>
       <p>

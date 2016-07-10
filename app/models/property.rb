@@ -27,12 +27,11 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  has_many :folders
-  has_many :elements
-  has_many :collections
-  has_many :documents
-  has_many :responses
-  has_many :property_users
+  has_many :elements, :dependent => :destroy
+  has_many :collections, :dependent => :destroy
+  has_many :documents, :dependent => :destroy
+  has_many :responses, :dependent => :destroy
+  has_many :property_users, :dependent => :destroy
   has_many :users, :through => :property_users
 
   # ---------------------------------------- Validations
@@ -58,6 +57,13 @@ class Property < ActiveRecord::Base
       c = [{ :title => 'Collection' }]
       update_columns(:collection_types_raw => JSON.pretty_generate(c))
     end
+  end
+
+  after_touch :expire_caches
+  after_save :expire_caches
+
+  def expire_caches
+    Rails.cache.delete_matched(/\_p#{id}\_(.*)/) if Rails.env.production?
   end
 
   # ---------------------------------------- Class Methods
@@ -92,31 +98,37 @@ class Property < ActiveRecord::Base
   end
 
   def templates
-    return [] if templates_raw.blank?
-    templates = []
-    JSON.parse(templates_raw).each do |t|
-      templates << Property::Template.new(t)
+    begin
+      return [] if templates_raw.blank?
+      templates = []
+      JSON.parse(templates_raw).each do |t|
+        templates << Template.new(t)
+      end
+      templates
+    rescue
+      return []
     end
-    templates
   end
 
   def valid_templates?
     begin
-      return true if templates
+      return true if templates_raw.blank?
+      JSON.parse(templates_raw)
+      true
     rescue
       false
     end
   end
 
   def find_template(name)
-    templates.select { |t| t.title == name }.first
+    templates.select { |t| t.title == name || t.slug == name }.first
   end
 
   def collection_types
     return [] if collection_types_raw.blank?
     types = []
     JSON.parse(collection_types_raw).each do |ct|
-      types << Property::CollectionType.new(ct)
+      types << CollectionType.new(ct)
     end
     types
   end
@@ -130,7 +142,7 @@ class Property < ActiveRecord::Base
   end
 
   def find_collection_type(name)
-    collection_types.select { |t| t.title == name }.first
+    collection_types.select { |t| t.title == name || t.slug == name }.first
   end
 
   def users_with_access

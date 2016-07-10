@@ -16,7 +16,7 @@ FactoryGirl.define do
   factory :collection do
     property
     title { Faker::App.name }
-    collection_type_name 'Collection'
+    collection_type_name 'Default Collection'
     item_data {{}}
     trait :with_items do
       after(:create) do |collection|
@@ -41,6 +41,9 @@ FactoryGirl.define do
         collection.item_data_will_change!
         collection.update!(:item_data => item_data.to_json)
       end
+    end
+    trait :with_options do
+      collection_type_name 'Loaded Collection'
     end
   end
 

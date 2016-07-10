@@ -76,6 +76,7 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def template
+    return property.find_template(template_name) unless Rails.env.production?
     Rails.cache.fetch("_p#{property_id}_e#{id}_template") do
       property.find_template(template_name)
     end
@@ -143,11 +144,17 @@ class Element < ActiveRecord::Base
       case field.type
       when 'element'
         return nil if template_data[method.to_s].blank?
+        unless Rails.env.production?
+          return Element.find_by_id(template_data[method.to_s])
+        end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
           Element.find_by_id(template_data[method.to_s])
         end
       when 'document'
         return nil if template_data[method.to_s].blank?
+        unless Rails.env.production?
+          return Document.find_by_id(template_data[method.to_s])
+        end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
           Document.find_by_id(template_data[method.to_s])
         end
@@ -158,6 +165,12 @@ class Element < ActiveRecord::Base
       end
     elsif has_association?(method.to_s)
       association = template.find_association(method.to_s)
+      unless Rails.env.production?
+        return property
+          .elements.by_title.with_template(association.template)
+          .select { |e| e.template_data[association.field].split(',')
+              .collect(&:to_i).include?(id) }
+      end
       Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
         property
           .elements.by_title.with_template(association.template)

@@ -12,23 +12,35 @@ class Field
   end
 
   def type
-    attributes['type']
+    attributes['type'] || 'string'
   end
 
   def label
-    attributes['label'] || attributes['name'].titleize
+    attributes['label'] || attributes['name'].humanize.titleize
   end
 
   def title
     name
   end
 
-  def is_document?
+  def document?
     type == 'document'
   end
 
-  def is_element?
+  def element?
     type == 'element'
+  end
+
+  def date?
+    type == 'date'
+  end
+
+  def primary?
+    attributes['primary'].to_bool
+  end
+
+  def required?
+    attributes['required'].to_bool || primary?
   end
 
   def method_missing(method, *arguments, &block)
@@ -40,29 +52,12 @@ class Field
     attributes.keys.include?(method.to_s)
   end
 
-  # ---------------------------------------- Form Markup
-
-  # TODO: Refactor all this nonsense into something more legible
-
-  # def content_tag(element, options = {}, &block)
-  #   ActionController::Base.helpers.content_tag(element, options, &block)
-  # end
-
   def html
     "field_#{type}_html"
-    # return document_html(form_obj) if type == 'document'
-    # return geocode_html(form_obj) if type == 'geocode'
-    # form_obj.input name.to_sym, :required => false
   end
 
   def html_options
     attributes
-  end
-
-  def document_html(form_obj)
-    content_tag(:div, :class => 'document-uploader') do
-      form_obj.input "#{name}_id".to_sym, :required => false
-    end
   end
 
 end

@@ -7,7 +7,6 @@
 #  slug          :string
 #  property_id   :integer
 #  template_name :string
-#  body          :text
 #  template_data :json             default({})
 #  publish_at    :datetime
 #  created_at    :datetime         not null
@@ -67,9 +66,7 @@ class ElementsController < ApplicationController
   private
 
     def element_params
-      p = params
-        .require(:element)
-        .permit(:title, :body, :template_name)
+      p = params.require(:element).permit(:title, :template_name)
       new_data = params[:element][:template_data]
       if new_data.present?
         old_data = current_element? ? current_element.template_data : {}

@@ -98,17 +98,22 @@ class Property < ActiveRecord::Base
   end
 
   def templates
-    return [] if templates_raw.blank?
-    templates = []
-    JSON.parse(templates_raw).each do |t|
-      templates << Template.new(t)
+    begin
+      return [] if templates_raw.blank?
+      templates = []
+      JSON.parse(templates_raw).each do |t|
+        templates << Template.new(t)
+      end
+      templates
+    rescue
+      return []
     end
-    templates
   end
 
   def valid_templates?
     begin
-      return true if templates
+      JSON.parse(templates_raw)
+      true
     rescue
       false
     end

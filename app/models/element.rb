@@ -7,7 +7,6 @@
 #  slug          :string
 #  property_id   :integer
 #  template_name :string
-#  body          :text
 #  template_data :json             default({})
 #  publish_at    :datetime
 #  created_at    :datetime         not null
@@ -66,6 +65,12 @@ class Element < ActiveRecord::Base
 
   after_save :init_webhook
 
+  before_save :set_title
+
+  def set_title
+    self.title = send(template.primary_field.name)
+  end
+
   # ---------------------------------------- Instance Methods
 
   def template
@@ -106,7 +111,6 @@ class Element < ActiveRecord::Base
       :title => title,
       :slug => slug,
       # :property_id => property_id,
-      :body => body,
       :template_name => template_name,
       # :template_data => template_data,
       :publish_at => publish_at,
@@ -116,7 +120,7 @@ class Element < ActiveRecord::Base
     template_data.each do |k,v|
       field = template.find_field(k)
       next if field.nil?
-      response[k.to_sym] = if field.is_document? || field.is_element?
+      response[k.to_sym] = if field.document? || field.element?
          send(k)
        else
         v

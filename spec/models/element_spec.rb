@@ -7,7 +7,6 @@
 #  slug          :string
 #  property_id   :integer
 #  template_name :string
-#  body          :text
 #  template_data :json             default({})
 #  publish_at    :datetime
 #  created_at    :datetime         not null

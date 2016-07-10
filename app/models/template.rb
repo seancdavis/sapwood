@@ -33,10 +33,6 @@ class Template
     attributes['element_title_label'] || 'Title'
   end
 
-  def show_body?
-    attributes['body'].nil? ? true : attributes['body'].to_bool
-  end
-
   def has_webhook?
     attributes['webhook_url'].present?
   end
@@ -54,9 +50,38 @@ class Template
     associations.select { |f| f.name == name }.first
   end
 
+  def columns
+    columns = []
+    attributes.to_s
+    config = if attributes['list'] && attributes['list']['columns']
+      attributes['list']['columns']
+    else
+      {
+        primary_field.name => primary_field.attributes,
+        "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
+      }
+    end
+    config.each do |field, attrs|
+      f = if %w(updated_at created_at).include?(field)
+        Field.new('name' => 'updated_at', 'type' => 'date')
+      else
+        find_field(field)
+      end
+      columns << Column.new(attrs.merge('field' => f))
+    end
+    columns
+  end
+
+  def find_column(name)
+    columns.select { |f| f.field == name || f.label == name }.first
+  end
+
   def fields
     return {} unless attributes['fields']
     fields = []
+    if attributes['fields'].select { |n,d| d['primary'].to_bool }.blank?
+      attributes['fields'][attributes['fields'].keys[0]]['primary'] = true
+    end
     attributes['fields'].each do |name, data|
       fields << Field.new(data.merge('name' => name))
     end
@@ -65,6 +90,10 @@ class Template
 
   def find_field(name)
     fields.select { |f| f.name == name }.first
+  end
+
+  def primary_field
+    fields.select(&:primary?).first
   end
 
   def geocode_fields

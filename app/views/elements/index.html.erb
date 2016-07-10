@@ -13,21 +13,14 @@
         <thead>
           <tr>
             <th class="icon"></th>
-            <th>Title</th>
-            <th>Slug</th>
-            <th>Template</th>
+            <% current_template.columns.each do |col| %>
+              <th><%= col.label %></th>
+            <% end %>
           </tr>
         </thead>
-        <% if @folders.present? %>
-          <tbody class="folders">
-            <%= render @folders %>
-          </tbody>
-        <% end %>
-        <% if @elements.present? %>
-          <tbody class="elements">
-            <%= render @elements %>
-          </tbody>
-        <% end %>
+        <tbody class="elements">
+          <%= render @elements %>
+        </tbody>
       </table>
     </div>
   <% else %>

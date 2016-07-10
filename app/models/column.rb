@@ -14,7 +14,7 @@ class Column
   end
 
   def primary?
-    attributes['primary']
+    attributes['primary'].to_bool
   end
 
   def output(element)

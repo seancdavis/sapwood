@@ -25,7 +25,7 @@ FactoryGirl.define do
     trait :with_options do
       template_name 'All Options'
       template_data {{
-        # 'address' => '1216 Central Pkwy, 45202',
+        'name' => Faker::Lorem.words(4).join(' '),
         'comments' => Faker::Lorem.paragraph,
         'image' => create(:document, :title => Faker::Company.bs.titleize).id
       }}

@@ -171,7 +171,7 @@ class Element < ActiveRecord::Base
 
     def init_webhook
       return false unless template?
-      Webhook.delay.call(:element => self) if template.has_webhook?
+      Webhook.delay.call(:element => self) if template.webhook?
     end
 
 end

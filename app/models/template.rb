@@ -14,7 +14,8 @@ class Template
   end
 
   def slug
-    title.gsub(/[^0-9a-z\_\-]/i, '-').gsub(/\-+?/, '-').downcase
+    @slug ||= title.gsub(/[^0-9a-z-]/i, '-').gsub(/-+/, '-').gsub(/-$/, '')
+      .gsub(/^-/, '').downcase
   end
 
   def to_param
@@ -29,16 +30,12 @@ class Template
     ActiveModel::Name.new(Template)
   end
 
-  def element_title_label
-    attributes['element_title_label'] || 'Title'
-  end
-
-  def has_webhook?
+  def webhook?
     attributes['webhook_url'].present?
   end
 
   def associations
-    return {} unless attributes['associations']
+    return [] unless attributes['associations']
     associations = []
     attributes['associations'].each do |name, data|
       associations << Association.new(data.merge('name' => name))
@@ -73,11 +70,11 @@ class Template
   end
 
   def find_column(name)
-    columns.select { |f| f.field == name || f.label == name }.first
+    columns.select { |f| f.field.name == name || f.label == name }.first
   end
 
   def fields
-    return {} unless attributes['fields']
+    return [] unless attributes['fields']
     fields = []
     if attributes['fields'].select { |n,d| d['primary'].to_bool }.blank?
       attributes['fields'][attributes['fields'].keys[0]]['primary'] = true

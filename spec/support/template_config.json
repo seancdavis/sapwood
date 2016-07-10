@@ -8,6 +8,16 @@
   {
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
+    "list": {
+      "columns": {
+        "description": {},
+        "name": { "primary": true },
+        "updated_at": {
+          "label": "Date Last Modified",
+          "format": "%b %d, %y"
+        }
+      }
+    },
     "associations": {
       "options": {
         "template": "More Options",
@@ -49,8 +59,6 @@
   },
   {
     "title": "More Options",
-    "element_title_label": "Name",
-    "body": false,
     "fields": {
       "option": {
         "type": "element",
@@ -59,6 +67,16 @@
       "name": {
         "primary": true
       }
+    }
+  },
+  {
+    "title": "-A & __ Fun(ny) - +Title^"
+  },
+  {
+    "title": "Required",
+    "fields": {
+      "name": {},
+      "subtitle": { "required": true }
     }
   }
 ]

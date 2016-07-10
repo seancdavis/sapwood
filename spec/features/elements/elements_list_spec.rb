@@ -27,4 +27,20 @@ feature 'Elements List', :js => true do
     end
   end
 
+  scenario 'allows for a custom table config, but has a default' do
+    # First, test out the default layout.
+    element_01 = create(:element, :property => @property)
+    click_link 'Defaults'
+    # "name" is assumed as the primary, even though it is not set.
+    expect(page).to have_css(:th, :text => 'NAME')
+    expect(page).to have_no_css(:th, :text => 'DESCRIPTION')
+    expect(page).to have_css(:th, :text => 'LAST MODIFIED')
+    # And the custom layout.
+    element_01 = create(:element, :with_options, :property => @property)
+    click_link 'All Options'
+    expect(page).to have_css(:th, :text => 'NAME')
+    expect(page).to have_css(:th, :text => 'DESCRIPTION')
+    expect(page).to have_css(:th, :text => 'DATE LAST MODIFIED')
+  end
+
 end

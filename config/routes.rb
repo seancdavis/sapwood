@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  match '*all' => 'api#options', :via => :options
+
   # ---------------------------------------- API
 
   namespace :api do

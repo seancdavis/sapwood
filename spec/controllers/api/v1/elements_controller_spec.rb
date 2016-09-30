@@ -8,32 +8,41 @@ describe Api::V1::ElementsController do
 
   describe '#index' do
     before(:each) do
-      @elements = create_list(:element, 5, :with_options, :property => @property)
+      @elements = create_list(:element, 5, :with_options,
+                              :property => @property)
+    end
+    it 'raises a URL generation error when no property' do
+      expect {
+        get :index, :format => :json
+      }.to raise_error(ActionController::UrlGenerationError)
     end
     it 'raises 404 when no api_key' do
       expect {
-        get :index, :format => :json
+        get :index, :property_id => @property.id, :format => :json
       }.to raise_error(ActionController::RoutingError)
     end
     it 'raises 404 when api_key does not match a property' do
-      expect {
-        get :index, :api_key => '123', :format => :json
+      expect { get :index, :property_id => @property.id, :api_key => '123',
+                   :format => :json
       }.to raise_error(ActionController::RoutingError)
     end
     it 'responds with the element as json' do
-      response = get :index, :api_key => @property.api_key, :format => :json
+      response = get :index, :property_id => @property.id,
+                     :api_key => @property.api_key, :format => :json
       expect(response.body).to eq(@property.elements.by_title.to_json)
     end
     context 'when specifying a template' do
       it 'returns an empty array when template does not exist' do
-        response = get :index, :template => 'BLARGH',
-                       :api_key => @property.api_key, :format => :json
+        response = get :index, :property_id => @property.id,
+                       :template => 'BLARGH', :api_key => @property.api_key,
+                       :format => :json
         expect(response.body).to eq('[]')
       end
       it 'returns an empty array when template does not exist' do
         # Create an element without the All Options template
         create(:element, :property => @property)
-        response = get :index, :template => 'All Options',
+        response = get :index, :property_id => @property.id,
+                       :template => 'All Options',
                        :api_key => @property.api_key, :format => :json
         expect(@property.elements.count).to eq(6)
         elements = @property.elements.with_template('All Options').by_title
@@ -43,8 +52,9 @@ describe Api::V1::ElementsController do
     describe 'ordering' do
       it 'orders by attribute when told so' do
         create(:element, :property => @property)
-        response = get :index, :order => 'comments',
-                       :api_key => @property.api_key, :format => :json
+        response = get :index, :property_id => @property.id,
+                       :order => 'comments', :api_key => @property.api_key,
+                       :format => :json
         expect(response.body)
           .to eq(@property.elements.by_field('comments').to_json)
       end
@@ -58,26 +68,30 @@ describe Api::V1::ElementsController do
     before(:each) do
       @element = create(:element, :with_options, :property => @property)
     end
-    it 'raises 404 when no api_key' do
+    it 'raises a URL generation error when no property' do
       expect {
         get :show, :id => @element, :format => :json
+      }.to raise_error(ActionController::UrlGenerationError)
+    end
+    it 'raises 404 when no api_key' do
+      expect { get :show, :property_id => @property.id, :id => @element,
+                   :format => :json
       }.to raise_error(ActionController::RoutingError)
     end
     it 'raises 404 when element does not belong to property' do
       element = create(:element, :with_options)
-      expect {
-        get :show, :id => element, :api_key => @property.api_key,
-            :format => :json
+      expect { get :show, :property_id => @property.id, :id => element,
+                   :api_key => @property.api_key, :format => :json
       }.to raise_error(ActionController::RoutingError)
     end
     it 'raises 404 when api_key does not match property' do
-      expect {
-        get :show, :id => @element, :api_key => '123', :format => :json
+      expect { get :show, :property_id => @property.id, :id => @element,
+                   :api_key => '123', :format => :json
       }.to raise_error(ActionController::RoutingError)
     end
     it 'responds with the element as json' do
-      response = get :show, :id => @element, :api_key => @property.api_key,
-                     :format => :json
+      response = get :show, :property_id => @property.id, :id => @element,
+                     :api_key => @property.api_key, :format => :json
       expect(response.body).to eq(@element.to_json)
     end
   end
@@ -85,6 +99,11 @@ describe Api::V1::ElementsController do
   # ---------------------------------------- Create
 
   describe '#create' do
+    it 'raises a URL generation error when no property' do
+      expect {
+        post :create, :format => :json
+      }.to raise_error(ActionController::UrlGenerationError)
+    end
     it 'raises 404 when no api_key' do
       expect {
         post :create, :property_id => @property.id, :format => :json

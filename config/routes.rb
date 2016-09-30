@@ -12,10 +12,6 @@ Rails.application.routes.draw do
         end
         resources :collections, :only => [:index, :show]
       end
-      resources :elements, :only => [:index, :show] do
-        post 'webhook', :on => :collection if Rails.env.development?
-      end
-      resources :collections, :only => [:index, :show]
     end
   end
 

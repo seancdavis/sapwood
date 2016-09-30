@@ -55,7 +55,7 @@ describe UsersController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :index, :property_id => '123' }
+        expect { get :index, :property_id => '123456' }
           .to raise_error(ActionController::RoutingError)
       end
     end

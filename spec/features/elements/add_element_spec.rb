@@ -47,9 +47,15 @@ feature 'Elements', :js => true do
       document = create(:document, :property => @property)
       click_link 'Choose Existing File'
       wait_for_ajax
-      click_link document.title
       sleep 0.35
-      within('form') { expect(page).to have_content(document.title) }
+      within('#modal') do
+        expect(page).to have_content(document.title, :wait => 5)
+        click_link document.title
+      end
+      sleep 0.35
+      within('form') do
+        expect(page).to have_content(document.title, :wait => 5)
+      end
       fill_in 'element[template_data][name]', :with => @title
       click_button 'Save All Options'
       # Let's see if it persisted.

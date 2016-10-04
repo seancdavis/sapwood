@@ -2,7 +2,17 @@ class Api::V1::CollectionsController < ApiController
 
   def index
     respond_to do |f|
-      f.json { render(:json => current_property.collections) }
+      f.json do
+        @collections = if params[:type] && current_collection_type
+          current_property.collections.by_title
+                          .with_type(current_collection_type.name)
+        elsif params[:type]
+          []
+        else
+          current_property.collections.by_title
+        end
+        render(:json => @collections)
+      end
     end
   end
 

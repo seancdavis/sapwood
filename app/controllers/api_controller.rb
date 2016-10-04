@@ -1,12 +1,17 @@
 class ApiController < ActionController::Base
 
   before_filter :allow_cors
-  before_filter :authenticate_api_user!
+  before_filter :authenticate_api_user!, :except => [:options]
 
   caches_action :index, :cache_path => :index_cache_path.to_proc
   caches_action :show, :cache_path => :show_cache_path.to_proc
 
-  helper_method :current_property
+  helper_method :current_collection_type,
+                :current_property
+
+  def options
+    render :nothing => true
+  end
 
   protected
 
@@ -47,6 +52,14 @@ class ApiController < ActionController::Base
       headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
       headers['Access-Control-Request-Method'] = '*'
       headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    end
+
+    # ------------------------------------------ Collections
+
+    def current_collection_type
+      @current_collection_type ||= begin
+        current_property.find_collection_type(params[:type])
+      end
     end
 
 end

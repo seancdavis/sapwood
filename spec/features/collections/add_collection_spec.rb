@@ -63,6 +63,7 @@ feature 'Collections', :js => true do
 
     scenario 'it does not allow a fourth level of building' do
       fill_in 'collection[title]', :with => Faker::Lorem.words(4).join(' ')
+      expect(page).to have_css('select.new option', :wait => 5)
       first('select.new').first(:option, @elements[0].title).select_option
       within('article.item.level-1') do
         first('select.new').first(:option, @elements[1].title).select_option
@@ -75,6 +76,7 @@ feature 'Collections', :js => true do
 
     scenario 'it can remove an item at each level' do
       fill_in 'collection[title]', :with => Faker::Lorem.words(4).join(' ')
+      expect(page).to have_css('select.new option', :wait => 5)
       first('select.new').first(:option, @elements[0].title).select_option
       within('article.item.level-1') do
         first('select.new').first(:option, @elements[1].title).select_option
@@ -95,6 +97,7 @@ feature 'Collections', :js => true do
 
     scenario 'removing a parent removes all its children' do
       fill_in 'collection[title]', :with => Faker::Lorem.words(4).join(' ')
+      expect(page).to have_css('select.new option', :wait => 5)
       first('select.new').first(:option, @elements[0].title).select_option
       within('article.item.level-1') do
         first('select.new').first(:option, @elements[1].title).select_option
@@ -111,6 +114,7 @@ feature 'Collections', :js => true do
     scenario 'it will save the collection after removing an item' do
       title = Faker::Lorem.words(4).join(' ')
       fill_in 'collection[title]', :with => title
+      expect(page).to have_css('select.new option', :wait => 5)
       first('select.new').first(:option, @elements[0].title).select_option
       within('article.item.level-1') do
         first('select.new').first(:option, @elements[1].title).select_option

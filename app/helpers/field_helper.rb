@@ -4,6 +4,10 @@ module FieldHelper
     form_obj.input field.name.to_sym, :required => field.required?
   end
 
+  def field_text_html(form_obj, field)
+    form_obj.input field.name.to_sym, :as => :text, :required => field.required?
+  end
+
   def field_document_html(form_obj, field)
     path = new_property_document_path(current_property)
     document = Document.find_by_id(form_obj.object.send(field.name))

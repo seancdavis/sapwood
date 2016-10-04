@@ -75,12 +75,15 @@ class Collection < ActiveRecord::Base
     if item_data.present?
       JSON.parse(item_data).each do |k1, v1|
         e1 = els.select { |e| e.id == k1['id'] }.first
+        next if e1.blank?
         c1 = []
         k1['children'].each do |k2, v2|
           e2 = els.select { |e| e.id == k2['id'] }.first
+          next if e2.blank?
           c2 = []
           k2['children'].each do |k3, v3|
             e3 = els.select { |e| e.id == k3['id'] }.first
+            next if e3.blank?
             c2 << e3.as_json({})
           end
           c1 << e2.as_json({}).merge(:children => c2)

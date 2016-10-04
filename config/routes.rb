@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
 
+  match '*all' => 'api#options', :via => :options
+
   # ---------------------------------------- API
 
   namespace :api do
     namespace :v1 do
-      resources :properties, :only => [:show]
-      resources :elements, :only => [:index, :show] do
-        post 'webhook', :on => :collection if Rails.env.development?
+      resources :properties, :only => [:show] do
+        resources :elements, :only => [:index, :show, :create] do
+          post 'webhook', :on => :collection if Rails.env.development?
+        end
+        resources :collections, :only => [:index, :show]
       end
-      resources :collections, :only => [:index, :show]
     end
   end
 

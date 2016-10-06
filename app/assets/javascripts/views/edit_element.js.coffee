@@ -10,5 +10,7 @@ class App.Views.EditElement extends Backbone.View
       new App.Components.ElementUploader($(uploader))
     for bulkUploader in $('form .bulk-document-uploader')
       new App.Components.BulkElementUploader($(bulkUploader))
+    for multiselect in $('form div.multiselect')
+      new App.Components.ElementMultiSelect($(multiselect))
     $(wysiwyg).trumbowyg() for wysiwyg in $('textarea.wysiwyg')
     App.Components.Blocks.set()

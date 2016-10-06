@@ -92,6 +92,38 @@ module FieldHelper
                    :required => field.required?
   end
 
+  def field_elements_html(form_obj, field, object)
+    content_tag(:div, :class => 'multiselect input') do
+      o  = form_obj.input field.name.to_sym, :as => :hidden,
+                          :required => field.required?
+      o += content_tag(:label, field.name)
+      elements = current_property.elements.by_title
+      if field.templates
+        elements = elements.where(:template_name => field.templates)
+      end
+      o += content_tag(:select, :class => 'select optional',
+                       :id => "multiselect_#{field.name}") do
+        o2 = content_tag(:option, '', :class => 'placeholder')
+        elements.each do |el|
+          o2 += content_tag(:option, el.title, :value => el.id)
+        end
+        o2.html_safe
+      end
+      o += content_tag(:ul, :class => 'selected-options') do
+        o2 = ''
+        object.send(field.name).each do |el|
+          o2 += content_tag(:li, :data => { :id => el.id }) do
+            o3  = content_tag(:span, el.title)
+            o3 += content_tag(:a, 'REMOVE', :href => '#', :class => 'remove')
+            o3.html_safe
+          end
+        end
+        o2.html_safe
+      end
+      o.html_safe
+    end
+  end
+
   def field_wysiwyg_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :as => :text,
                    :required => field.required?,

@@ -37,6 +37,10 @@ class Field
     type == 'element'
   end
 
+  def elements?
+    type == 'elements'
+  end
+
   def date?
     type == 'date'
   end

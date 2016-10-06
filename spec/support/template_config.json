@@ -52,6 +52,11 @@
         "type": "documents",
         "label": "Image"
       },
+      "notes": {
+        "type": "elements",
+        "templates": ["Note"],
+        "label": "Notes"
+      },
       // This duplicates the one below just so we can use this template for all
       // our custom template data testing.
       "option": {
@@ -81,6 +86,13 @@
     "fields": {
       "name": {},
       "subtitle": { "required": true }
+    }
+  },
+  {
+    "title": "Note",
+    "fields": {
+      "name": { "primary": true },
+      "body": { "type": "text" }
     }
   }
 ]

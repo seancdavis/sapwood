@@ -81,6 +81,48 @@ feature 'Elements', :js => true do
       click_button 'Save All Options'
       expect(Element.all.order(:id).last.option).to eq(element)
     end
+    scenario 'can select multiple elements of another template' do
+      # These elements should be in the dropdown menu.
+      els = create_list(:element, 3, :property => @property,
+                        :template_name => 'Note')
+      # Thes element should not.
+      bad_els = [create(:element, :property => @property), create(:element)]
+
+      visit current_path
+      els.each do |el|
+        expect(page).to have_css('div.multiselect option', :text => el.title)
+      end
+      bad_els.each do |el|
+        expect(page).to have_no_css('div.multiselect option', :text => el.title)
+      end
+
+      # Choose 2, remove 1, then save and check.
+      select els[0].title, :from => 'multiselect_notes'
+      select els[2].title, :from => 'multiselect_notes'
+      within('.multiselect .selected-options') do
+        expect(page).to have_css('li > span', :text => els[0].title)
+        expect(page).to have_no_css('li > span', :text => els[1].title)
+        expect(page).to have_css('li > span', :text => els[2].title)
+
+        within("li[data-id='#{els[0].id}']") do
+          click_link 'REMOVE'
+        end
+
+        expect(page).to have_no_css('li > span', :text => els[0].title)
+        expect(page).to have_no_css('li > span', :text => els[1].title)
+        expect(page).to have_css('li > span', :text => els[2].title)
+      end
+
+      fill_in 'element[template_data][name]', :with => (title = Faker::Lorem.word)
+      click_button 'Save All Options'
+      click_link title
+
+      within('.multiselect .selected-options') do
+        expect(page).to have_no_css('li > span', :text => els[0].title)
+        expect(page).to have_no_css('li > span', :text => els[1].title)
+        expect(page).to have_css('li > span', :text => els[2].title)
+      end
+    end
     scenario 'has a textarea and wysiwyg editor' do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)

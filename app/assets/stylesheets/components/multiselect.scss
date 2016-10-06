@@ -1,0 +1,12 @@
+div.input.multiselect {
+
+  .selected-options li {
+    span {
+      display: inline-block;
+      margin-right: $small-spacing;
+    }
+    a {
+      font-size: 75%;
+    }
+  }
+}

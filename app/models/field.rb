@@ -23,8 +23,14 @@ class Field
     name
   end
 
+  # TODO: Move to a method_missing call
+
   def document?
     type == 'document'
+  end
+
+  def documents?
+    type == 'documents'
   end
 
   def element?

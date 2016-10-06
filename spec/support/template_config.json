@@ -48,6 +48,10 @@
         "type": "document",
         "label": "Image"
       },
+      "images": {
+        "type": "documents",
+        "label": "Image"
+      },
       // This duplicates the one below just so we can use this template for all
       // our custom template data testing.
       "option": {

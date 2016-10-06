@@ -1,16 +1,16 @@
 module FieldHelper
 
-  def field_string_html(form_obj, field)
+  def field_string_html(form_obj, field, element)
     form_obj.input field.name.to_sym, :required => field.required?
   end
 
-  def field_text_html(form_obj, field)
+  def field_text_html(form_obj, field, element)
     form_obj.input field.name.to_sym, :as => :text, :required => field.required?
   end
 
-  def field_document_html(form_obj, field)
+  def field_document_html(form_obj, field, element)
     path = new_property_document_path(current_property)
-    document = Document.find_by_id(form_obj.object.send(field.name))
+    document = element.send(field.name)
     content_tag(:div, :class => 'input document-uploader',
                 :data => { :uploader => path }) do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
@@ -40,7 +40,34 @@ module FieldHelper
     end
   end
 
-  def field_geocode_html(form_obj, field)
+  def field_documents_html(form_obj, field, element)
+    path = new_property_document_path(current_property, :multipart => true)
+    documents = element.send(field.name)
+    content_tag(:div, :class => 'input bulk-document-uploader',
+                :data => { :uploader => path }) do
+      o  = form_obj.input field.name.to_sym, :as => :hidden,
+                          :required => field.required?
+      o += content_tag(:label, field.name)
+      o += content_tag(:div, nil, :class => 'batch-uploader')
+      documents.each do |document|
+        o += content_tag(:div, :class => 'document-url') do
+          link_to(document.url) do
+            o2  = ''
+            o2 += document.p.thumb
+            o2 += content_tag(:span, document.title)
+            o2.html_safe
+          end
+        end
+      end
+      o += content_tag(:div, nil, :class => 'document-url hidden')
+      o += link_to("Choose Existing Files", '#',
+                   :class => 'bulk-document-chooser button')
+      o += link_to("Upload New Files", '#', :class => 'upload-trigger button')
+      o.html_safe
+    end
+  end
+
+  def field_geocode_html(form_obj, field, element)
     value = if form_obj.object[field.name].nil?
       nil
     else
@@ -56,7 +83,7 @@ module FieldHelper
     end
   end
 
-  def field_element_html(form_obj, field)
+  def field_element_html(form_obj, field, element)
     elements = current_property.elements.by_title
     if field.templates
       elements = elements.where(:template_name => field.templates)
@@ -65,7 +92,7 @@ module FieldHelper
                    :required => field.required?
   end
 
-  def field_wysiwyg_html(form_obj, field)
+  def field_wysiwyg_html(form_obj, field, element)
     form_obj.input field.name.to_sym, :as => :text,
                    :required => field.required?,
                    :input_html => { :class => 'wysiwyg' }

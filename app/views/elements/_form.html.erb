@@ -6,7 +6,7 @@
       <%= f.simple_fields_for :template_data,
                               OpenStruct.new(f.object.template_data) do |fd| %>
         <% current_template.fields.each do |field| %>
-          <%= send(field.html, fd, field) %>
+          <%= send(field.html, fd, field, current_element) %>
         <% end %>
       <% end %>
 

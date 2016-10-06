@@ -23,9 +23,9 @@
   }
 }
 
-.document-uploader {
+.document-uploader, .bulk-document-uploader {
   margin-bottom: rem(20);
-  .document-chooser {
+  .document-chooser, .bulk-document-chooser {
     margin-right: 5px;
   }
   .upload-trigger {

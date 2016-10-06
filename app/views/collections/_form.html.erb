@@ -18,7 +18,7 @@
         <%= f.simple_fields_for :field_data,
                               OpenStruct.new(f.object.field_data) do |fd| %>
           <% current_collection_type.fields.each do |field| %>
-            <%= send(field.html, fd, field) %>
+            <%= send(field.html, fd, field, current_collection) %>
           <% end %>
         <% end %>
       </aside>

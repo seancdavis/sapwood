@@ -1,16 +1,16 @@
 module FieldHelper
 
-  def field_string_html(form_obj, field, element)
+  def field_string_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :required => field.required?
   end
 
-  def field_text_html(form_obj, field, element)
+  def field_text_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :as => :text, :required => field.required?
   end
 
-  def field_document_html(form_obj, field, element)
+  def field_document_html(form_obj, field, object)
     path = new_property_document_path(current_property)
-    document = element.send(field.name)
+    document = object.send(field.name)
     content_tag(:div, :class => 'input document-uploader',
                 :data => { :uploader => path }) do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
@@ -40,9 +40,9 @@ module FieldHelper
     end
   end
 
-  def field_documents_html(form_obj, field, element)
+  def field_documents_html(form_obj, field, object)
     path = new_property_document_path(current_property, :multipart => true)
-    documents = element.send(field.name)
+    documents = object.send(field.name)
     content_tag(:div, :class => 'input bulk-document-uploader',
                 :data => { :uploader => path }) do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
@@ -67,7 +67,7 @@ module FieldHelper
     end
   end
 
-  def field_geocode_html(form_obj, field, element)
+  def field_geocode_html(form_obj, field, object)
     value = if form_obj.object[field.name].nil?
       nil
     else
@@ -83,7 +83,7 @@ module FieldHelper
     end
   end
 
-  def field_element_html(form_obj, field, element)
+  def field_element_html(form_obj, field, object)
     elements = current_property.elements.by_title
     if field.templates
       elements = elements.where(:template_name => field.templates)
@@ -92,7 +92,7 @@ module FieldHelper
                    :required => field.required?
   end
 
-  def field_wysiwyg_html(form_obj, field, element)
+  def field_wysiwyg_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :as => :text,
                    :required => field.required?,
                    :input_html => { :class => 'wysiwyg' }

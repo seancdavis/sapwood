@@ -15,6 +15,10 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    &.selected span.title {
+      background: rgba($action-color, 0.9);
+      color: $light;
+    }
 
     a {
       @include position(absolute, 0 null null 0);
@@ -46,6 +50,14 @@
       font-size: 72px;
       color: $md-grey;
     }
+  }
+}
+
+#save-bulk {
+  float: right;
+  visibility: hidden;
+  &.active {
+    visibility: visible;
   }
 }
 

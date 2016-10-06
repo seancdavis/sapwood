@@ -56,8 +56,44 @@ feature 'Elements', :js => true do
       click_link @element.title
       expect(page).to have_content(document.title)
     end
-    scenario 'adds upload trigger button for document field' do
+    scenario 'can add multiple existing images for its image' do
+      document_01 = create(:document, :title => Faker::Company.bs.titleize,
+                           :property => @property)
+      document_02 = create(:document, :title => Faker::Company.bs.titleize,
+                           :property => @property)
+      document_03 = create(:document, :title => Faker::Company.bs.titleize,
+                           :property => @property)
+      click_link 'Choose Existing Files'
+      wait_for_ajax
+      sleep 0.35
+      # Show that we can click all three, and that clicking a second time
+      # deselects it as an option.
+      within('#modal') do
+        expect(page).to have_content(document_01.title, :wait => 5)
+        click_link document_01.title
+        click_link document_02.title
+        click_link document_03.title
+        click_link document_01.title
+        click_link 'Save & Close'
+      end
+      sleep 0.35
+      within('form') do
+        expect(page).to have_content(document_02.title, :wait => 5)
+        expect(page).to have_content(document_03.title)
+        expect(page).to have_no_content(document_01.title)
+      end
+      # Let's see if it persisted.
+      click_button 'Save All Options'
+      click_link @element.title
+      within('form') do
+        expect(page).to have_content(document_02.title, :wait => 5)
+        expect(page).to have_content(document_03.title)
+        expect(page).to have_no_content(document_01.title)
+      end
+    end
+    scenario 'adds upload trigger button for document(s) field' do
       expect(page).to have_css('.document-uploader a.upload-trigger')
+      expect(page).to have_css('.bulk-document-uploader a.upload-trigger')
     end
     scenario 'adds a form for uploading' do
       expect(page).to have_css('section.uploader > form', :visible => false)

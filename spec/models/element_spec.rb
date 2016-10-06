@@ -137,8 +137,9 @@ RSpec.describe Element, :type => :model do
     it 'returns an array of field names' do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
-      expect(element.field_names)
-        .to eq(%w(name description address image comments option))
+      field_names = %w{name description address image images notes comments
+                       option}
+      expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do
       element = create(:element, :template_name => 'A', :property => @property)
@@ -203,11 +204,24 @@ RSpec.describe Element, :type => :model do
                              :template_name => 'More Options')
       element = create(:element, :with_options, :with_address,
                         :property => @property)
+      # TODO: This should work here, but you'll get stuck in a loop calling this
+      # as an actual JSON object because they keep calling each other.
       other_element[:template_data]['option'] = element.id.to_s
       other_element.save!
       element[:template_data]['option'] = other_element.id.to_s
+      # Adding has_many documents
+      documents = [create(:document, :property => @property),
+                   create(:document, :property => @property)]
+      element[:template_data]['images'] = documents.collect(&:id).join(',')
+      # Adding has_many elements
+      note_elements = create_list(:element, 3, :property => @property)
+      bad_element = create(:element)
+      element[:template_data]['notes'] = (note_elements + [bad_element])
+        .collect(&:id).join(',')
+
       element.save!
       json = element.as_json(:includes => 'options')
+
       expect(json[:id]).to eq(element.id)
       expect(json[:title]).to eq(element.title)
       expect(json[:slug]).to eq(element.slug)
@@ -219,6 +233,8 @@ RSpec.describe Element, :type => :model do
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
       # Document fields should return a document object.
       expect(json[:image][:url]).to eq(example_image_url)
+      expect(json[:images].to_a).to match_array(documents)
+      expect(json[:notes].to_a).to match_array(note_elements)
       # It includes an array of the specified association.
       expect(json[:options][0]).to eq(other_element)
       # And it also has its belongs_to element reference.

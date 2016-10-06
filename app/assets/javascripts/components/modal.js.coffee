@@ -5,7 +5,8 @@ class App.Components.Modal extends Backbone.View
   template: JST['templates/modal']
 
   initialize: (@title = '', @content = '') ->
-    $('body').prepend(@template(title: @title, content: @content))
+    unless @modal().length > 0
+      $('body').prepend(@template(title: @title, content: @content))
     @modal().find('.close-modal').click(@close)
 
   modal: =>

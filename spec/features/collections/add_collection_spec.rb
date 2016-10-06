@@ -4,7 +4,8 @@ feature 'Collections', :js => true do
 
   background do
     @property = property_with_templates_and_collection_types
-    @elements = create_list(:element, 5, :property => @property)
+    @elements = create_list(:element, 5, :property => @property,
+      :template_name => ['Default', 'All Options'].sample(1)[0])
     @user = create(:admin)
     sign_in @user
     click_link @property.title
@@ -17,6 +18,15 @@ feature 'Collections', :js => true do
     before(:each) do
       click_link 'Default Collection'
       click_link 'New Default Collection'
+    end
+
+    scenario 'will allow all elements within this property' do
+      bad_el = create(:element)
+      visit current_path
+      @elements.each do |el|
+        expect(page).to have_css('select.new option', :text => el.title)
+      end
+      expect(page).to have_no_css('select.new option', :text => bad_el.title)
     end
 
     scenario 'can be created with only a title, but title is required' do
@@ -43,7 +53,7 @@ feature 'Collections', :js => true do
       expect(page).to have_content(@elements[2].title)
     end
 
-    scenario 'it saves and rebuils the collection' do
+    scenario 'it saves and rebuilds the collection' do
       title = Faker::Lorem.words(4).join(' ')
       fill_in 'collection[title]', :with => title
       first('select.new').first(:option, @elements[0].title).select_option
@@ -147,6 +157,26 @@ feature 'Collections', :js => true do
       fill_in 'collection[field_data][description]', :with => desc
       click_button 'Save'
       expect(Collection.first.description).to eq(desc)
+    end
+  end
+
+  # ---------------------------------------- Limited
+
+  context 'using the Loaded collection type' do
+
+    scenario 'will filter elements to a specific type' do
+      bad_el = create(:element)
+
+      click_link 'Limited'
+      click_link 'New Limited'
+
+      @property.elements.with_template('Default').each do |el|
+        expect(page).to have_css('select.new option', :text => el.title)
+      end
+      @property.elements.with_template('All Options').each do |el|
+        expect(page).to have_no_css('select.new option', :text => el.title)
+      end
+      expect(page).to have_no_css('select.new option', :text => bad_el.title)
     end
   end
 

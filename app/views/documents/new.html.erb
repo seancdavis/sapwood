@@ -4,9 +4,10 @@
     :post => property_documents_path(current_property),
     :key => document_upload_key,
     :as => "document[url]",
-    :id => "fileupload-#{uid}"
+    :id => "fileupload-#{uid}",
+    :html => { :multipart => params[:multipart] || false }
   ) do %>
-    <%= file_field_tag :file %>
+    <%= file_field_tag :file, :multiple => params[:multipart] || false %>
   <% end %>
 
   <script id="template-upload" type="text/x-tmpl">
@@ -15,6 +16,9 @@
       <h3>{%=o.name%}</h3>
       <div class="progress"><div class="bar" style="width: 0%"></div></div>
     </div>
+    <% if params[:multipart] %>
+      <p class="waiting">Waiting patiently in line ...</p>
+    <% end %>
   </div>
   </script>
 </section>

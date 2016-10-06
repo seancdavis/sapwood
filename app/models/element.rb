@@ -123,7 +123,8 @@ class Element < ActiveRecord::Base
     template_data.each do |k,v|
       field = template.find_field(k)
       next if field.nil?
-      response[k.to_sym] = if field.document? || field.element?
+      response[k.to_sym] = if field.document? || field.element? ||
+                              field.documents? || field.elements?
          send(k)
        else
         v
@@ -145,18 +146,36 @@ class Element < ActiveRecord::Base
       when 'element'
         return nil if template_data[method.to_s].blank?
         unless Rails.env.production?
-          return Element.find_by_id(template_data[method.to_s])
+          return property.elements.find_by_id(template_data[method.to_s])
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          Element.find_by_id(template_data[method.to_s])
+          property.elements.find_by_id(template_data[method.to_s])
+        end
+      when 'elements'
+        return [] if template_data[method.to_s].blank?
+        element_ids = template_data[method.to_s].split(',').collect(&:to_i)
+        unless Rails.env.production?
+          return property.elements.where(:id => element_ids) || []
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          property.elements.where(:id => element_ids) || []
         end
       when 'document'
         return nil if template_data[method.to_s].blank?
         unless Rails.env.production?
-          return Document.find_by_id(template_data[method.to_s])
+          return property.documents.find_by_id(template_data[method.to_s])
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          Document.find_by_id(template_data[method.to_s])
+          property.documents.find_by_id(template_data[method.to_s])
+        end
+      when 'documents'
+        return [] if template_data[method.to_s].blank?
+        document_ids = template_data[method.to_s].split(',').collect(&:to_i)
+        unless Rails.env.production?
+          return property.documents.where(:id => document_ids)
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+          property.documents.where(:id => document_ids)
         end
       when 'geocode'
         template_data[method.to_s].to_ostruct

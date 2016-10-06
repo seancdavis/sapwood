@@ -27,14 +27,16 @@ FactoryGirl.define do
       template_data {{
         'name' => Faker::Lorem.words(4).join(' '),
         'comments' => Faker::Lorem.paragraph,
-        'image' => create(:document, :title => Faker::Company.bs.titleize).id
+        'image' => create(:document, :title => Faker::Company.bs.titleize,
+          :property => property).id,
       }}
     end
     trait :with_address do
       template_data {{
         'address' => '1216 Central Pkwy, 45202',
         'comments' => Faker::Lorem.paragraph,
-        'image' => create(:document, :title => Faker::Company.bs.titleize).id
+        'image' => create(:document, :title => Faker::Company.bs.titleize,
+          :property => property).id,
       }}
     end
   end

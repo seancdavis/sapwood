@@ -21,6 +21,10 @@ class CollectionType
     slug
   end
 
+  def template
+    attributes['template'] || '__all'
+  end
+
   def to_model
     CollectionType.new(attributes)
   end

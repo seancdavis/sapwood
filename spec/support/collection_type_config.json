@@ -10,5 +10,15 @@
         "label": "Description"
       }
     }
+  },
+  {
+    "title": "Limited Collection",
+    "template": "Default",
+    "fields": {
+      "description": {
+        "type": "string",
+        "label": "Description"
+      }
+    }
   }
 ]

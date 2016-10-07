@@ -85,7 +85,7 @@ module FieldHelper
 
   def field_element_html(form_obj, field, object)
     elements = current_property.elements.by_title
-    if field.templates
+    if field.respond_to?(:templates) && field.templates.present?
       elements = elements.where(:template_name => field.templates)
     end
     form_obj.input field.name.to_sym, :collection => elements,
@@ -98,7 +98,7 @@ module FieldHelper
                           :required => field.required?
       o += content_tag(:label, field.name)
       elements = current_property.elements.by_title
-      if field.templates
+      if field.respond_to?(:templates) && field.templates.present?
         elements = elements.where(:template_name => field.templates)
       end
       o += content_tag(:select, :class => 'select optional',

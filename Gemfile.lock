@@ -93,6 +93,8 @@ GEM
       fog
       uuidtools
     cliver (0.3.2)
+    codeclimate-test-reporter (0.6.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -118,6 +120,7 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     eco (1.0.0)
       coffee-script
       eco-source
@@ -417,6 +420,11 @@ GEM
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -495,6 +503,7 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   carrierwave_direct
+  codeclimate-test-reporter
   coffee-rails
   daemons
   database_cleaner
@@ -532,4 +541,4 @@ DEPENDENCIES
   wirb
 
 BUNDLED WITH
-   1.12.4
+   1.13.2

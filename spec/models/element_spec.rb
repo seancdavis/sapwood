@@ -11,6 +11,9 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  url           :string
+#  archived      :boolean          default(FALSE)
+#  processed     :boolean          default(FALSE)
 #
 
 require 'rails_helper'

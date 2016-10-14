@@ -11,6 +11,9 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  url           :string
+#  archived      :boolean          default(FALSE)
+#  processed     :boolean          default(FALSE)
 #
 
 class Element < ActiveRecord::Base
@@ -20,6 +23,10 @@ class Element < ActiveRecord::Base
   include Presenter
 
   has_superslug :title, :slug, :context => :property
+
+  # ---------------------------------------- Attributes
+
+  attr_accessor :skip_geocode
 
   # ---------------------------------------- Associations
 
@@ -41,7 +48,7 @@ class Element < ActiveRecord::Base
   after_save :geocode_addresses
 
   def geocode_addresses
-    return unless template?
+    return unless template? && skip_geocode.blank?
     template.geocode_fields.each do |field|
       val = template_data[field.name]
       if val.blank?

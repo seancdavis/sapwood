@@ -15,6 +15,8 @@
 aside.main {
   @include position(fixed, 0 null null 0);
   @include size(rem(250) 100vh);
+  padding-bottom: 50px;
+  overflow-y: scroll;
   box-sizing: border-box;
   background: $light;
   box-shadow: $box-shadow;

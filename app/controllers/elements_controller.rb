@@ -28,7 +28,11 @@ class ElementsController < ApplicationController
       current_property.elements.by_title.with_template(current_template.name)
     end
     respond_to do |format|
-      format.html
+      format.html do
+        if current_template.document?
+          redirect_to [current_property, current_template, :documents]
+        end
+      end
       format.json
     end
   end
@@ -69,17 +73,10 @@ class ElementsController < ApplicationController
   private
 
     def element_params
-      # raise '123'
       params
         .require(:element)
         .permit(:title, :template_name,
                 :template_data => current_template.fields.collect(&:name))
-      # new_data = params[:element][:template_data]
-      # if new_data.present?
-      #   old_data = current_element? ? current_element.template_data : {}
-      #   p = p.merge(:template_data => old_data.merge(new_data))
-      # end
-      # p
     end
 
 end

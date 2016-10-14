@@ -34,6 +34,10 @@ class Template
     attributes['webhook_url'].present?
   end
 
+  def document?
+    respond_to?(:type) && type == 'document'
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []

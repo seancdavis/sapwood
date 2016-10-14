@@ -27,24 +27,7 @@
                       :class => ('active' if current_template && current_template.name == t.name) %>
         </li>
       <% end %>
-      <% unless current_property.label_hidden?('documents') %>
-        <li>
-          <%= link_to current_property.label('documents'),
-                      property_documents_path(current_property),
-                      :class => ('active' if controller_name == 'documents') %>
-        </li>
-      <% end %>
-      <% current_property.collection_types.each do |c| %>
-        <li>
-          <%= link_to c.name.pluralize,
-                      [current_property, c, :collections],
-                      :class => ('active' if current_collection_type && current_collection_type.name == c.name) %>
-        </li>
-      <% end %>
-      <% unless current_property.label_hidden?('responses') %>
-        <!-- <li><%= link_to current_property.label('responses'), '#' %></li> -->
-      <% end %>
-      <% unless current_property.label_hidden?('users') %>
+      <% unless current_user.is_admin? %>
         <li>
           <%= link_to current_property.label('users'),
                       property_users_path(current_property)  %>

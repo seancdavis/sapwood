@@ -17,16 +17,18 @@ class DocumentsController < ApplicationController
   before_filter :verify_property_access
 
   def index
+    not_found if current_template.nil?
     @documents = if params[:f]
       if params[:f] == '0-9'
-        current_property.documents.starting_with_number.alpha
-          .page(params[:page] || 1).per(12)
+        current_property.elements.with_template(current_template.name)
+          .starting_with_number.by_title.page(params[:page] || 1).per(12)
       else
-        current_property.documents.starting_with(params[:f]).alpha
-          .page(params[:page] || 1).per(12)
+        current_property.elements.with_template(current_template.name)
+          .starting_with(params[:f]).by_title.page(params[:page] || 1).per(12)
       end
     else
-      current_property.documents.alpha.page(params[:page] || 1).per(12)
+      current_property.elements.with_template(current_template.name)
+        .by_title.page(params[:page] || 1).per(12)
     end
     render :partial => 'list' if request.xhr?
   end
@@ -37,37 +39,16 @@ class DocumentsController < ApplicationController
 
   def create
     respond_to do |format|
-      format.json { @document = Document.create!(create_params) }
+      format.json { @document = Element.create!(create_params) }
     end
-  end
-
-  def edit
-  end
-
-  def update
-    if current_document.update(document_params)
-      redirect_to property_documents_path(current_property),
-                  :notice => "#{current_document.title} saved successfully!"
-    else
-      render 'edit'
-    end
-  end
-
-  def destroy
-    current_document.archive!
-    redirect_to property_documents_path(current_property),
-                :notice => "#{current_document.title} archived successfully!"
   end
 
   private
 
-    def document_params
-      params.require(:document).permit(:title)
-    end
-
     def create_params
       params.require(:document).permit(:url)
-        .merge(:property => current_property)
+            .merge(:property => current_property,
+                   :template_name => current_template.name)
     end
 
 end

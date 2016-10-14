@@ -120,6 +120,7 @@ class Element < ActiveRecord::Base
       :created_at => created_at,
       :updated_at => updated_at,
     }
+    return response unless template?
     template_data.each do |k,v|
       field = template.find_field(k)
       next if field.nil?

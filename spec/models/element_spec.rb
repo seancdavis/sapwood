@@ -198,6 +198,10 @@ RSpec.describe Element, :type => :model do
   end
 
   describe '#as_json' do
+    it 'is still returned when the template does not exist' do
+      el = create(:element, :property => @property, :template_name => 'NO!')
+      expect(el.as_json.present?).to eq(true)
+    end
     it 'has references to all necessary attributes' do
       # This is our element.
       element = create(:element, :with_options, :with_address,

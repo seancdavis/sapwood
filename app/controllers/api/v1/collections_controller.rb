@@ -3,15 +3,19 @@ class Api::V1::CollectionsController < ApiController
   def index
     respond_to do |f|
       f.json do
-        @collections = if params[:type] && current_collection_type
-          current_property.collections.by_title
-                          .with_type(current_collection_type.name)
-        elsif params[:type]
-          []
+        options = {}
+        @elements = if params[:template]
+          options = { :includes => params[:includes] } if params[:includes]
+          current_property.elements.with_template(params[:template])
         else
-          current_property.collections.by_title
+          current_property.elements
         end
-        render(:json => @collections)
+        @elements = if params[:order]
+          @elements.by_field(params[:order])
+        else
+          @elements.by_title
+        end
+        render(:json => @elements.to_json(options))
       end
     end
   end
@@ -19,8 +23,9 @@ class Api::V1::CollectionsController < ApiController
   def show
     respond_to do |f|
       f.json do
-        @collection = current_property.collections.find_by_id(params[:id])
-        @collection.nil? ? not_found : render(:json => @collection)
+        @element = current_property.elements.find_by_id(params[:id])
+        not_found if @element.nil?
+        render(:json => @element.to_json(:includes => params[:includes]))
       end
     end
   end

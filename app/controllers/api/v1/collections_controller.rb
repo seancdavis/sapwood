@@ -4,9 +4,10 @@ class Api::V1::CollectionsController < ApiController
     respond_to do |f|
       f.json do
         options = {}
-        @elements = if params[:template]
+        @elements = if params[:template] || params[:type]
           options = { :includes => params[:includes] } if params[:includes]
-          current_property.elements.with_template(params[:template])
+          current_property.elements
+                          .with_template(params[:template] || params[:type])
         else
           current_property.elements
         end

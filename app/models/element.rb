@@ -28,7 +28,7 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Scopes
 
   scope :alpha, -> { order(:title => :asc) }
-  scope :with_template, ->(name) { where(:template_name => name) }
+  scope :with_template, ->(name) { where(:template_name => name.split(',')) }
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
 

@@ -31,14 +31,14 @@ describe Api::V1::ElementsController do
                      :api_key => @property.api_key, :format => :json
       expect(response.body).to eq(@property.elements.by_title.to_json)
     end
-    context 'when specifying a template' do
+    context 'when specifying template(s)' do
       it 'returns an empty array when template does not exist' do
         response = get :index, :property_id => @property.id,
                        :template => 'BLARGH', :api_key => @property.api_key,
                        :format => :json
         expect(response.body).to eq('[]')
       end
-      it 'returns an empty array when template does not exist' do
+      it 'returns an array of elements when template exists' do
         # Create an element without the All Options template
         create(:element, :property => @property)
         response = get :index, :property_id => @property.id,
@@ -46,6 +46,15 @@ describe Api::V1::ElementsController do
                        :api_key => @property.api_key, :format => :json
         expect(@property.elements.count).to eq(6)
         elements = @property.elements.with_template('All Options').by_title
+        expect(response.body).to eq(elements.to_json)
+      end
+      it "can return multiple templates' elements at once" do
+        create(:element, :property => @property)
+        response = get :index, :property_id => @property.id,
+                       :template => 'All Options,Default',
+                       :api_key => @property.api_key, :format => :json
+        expect(@property.elements.count).to eq(6)
+        elements = @property.elements.by_title
         expect(response.body).to eq(elements.to_json)
       end
     end

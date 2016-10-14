@@ -22,7 +22,8 @@ class Api::V1::ElementsController < ApiController
     respond_to do |f|
       f.json do
         @element = current_property.elements.find_by_id(params[:id])
-        @element.nil? ? not_found : render(:json => @element)
+        not_found if @element.nil?
+        render(:json => @element.to_json(:includes => params[:includes]))
       end
     end
   end

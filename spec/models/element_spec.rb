@@ -137,8 +137,8 @@ RSpec.describe Element, :type => :model do
     it 'returns an array of field names' do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
-      field_names = %w{name description address image images notes comments
-                       option}
+      field_names = %w{name description address image images many_things
+                       comments one_thing}
       expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do
@@ -199,29 +199,34 @@ RSpec.describe Element, :type => :model do
 
   describe '#as_json' do
     it 'has references to all necessary attributes' do
-      # Create a couple elements that we can use in an association.
-      other_element = create(:element, :property => @property,
-                             :template_name => 'More Options')
+      # This is our element.
       element = create(:element, :with_options, :with_address,
                         :property => @property)
-      # TODO: This should work here, but you'll get stuck in a loop calling this
-      # as an actual JSON object because they keep calling each other.
-      other_element[:template_data]['option'] = element.id.to_s
-      other_element.save!
-      element[:template_data]['option'] = other_element.id.to_s
+      # Create elements that we can use for associated records.
+      more_options_el = create(:element, :property => @property,
+                               :template_name => 'More Options')
+      one_thing_el = create(:element, :property => @property,
+                            :template_name => 'One Thing')
+      many_things_els = create_list(:element, 3, :property => @property,
+                                    :template_name => 'Many Things')
+      # Add the implicit has_many
+      more_options_el[:template_data]['option'] = element.id.to_s
+      more_options_el.save!
+      # Add the belongs_to.
+      element[:template_data]['one_thing'] = one_thing_el.id.to_s
+      # Add the has_many, including one that doesn't belong.
+      bad_element = create(:element)
+      element[:template_data]['many_things'] = (many_things_els + [bad_element])
+        .collect(&:id).join(',')
       # Adding has_many documents
       documents = [create(:document, :property => @property),
                    create(:document, :property => @property)]
       element[:template_data]['images'] = documents.collect(&:id).join(',')
-      # Adding has_many elements
-      note_elements = create_list(:element, 3, :property => @property)
-      bad_element = create(:element)
-      element[:template_data]['notes'] = (note_elements + [bad_element])
-        .collect(&:id).join(',')
-
+      # Save our element.
       element.save!
-      json = element.as_json(:includes => 'options')
 
+      # Check JSON.
+      json = element.as_json(:includes => 'options')
       expect(json[:id]).to eq(element.id)
       expect(json[:title]).to eq(element.title)
       expect(json[:slug]).to eq(element.slug)
@@ -234,11 +239,11 @@ RSpec.describe Element, :type => :model do
       # Document fields should return a document object.
       expect(json[:image][:url]).to eq(example_image_url)
       expect(json[:images].to_a).to match_array(documents)
-      expect(json[:notes].to_a).to match_array(note_elements)
+      expect(json[:many_things].to_a).to match_array(many_things_els)
       # It includes an array of the specified association.
-      expect(json[:options][0]).to eq(other_element)
+      expect(json[:options][0]).to eq(more_options_el)
       # And it also has its belongs_to element reference.
-      expect(json[:option]).to eq(other_element)
+      expect(json[:one_thing]).to eq(one_thing_el)
     end
   end
 

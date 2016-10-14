@@ -187,12 +187,14 @@ class Element < ActiveRecord::Base
       unless Rails.env.production?
         return property
           .elements.by_title.with_template(association.template)
+          .reject { |e| e.template_data[association.field].blank? }
           .select { |e| e.template_data[association.field].split(',')
               .collect(&:to_i).include?(id) }
       end
       Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
         property
           .elements.by_title.with_template(association.template)
+          .reject { |e| e.template_data[association.field].blank? }
           .select { |e| e.template_data[association.field].split(',')
               .collect(&:to_i).include?(id) }
       end

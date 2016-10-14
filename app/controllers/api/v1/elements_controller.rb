@@ -3,7 +3,9 @@ class Api::V1::ElementsController < ApiController
   def index
     respond_to do |f|
       f.json do
+        options = {}
         @elements = if params[:template]
+          options = { :includes => params[:includes] } if params[:includes]
           current_property.elements.with_template(params[:template])
         else
           current_property.elements
@@ -13,7 +15,7 @@ class Api::V1::ElementsController < ApiController
         else
           @elements.by_title
         end
-        render(:json => @elements.to_json(:includes => params[:includes]))
+        render(:json => @elements.to_json(options))
       end
     end
   end

@@ -9,7 +9,7 @@ describe Field, :type => :model do
     @address = @template.find_field('address')
     @comments = @template.find_field('comments')
     @image = @template.find_field('image')
-    @option = @template.find_field('option')
+    @one_thing = @template.find_field('one_thing')
   end
 
   describe '#name. #title' do
@@ -25,26 +25,26 @@ describe Field, :type => :model do
       expect(@address.type).to eq('geocode')
       expect(@image.type).to eq('document')
       expect(@comments.type).to eq('wysiwyg')
-      expect(@option.type).to eq('element')
+      expect(@one_thing.type).to eq('element')
     end
     it 'has boolean methods for certain fields' do
       expect(@name.document?).to eq(false)
       expect(@address.document?).to eq(false)
       expect(@image.document?).to eq(true)
       expect(@comments.document?).to eq(false)
-      expect(@option.document?).to eq(false)
+      expect(@one_thing.document?).to eq(false)
 
       expect(@name.element?).to eq(false)
       expect(@address.element?).to eq(false)
       expect(@image.element?).to eq(false)
       expect(@comments.element?).to eq(false)
-      expect(@option.element?).to eq(true)
+      expect(@one_thing.element?).to eq(true)
 
       expect(@name.date?).to eq(false)
       expect(@address.date?).to eq(false)
       expect(@image.date?).to eq(false)
       expect(@comments.date?).to eq(false)
-      expect(@option.date?).to eq(false)
+      expect(@one_thing.date?).to eq(false)
     end
   end
 
@@ -54,7 +54,7 @@ describe Field, :type => :model do
       expect(@address.primary?).to eq(false)
       expect(@image.primary?).to eq(false)
       expect(@comments.primary?).to eq(false)
-      expect(@option.primary?).to eq(false)
+      expect(@one_thing.primary?).to eq(false)
       expect(@property.find_template('default').find_field('name').primary?)
         .to eq(true)
     end

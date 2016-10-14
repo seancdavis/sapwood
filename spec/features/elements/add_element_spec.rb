@@ -68,23 +68,23 @@ feature 'Elements', :js => true do
     scenario 'enables selecting a belongs_to relationship' do
       # This element should be in the dropdown menu.
       element = create(:element, :property => @property,
-                       :template_name => 'More Options')
+                       :template_name => 'One Thing')
       # This element should not.
       default_element = create(:element, :property => @property)
       visit current_path
       expect(page).to have_css(
-        "select#element_template_data_option option[value='#{element.id}']")
+        "select#element_template_data_one_thing option[value='#{element.id}']")
       expect(page).to have_no_css(
-        "select#element_template_data_option option[value='#{default_element.id}']")
+        "select#element_template_data_one_thing option[value='#{default_element.id}']")
       fill_in 'element[template_data][name]', :with => @title
-      select element.title, :from => 'element[template_data][option]'
+      select element.title, :from => 'element[template_data][one_thing]'
       click_button 'Save All Options'
-      expect(Element.all.order(:id).last.option).to eq(element)
+      expect(Element.all.order(:id).last.one_thing).to eq(element)
     end
     scenario 'can select multiple elements of another template' do
       # These elements should be in the dropdown menu.
       els = create_list(:element, 3, :property => @property,
-                        :template_name => 'Note')
+                        :template_name => 'Many Things')
       # Thes element should not.
       bad_els = [create(:element, :property => @property), create(:element)]
 
@@ -97,8 +97,8 @@ feature 'Elements', :js => true do
       end
 
       # Choose 2, remove 1, then save and check.
-      select els[0].title, :from => 'multiselect_notes'
-      select els[2].title, :from => 'multiselect_notes'
+      select els[0].title, :from => 'multiselect_many_things'
+      select els[2].title, :from => 'multiselect_many_things'
       within('.multiselect .selected-options') do
         expect(page).to have_css('li > span', :text => els[0].title)
         expect(page).to have_no_css('li > span', :text => els[1].title)

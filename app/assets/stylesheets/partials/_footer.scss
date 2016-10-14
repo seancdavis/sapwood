@@ -1,6 +1,6 @@
 footer.main {
   @include position(fixed, null null 0 0);
-  width: rem(250);
+  @include size(rem(250) rem(60));
   padding: rem(10) rem(15);
   box-sizing: border-box;
 

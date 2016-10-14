@@ -71,6 +71,12 @@ RSpec.describe Element, :type => :model do
       it 'can return the zip code' do
         expect(@element.address.zip).to eq('45202')
       end
+      it 'will not geocode if told to skip' do
+        @element = create(:element, :template_name => 'All Options',
+                          :property => @property, :skip_geocode => true,
+                          :template_data => { :address => @address })
+        expect(@element.address).to eq(@address)
+      end
     end
     context 'for an empty address' do
       before(:each) do

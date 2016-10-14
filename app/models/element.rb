@@ -186,7 +186,8 @@ class Element < ActiveRecord::Base
           property.documents.where(:id => document_ids)
         end
       when 'geocode'
-        template_data[method.to_s].to_ostruct
+        geo = template_data[method.to_s]
+        geo.is_a?(Hash) ? geo.to_ostruct : geo
       else
         template_data[method.to_s]
       end

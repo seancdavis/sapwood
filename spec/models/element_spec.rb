@@ -284,8 +284,81 @@ RSpec.describe Element, :type => :model do
       expect(json[:many_things].to_a).to match_array(many_things_els)
       # It includes an array of the specified association.
       expect(json[:options][0]).to eq(more_options_el)
-      # And it also has its belongs_to element reference.
+      # It also has its belongs_to element reference.
       expect(json[:one_thing]).to eq(one_thing_el)
+      # It doesn't have the document-specific fields.
+      expect(json[:url]).to eq(nil)
+      expect(json[:versions]).to eq(nil)
+    end
+  end
+
+  # ---------------------------------------- Document Elements
+
+  describe 'that acts as a document' do
+    let(:document) {
+      create(:element, :document, :from_system, :property => @property)
+    }
+
+    describe '#set_title' do
+      it 'sets the title from the primary field if available' do
+        expect(document.title).to eq(document.template_data['name'])
+      end
+      it 'sets the title from the filename if primary field is missing' do
+        doc = create(:element, :document, :from_system, :property => @property,
+                     :template_data => {})
+        expect(doc.title).to eq('Example')
+      end
+      it 'does not set the title if it already exists' do
+        el = create(:element, :document, :title => 'Title')
+        expect(el.title).to eq('Title')
+      end
+    end
+
+    describe '#as_json' do
+      it 'has a url reference' do
+        expect(document.as_json({})[:url]).to eq(document.url)
+      end
+      it 'does not have versions if not processed' do
+        expect(document.as_json({})[:versions]).to eq(nil)
+      end
+      it 'has a reference to versions if it is an image and processed' do
+        document.processed!
+        json = document.as_json({})
+        versions = %w{xsmall xsmall_crop small small_crop medium medium_crop
+                      large large_crop xlarge xlarge_crop}
+        expect(json[:versions].keys.map(&:to_s)).to match_array(versions)
+      end
+    end
+
+    describe '#filename, #filename_no_ext, #file_ext' do
+      let(:document) { build(:document) }
+      it 'returns appropriate filename parts' do
+        expect(document.filename).to eq('178947853882959841_1454569459.jpg')
+        expect(document.filename_no_ext).to eq('178947853882959841_1454569459')
+        expect(document.file_ext).to eq('jpg')
+      end
+    end
+
+    describe '#safe_url, #uri, #s3_base, #s3_dir' do
+      let(:document) { build(:document, :from_s3) }
+      it 'returns appropraite uri segments' do
+        expect(document.safe_url).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+        expect(document.uri).to eq(URI.parse(document.safe_url))
+        expect(document.s3_base).to eq('https://sapwood.s3.amazonaws.com')
+        expect(document.s3_dir).to eq('development/properties/1/xxxxxx-xxxxxx')
+      end
+    end
+
+    describe '#version' do
+      let(:document) { build(:document, :from_s3) }
+      it 'returns the main URL if it has not been processed' do
+        expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
+      end
+      it 'returns the correct url for a version with and without crop' do
+        document.processed = true
+        expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large.jpg')
+        expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large_crop.jpg')
+      end
     end
   end
 

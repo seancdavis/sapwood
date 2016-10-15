@@ -1,0 +1,14 @@
+.sortable {
+
+  li:hover {
+    cursor: move;
+  }
+
+  .sortable-ghost {
+    background: rgba($lt-grey, 0.8);
+  }
+
+  .sortable-drag {
+    opacity: 0;
+  }
+}

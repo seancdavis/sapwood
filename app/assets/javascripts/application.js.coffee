@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery_ujs
+#= require Sortable
 #= require underscore
 #= require backbone
 #= require jquery-fileupload/basic

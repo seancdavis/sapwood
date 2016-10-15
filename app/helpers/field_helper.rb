@@ -137,17 +137,20 @@ module FieldHelper
                           :required => field.required?, :readonly => field.read_only?
       o += content_tag(:label, field.name)
       o += content_tag(:div, nil, :class => 'batch-uploader')
-      documents.each do |document|
-        o += content_tag(:div, :class => 'document-url') do
-          link_to(document.url) do
-            o2  = ''
-            o2 += document.p.thumb
-            o2 += content_tag(:span, document.title)
-            o2.html_safe
+      o += content_tag(:ul, :class => 'selected-documents') do
+        o2 = ''
+        documents.each do |document|
+          o2 += content_tag(:li, :class => 'document-url',
+                            :data => { :id => document.id }) do
+            o3 = document.p.thumb
+            o3 += link_to(document.title, document.url)
+            o3 += content_tag(:a, '[REMOVE]', :href => '#', :class => 'remove')
+            o3.html_safe
           end
         end
+        o2.html_safe
       end
-      o += content_tag(:div, nil, :class => 'document-url hidden')
+      o += content_tag(:li, nil, :class => 'document-url hidden')
       o += link_to(
         "Choose Existing Files",
         property_template_documents_path(current_property, template),

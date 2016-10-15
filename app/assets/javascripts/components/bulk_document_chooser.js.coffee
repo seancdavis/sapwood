@@ -8,14 +8,16 @@ class App.Components.BulkDocumentChooser extends Backbone.View
     'click .bulk-doc-modal .document-filters a': 'filterDocuments'
     'click .bulk-doc-modal .pagination a': 'filterDocuments'
     'click #save-bulk': 'saveDocuments'
+    'click .bulk-document-uploader a.remove': 'removeDocument'
 
   initialize: (options) ->
     @modal = new App.Components.Modal
+    @initSortable($(sortable)) for sortable in $('.bulk-document-uploader')
 
   openModal: (e) ->
     e.preventDefault()
     @uploader = $(e.target).parents('.bulk-document-uploader')
-    @documentIds = @uploader.find('input').first().val().split(',')
+    @documentIds = @uploader.find('input.hidden').first().val().split(',')
       .filter(Boolean)
     @modal.fetch $(e.target).attr('href'), 'Choose Documents', () =>
       @addBulkSaveButton()
@@ -45,12 +47,13 @@ class App.Components.BulkDocumentChooser extends Backbone.View
     @uploader.find('input.hidden').first().val(@documentIds.join(','))
     for doc in $('article.document.selected')
       preview = @uploader.find('.document-url.hidden').first().clone()
-      preview.append("<a href=\"#{$(doc).data('url')}\"></a>")
-      preview.find('a').append """
+      preview.append """
         #{$(doc).find('span.thumb').html()}
-        <span>#{$(doc).data('title')}</span>
+        <a href=\"#{$(doc).data('url')}\">#{$(doc).data('title')}</a>
+        <a href="#" class="remove">[REMOVE]</a>
       """
-      @uploader.find('.document-url.hidden').before(preview)
+      preview.attr('data-id', $(doc).data('id'))
+      @uploader.find('.selected-documents').append(preview)
       preview.removeClass('hidden')
     @modal.close()
 
@@ -59,3 +62,22 @@ class App.Components.BulkDocumentChooser extends Backbone.View
       $('.document-filters').before """
         <a href="#" id="save-bulk" class="button">Save & Close</a>
         """
+
+  removeDocument: (e) ->
+    e.preventDefault()
+    container = $(e.target).parents('.bulk-document-uploader')
+    @documentIds = container.find('input').first().val().split(',')
+      .filter(Boolean)
+    id = $(e.target).parents('li').data('id').toString()
+    @documentIds = _.without(@documentIds, id)
+    $(e.target).parents('li').remove()
+    container.find('input').first().val(@documentIds.join(','))
+
+  initSortable: (container) ->
+    container.addClass('sortable')
+    Sortable.create(
+      container.find('ul.selected-documents').first()[0],
+      onUpdate: (event) ->
+        $(@.el).parents('.bulk-document-uploader').find('input.hidden')
+          .val(@.toArray().join(','))
+    )

@@ -254,10 +254,22 @@ class Element < ActiveRecord::Base
         return [] if template_data[method.to_s].blank?
         element_ids = template_data[method.to_s].split(',').collect(&:to_i)
         unless Rails.env.production?
-          return property.elements.where(:id => element_ids) || []
+          raw_els = property.elements.where(:id => element_ids) || []
+          elements = []
+          element_ids.each do |id|
+            el = raw_els.select { |e| e.id == id }[0]
+            elements << el unless el.blank?
+          end
+          return elements
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          property.elements.where(:id => element_ids) || []
+          raw_els = property.elements.where(:id => element_ids) || []
+          elements = []
+          element_ids.each do |id|
+            el = raw_els.select { |e| e.id == id }[0]
+            elements << el unless el.blank?
+          end
+          return elements
         end
       when 'geocode'
         geo = template_data[method.to_s]

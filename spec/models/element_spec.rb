@@ -228,6 +228,15 @@ RSpec.describe Element, :type => :model do
                          :template_data => { :images => '123' })
         expect(element.images).to eq([])
       end
+      it 'returns elements in the saved order' do
+        image_ids = @images.collect(&:id).shuffle.join(',')
+        @element.template_data.merge!(:images => image_ids)
+        @element.save
+        image_ids = image_ids.split(',').map(&:to_i)
+        3.times do |idx|
+          expect(@element.reload.images[idx].id).to eq(image_ids[idx])
+        end
+      end
       it 'returns NoMethodError for fields that do not exist' do
         expect { @element.this_doesnt_exist }.to raise_error(NoMethodError)
       end

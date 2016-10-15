@@ -147,7 +147,7 @@ RSpec.describe Element, :type => :model do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
       field_names = %w{name description address image images many_things
-                       comments one_thing}
+                       comments one_thing mixed_bag mixed_bags}
       expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do
@@ -170,7 +170,10 @@ RSpec.describe Element, :type => :model do
 
     describe '#method_missing (dynamic field responses)' do
       before(:each) do
-        @document = create(:document, :property => @property)
+        @image = create(:element, :document, :property => @property)
+        @images = create_list(:element, 3, :document, :property => @property)
+        # Some other records we don't want to see
+        create_list(:element, 5, :document, :property => @property)
         @element = create(
           :element,
           :template_name => 'All Options',
@@ -178,7 +181,8 @@ RSpec.describe Element, :type => :model do
           :template_data => {
             :description => 'This is a description',
             # :address => '1216 Central, 45202',
-            :image => @document.id.to_s
+            :image => @image.id.to_s,
+            :images => @images.collect(&:id).join(',')
           }
         )
       end
@@ -186,19 +190,33 @@ RSpec.describe Element, :type => :model do
         expect(@element.description).to eq('This is a description')
       end
       # geocode responses are already tested above in #geocode_address
-      it 'returns Document objects for document' do
-        expect(@element.image).to eq(@document)
+      it 'returns Element objects for element fields' do
+        expect(@element.image).to eq(@image)
       end
-      it 'returns nil when the document is missing' do
+      it 'returns nil when the element is missing' do
         element = create(:element, :template_name => 'All Options',
                          :property => @property)
         expect(element.image).to eq(nil)
       end
-      it 'returns nil when the document does not exist' do
+      it 'returns nil when the element does not exist' do
         element = create(:element, :template_name => 'All Options',
                          :property => @property,
                          :template_data => { :image => '123' })
         expect(element.image).to eq(nil)
+      end
+      it 'returns Element objects for elements fields' do
+        expect(@element.images).to match_array(@images)
+      end
+      it 'returns an empty array when the elements are missing' do
+        element = create(:element, :template_name => 'All Options',
+                         :property => @property)
+        expect(element.images).to eq([])
+      end
+      it 'returns an empty array when the elements do not exist' do
+        element = create(:element, :template_name => 'All Options',
+                         :property => @property,
+                         :template_data => { :images => '123' })
+        expect(element.images).to eq([])
       end
       it 'returns NoMethodError for fields that do not exist' do
         expect { @element.this_doesnt_exist }.to raise_error(NoMethodError)
@@ -232,9 +250,18 @@ RSpec.describe Element, :type => :model do
       element[:template_data]['many_things'] = (many_things_els + [bad_element])
         .collect(&:id).join(',')
       # Adding has_many documents
-      documents = [create(:document, :property => @property),
-                   create(:document, :property => @property)]
+      documents = [create(:element, :document, :property => @property),
+                   create(:element, :document, :property => @property)]
       element[:template_data]['images'] = documents.collect(&:id).join(',')
+      # And our mixed bags.
+      mixed_bag_el = create(:element, :property => @property,
+                            :template_name => 'One Thing')
+      element[:template_data]['mixed_bag'] = mixed_bag_el.id.to_s
+      mixed_bag_els = [
+        create(:element, :document, :property => @property),
+        create(:element, :property => @property, :template_name => 'One Thing')
+      ]
+      element[:template_data]['mixed_bags'] = mixed_bag_els.collect(&:id).join(',')
       # Save our element.
       element.save!
 
@@ -249,9 +276,11 @@ RSpec.describe Element, :type => :model do
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(element.comments)
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
-      # Document fields should return a document object.
+      # Document fields should return an element object.
       expect(json[:image][:url]).to eq(example_image_url)
       expect(json[:images].to_a).to match_array(documents)
+      expect(json[:mixed_bag]).to eq(mixed_bag_el)
+      expect(json[:mixed_bags].to_a).to match_array(mixed_bag_els)
       expect(json[:many_things].to_a).to match_array(many_things_els)
       # It includes an array of the specified association.
       expect(json[:options][0]).to eq(more_options_el)

@@ -88,7 +88,7 @@ module FieldHelper
   end
 
   def multi_element_field(form_obj, field, object)
-    content_tag(:div, :class => 'multiselect input') do
+    content_tag(:div, :class => "multiselect input #{field.name}") do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
                           :required => field.required?
       o += content_tag(:label, field.name)

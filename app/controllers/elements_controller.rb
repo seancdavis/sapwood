@@ -29,7 +29,7 @@ class ElementsController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        if current_template.document?
+        if current_template && current_template.document?
           redirect_to [current_property, current_template, :documents]
         end
       end

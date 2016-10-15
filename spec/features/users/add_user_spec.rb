@@ -13,7 +13,7 @@ feature 'New Users', :js => true do
       click_link 'New User'
     end
     scenario 'can not be given a name' do
-      expect(page).to_not have_css('#user_name')
+      expect(page).to have_no_css('#user_name')
     end
     scenario 'can make a new user an admin' do
       fill_in 'user[email]', :with => Faker::Internet.email

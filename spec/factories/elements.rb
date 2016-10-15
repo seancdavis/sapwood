@@ -30,17 +30,28 @@ FactoryGirl.define do
       template_data {{
         'name' => Faker::Lorem.words(4).join(' '),
         'comments' => Faker::Lorem.paragraph,
-        'image' => create(:document, :title => Faker::Company.bs.titleize,
-          :property => property).id,
+        'image' => create(:element, :document, :property => property,
+                          :title => Faker::Company.bs.titleize).id.to_s,
       }}
     end
     trait :with_address do
       template_data {{
         'address' => '1216 Central Pkwy, 45202',
         'comments' => Faker::Lorem.paragraph,
-        'image' => create(:document, :title => Faker::Company.bs.titleize,
-          :property => property).id,
+        'image' => create(:element, :document, :property => property,
+                          :title => Faker::Company.bs.titleize).id.to_s
       }}
+    end
+    trait :document do
+      title { nil }
+      template_name 'Image'
+      url 'https://s-media-cache-ak0.pinimg.com/custom_covers/30x30/178947853882959841_1454569459.jpg'
+      trait :from_system do
+        url { "#{Rails.root}/spec/support/example.png" }
+      end
+      trait :from_s3 do
+        url 'https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill Murray.jpg'
+      end
     end
   end
 

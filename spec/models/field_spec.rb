@@ -23,20 +23,22 @@ describe Field, :type => :model do
     it 'returns the type, and assumes string when not set' do
       expect(@name.type).to eq('string')
       expect(@address.type).to eq('geocode')
-      expect(@image.type).to eq('document')
+      expect(@image.type).to eq('element')
       expect(@comments.type).to eq('wysiwyg')
       expect(@one_thing.type).to eq('element')
     end
     it 'has boolean methods for certain fields' do
       expect(@name.document?).to eq(false)
       expect(@address.document?).to eq(false)
-      expect(@image.document?).to eq(true)
+      # TODO: Eventually, we want this to return true.
+      expect(@image.document?).to eq(false)
       expect(@comments.document?).to eq(false)
       expect(@one_thing.document?).to eq(false)
 
       expect(@name.element?).to eq(false)
       expect(@address.element?).to eq(false)
-      expect(@image.element?).to eq(false)
+      # TODO: Eventually, we want this to return false.
+      expect(@image.element?).to eq(true)
       expect(@comments.element?).to eq(false)
       expect(@one_thing.element?).to eq(true)
 

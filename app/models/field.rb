@@ -1,6 +1,6 @@
 class Field
 
-  include Presenter, ActionView::Helpers
+  include ActionView::Helpers
 
   def initialize(options)
     @attributes ||= options
@@ -26,6 +26,9 @@ class Field
   # TODO: Move to a method_missing call
 
   def document?
+    # TODO: We ought to be able to get to a template from a field, and therefore
+    # determine if it does qualify as a document field. (This will make some of
+    # the helper markup simpler, too.)
     type == 'document'
   end
 

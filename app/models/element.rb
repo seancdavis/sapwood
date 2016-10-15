@@ -106,6 +106,7 @@ class Element < ActiveRecord::Base
   end
 
   def document?
+    return false unless template?
     template.document?
   end
 

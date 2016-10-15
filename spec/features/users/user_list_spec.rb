@@ -15,7 +15,7 @@ feature 'User List', :js => true do
       click_link 'Users'
     end
     scenario 'does not contain users that do not have access' do
-      expect(page).to_not have_content(@user_01.p.name)
+      expect(page).to have_no_content(@user_01.p.name)
     end
     scenario 'contains users that have access' do
       expect(page).to have_content(@user_02.p.name)
@@ -26,7 +26,7 @@ feature 'User List', :js => true do
   end
 
   context 'as a regular user' do
-    background do
+    scenario 'does not see a link to users' do
       @property = property_with_templates
       @element = build(:element)
       @user_01 = create(:user)
@@ -35,16 +35,7 @@ feature 'User List', :js => true do
       @admin = create(:admin)
       sign_in @user_02
       click_link @property.title
-      click_link 'Users'
-    end
-    scenario 'does not contain users that do not have access' do
-      expect(page).to_not have_content(@user_01.p.name)
-    end
-    scenario 'contains users that have access' do
-      expect(page).to have_content(@user_02.p.name)
-    end
-    scenario 'does not contain admins' do
-      expect(page).to_not have_content(@admin.p.name)
+      expect(page).to have_no_content('Users')
     end
   end
 

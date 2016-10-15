@@ -49,12 +49,24 @@
         "label": "Comments"
       },
       "image": {
-        "type": "document",
+        "type": "element",
+        "templates": ["Image"],
         "label": "Image"
       },
       "images": {
-        "type": "documents",
+        "type": "elements",
+        "templates": ["Image"],
         "label": "Image"
+      },
+      "mixed_bag": {
+        "type": "element",
+        "templates": ["Image", "One Thing"],
+        "label": "Mixed Bag"
+      },
+      "mixed_bags": {
+        "type": "elements",
+        "templates": ["Image", "One Thing"],
+        "label": "Mixed Bags"
       },
       "one_thing": {
         "type": "element",
@@ -104,6 +116,14 @@
     "fields": {
       "name": { "primary": true },
       "body": { "type": "text" }
+    }
+  },
+  // This is a document-focused template.
+  {
+    "title": "Image",
+    "type": "document",
+    "fields": {
+      "name": { "primary": true }
     }
   },
   {

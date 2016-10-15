@@ -27,10 +27,9 @@
                       :class => ('active' if current_template && current_template.name == t.name) %>
         </li>
       <% end %>
-      <% unless current_user.is_admin? %>
+      <% if current_user.is_admin? %>
         <li>
-          <%= link_to current_property.label('users'),
-                      property_users_path(current_property)  %>
+          <%= link_to 'Users', property_users_path(current_property)  %>
         </li>
       <% end %>
     </ul>

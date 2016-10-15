@@ -144,7 +144,7 @@ module FieldHelper
                             :data => { :id => document.id }) do
             o3 = document.p.thumb
             o3 += link_to(document.title, document.url)
-            o3 += content_tag(:a, '[REMOVE]', :href => '#', :class => 'remove')
+            o3 += content_tag(:a, 'REMOVE', :href => '#', :class => 'remove')
             o3.html_safe
           end
         end

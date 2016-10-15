@@ -50,7 +50,7 @@ class App.Components.BulkDocumentChooser extends Backbone.View
       preview.append """
         #{$(doc).find('span.thumb').html()}
         <a href=\"#{$(doc).data('url')}\">#{$(doc).data('title')}</a>
-        <a href="#" class="remove">[REMOVE]</a>
+        <a href="#" class="remove">REMOVE</a>
       """
       preview.attr('data-id', $(doc).data('id'))
       @uploader.find('.selected-documents').append(preview)

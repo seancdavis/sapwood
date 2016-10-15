@@ -199,8 +199,29 @@ class Element < ActiveRecord::Base
     field_names.include?(name.to_s)
   end
 
+  def send_notifications!(action_name, excluding_user)
+    return false unless template?
+    notifications = property.notifications.for_template(template)
+    if excluding_user.present?
+      notifications = notifications.without_user(excluding_user)
+    end
+    notifications.each do |n|
+      NotificationMailer.notify(
+        :element => self,
+        :notification => n,
+        :action_name => action_name,
+        :template => template,
+        :property => property
+      ).deliver_now
+    end
+  end
+
   def to_param
     id.to_s
+  end
+
+  def to_s
+    title
   end
 
   def as_json(options = {})

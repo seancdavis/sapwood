@@ -42,9 +42,7 @@ Rails.application.routes.draw do
     resources :templates, :only => [], :path => 'documents' do
       resources :documents, :path => ''
     end
-    # resources :collection_types, :only => [], :path => 'collections' do
-    #   resources :collections, :path => ''
-    # end
+    resources :notifications, :only => [:create]
   end
 
   root :to => 'application#home'

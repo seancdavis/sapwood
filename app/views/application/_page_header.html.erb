@@ -5,4 +5,9 @@
                 (options[:button][:options] || {}) if options[:button] %>
     <%= render options[:dropdown] if options[:dropdown] %>
   </div>
+  <% if options[:notifications] %>
+    <%= link_to '', notification_toggle_path(options[:notifications]),
+                :method => :post,
+                :class => "notification-toggle #{'on' if notification_on?}" %>
+  <% end %>
 </header>

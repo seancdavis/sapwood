@@ -1,0 +1,38 @@
+<body style="width: 600px;
+             margin: 25px auto;
+             font-family: Roboto, Helvetica, Arial, sans-serif;
+             font-size: 16px;">
+
+  <p style="background-image: url('<%= image_path('background.jpg') %>');
+            margin: 0;
+            padding: 25px;
+            text-align: center;">
+    <img src="<%= image_path('sapwood-wordmark-light.png') %>" alt="Sapwood"
+         style="max-width: 300px;">
+  </p>
+
+  <span style="display: block;
+               background-color: #F0EEE8;
+               padding: 25px;
+               border: 1px solid #BEBDB9;
+               border-top: none;">
+    <p style="margin-top: 0;">
+      Hello
+      <span style="font-weight: 600;"><%= @user.p.name %></span>!
+    </p>
+
+    <p><%= @subject %>:</p>
+
+    <dl>
+      <% @element.as_json.each do |key, value| %>
+        <% next if value.blank? %>
+        <dt style="text-transform: uppercase; font-weight: 800;
+                   font-size: 12px;"><%= key %></dt>
+        <dd style="margin: 5px 0 15px;">
+          <%= value.is_a?(Array) ?
+              value.collect(&:to_s).join("<br>").html_safe : value %>
+        </dd>
+      <% end %>
+    </dl>
+  </span>
+</body>

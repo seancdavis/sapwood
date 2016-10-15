@@ -46,6 +46,7 @@ class ElementsController < ApplicationController
   def create
     @current_element = current_property.elements.build(element_params)
     if current_element.save!
+      send_notifications!
       redirect_to [current_property, current_template, :elements],
                   :notice => "#{current_template.title} saved successfully!"
     else
@@ -58,6 +59,7 @@ class ElementsController < ApplicationController
 
   def update
     if current_element.update(element_params)
+      send_notifications!
       redirect_to [current_property, current_template, :elements],
                   :notice => "#{current_template.title} saved successfully!"
     else
@@ -77,6 +79,10 @@ class ElementsController < ApplicationController
         .require(:element)
         .permit(:title, :template_name,
                 :template_data => current_template.fields.collect(&:name))
+    end
+
+    def send_notifications!
+      current_element.send_notifications!(action_name, current_user)
     end
 
 end

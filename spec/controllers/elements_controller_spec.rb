@@ -72,6 +72,12 @@ describe ElementsController do
           get :index, :property_id => @property.id, :template_id => 'wrong'
         }.to raise_error(ActionController::RoutingError)
       end
+      it 'redirects when the template is a document' do
+        get :index, :property_id => @property.id, :template_id => 'image'
+        expect(response).to redirect_to(
+          property_template_documents_path(@property, 'image')
+        )
+      end
     end
   end
 

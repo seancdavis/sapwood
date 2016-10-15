@@ -155,4 +155,19 @@ class Property < ActiveRecord::Base
     (users + User.admins).flatten.uniq
   end
 
+  def menu
+    menu = []
+    used_spaces = []
+    templates.each do |template|
+      next if used_spaces.include?(template.namespace)
+      if template.namespace.nil?
+        menu << template
+      else
+        menu << templates.select { |t| t.namespace == template.namespace }
+        used_spaces << template.namespace
+      end
+    end
+    menu
+  end
+
 end

@@ -132,6 +132,14 @@
       "name": { "primary": true }
     }
   },
+  // Demonstrate the Namespace option.
+  {
+    "title": "Child",
+    "namespace": "Parent",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
   {
     "title": "-A & __ Fun(ny) - +Title^"
   }

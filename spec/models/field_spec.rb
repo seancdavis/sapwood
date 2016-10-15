@@ -9,7 +9,13 @@ describe Field, :type => :model do
     @address = @template.find_field('address')
     @comments = @template.find_field('comments')
     @image = @template.find_field('image')
+    @images = @template.find_field('images')
     @one_thing = @template.find_field('one_thing')
+    @many_things = @template.find_field('many_things')
+    @complete = @template.find_field('complete')
+
+    @fields = [@name, @address, @comments, @image, @images, @one_thing,
+               @many_things, @complete]
   end
 
   describe '#name. #title' do
@@ -19,44 +25,51 @@ describe Field, :type => :model do
     end
   end
 
-  describe '#type, #document?, #element?, #date?' do
+  describe '#type, #method_missing(?), #sendable?' do
     it 'returns the type, and assumes string when not set' do
       expect(@name.type).to eq('string')
       expect(@address.type).to eq('geocode')
       expect(@image.type).to eq('element')
       expect(@comments.type).to eq('wysiwyg')
+      expect(@image.type).to eq('element')
+      expect(@images.type).to eq('elements')
       expect(@one_thing.type).to eq('element')
+      expect(@many_things.type).to eq('elements')
+      expect(@complete.type).to eq('boolean')
     end
-    it 'has boolean methods for certain fields' do
-      expect(@name.document?).to eq(false)
-      expect(@address.document?).to eq(false)
-      # TODO: Eventually, we want this to return true.
-      expect(@image.document?).to eq(false)
-      expect(@comments.document?).to eq(false)
-      expect(@one_thing.document?).to eq(false)
+    it 'has boolean methods to check for field type' do
+      expect(@name.string?).to eq(true)
+      (@fields - [@name]).each { |f| expect(f.string?).to eq(false) }
 
-      expect(@name.element?).to eq(false)
-      expect(@address.element?).to eq(false)
-      # TODO: Eventually, we want this to return false.
-      expect(@image.element?).to eq(true)
-      expect(@comments.element?).to eq(false)
-      expect(@one_thing.element?).to eq(true)
+      expect(@address.geocode?).to eq(true)
+      (@fields - [@address]).each { |f| expect(f.geocode?).to eq(false) }
 
-      expect(@name.date?).to eq(false)
-      expect(@address.date?).to eq(false)
-      expect(@image.date?).to eq(false)
-      expect(@comments.date?).to eq(false)
-      expect(@one_thing.date?).to eq(false)
+      expect(@comments.wysiwyg?).to eq(true)
+      (@fields - [@comments]).each { |f| expect(f.wysiwyg?).to eq(false) }
+
+      expect(@complete.boolean?).to eq(true)
+      (@fields - [@complete]).each { |f| expect(f.boolean?).to eq(false) }
+
+      [@image, @one_thing].each { |f| expect(f.element?).to eq(true) }
+      (@fields - [@image, @one_thing]).each do
+        |f| expect(f.element?).to eq(false)
+      end
+
+      [@images, @many_things].each { |f| expect(f.elements?).to eq(true) }
+      (@fields - [@images, @many_things]).each do
+        |f| expect(f.elements?).to eq(false)
+      end
+    end
+    it 'can determine whether to send the raw value or us method_missing' do
+      [@name, @comments].each { |f| expect(f.sendable?).to eq(false) }
+      (@fields - [@name, @comments]).each { |f| expect(f.sendable?).to eq(true) }
     end
   end
 
   describe '#primary?' do
     it 'returns true for the primary field, and assumes the first otherwise' do
       expect(@name.primary?).to eq(true)
-      expect(@address.primary?).to eq(false)
-      expect(@image.primary?).to eq(false)
-      expect(@comments.primary?).to eq(false)
-      expect(@one_thing.primary?).to eq(false)
+      (@fields - [@name]).each { |f| expect(f.string?).to eq(false) }
       expect(@property.find_template('default').find_field('name').primary?)
         .to eq(true)
     end

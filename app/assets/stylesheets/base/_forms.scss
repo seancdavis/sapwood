@@ -48,6 +48,17 @@ label {
   color: $dk-grey;
   font-size: 0.8em;
   text-transform: uppercase;
+  &.boolean {
+    text-transform: none;
+    color: $dk-grey;
+    font-weight: normal;
+    font-size: 15px;
+  }
+  input[type="checkbox"], input[type="radio"] {
+    height: 13px;
+    width: 13px;
+    margin-right: 5px;
+  }
 }
 
 input,

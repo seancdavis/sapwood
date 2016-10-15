@@ -80,6 +80,9 @@
       },
       "uneditable": {
         "read_only": true
+      },
+      "complete": {
+        "type": "boolean"
       }
     }
   },

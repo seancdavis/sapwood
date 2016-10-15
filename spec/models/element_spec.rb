@@ -147,7 +147,8 @@ RSpec.describe Element, :type => :model do
       element = create(:element, :template_name => 'All Options',
                        :property => @property)
       field_names = %w{name description address image images many_things
-                       comments one_thing mixed_bag mixed_bags}
+                       comments one_thing mixed_bag mixed_bags uneditable
+                       complete}
       expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do
@@ -188,6 +189,15 @@ RSpec.describe Element, :type => :model do
       end
       it 'returns strings as strings' do
         expect(@element.description).to eq('This is a description')
+      end
+      it 'returns booleans as booleans' do
+        # nil
+        expect(@element.complete).to eq(false)
+        # Set to "1" and test.
+        # @element.template_data_will_change!
+        @element.template_data.merge!(:complete => 1)
+        @element.save
+        expect(@element.reload.complete).to eq(true)
       end
       # geocode responses are already tested above in #geocode_address
       it 'returns Element objects for element fields' do
@@ -233,6 +243,7 @@ RSpec.describe Element, :type => :model do
       # This is our element.
       element = create(:element, :with_options, :with_address,
                         :property => @property)
+      element[:template_data]['complete'] = '1'
       # Create elements that we can use for associated records.
       more_options_el = create(:element, :property => @property,
                                :template_name => 'More Options')
@@ -276,6 +287,7 @@ RSpec.describe Element, :type => :model do
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(element.comments)
       expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
+      expect(json[:complete]).to eq(true)
       # Document fields should return an element object.
       expect(json[:image][:url]).to eq(example_image_url)
       expect(json[:images].to_a).to match_array(documents)

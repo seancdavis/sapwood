@@ -134,6 +134,14 @@ feature 'Elements', :js => true do
       selector = '[name="element[template_data][uneditable]"].readonly'
       expect(page).to have_css(selector)
     end
+    scenario 'can check a boolean field' do
+      fill_in 'element[template_data][name]', :with => @title
+      find_field('element[template_data][complete]').set(true)
+      click_button 'Save All Options'
+      expect(Element.find_by_title(@title).complete).to eq(true)
+      click_link @title
+      expect(find_field('element[template_data][complete]')).to be_checked
+    end
   end
 
 end

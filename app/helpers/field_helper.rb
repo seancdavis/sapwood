@@ -1,11 +1,18 @@
 module FieldHelper
 
   def field_string_html(form_obj, field, object)
-    form_obj.input field.name.to_sym, :required => field.required?, :readonly => field.read_only?
+    form_obj.input field.name.to_sym, :required => field.required?,
+                   :readonly => field.read_only?
   end
 
   def field_text_html(form_obj, field, object)
-    form_obj.input field.name.to_sym, :as => :text, :required => field.required?, :readonly => field.read_only?
+    form_obj.input field.name.to_sym, :as => :text,
+                   :required => field.required?, :readonly => field.read_only?
+  end
+
+  def field_boolean_html(form_obj, field, object)
+    form_obj.input field.name.to_sym, :as => :boolean,
+                   :required => field.required?, :readonly => field.read_only?
   end
 
   def field_geocode_html(form_obj, field, object)

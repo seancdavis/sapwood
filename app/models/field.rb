@@ -23,30 +23,13 @@ class Field
     name
   end
 
+  # Whether or not we should fallback to method_missing for this particular
+  # field.
+  def sendable?
+    document? || documents? || element? || elements? || boolean? || geocode?
+  end
+
   # TODO: Move to a method_missing call
-
-  def document?
-    # TODO: We ought to be able to get to a template from a field, and therefore
-    # determine if it does qualify as a document field. (This will make some of
-    # the helper markup simpler, too.)
-    type == 'document'
-  end
-
-  def documents?
-    type == 'documents'
-  end
-
-  def element?
-    type == 'element'
-  end
-
-  def elements?
-    type == 'elements'
-  end
-
-  def date?
-    type == 'date'
-  end
 
   def primary?
     attributes['primary'].to_bool
@@ -62,6 +45,7 @@ class Field
 
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
+    return type == method.to_s.chomp('?') if method.to_s.end_with?('?')
     super
   end
 

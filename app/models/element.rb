@@ -208,9 +208,7 @@ class Element < ActiveRecord::Base
       :id => id,
       :title => title,
       :slug => slug,
-      # :property_id => property_id,
       :template_name => template_name,
-      # :template_data => template_data,
       :publish_at => publish_at,
       :created_at => created_at,
       :updated_at => updated_at,
@@ -219,12 +217,7 @@ class Element < ActiveRecord::Base
     template_data.each do |k,v|
       field = template.find_field(k)
       next if field.nil?
-      response[k.to_sym] = if field.document? || field.element? ||
-                              field.documents? || field.elements?
-         send(k)
-       else
-        v
-      end
+      response[k.to_sym] = field.sendable? ? send(k) : v
     end
     if document?
       response[:url] = url
@@ -269,6 +262,8 @@ class Element < ActiveRecord::Base
       when 'geocode'
         geo = template_data[method.to_s]
         geo.is_a?(Hash) ? geo.to_ostruct : geo
+      when 'boolean'
+        template_data[method.to_s].to_bool
       else
         template_data[method.to_s]
       end

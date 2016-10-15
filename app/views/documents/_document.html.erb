@@ -3,7 +3,7 @@
          data-url="<%= document.version(:small, true) %>"
          data-image="<%= document.image? %>"
          style="background-image: url('<%= document.version(:medium) if document.image? %>')">
-  <%= link_to [:edit, current_property, document] do %>
+  <%= link_to [:edit, current_property, current_template, document] do %>
     <span class="title">
       <%=  document.title %>
     </span>

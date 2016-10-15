@@ -3,8 +3,7 @@ require 'rails_helper'
 feature 'Elements', :js => true do
 
   background do
-    file = File.expand_path('../../../support/template_config.json', __FILE__)
-    @property = create(:property, :templates_raw => File.read(file))
+    @property = property_with_templates
     @user = create(:admin)
     sign_in @user
     click_link @property.title
@@ -39,7 +38,7 @@ feature 'Elements', :js => true do
       click_link @element.title
     end
     scenario 'can add an existing image for its image' do
-      document = create(:document, :property => @property)
+      document = create(:element, :document, :property => @property)
       click_link 'Choose Existing File'
       wait_for_ajax
       sleep 0.35
@@ -57,12 +56,12 @@ feature 'Elements', :js => true do
       expect(page).to have_content(document.title)
     end
     scenario 'can add multiple existing images for its image' do
-      document_01 = create(:document, :title => Faker::Company.bs.titleize,
-                           :property => @property)
-      document_02 = create(:document, :title => Faker::Company.bs.titleize,
-                           :property => @property)
-      document_03 = create(:document, :title => Faker::Company.bs.titleize,
-                           :property => @property)
+      document_01 = create(:element, :document, :property => @property,
+                           :title => Faker::Company.bs.titleize)
+      document_02 = create(:element, :document, :property => @property,
+                           :title => Faker::Company.bs.titleize)
+      document_03 = create(:element, :document, :property => @property,
+                           :title => Faker::Company.bs.titleize)
       click_link 'Choose Existing Files'
       wait_for_ajax
       sleep 0.35

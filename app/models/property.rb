@@ -124,6 +124,10 @@ class Property < ActiveRecord::Base
     templates.select { |t| t.title == name || t.slug == name }.first
   end
 
+  def find_templates(names)
+    templates.select { |t| names.include?(t.title) || names.include?(t.slug) }
+  end
+
   def collection_types
     return [] if collection_types_raw.blank?
     types = []

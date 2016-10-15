@@ -27,18 +27,27 @@ describe Api::V1::CollectionsController do
         @c_03 = create(:collection, :with_items, :with_options,
                        :property => property_with_templates_and_collection_types)
       end
-      it 'responds with all property collections as json' do
+      it 'responds with all property ELEMENTS! as json' do
         response = get :index, :property_id => @property.id,
                        :api_key => @property.api_key, :format => :json
-        expect(response.body).to include(@c_01.to_json)
-        expect(response.body).to include(@c_02.to_json)
+        @property.elements.each do |el|
+          expect(response.body).to include(el.to_json)
+        end
+        expect(response.body).to_not include(@c_01.to_json)
+        expect(response.body).to_not include(@c_02.to_json)
         expect(response.body).to_not include(@c_03.to_json)
       end
-      it 'filters collections by type if specified' do
+      it 'filters ELEMENTS! by type if specified' do
+        good_el = create(:element, :property => @property,
+                         :template_name => 'Default')
+        bad_el = create(:element, :property => @property,
+                        :template_name => 'All Options')
         response = get :index, :property_id => @property.id,
                        :api_key => @property.api_key, :format => :json,
-                       :type => 'Default Collection'
-        expect(response.body).to include(@c_01.to_json)
+                       :type => 'Default'
+        expect(response.body).to include(good_el.to_json)
+        expect(response.body).to_not include(bad_el.to_json)
+        expect(response.body).to_not include(@c_01.to_json)
         expect(response.body).to_not include(@c_02.to_json)
         expect(response.body).to_not include(@c_03.to_json)
       end
@@ -69,10 +78,16 @@ describe Api::V1::CollectionsController do
                    :api_key => '123'
       }.to raise_error(ActionController::RoutingError)
     end
-    it 'responds with the collection as json' do
-      response = get :show, :property_id => @property.id, :id => @collection,
+    it 'is not found when trying to access a collection' do
+      expect { get :show, :property_id => @property.id, :id => @collection,
+                   :api_key => @property.api_key, :format => :json
+      }.to raise_error(ActionController::RoutingError)
+    end
+    it 'responds with the MATCHING ELEMENT! as json' do
+      el = create(:element, :property => @property)
+      response = get :show, :property_id => @property.id, :id => el,
                      :api_key => @property.api_key, :format => :json
-      expect(response.body).to eq(@collection.to_json)
+      expect(response.body).to eq(el.to_json)
     end
   end
 

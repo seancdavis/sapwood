@@ -26,7 +26,7 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     password 'password'
     factory :admin do
-      is_admin true
+      is_admin { true }
     end
   end
 end

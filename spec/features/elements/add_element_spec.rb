@@ -44,7 +44,9 @@ feature 'Elements', :js => true do
       click_link 'New All Options'
     end
     scenario 'can add an existing image for its image' do
-      document = create(:document, :property => @property)
+      document = create(:element, :document, :property => @property)
+      # It's intention that there is only on of these here, although we should
+      # consider cases with more than one.
       click_link 'Choose Existing File'
       wait_for_ajax
       sleep 0.35
@@ -99,7 +101,7 @@ feature 'Elements', :js => true do
       # Choose 2, remove 1, then save and check.
       select els[0].title, :from => 'multiselect_many_things'
       select els[2].title, :from => 'multiselect_many_things'
-      within('.multiselect .selected-options') do
+      within('.multiselect.many_things .selected-options') do
         expect(page).to have_css('li > span', :text => els[0].title)
         expect(page).to have_no_css('li > span', :text => els[1].title)
         expect(page).to have_css('li > span', :text => els[2].title)
@@ -117,7 +119,7 @@ feature 'Elements', :js => true do
       click_button 'Save All Options'
       click_link title
 
-      within('.multiselect .selected-options') do
+      within('.multiselect.many_things .selected-options') do
         expect(page).to have_no_css('li > span', :text => els[0].title)
         expect(page).to have_no_css('li > span', :text => els[1].title)
         expect(page).to have_css('li > span', :text => els[2].title)

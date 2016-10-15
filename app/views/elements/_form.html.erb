@@ -25,6 +25,12 @@
             <dt>Last Modified:</dt>
             <dd><%= current_element.p.updated_at %></dd>
           <% end %>
+          <% if current_template.document? %>
+            <dt>Uploaded:</dt>
+            <dd><%= current_element.p.uploaded_at %></dd>
+            <dt>URL:</dt>
+            <dd><%= link_to current_element.url, current_element.url %></dd>
+          <% end %>
           <dt>Template:</dt>
           <dd><%= current_template.title %></dd>
         </dl>

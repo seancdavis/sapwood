@@ -11,6 +11,9 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  url           :string
+#  archived      :boolean          default(FALSE)
+#  processed     :boolean          default(FALSE)
 #
 
 class Element < ActiveRecord::Base
@@ -21,16 +24,21 @@ class Element < ActiveRecord::Base
 
   has_superslug :title, :slug, :context => :property
 
+  # ---------------------------------------- Attributes
+
+  attr_accessor :skip_geocode
+
   # ---------------------------------------- Associations
 
   belongs_to :property, :touch => true
 
   # ---------------------------------------- Scopes
 
-  scope :alpha, -> { order(:title => :asc) }
   scope :with_template, ->(name) { where(:template_name => name.split(',')) }
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
+  scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
+  scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
 
   # ---------------------------------------- Validations
 
@@ -41,7 +49,7 @@ class Element < ActiveRecord::Base
   after_save :geocode_addresses
 
   def geocode_addresses
-    return unless template?
+    return unless template? && skip_geocode.blank?
     template.geocode_fields.each do |field|
       val = template_data[field.name]
       if val.blank?
@@ -68,9 +76,96 @@ class Element < ActiveRecord::Base
   before_validation :set_title
 
   def set_title
+    set_document_title if document?
     return if template.blank? || template.primary_field.blank? ||
               self.send(template.primary_field.name).blank?
     self.title = self.send(template.primary_field.name)
+  end
+
+  after_create :process_images!, :if => :document?
+
+  def process_images!
+    return nil if Rails.env.test?
+    ProcessImages.delay.call(:document => self) if image? && !processed?
+  end
+
+  # ---------------------------------------- Document Properties
+
+  def set_document_title
+    return false unless document?
+    if title.blank? || url.present?
+      self.title = title_from_filename
+      return unless template.primary_field
+      self.template_data[template.primary_field.name.to_sym] = title_from_filename
+    end
+  end
+
+  def title_from_filename
+    return nil unless document?
+    url.split('/').last.split('.').first.titleize
+  end
+
+  def document?
+    return false unless template?
+    template.document?
+  end
+
+  def filename
+    return nil unless document?
+    url.split('/').last
+  end
+
+  def filename_no_ext
+    return nil unless document?
+    filename.split('.')[0..-2].join('.')
+  end
+
+  def file_ext
+    return nil unless document?
+    url.split('.').last.downcase
+  end
+
+  def safe_url
+    return nil unless document?
+    URI.encode(url)
+  end
+
+  def uri
+    return nil unless document?
+    URI.parse(safe_url)
+  end
+
+  def s3_base
+    return nil unless document?
+    "#{uri.scheme}://#{uri.host}"
+  end
+
+  def s3_dir
+    return nil unless document?
+    uri.path.split('/').reject(&:blank?)[0..-2].join('/')
+  end
+
+  def version(name, crop = false)
+    return nil unless document?
+    return safe_url.to_s if !processed? || !image?
+    alt = crop ? '_crop' : nil
+    filename = "#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
+    URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
+  end
+
+  def image?
+    return false unless document?
+    %(jpeg jpg png gif svg).include?(file_ext)
+  end
+
+  def archive!
+    return false unless document?
+    update_columns(:archived => true)
+  end
+
+  def processed!
+    return false unless document?
+    update_columns(:processed => true)
   end
 
   # ---------------------------------------- Instance Methods
@@ -131,6 +226,16 @@ class Element < ActiveRecord::Base
         v
       end
     end
+    if document?
+      response[:url] = url
+      if image? && processed?
+        response[:versions] = {}
+        %w(xsmall small medium large xlarge).each do |v|
+          response[:versions][:"#{v}"] = version(v, false)
+          response[:versions][:"#{v}_crop"] = version(v, true)
+        end
+      end
+    end
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)
@@ -161,25 +266,9 @@ class Element < ActiveRecord::Base
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
           property.elements.where(:id => element_ids) || []
         end
-      when 'document'
-        return nil if template_data[method.to_s].blank?
-        unless Rails.env.production?
-          return property.documents.find_by_id(template_data[method.to_s])
-        end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          property.documents.find_by_id(template_data[method.to_s])
-        end
-      when 'documents'
-        return [] if template_data[method.to_s].blank?
-        document_ids = template_data[method.to_s].split(',').collect(&:to_i)
-        unless Rails.env.production?
-          return property.documents.where(:id => document_ids)
-        end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          property.documents.where(:id => document_ids)
-        end
       when 'geocode'
-        template_data[method.to_s].to_ostruct
+        geo = template_data[method.to_s]
+        geo.is_a?(Hash) ? geo.to_ostruct : geo
       else
         template_data[method.to_s]
       end

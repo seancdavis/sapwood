@@ -8,7 +8,7 @@ feature 'Documents List', :js => true do
     @user = create(:admin)
     sign_in @user
     click_link @property.title
-    click_link 'Documents'
+    click_link 'Images'
   end
 
   context 'when there are no documents' do
@@ -18,12 +18,10 @@ feature 'Documents List', :js => true do
   end
 
   context 'when there are documents' do
-    background do
-      create(:document, :property => @property)
-      visit current_path
-    end
     scenario 'does not display a message' do
-      expect(page).to_not have_content('Nothing here yet!')
+      create(:element, :document, :property => @property)
+      visit current_path
+      expect(page).to have_no_content('Nothing here yet!')
     end
   end
 

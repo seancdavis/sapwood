@@ -31,11 +31,11 @@ feature 'Deck', :js => true do
     scenario 'can see all properties' do
       expect(page).to have_content(@property.title)
       (@properties - [@property]).each do |property|
-        expect(page).to_not have_content(property.title)
+        expect(page).to have_no_content(property.title)
       end
     end
     scenario 'does not see button to create new property' do
-      expect(page).to_not have_content('NEW PROPERTY')
+      expect(page).to have_no_content('NEW PROPERTY')
     end
   end
 

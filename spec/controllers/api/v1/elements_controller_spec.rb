@@ -44,7 +44,6 @@ describe Api::V1::ElementsController do
         response = get :index, :property_id => @property.id,
                        :template => 'All Options',
                        :api_key => @property.api_key, :format => :json
-        expect(@property.elements.count).to eq(6)
         elements = @property.elements.with_template('All Options').by_title
         expect(response.body).to eq(elements.to_json)
       end
@@ -53,8 +52,10 @@ describe Api::V1::ElementsController do
         response = get :index, :property_id => @property.id,
                        :template => 'All Options,Default',
                        :api_key => @property.api_key, :format => :json
-        expect(@property.elements.count).to eq(6)
-        elements = @property.elements.by_title
+        elements = (
+          @property.elements.with_template('All Options') +
+          @property.elements.with_template('Default')
+        ).sort_by(&:title)
         expect(response.body).to eq(elements.to_json)
       end
     end

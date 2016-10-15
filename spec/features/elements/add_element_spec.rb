@@ -130,6 +130,10 @@ feature 'Elements', :js => true do
                                :visible => false)
       expect(page).to have_css('div.trumbowyg-box')
     end
+    scenario 'supports read-only fields' do
+      selector = '[name="element[template_data][uneditable]"].readonly'
+      expect(page).to have_css(selector)
+    end
   end
 
 end

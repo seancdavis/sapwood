@@ -56,6 +56,10 @@ class Field
     attributes['required'].to_bool || primary?
   end
 
+  def read_only?
+    attributes['read_only'].to_bool || attributes['readonly'].to_bool
+  end
+
   def method_missing(method, *arguments, &block)
     return attributes[method.to_s] if respond_to?(method.to_s)
     super

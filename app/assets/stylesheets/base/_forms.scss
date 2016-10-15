@@ -80,7 +80,10 @@ select[multiple] {
   &:disabled {
     cursor: not-allowed;
     color: $md-grey;
-    border-bottom-color: $md-grey;
+    border-bottom: none;
+  }
+  &.readonly {
+    border-bottom: none;
   }
 }
 

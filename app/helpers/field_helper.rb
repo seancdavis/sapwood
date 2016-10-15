@@ -1,11 +1,11 @@
 module FieldHelper
 
   def field_string_html(form_obj, field, object)
-    form_obj.input field.name.to_sym, :required => field.required?
+    form_obj.input field.name.to_sym, :required => field.required?, :readonly => field.read_only?
   end
 
   def field_text_html(form_obj, field, object)
-    form_obj.input field.name.to_sym, :as => :text, :required => field.required?
+    form_obj.input field.name.to_sym, :as => :text, :required => field.required?, :readonly => field.read_only?
   end
 
   def field_geocode_html(form_obj, field, object)
@@ -18,7 +18,7 @@ module FieldHelper
       o = form_obj.input(
         field.name.to_sym,
         :as => :text,
-        :required => field.required?,
+        :required => field.required?, :readonly => field.read_only?,
         :input_html => { :class => 'geocode', :value => value }
       )
     end
@@ -39,7 +39,7 @@ module FieldHelper
       elements = elements.where(:template_name => field.templates)
     end
     form_obj.input field.name.to_sym, :collection => elements,
-                   :required => field.required?
+                   :required => field.required?, :readonly => field.read_only?
   end
 
   def single_document_field(form_obj, field, object)
@@ -49,7 +49,7 @@ module FieldHelper
     content_tag(:div, :class => 'input document-uploader',
                 :data => { :uploader => path }) do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
-                          :required => field.required?
+                          :required => field.required?, :readonly => field.read_only?
       o += content_tag(:label, field.name)
       if document.present?
         o += content_tag(:div, :class => 'document-url') do
@@ -90,7 +90,7 @@ module FieldHelper
   def multi_element_field(form_obj, field, object)
     content_tag(:div, :class => "multiselect input #{field.name}") do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
-                          :required => field.required?
+                          :required => field.required?, :readonly => field.read_only?
       o += content_tag(:label, field.name)
       elements = current_property.elements.by_title
       if field.respond_to?(:templates) && field.templates.present?
@@ -127,7 +127,7 @@ module FieldHelper
     content_tag(:div, :class => 'input bulk-document-uploader',
                 :data => { :uploader => path }) do
       o  = form_obj.input field.name.to_sym, :as => :hidden,
-                          :required => field.required?
+                          :required => field.required?, :readonly => field.read_only?
       o += content_tag(:label, field.name)
       o += content_tag(:div, nil, :class => 'batch-uploader')
       documents.each do |document|
@@ -153,7 +153,7 @@ module FieldHelper
 
   def field_wysiwyg_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :as => :text,
-                   :required => field.required?,
+                   :required => field.required?, :readonly => field.read_only?,
                    :input_html => { :class => 'wysiwyg' }
   end
 

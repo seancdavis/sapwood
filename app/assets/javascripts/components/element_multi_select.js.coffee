@@ -10,7 +10,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
       .filter(Boolean)
     @select = @container.find('select').first()
     @container.find('.selected-options').addClass('sortable')
-    @initSortable()
+    # @initSortable()
     @select.change (e) =>
       opt = @select.find('option:selected')
       @container.find('.selected-options').append """

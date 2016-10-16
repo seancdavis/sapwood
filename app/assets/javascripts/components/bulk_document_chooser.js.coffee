@@ -12,7 +12,7 @@ class App.Components.BulkDocumentChooser extends Backbone.View
 
   initialize: (options) ->
     @modal = new App.Components.Modal
-    @initSortable($(sortable)) for sortable in $('.bulk-document-uploader')
+    # @initSortable($(sortable)) for sortable in $('.bulk-document-uploader')
 
   openModal: (e) ->
     e.preventDefault()

@@ -13,14 +13,14 @@ feature 'Notifications', :js => true do
     create(:notification, :user => @other_user)
     create(:notification)
 
-    expect(ActionMailer::Base.deliveries.count).to eq(0)
+    email_count = ActionMailer::Base.deliveries.count
 
     sign_in @me
     visit new_property_template_element_path(@property, 'default')
     title = Faker::Lorem.sentence
     fill_in 'element[template_data][name]', :with => title
     click_button 'Save Default'
-    expect(ActionMailer::Base.deliveries.count).to eq(1)
+    expect(ActionMailer::Base.deliveries.count).to eq(email_count += 1)
     expect(ActionMailer::Base.deliveries.first.to).to eq([@other_user.email])
     subject = "A new default was created in #{@property.title}"
     expect(ActionMailer::Base.deliveries.first.subject).to eq(subject)
@@ -29,7 +29,7 @@ feature 'Notifications', :js => true do
     title = Faker::Lorem.sentence
     fill_in 'element[template_data][name]', :with => title
     click_button 'Save Default'
-    expect(ActionMailer::Base.deliveries.count).to eq(2)
+    expect(ActionMailer::Base.deliveries.count).to eq(email_count += 1)
     expect(ActionMailer::Base.deliveries.last.to).to eq([@other_user.email])
     subject = "Default #{title} updated in #{@property.title}"
     expect(ActionMailer::Base.deliveries.last.subject).to eq(subject)

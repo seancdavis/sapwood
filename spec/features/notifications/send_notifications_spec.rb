@@ -21,9 +21,9 @@ feature 'Notifications', :js => true do
     fill_in 'element[template_data][name]', :with => title
     click_button 'Save Default'
     expect(ActionMailer::Base.deliveries.count).to eq(email_count += 1)
-    expect(ActionMailer::Base.deliveries.first.to).to eq([@other_user.email])
+    expect(ActionMailer::Base.deliveries.last.to).to eq([@other_user.email])
     subject = "A new default was created in #{@property.title}"
-    expect(ActionMailer::Base.deliveries.first.subject).to eq(subject)
+    expect(ActionMailer::Base.deliveries.last.subject).to eq(subject)
 
     click_link title
     title = Faker::Lorem.sentence

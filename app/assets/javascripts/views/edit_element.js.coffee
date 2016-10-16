@@ -13,4 +13,6 @@ class App.Views.EditElement extends Backbone.View
     for multiselect in $('form div.multiselect')
       new App.Components.ElementMultiSelect($(multiselect))
     $(wysiwyg).trumbowyg() for wysiwyg in $('textarea.wysiwyg')
+    for datepicker in $('div.pickadate input')
+      $(datepicker).pickadate({ format: $(datepicker).data('format') })
     App.Components.Blocks.set()

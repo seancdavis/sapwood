@@ -83,6 +83,13 @@
       },
       "complete": {
         "type": "boolean"
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-mm-dd"
+      },
+      "unformatted_date": {
+        "type": "date"
       }
     }
   },

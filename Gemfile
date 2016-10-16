@@ -20,6 +20,7 @@ gem 'backbone-on-rails'
 gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'pickadate-rails'
 
 # ------------------------------------------ Utilities
 

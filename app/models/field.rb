@@ -29,7 +29,10 @@ class Field
     document? || documents? || element? || elements? || boolean? || geocode?
   end
 
-  # TODO: Move to a method_missing call
+  def format
+    attributes['format'] unless date?
+    attributes['format'] || 'mm-dd-yyyy'
+  end
 
   def primary?
     attributes['primary'].to_bool

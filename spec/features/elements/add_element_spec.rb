@@ -134,6 +134,22 @@ feature 'Elements', :js => true do
       selector = '[name="element[template_data][uneditable]"].readonly'
       expect(page).to have_css(selector)
     end
+    scenario 'saves date fields in the appropriate format' do
+      find_field('element[template_data][date]').click
+      expect(page).to have_css('.picker--opened', :wait => 3)
+      first('.picker__button--today').click
+
+      find_field('element[template_data][unformatted_date]').click
+      expect(page).to have_css('.picker--opened', :wait => 3)
+      first('.picker__button--today').click
+
+      fill_in 'element[template_data][name]', :with => @title
+      click_button 'Save All Options'
+
+      el = Element.find_by_title(@title)
+      expect(el.date).to eq(Date.today().strftime('%Y-%m-%d'))
+      expect(el.unformatted_date).to eq(Date.today().strftime('%m-%d-%Y'))
+    end
     scenario 'can check a boolean field' do
       fill_in 'element[template_data][name]', :with => @title
       find_field('element[template_data][complete]').set(true)

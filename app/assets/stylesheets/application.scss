@@ -3,6 +3,8 @@
 
 @import 'trumbowyg/trumbowyg';
 @import 'jquery-ui/sortable';
+@import 'pickadate/default';
+@import 'pickadate/default.date';
 @import 'bourbon';
 @import 'normalize-rails';
 @import 'base/base';
@@ -24,6 +26,7 @@
 @import 'components/pagination';
 @import 'components/sortable';
 @import 'components/notifications';
+@import 'components/datepicker';
 
 // ---------------------------------------- Partials
 

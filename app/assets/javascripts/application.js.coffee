@@ -1,6 +1,8 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui/sortable
+#= require pickadate/picker
+#= require pickadate/picker.date
 #= require underscore
 #= require backbone
 #= require jquery-fileupload/basic

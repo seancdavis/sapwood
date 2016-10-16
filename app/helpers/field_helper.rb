@@ -15,6 +15,13 @@ module FieldHelper
                    :required => field.required?, :readonly => field.read_only?
   end
 
+  def field_date_html(form_obj, field, object)
+    form_obj.input field.name.to_sym, :as => :string,
+                   :required => field.required?, :readonly => field.read_only?,
+                   :wrapper_html => { :class => 'pickadate' },
+                   :input_html => { :data => { :format => field.format } }
+  end
+
   def field_geocode_html(form_obj, field, object)
     value = if form_obj.object[field.name].nil?
       nil

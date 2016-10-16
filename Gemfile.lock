@@ -334,6 +334,8 @@ GEM
     parallel_tests (2.6.0)
       parallel
     pg (0.18.4)
+    pickadate-rails (3.5.6.0)
+      railties (>= 3.1.0)
     poltergeist (1.9.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -527,6 +529,7 @@ DEPENDENCIES
   normalize-rails
   parallel_tests
   pg
+  pickadate-rails
   poltergeist
   quiet_assets
   rails (= 4.2.5)

@@ -148,7 +148,7 @@ RSpec.describe Element, :type => :model do
                        :property => @property)
       field_names = %w{name description address image images many_things
                        comments one_thing mixed_bag mixed_bags uneditable
-                       complete}
+                       complete date unformatted_date}
       expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do

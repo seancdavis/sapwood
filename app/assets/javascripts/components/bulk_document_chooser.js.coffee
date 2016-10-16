@@ -12,7 +12,7 @@ class App.Components.BulkDocumentChooser extends Backbone.View
 
   initialize: (options) ->
     @modal = new App.Components.Modal
-    # @initSortable($(sortable)) for sortable in $('.bulk-document-uploader')
+    @initSortable($(sortable)) for sortable in $('.bulk-document-uploader')
 
   openModal: (e) ->
     e.preventDefault()
@@ -74,10 +74,8 @@ class App.Components.BulkDocumentChooser extends Backbone.View
     container.find('input').first().val(@documentIds.join(','))
 
   initSortable: (container) ->
-    container.addClass('sortable')
-    Sortable.create(
-      container.find('ul.selected-documents').first()[0],
-      onUpdate: (event) ->
-        $(@.el).parents('.bulk-document-uploader').find('input.hidden')
-          .val(@.toArray().join(','))
-    )
+    container.find('ul.selected-documents').first().sortable
+      update: (event, ui) ->
+        ids = $(this).sortable('toArray', { attribute: 'data-id' })
+        $(this).parents('.bulk-document-uploader').find('input.hidden')
+          .val(ids.join(','))

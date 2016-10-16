@@ -1,14 +1,11 @@
-.sortable {
+.ui-sortable {
 
   li:hover {
     cursor: move;
   }
 
-  .sortable-ghost {
+  .ui-sortable-placeholder {
+    visibility: visible !important;
     background: rgba($lt-blue, 0.25);
-  }
-
-  .sortable-drag {
-    opacity: 0;
   }
 }

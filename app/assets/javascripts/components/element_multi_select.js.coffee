@@ -10,7 +10,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
       .filter(Boolean)
     @select = @container.find('select').first()
     @container.find('.selected-options').addClass('sortable')
-    # @initSortable()
+    @initSortable()
     @select.change (e) =>
       opt = @select.find('option:selected')
       @container.find('.selected-options').append """
@@ -33,9 +33,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
     @container.find('input').first().val(@elementIds.join(','))
 
   initSortable: ->
-    @sortable = Sortable.create(
-      @container.find('.selected-options')[0]
-      onUpdate: (event) =>
-        @elementIds = @sortable.toArray()
-        @container.find('input').first().val(@elementIds.join(','))
-    )
+    @sortable = @container.find('.selected-options').sortable
+      update: (event, ui) ->
+        ids = $(this).sortable('toArray', { attribute: 'data-id' })
+        $(this).parents('.multiselect').find('input.hidden').val(ids.join(','))

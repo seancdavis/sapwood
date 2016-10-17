@@ -21,7 +21,7 @@ feature 'Elements List', :js => true do
       element_01 = create(:element, :property => @property)
       element_02 = create(:element, :with_options, :property => @property)
       click_link 'Defaults'
-      expect(page).to_not have_content('Nothing here yet!')
+      expect(page).to have_no_content('Nothing here yet!')
       expect(page).to have_content(element_01.title)
       expect(page).to have_no_content(element_02.title)
     end

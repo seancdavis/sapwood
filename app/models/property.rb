@@ -27,11 +27,13 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  has_many :elements, :dependent => :destroy
   has_many :collections, :dependent => :destroy
   has_many :documents, :dependent => :destroy
-  has_many :responses, :dependent => :destroy
+  has_many :elements, :dependent => :destroy
+  has_many :notifications, :dependent => :destroy
   has_many :property_users, :dependent => :destroy
+  has_many :responses, :dependent => :destroy
+
   has_many :users, :through => :property_users
 
   # ---------------------------------------- Validations
@@ -124,6 +126,10 @@ class Property < ActiveRecord::Base
     templates.select { |t| t.title == name || t.slug == name }.first
   end
 
+  def find_templates(names)
+    templates.select { |t| names.include?(t.title) || names.include?(t.slug) }
+  end
+
   def collection_types
     return [] if collection_types_raw.blank?
     types = []
@@ -147,6 +153,21 @@ class Property < ActiveRecord::Base
 
   def users_with_access
     (users + User.admins).flatten.uniq
+  end
+
+  def menu
+    menu = []
+    used_spaces = []
+    templates.each do |template|
+      next if used_spaces.include?(template.namespace)
+      if template.namespace.nil?
+        menu << template
+      else
+        menu << templates.select { |t| t.namespace == template.namespace }
+        used_spaces << template.namespace
+      end
+    end
+    menu
   end
 
 end

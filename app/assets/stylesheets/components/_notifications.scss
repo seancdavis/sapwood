@@ -1,0 +1,13 @@
+a.notification-toggle {
+  @include icon;
+  @extend .icon-notification;
+  position: relative;
+  display: inline-block;
+  top: 6px;
+  margin-left: 15px;
+  font-size: 18px;
+  color: $dark;
+  &.on {
+    color: $lt-blue;
+  }
+}

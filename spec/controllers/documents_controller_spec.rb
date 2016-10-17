@@ -19,19 +19,20 @@ describe DocumentsController do
   # ---------------------------------------- Index
 
   describe '#index' do
-    before(:each) { @property = create(:property) }
+    before(:each) { @property = property_with_templates }
     context 'for an unassigned property' do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id, :template_id => 'image'
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :index, :property_id => @property.id }
-          .to raise_error(ActionController::RoutingError)
+        expect {
+          get :index, :property_id => @property.id, :template_id => 'image'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
     context 'for an assigned property' do
@@ -39,7 +40,7 @@ describe DocumentsController do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, :property_id => @property.id, :template_id => 'image'
         expect(response.status).to eq(200)
       end
     end
@@ -47,58 +48,45 @@ describe DocumentsController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :index, :property_id => '123' }
+        expect { get :index, :property_id => '123', :template_id => 'image' }
           .to raise_error(ActionController::RoutingError)
       end
     end
   end
 
-  # ---------------------------------------- Edit
+  # ---------------------------------------- New
 
-  describe '#edit' do
-    context 'for an existing document' do
-      before(:each) do
-        @property = create(:property)
-        @document = create(:document, :property => @property)
+  describe '#index' do
+    before(:each) { @property = property_with_templates }
+    context 'for an unassigned property' do
+      it 'returns 200 for an admin' do
+        @user = create(:admin)
+        sign_in @user
+        get :new, :property_id => @property.id, :template_id => 'image'
+        expect(response.status).to eq(200)
       end
-      context 'for an unassigned property' do
-        it 'returns 200 for an admin' do
-          @user = create(:admin)
-          sign_in @user
-          get :edit, :property_id => @property.id, :id => @document.id
-          expect(response.status).to eq(200)
-        end
-        it 'returns 404 for a user' do
-          @user = create(:user)
-          sign_in @user
-          expect { get :edit, :property_id => @property.id, :id => @document.id }
-            .to raise_error(ActionController::RoutingError)
-        end
-      end
-      context 'for an assigned property' do
-        it 'returns 200 for a user' do
-          @user = create(:user)
-          @user.properties << @property
-          sign_in @user
-          get :edit, :property_id => @property.id, :id => @document.id
-          expect(response.status).to eq(200)
-        end
-      end
-      context 'for a non-existant property' do
-        it 'returns 404 for an admin' do
-          @user = create(:admin)
-          sign_in @user
-          expect { get :edit, :property_id => '123', :id => @document.id }
-            .to raise_error(ActionController::RoutingError)
-        end
-      end
-    end
-    context 'for a non-existant document with a valid property' do
       it 'returns 404 for a user' do
-        @property = create(:property)
         @user = create(:user)
         sign_in @user
-        expect { get :edit, :property_id => @property.id, :id => '123' }
+        expect {
+          get :new, :property_id => @property.id, :template_id => 'image'
+        }.to raise_error(ActionController::RoutingError)
+      end
+    end
+    context 'for an assigned property' do
+      it 'returns 200 for a user' do
+        @user = create(:user)
+        @user.properties << @property
+        sign_in @user
+        get :new, :property_id => @property.id, :template_id => 'image'
+        expect(response.status).to eq(200)
+      end
+    end
+    context 'for a non-existant property' do
+      it 'returns 404 for an admin' do
+        @user = create(:admin)
+        sign_in @user
+        expect { get :new, :property_id => '123', :template_id => 'image' }
           .to raise_error(ActionController::RoutingError)
       end
     end

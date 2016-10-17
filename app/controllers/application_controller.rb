@@ -6,10 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, :except => [:auth]
   before_filter :verify_profile_completion, :except => [:auth]
 
-  helper_method :current_collection,
-                :current_collection?,
-                :current_collection_type,
-                :current_document,
+  helper_method :current_document,
                 :current_element,
                 :current_element?,
                 :current_property,
@@ -111,25 +108,6 @@ class ApplicationController < ActionController::Base
 
     def current_property_documents
       @current_property_documents ||= current_property.documents.alpha
-    end
-
-    # ------------------------------------------ Collections
-
-    def current_collection
-      @current_collection ||= begin
-        id = params[:collection_id] || params[:id]
-        current_property.collections.find_by_id(id)
-      end
-    end
-
-    def current_collection?
-      current_collection && current_collection.id.present?
-    end
-
-    def current_collection_type
-      @current_collection_type ||= begin
-        current_property.find_collection_type(params[:collection_type_id])
-      end
     end
 
     # ------------------------------------------ Users

@@ -2,14 +2,14 @@
   :title => current_property.p.label_title('documents'),
   :button => {
     :label => 'Upload',
-    :path => new_property_document_path(current_property),
+    :path => new_property_template_document_path(current_property, current_template),
     :options => { :class => 'new button' }
   }
 ) %>
 
 <section class="batch-uploader active">
   <%= s3_uploader_form(
-    :post => property_documents_path(current_property),
+    :post => property_template_documents_path(current_property, current_template),
     :key => document_upload_key,
     :html => { :multipart => true },
     :as => "document[url]"

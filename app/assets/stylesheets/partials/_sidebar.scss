@@ -15,6 +15,8 @@
 aside.main {
   @include position(fixed, 0 null null 0);
   @include size(rem(250) 100vh);
+  padding-bottom: 50px;
+  overflow-y: scroll;
   box-sizing: border-box;
   background: $light;
   box-shadow: $box-shadow;
@@ -73,8 +75,25 @@ aside.main {
       margin: 0 0 rem(15) 0;
       font-size: 1.25em;
       color: $dark;
+      &.toggle-sub-menu {
+        margin-bottom: rem(10);
+      }
       &.active {
         font-weight: 600;
+      }
+    }
+    ul li ul {
+      display: none;
+      margin-left: rem(20);
+      &.active {
+        display: block;
+      }
+      li a {
+        margin-bottom: rem(10);
+        font-size: 1em;
+      }
+      li:last-child a {
+        margin-bottom: rem(15);
       }
     }
   }

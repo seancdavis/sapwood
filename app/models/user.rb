@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
 
   has_many :property_users
   has_many :properties, :through => :property_users
+  has_many :notifications
 
   # ---------------------------------------- Scopes
 

@@ -11,6 +11,9 @@
 #  publish_at    :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  url           :string
+#  archived      :boolean          default(FALSE)
+#  processed     :boolean          default(FALSE)
 #
 
 require 'rails_helper'
@@ -68,6 +71,12 @@ describe ElementsController do
         expect {
           get :index, :property_id => @property.id, :template_id => 'wrong'
         }.to raise_error(ActionController::RoutingError)
+      end
+      it 'redirects when the template is a document' do
+        get :index, :property_id => @property.id, :template_id => 'image'
+        expect(response).to redirect_to(
+          property_template_documents_path(@property, 'image')
+        )
       end
     end
   end

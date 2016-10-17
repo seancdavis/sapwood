@@ -31,22 +31,72 @@ describe Api::V1::ElementsController do
                      :api_key => @property.api_key, :format => :json
       expect(response.body).to eq(@property.elements.by_title.to_json)
     end
-    context 'when specifying a template' do
+    context 'when specifying template(s)' do
       it 'returns an empty array when template does not exist' do
         response = get :index, :property_id => @property.id,
                        :template => 'BLARGH', :api_key => @property.api_key,
                        :format => :json
         expect(response.body).to eq('[]')
       end
-      it 'returns an empty array when template does not exist' do
+      it 'returns an array of elements when template exists' do
         # Create an element without the All Options template
         create(:element, :property => @property)
         response = get :index, :property_id => @property.id,
                        :template => 'All Options',
                        :api_key => @property.api_key, :format => :json
-        expect(@property.elements.count).to eq(6)
         elements = @property.elements.with_template('All Options').by_title
         expect(response.body).to eq(elements.to_json)
+      end
+      it "can return multiple templates' elements at once" do
+        create(:element, :property => @property)
+        response = get :index, :property_id => @property.id,
+                       :template => 'All Options,Default',
+                       :api_key => @property.api_key, :format => :json
+        elements = (
+          @property.elements.with_template('All Options') +
+          @property.elements.with_template('Default')
+        ).sort_by(&:title)
+        expect(response.body).to eq(elements.to_json)
+      end
+    end
+    describe 'including associations' do
+      before(:each) do
+        @base_el = create(:element, :property => @property,
+                          :template_name => 'All Options')
+        @els = []
+        3.times do
+          @els << create(:element, :property => @property,
+                         :template_name => 'More Options')
+        end
+        2.times do |idx|
+          @els[idx].template_data_will_change!
+          new_data = @els[idx].template_data.merge("option": @base_el.id.to_s)
+          @els[idx].update(:template_data => new_data)
+        end
+        # Now, only two of the three "More Options" elements have the
+        # association. The other doesn't even have the key in template_data,
+        # which helps us check against nil.
+      end
+      it 'does not include the association if not specified' do
+        response = get :index, :property_id => @property.id,
+                       :api_key => @property.api_key, :format => :json
+        el = JSON.parse(response.body).select { |e| e['id'] == @base_el.id }[0]
+        expect(el["options"]).to eq(nil)
+      end
+      it 'does not include the association if a template is not specified' do
+        response = get :index, :property_id => @property.id,
+                       :includes => "options", :api_key => @property.api_key,
+                       :format => :json
+        el = JSON.parse(response.body).select { |e| e['id'] == @base_el.id }[0]
+        expect(el["options"]).to eq(nil)
+      end
+      it 'will include the association if specified with a template' do
+        response = get :index, :property_id => @property.id,
+                       :includes => "options", :template => 'All Options',
+                       :api_key => @property.api_key, :format => :json
+        el = JSON.parse(response.body).select { |e| e['id'] == @base_el.id }[0]
+        els = [JSON.parse(@els[0].to_json), JSON.parse(@els[1].to_json)]
+        expect(el["options"]).to match_array(els)
       end
     end
     describe 'ordering' do
@@ -93,6 +143,37 @@ describe Api::V1::ElementsController do
       response = get :show, :property_id => @property.id, :id => @element,
                      :api_key => @property.api_key, :format => :json
       expect(response.body).to eq(@element.to_json)
+    end
+    describe 'including associations' do
+      before(:each) do
+        @base_el = create(:element, :property => @property,
+                          :template_name => 'All Options')
+        @els = []
+        3.times do
+          @els << create(:element, :property => @property,
+                         :template_name => 'More Options')
+        end
+        2.times do |idx|
+          @els[idx].template_data_will_change!
+          new_data = @els[idx].template_data.merge("option": @base_el.id.to_s)
+          @els[idx].update(:template_data => new_data)
+        end
+        # Now, only two of the three "More Options" elements have the
+        # association. The other doesn't even have the key in template_data,
+        # which helps us check against nil.
+      end
+      it 'does not include the association if not specified' do
+        response = get :show, :property_id => @property.id, :id => @base_el.id,
+                       :api_key => @property.api_key, :format => :json
+        expect(JSON.parse(response.body)["options"]).to eq(nil)
+      end
+      it 'will include the association if specified with a template' do
+        response = get :show, :property_id => @property.id, :id => @base_el.id,
+                       :includes => "options", :template => 'All Options',
+                       :api_key => @property.api_key, :format => :json
+        els = [JSON.parse(@els[0].to_json), JSON.parse(@els[1].to_json)]
+        expect(JSON.parse(response.body)["options"]).to match_array(els)
+      end
     end
   end
 

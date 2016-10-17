@@ -34,6 +34,18 @@ class Template
     attributes['webhook_url'].present?
   end
 
+  def document?
+    respond_to?(:type) && type == 'document'
+  end
+
+  def path_method
+    "property_template_#{document? ? 'documents' : 'elements'}_path"
+  end
+
+  def menu_label
+    attributes['menu_label'] || name.pluralize
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []
@@ -104,7 +116,7 @@ class Template
   end
 
   def respond_to?(method, include_private = false)
-    attributes.keys.include?(method.to_s)
+    (attributes.keys + ['namespace']).include?(method.to_s)
   end
 
 end

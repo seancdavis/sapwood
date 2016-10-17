@@ -28,11 +28,11 @@ feature 'Users', :js => true do
         expect(page).to have_content(@properties.last.title)
       end
       scenario 'does not show admin message when not set to admin' do
-        expect(page).to_not have_content('Admin users have access to all')
+        expect(page).to have_no_content('Admin users have access to all')
       end
       scenario 'does not show the properties when user is not set to admin' do
         first("label[for='user_is_admin']").click
-        expect(page).to_not have_content(@properties.last.title)
+        expect(page).to have_no_content(@properties.last.title)
       end
       scenario 'shows admin message when not set to admin' do
         first("label[for='user_is_admin']").click
@@ -43,8 +43,8 @@ feature 'Users', :js => true do
           first('span.label', :text => @property.title).click
         end
         click_button 'Save'
-        expect(page).to_not have_content(@user.name)
-        expect(page).to_not have_content(@user.email)
+        expect(page).to have_no_content(@user.name)
+        expect(page).to have_no_content(@user.email)
       end
     end
 
@@ -54,7 +54,7 @@ feature 'Users', :js => true do
       end
       scenario 'does not have current property name in the sidebar' do
         within('.properties-list') do
-          expect(page).to_not have_content(@property.title)
+          expect(page).to have_no_content(@property.title)
         end
       end
       scenario 'shows message for property auto-add' do

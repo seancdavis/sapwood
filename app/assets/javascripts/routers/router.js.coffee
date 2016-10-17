@@ -6,14 +6,13 @@ class App.Routers.Router extends Backbone.Router
     new App.Components.Helpers
     new App.Components.SidebarToggle
     new App.Components.Dropdown
+    new App.Components.Menu
 
   routes:
     'properties/:property_id/edit': 'editProperty'
     'properties/:property_id/elements/:template/new': 'editElement'
     'properties/:property_id/elements/:template/:element_id/edit': 'editElement'
-    'properties/:property_id/documents': 'documents'
-    'properties/:property_id/collections/:template/new': 'collection'
-    'properties/:property_id/collections/:template/:collection_id/edit': 'collection'
+    'properties/:property_id/documents/:template': 'documents'
     'properties/:property_id/users/new': 'user'
     'properties/:property_id/users/:user_id/edit': 'user'
 
@@ -26,9 +25,6 @@ class App.Routers.Router extends Backbone.Router
 
   documents: ->
     new App.Components.Uploader
-
-  collection: ->
-    new App.Components.CollectionBuilder
 
   user: ->
     new App.Views.UserForm

@@ -44,7 +44,9 @@ feature 'Elements', :js => true do
       click_link 'New All Options'
     end
     scenario 'can add an existing image for its image' do
-      document = create(:document, :property => @property)
+      document = create(:element, :document, :property => @property)
+      # It's intention that there is only on of these here, although we should
+      # consider cases with more than one.
       click_link 'Choose Existing File'
       wait_for_ajax
       sleep 0.35
@@ -68,23 +70,23 @@ feature 'Elements', :js => true do
     scenario 'enables selecting a belongs_to relationship' do
       # This element should be in the dropdown menu.
       element = create(:element, :property => @property,
-                       :template_name => 'More Options')
+                       :template_name => 'One Thing')
       # This element should not.
       default_element = create(:element, :property => @property)
       visit current_path
       expect(page).to have_css(
-        "select#element_template_data_option option[value='#{element.id}']")
+        "select#element_template_data_one_thing option[value='#{element.id}']")
       expect(page).to have_no_css(
-        "select#element_template_data_option option[value='#{default_element.id}']")
+        "select#element_template_data_one_thing option[value='#{default_element.id}']")
       fill_in 'element[template_data][name]', :with => @title
-      select element.title, :from => 'element[template_data][option]'
+      select element.title, :from => 'element[template_data][one_thing]'
       click_button 'Save All Options'
-      expect(Element.all.order(:id).last.option).to eq(element)
+      expect(Element.all.order(:id).last.one_thing).to eq(element)
     end
     scenario 'can select multiple elements of another template' do
       # These elements should be in the dropdown menu.
       els = create_list(:element, 3, :property => @property,
-                        :template_name => 'Note')
+                        :template_name => 'Many Things')
       # Thes element should not.
       bad_els = [create(:element, :property => @property), create(:element)]
 
@@ -97,9 +99,9 @@ feature 'Elements', :js => true do
       end
 
       # Choose 2, remove 1, then save and check.
-      select els[0].title, :from => 'multiselect_notes'
-      select els[2].title, :from => 'multiselect_notes'
-      within('.multiselect .selected-options') do
+      select els[0].title, :from => 'multiselect_many_things'
+      select els[2].title, :from => 'multiselect_many_things'
+      within('.multiselect.many_things .selected-options') do
         expect(page).to have_css('li > span', :text => els[0].title)
         expect(page).to have_no_css('li > span', :text => els[1].title)
         expect(page).to have_css('li > span', :text => els[2].title)
@@ -117,7 +119,7 @@ feature 'Elements', :js => true do
       click_button 'Save All Options'
       click_link title
 
-      within('.multiselect .selected-options') do
+      within('.multiselect.many_things .selected-options') do
         expect(page).to have_no_css('li > span', :text => els[0].title)
         expect(page).to have_no_css('li > span', :text => els[1].title)
         expect(page).to have_css('li > span', :text => els[2].title)
@@ -127,6 +129,34 @@ feature 'Elements', :js => true do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)
       expect(page).to have_css('div.trumbowyg-box')
+    end
+    scenario 'supports read-only fields' do
+      selector = '[name="element[template_data][uneditable]"].readonly'
+      expect(page).to have_css(selector)
+    end
+    scenario 'saves date fields in the appropriate format' do
+      find_field('element[template_data][date]').click
+      expect(page).to have_css('.picker--opened', :wait => 3)
+      first('.picker__button--today').click
+
+      find_field('element[template_data][unformatted_date]').click
+      expect(page).to have_css('.picker--opened', :wait => 3)
+      first('.picker__button--today').click
+
+      fill_in 'element[template_data][name]', :with => @title
+      click_button 'Save All Options'
+
+      el = Element.find_by_title(@title)
+      expect(el.date).to eq(Date.today().strftime('%Y-%m-%d'))
+      expect(el.unformatted_date).to eq(Date.today().strftime('%m-%d-%Y'))
+    end
+    scenario 'can check a boolean field' do
+      fill_in 'element[template_data][name]', :with => @title
+      find_field('element[template_data][complete]').set(true)
+      click_button 'Save All Options'
+      expect(Element.find_by_title(@title).complete).to eq(true)
+      click_link @title
+      expect(find_field('element[template_data][complete]')).to be_checked
     end
   end
 

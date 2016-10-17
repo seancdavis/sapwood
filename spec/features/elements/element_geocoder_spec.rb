@@ -23,7 +23,7 @@ feature 'Geocoder', :js => true do
     scenario 'clears the geocode feedback when address is left blank' do
       fill_in 'element[template_data][address]', :with => 'jkhjklhjkljkhlkjlh'
       fill_in 'element[template_data][address]', :with => ''
-      expect(page).to_not have_content('Could not locate')
+      expect(page).to have_no_content('Could not locate')
     end
     scenario 'will save the address and populate it upon return' do
       fill_in 'element[template_data][name]', :with => @element.title
@@ -70,7 +70,7 @@ feature 'Geocoder', :js => true do
     scenario 'clears the geocode feedback when address is left blank' do
       fill_in 'element[template_data][address]', :with => 'jkhjklhjkljkhlkjlh'
       fill_in 'element[template_data][address]', :with => ''
-      expect(page).to_not have_content('Could not locate')
+      expect(page).to have_no_content('Could not locate')
     end
     scenario 'will save the address and populate it upon return' do
       fill_in 'element[template_data][name]', :with => @element.title

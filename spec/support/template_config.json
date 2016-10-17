@@ -1,10 +1,14 @@
 [
+  // Our very basic template, used to show the minimum we need to have a
+  // functioning template.
   {
     "title": "Default",
     "fields": {
       "name": {}
     }
   },
+  // Demonstrates all the options on any particular template. Most of the
+  // following templates are built to serve this example.
   {
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
@@ -45,42 +49,66 @@
         "label": "Comments"
       },
       "image": {
-        "type": "document",
+        "type": "element",
+        "templates": ["Image"],
         "label": "Image"
       },
       "images": {
-        "type": "documents",
+        "type": "elements",
+        "templates": ["Image"],
         "label": "Image"
       },
-      "notes": {
-        "type": "elements",
-        "templates": ["Note"],
-        "label": "Notes"
-      },
-      // This duplicates the one below just so we can use this template for all
-      // our custom template data testing.
-      "option": {
+      "mixed_bag": {
         "type": "element",
-        "templates": ["More Options"],
-        "label": "Option"
+        "templates": ["Image", "One Thing"],
+        "label": "Mixed Bag"
+      },
+      "mixed_bags": {
+        "type": "elements",
+        "templates": ["Image", "One Thing"],
+        "label": "Mixed Bags"
+      },
+      "one_thing": {
+        "type": "element",
+        "templates": ["One Thing"],
+        "label": "One Thing"
+      },
+      "many_things": {
+        "type": "elements",
+        "templates": ["Many Things"],
+        "label": "Many Things"
+      },
+      "uneditable": {
+        "read_only": true
+      },
+      "complete": {
+        "type": "boolean"
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-mm-dd"
+      },
+      "unformatted_date": {
+        "type": "date"
       }
     }
   },
+  // Demonstrates how we can make a has_many type of call from the opposite side
+  // of a belongs_to association.
   {
     "title": "More Options",
     "fields": {
+      "name": {
+        "primary": true
+      },
       "option": {
         "type": "element",
         "templates": ["All Options"]
-      },
-      "name": {
-        "primary": true
       }
     }
   },
-  {
-    "title": "-A & __ Fun(ny) - +Title^"
-  },
+  // Demonstrates that fields can be required. We don't want this with the All
+  // Options template because we don't want it to distract other tests.
   {
     "title": "Required",
     "fields": {
@@ -88,11 +116,38 @@
       "subtitle": { "required": true }
     }
   },
+  // The other side of a belongs_to on All Options.
   {
-    "title": "Note",
+    "title": "One Thing",
+    "fields": {
+      "name": {}
+    }
+  },
+  // The other side of a has_many on All Options.
+  {
+    "title": "Many Things",
     "fields": {
       "name": { "primary": true },
       "body": { "type": "text" }
     }
+  },
+  // This is a document-focused template.
+  {
+    "title": "Image",
+    "type": "document",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  // Demonstrate the Namespace option.
+  {
+    "title": "Child",
+    "namespace": "Parent",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  {
+    "title": "-A & __ Fun(ny) - +Title^"
   }
 ]

@@ -1,8 +1,10 @@
-$icon-arrow-down: "\e900";
 $icon-briefcase: "\e901";
+$icon-delete: "\e900";
 $icon-file: "\e902";
 $icon-folder: "\e903";
 $icon-image: "\e904";
+$icon-location: "\e908";
+$icon-notification: "\e909";
 $icon-search: "\e905";
 $icon-settings: "\e906";
 $icon-user: "\e907";
@@ -36,27 +38,13 @@ $icon-user: "\e907";
     @include icon;
 }
 
-.icon-arrow-down:before {
-  content: $icon-arrow-down;
-}
-.icon-briefcase:before {
-  content: $icon-briefcase;
-}
-.icon-file:before {
-  content: $icon-file;
-}
-.icon-folder:before {
-  content: $icon-folder;
-}
-.icon-image:before {
-  content: $icon-image;
-}
-.icon-search:before {
-  content: $icon-search;
-}
-.icon-settings:before {
-  content: $icon-settings;
-}
-.icon-user:before {
-  content: $icon-user;
-}
+.icon-briefcase:before { content: $icon-briefcase; }
+.icon-delete:before { content: $icon-delete; }
+.icon-file:before { content: $icon-file; }
+.icon-folder:before { content: $icon-folder; }
+.icon-image:before { content: $icon-image; }
+.icon-location:before { content: $icon-location; }
+.icon-notification:before { content: $icon-notification; }
+.icon-search:before { content: $icon-search; }
+.icon-settings:before { content: $icon-settings; }
+.icon-user:before { content: $icon-user; }

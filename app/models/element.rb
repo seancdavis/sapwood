@@ -239,6 +239,10 @@ class Element < ActiveRecord::Base
       field = template.find_field(k)
       next if field.nil?
       response[k.to_sym] = field.sendable? ? send(k) : v
+      # TODO: Quick fix for geocode fields -- need a test for this
+      if response[k.to_sym].is_a?(OpenStruct)
+        response[k.to_sym] = response[k.to_sym].marshal_dump
+      end
     end
     if document?
       response[:url] = url

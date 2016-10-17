@@ -39,9 +39,10 @@ module FieldHelper
   end
 
   def field_element_html(form_obj, field, object)
-    if field.templates.present? && field.templates.size == 1 &&
-       current_property.find_template(field.templates[0]).document?
-       single_document_field(form_obj, field, object)
+    if field.respond_to?(:templates) && field.templates.present? &&
+       field.templates.size == 1 &&
+      current_property.find_template(field.templates[0]).document?
+      single_document_field(form_obj, field, object)
     else
       single_element_field(form_obj, field, object)
     end
@@ -93,8 +94,9 @@ module FieldHelper
   end
 
   def field_elements_html(form_obj, field, object)
-    if field.templates.present? && field.templates.size == 1 &&
-       current_property.find_template(field.templates[0]).document?
+    if field.respond_to?(:templates) && field.templates.present? &&
+       field.templates.size == 1 &&
+      current_property.find_template(field.templates[0]).document?
       multi_documents_field(form_obj, field, object)
     else
       multi_element_field(form_obj, field, object)

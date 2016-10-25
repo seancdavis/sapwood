@@ -23,7 +23,7 @@ describe ElementsController do
   # ---------------------------------------- Index
 
   describe '#index' do
-    before(:each) { @property = create(:property) }
+    before(:each) { @property = property_with_templates }
     context 'for an unassigned property' do
       it 'returns 200 for an admin' do
         @user = create(:admin)
@@ -193,6 +193,37 @@ describe ElementsController do
               :id => 123123
         }.to raise_error(ActionController::RoutingError)
       end
+    end
+  end
+
+  # ---------------------------------------- Create
+
+  describe '#create' do
+    before(:each) { @property = property_with_templates }
+    it 'sends a notification for the appropriate property and users' do
+      user = create(:admin)
+      sign_in user
+      # This one won't be triggered because we don't send it to the current
+      # user.
+      create(:notification, :property => @property, :user => user)
+      # This one should be triggered.
+      n_user = create(:admin)
+      create(:notification, :property => @property, :user => (n_user))
+      # This does not belong to the property.
+      create(:notification, :user => user)
+      # This does not belong to the user or the correct template.
+      create(:notification, :property => @property, :user => user,
+             :template_name => 'All Options')
+
+      data = {
+        :template_data => { :name => Faker::Lorem.words(4).join(' ') },
+        :template_name => 'Default'
+      }
+      expect {
+        post :create, :property_id => @property.id, :template_id => 'Default',
+             :element => data }
+        .to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect(ActionMailer::Base.deliveries.last.to).to eq([n_user.email])
     end
   end
 

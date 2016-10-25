@@ -201,7 +201,7 @@ class Element < ActiveRecord::Base
     field_names.include?(name.to_s)
   end
 
-  def send_notifications!(action_name, excluding_user)
+  def send_notifications!(action_name, excluding_user = nil)
     return false unless template?
     notifications = property.notifications.for_template(template)
     if excluding_user.present?

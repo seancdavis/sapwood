@@ -220,6 +220,23 @@ describe Api::V1::ElementsController do
       expect(response.body)
         .to eq({"title": ["can't be blank", "can't be blank"]}.to_json)
     end
+    it 'sends a notification for the appropriate property and users' do
+      user = create(:admin)
+      # This one should be triggered.
+      create(:notification, :property => @property, :user => user)
+      # This does not belong to the property.
+      create(:notification, :user => user)
+      # This does not belong to the user or the correct template.
+      create(:notification, :property => @property, :user => user,
+             :template_name => 'All Options')
+
+      expect {
+        post :create, :property_id => @property.id, :template => 'Default',
+             :api_key => @property.api_key, :format => :json,
+             :name => (name = Faker::Lorem.words(4).join(' ')) }
+        .to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect(ActionMailer::Base.deliveries.last.to).to eq([user.email])
+    end
   end
 
 end

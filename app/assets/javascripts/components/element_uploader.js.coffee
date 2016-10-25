@@ -60,4 +60,3 @@ class App.Components.ElementUploader extends Backbone.View
         $('header.page').after """
           <p class="alert">There was a problem with your upload.</p>
             """
-

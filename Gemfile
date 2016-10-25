@@ -40,7 +40,6 @@ gem 'kaminari'
 gem 'rmagick'
 gem 'simple_form'
 gem 'superslug'
-gem 'trumbowyg_rails'
 
 group :development do
   gem 'bullet'

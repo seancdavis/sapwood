@@ -183,6 +183,17 @@ describe ElementsController do
         }.to raise_error(ActionController::RoutingError)
       end
     end
+    context 'for an non-existant element' do
+      it 'returns 404 for an admin' do
+        @user = create(:admin)
+        @property = property_with_templates
+        sign_in @user
+        expect {
+          get :edit, :property_id => @property.id, :template_id => 'default',
+              :id => 123123
+        }.to raise_error(ActionController::RoutingError)
+      end
+    end
   end
 
 end

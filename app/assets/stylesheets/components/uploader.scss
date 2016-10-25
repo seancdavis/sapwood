@@ -22,6 +22,10 @@
   span {
     line-height: 1;
   }
+  a.filename {
+    display: inline-block;
+    max-width: 350px;
+  }
   a.remove {
     font-size: 75%;
     @include position(absolute, null 5px 5px null);

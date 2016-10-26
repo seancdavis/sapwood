@@ -24,11 +24,18 @@ class ElementsController < ApplicationController
     not_found if current_template.nil? && params[:template_id] != '__all'
     @elements = if params[:template_id] == '__all'
       current_property.elements.by_title
+    elsif params[:sort_by] && params[:sort_in]
+      current_property.elements.with_template(current_template.name)
+                      .by_field(params[:sort_by], params[:sort_in])
     elsif current_template.list['order']
       order = current_template.list['order']
+      params[:sort_by] = order['by']
+      params[:sort_in] = order['in'] || 'asc'
       current_property.elements.with_template(current_template.name)
                       .by_field(order['by'], order['in'].try(:upcase))
     else
+      params[:sort_by] = current_template.primary_field.name
+      params[:sort_in] = 'asc'
       current_property.elements.by_title.with_template(current_template.name)
     end
     respond_to do |format|

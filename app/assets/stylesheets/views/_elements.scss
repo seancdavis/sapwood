@@ -2,6 +2,14 @@ body.elements.index, body.collections.index {
 
   th {
     color: $md-grey;
+    a {
+      color: $md-grey;
+    }
+
+    [class^="icon-"]:before, [class*=" icon-"]:before {
+      display: inline-block;
+      margin-right: rem(5);
+    }
   }
 
   th.icon, td.icon {

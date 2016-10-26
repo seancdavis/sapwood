@@ -19,6 +19,9 @@
       }
     },
     "list": {
+      "order": {
+        "by": "description"
+      },
       "columns": {
         "description": {},
         "name": { "primary": true },
@@ -111,6 +114,12 @@
     "security": {
       "create": {
         "allow": true
+      }
+    },
+    "list": {
+      "order": {
+        "by": "name",
+        "in": "desc"
       }
     },
     "fields": {

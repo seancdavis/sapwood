@@ -63,18 +63,20 @@ class Template
     associations.select { |f| f.name == name }.first
   end
 
+  def default_columns
+    {
+      primary_field.name => primary_field.attributes,
+      "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
+    }
+  end
+
+  def list
+    attributes['list'] || {}
+  end
+
   def columns
     columns = []
-    attributes.to_s
-    config = if attributes['list'] && attributes['list']['columns']
-      attributes['list']['columns']
-    else
-      {
-        primary_field.name => primary_field.attributes,
-        "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
-      }
-    end
-    config.each do |field, attrs|
+    (list['columns'] || default_columns).each do |field, attrs|
       f = if %w(updated_at created_at).include?(field)
         Field.new('name' => 'updated_at', 'type' => 'date')
       else

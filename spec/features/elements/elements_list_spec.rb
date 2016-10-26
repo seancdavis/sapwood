@@ -43,4 +43,43 @@ feature 'Elements List', :js => true do
     expect(page).to have_css(:th, :text => 'DATE LAST MODIFIED')
   end
 
+  scenario 'sorts by name in ascending order when not specified' do
+    create(:element, :template_name => 'Default', :property => @property,
+           :template_data => { :name => 'B' })
+    create(:element, :template_name => 'Default', :property => @property,
+           :template_data => { :name => 'A' })
+    create(:element, :template_name => 'Default', :property => @property,
+           :template_data => { :name => 'C' })
+    click_link 'Defaults'
+    expect(all('td.primary')[0]).to have_content('A')
+    expect(all('td.primary')[1]).to have_content('B')
+    expect(all('td.primary')[2]).to have_content('C')
+  end
+
+  scenario 'sorts by custom attr in ascending order when order is missing' do
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello You', :description => 'B' })
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello Me', :description => 'A' })
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello I', :description => 'C' })
+    click_link 'All Options'
+    expect(all('tr.element')[0]).to have_content('A')
+    expect(all('tr.element')[1]).to have_content('B')
+    expect(all('tr.element')[2]).to have_content('C')
+  end
+
+  scenario 'will sort with custom attr and direction if specified' do
+    create(:element, :template_name => 'More Options', :property => @property,
+           :template_data => { :name => 'B' })
+    create(:element, :template_name => 'More Options', :property => @property,
+           :template_data => { :name => 'A' })
+    create(:element, :template_name => 'More Options', :property => @property,
+           :template_data => { :name => 'C' })
+    click_link 'More Options'
+    expect(all('td.primary')[0]).to have_content('C')
+    expect(all('td.primary')[1]).to have_content('B')
+    expect(all('td.primary')[2]).to have_content('A')
+  end
+
 end

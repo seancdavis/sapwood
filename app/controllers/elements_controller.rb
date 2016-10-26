@@ -24,6 +24,10 @@ class ElementsController < ApplicationController
     not_found if current_template.nil? && params[:template_id] != '__all'
     @elements = if params[:template_id] == '__all'
       current_property.elements.by_title
+    elsif current_template.list['order']
+      order = current_template.list['order']
+      current_property.elements.with_template(current_template.name)
+                      .by_field(order['by'], order['in'].try(:upcase))
     else
       current_property.elements.by_title.with_template(current_template.name)
     end

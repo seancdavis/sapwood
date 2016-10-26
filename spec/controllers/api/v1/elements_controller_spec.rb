@@ -205,18 +205,35 @@ describe Api::V1::ElementsController do
     end
     it 'will create an element and return the element as json' do
       expect(@property.elements.count).to eq(0)
+      name = Faker::Lorem.sentence
       response = post :create, :property_id => @property.id,
                       :api_key => @property.api_key, :format => :json,
-                      :name => (name = Faker::Lorem.words(4).join(' ')),
-                      :template => 'Default'
+                      :name => name, :template => 'All Options',
+                      :secret => 'b89b279213b15fa53c4a22f9'
       expect(response.body).to eq(@property.elements.first.to_json)
       expect(@property.elements.count).to eq(1)
       expect(@property.elements.first.title).to eq(name)
     end
+    it 'will raise 403 if template does not have create security enabled' do
+      expect {
+        post :create, :property_id => @property.id,
+             :api_key => @property.api_key, :format => :json,
+             :name => Faker::Lorem.sentence,
+             :template => 'Default'
+      }.to raise_error(ActionController::RoutingError)
+    end
+    it 'will raise 403 if template specifies secret that is missing' do
+      expect {
+        post :create, :property_id => @property.id,
+             :api_key => @property.api_key, :format => :json,
+             :name => Faker::Lorem.sentence, :template => 'All Options'
+      }.to raise_error(ActionController::RoutingError)
+    end
     it 'returns validation errors if there are any' do
       response = post :create, :property_id => @property.id,
                       :api_key => @property.api_key, :format => :json,
-                      :name1 => 'BLAH BLAH', :template => 'Default'
+                      :name1 => 'BLAH BLAH', :template => 'All Options',
+                      :secret => 'b89b279213b15fa53c4a22f9'
       expect(response.body)
         .to eq({"title": ["can't be blank", "can't be blank"]}.to_json)
     end
@@ -231,10 +248,11 @@ describe Api::V1::ElementsController do
              :template_name => 'All Options')
 
       expect {
-        post :create, :property_id => @property.id, :template => 'Default',
+        post :create, :property_id => @property.id, :template => 'All Options',
              :api_key => @property.api_key, :format => :json,
-             :name => (name = Faker::Lorem.words(4).join(' ')) }
-        .to change { ActionMailer::Base.deliveries.size }.by(1)
+             :name => (name = Faker::Lorem.sentence),
+             :secret => 'b89b279213b15fa53c4a22f9'
+      }.to change { ActionMailer::Base.deliveries.size }.by(1)
       expect(ActionMailer::Base.deliveries.last.to).to eq([user.email])
     end
   end

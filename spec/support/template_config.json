@@ -12,6 +12,12 @@
   {
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
+    "security": {
+      "create": {
+        "allow": true,
+        "secret": "b89b279213b15fa53c4a22f9"
+      }
+    },
     "list": {
       "columns": {
         "description": {},

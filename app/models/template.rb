@@ -46,6 +46,10 @@ class Template
     attributes['menu_label'] || name.pluralize
   end
 
+  def security
+    (attributes['security'] || {}).to_ostruct
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []

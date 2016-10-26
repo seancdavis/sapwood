@@ -214,6 +214,14 @@ describe Api::V1::ElementsController do
       expect(@property.elements.count).to eq(1)
       expect(@property.elements.first.title).to eq(name)
     end
+    it 'can be created while missing a secret if not configured' do
+      name = Faker::Lorem.sentence
+      response = post :create, :property_id => @property.id,
+                      :api_key => @property.api_key, :format => :json,
+                      :name => name, :template => 'More Options'
+      expect(response.body).to eq(@property.elements.first.to_json)
+      expect(@property.elements.first.title).to eq(name)
+    end
     it 'will raise 403 if template does not have create security enabled' do
       expect {
         post :create, :property_id => @property.id,

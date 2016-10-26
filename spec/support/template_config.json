@@ -107,6 +107,12 @@
   // of a belongs_to association.
   {
     "title": "More Options",
+    // And show an example of missing a secret.
+    "security": {
+      "create": {
+        "allow": true
+      }
+    },
     "fields": {
       "name": {
         "primary": true

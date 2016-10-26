@@ -22,6 +22,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
       @elementIds.push(opt.val())
       @container.find('input').first().val(@elementIds.join(','))
       @select.find('option.placeholder').prop('selected', true)
+      App.Components.Blocks.set()
 
   removeOption: (e) ->
     e.preventDefault()

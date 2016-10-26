@@ -171,7 +171,9 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def template
-    return property.find_template(template_name) unless Rails.env.production?
+    if !Rails.env.production? || id.blank?
+      return property.find_template(template_name)
+    end
     Rails.cache.fetch("_p#{property_id}_e#{id}_template") do
       property.find_template(template_name)
     end
@@ -199,7 +201,7 @@ class Element < ActiveRecord::Base
     field_names.include?(name.to_s)
   end
 
-  def send_notifications!(action_name, excluding_user)
+  def send_notifications!(action_name, excluding_user = nil)
     return false unless template?
     notifications = property.notifications.for_template(template)
     if excluding_user.present?

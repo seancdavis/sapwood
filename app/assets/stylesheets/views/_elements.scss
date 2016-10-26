@@ -9,7 +9,9 @@ body.elements.index, body.collections.index {
   }
 
   td {
-    padding: rem(5) 0;
+    padding: rem(5);
+    word-wrap: break-word;
+    vertical-align: top;
   }
 
   .elements, .folders, .collections {

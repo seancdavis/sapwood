@@ -25,7 +25,7 @@ class App.Components.ElementUploader extends Backbone.View
         file = data.files[0]
         data.context = $(tmpl("template-upload", file))
         @container.find('label').first().after(data.context)
-        data.context.find('.processing').hide()
+        data.context.find('.processing, .waiting').hide()
         data.form.find('#content_type').attr('name','Content-Type')
         data.form.find('#content_type').val(file.type)
         data.submit()
@@ -60,4 +60,3 @@ class App.Components.ElementUploader extends Backbone.View
         $('header.page').after """
           <p class="alert">There was a problem with your upload.</p>
             """
-

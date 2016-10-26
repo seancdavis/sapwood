@@ -12,7 +12,10 @@ class App.Views.EditElement extends Backbone.View
       new App.Components.BulkElementUploader($(bulkUploader))
     for multiselect in $('form div.multiselect')
       new App.Components.ElementMultiSelect($(multiselect))
-    $(wysiwyg).trumbowyg() for wysiwyg in $('textarea.wysiwyg')
+    for wysiwyg in $('textarea.wysiwyg')
+      $(wysiwyg).trumbowyg
+        autogrow: true
+        svgPath: TRUMBOWYG_ICON_PATH
     for datepicker in $('div.pickadate input')
       $(datepicker).pickadate({ format: $(datepicker).data('format') })
     App.Components.Blocks.set()

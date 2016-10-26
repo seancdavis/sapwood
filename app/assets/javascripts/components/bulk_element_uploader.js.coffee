@@ -4,7 +4,6 @@ class App.Components.BulkElementUploader extends Backbone.View
 
   initialize: (@container) ->
     @renderUploader()
-    @documentIds = @container.find('input').first().val().split(',').filter(Boolean)
 
   renderUploader: ->
     $.get @container.data('uploader'), (response) =>
@@ -25,7 +24,6 @@ class App.Components.BulkElementUploader extends Backbone.View
       add: (e, data) =>
         file = data.files[0]
         data.context = $(tmpl("template-upload", file))
-        console.log data.context
         $('.batch-uploader').show()
         @container.find('.batch-uploader').append(data.context)
         data.context.find('.processing').hide()
@@ -52,8 +50,9 @@ class App.Components.BulkElementUploader extends Backbone.View
           data.context.append """
             <p class="success">Uploaded successfully.</p>
           """
-          @documentIds.push(response.document.id)
-          @container.find('input').first().val(@documentIds.join(','))
+          ids = @container.find('input').first().val().split(',').filter(Boolean)
+          ids.push(response.document.id)
+          @container.find('input').first().val(ids.join(','))
         .fail (response) =>
           data.context.find('.progress').remove()
           data.context.append """

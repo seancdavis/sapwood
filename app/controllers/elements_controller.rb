@@ -55,6 +55,7 @@ class ElementsController < ApplicationController
   end
 
   def edit
+    not_found if current_element.blank?
   end
 
   def update

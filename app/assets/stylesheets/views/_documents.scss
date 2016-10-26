@@ -8,6 +8,7 @@
     width: 24%;
     height: 200px;
     margin: 0 1% 1% 0;
+    overflow: hidden;
     box-sizing: border-box;
     font-size: $em-base;
     text-align: center;
@@ -23,6 +24,10 @@
     a {
       @include position(absolute, 0 null null 0);
       @include size(100%);
+    }
+
+    span.hidden {
+      display: none;
     }
 
     span.title {

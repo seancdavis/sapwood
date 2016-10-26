@@ -7,6 +7,7 @@ class App.Components.DocumentChooser extends Backbone.View
     'click .modal-doc-chooser .modal-content .document > a': 'chooseDocument'
     'click .modal-doc-chooser .document-filters a': 'filterDocuments'
     'click .modal-doc-chooser .pagination a': 'filterDocuments'
+    'click .document-uploader a.remove': 'removeDocument'
 
   initialize: (options) ->
     # @url = "/properties/#{options.property_id}/documents"
@@ -37,3 +38,8 @@ class App.Components.DocumentChooser extends Backbone.View
       @modal.content = data
       @modal.updateContent()
       @bindClickEvents()
+
+  removeDocument: (e) ->
+    e.preventDefault()
+    $(e.target).parents('.document-uploader').find('input').first().val('')
+    $(e.target).parents('.document-url').remove()

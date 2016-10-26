@@ -78,6 +78,7 @@ module FieldHelper
             o2  = ''
             o2 += image_tag(document.version(:xsmall, true)) if document.image?
             o2 += content_tag(:span, document.title)
+            o2 += content_tag(:a, 'REMOVE', :href => '#', :class => 'remove')
             o2.html_safe
           end
         end

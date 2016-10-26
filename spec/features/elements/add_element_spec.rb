@@ -134,6 +134,18 @@ feature 'Elements', :js => true do
       selector = '[name="element[template_data][uneditable]"].readonly'
       expect(page).to have_css(selector)
     end
+    scenario 'supports select fields with a specified set of options' do
+      select 'Option 1', :from => 'element[template_data][dropdown_menu]'
+      fill_in 'element[template_data][name]', :with => @title
+      click_button 'Save All Options'
+
+      el = Element.find_by_title(@title)
+      expect(el.dropdown_menu).to eq('Option 1')
+
+      click_link @title
+      field = find_field('element[template_data][dropdown_menu]')
+      expect(field.value).to eq('Option 1')
+    end
     scenario 'saves date fields in the appropriate format' do
       find_field('element[template_data][date]').click
       expect(page).to have_css('.picker--opened', :wait => 3)

@@ -15,6 +15,12 @@ module FieldHelper
                    :required => field.required?, :readonly => field.read_only?
   end
 
+  def field_select_html(form_obj, field, object)
+    form_obj.input field.name.to_sym, :as => :select,
+                   :collection => field.options, :required => field.required?,
+                   :readonly => field.read_only?
+  end
+
   def field_date_html(form_obj, field, object)
     form_obj.input field.name.to_sym, :as => :string,
                    :required => field.required?, :readonly => field.read_only?,

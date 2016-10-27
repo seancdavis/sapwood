@@ -54,6 +54,13 @@ feature 'Elements List', :js => true do
     expect(all('td.primary')[0]).to have_content('A')
     expect(all('td.primary')[1]).to have_content('B')
     expect(all('td.primary')[2]).to have_content('C')
+
+    # And check that the icon is in place.
+    within(all('th')[1]) do
+      expect(page).to have_content('NAME')
+      expect(page).to have_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
   end
 
   scenario 'sorts by custom attr in ascending order when order is missing' do
@@ -80,6 +87,63 @@ feature 'Elements List', :js => true do
     expect(all('td.primary')[0]).to have_content('C')
     expect(all('td.primary')[1]).to have_content('B')
     expect(all('td.primary')[2]).to have_content('A')
+  end
+
+  scenario 'can sort manually when clicked' do
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello You', :description => 'B' })
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello Me', :description => 'A' })
+    create(:element, :template_name => 'All Options', :property => @property,
+           :template_data => { :name => 'Hello I', :description => 'C' })
+
+    click_link 'All Options'
+
+    # Check the default icon on description, pointing up.
+    within(all('th')[1]) do
+      expect(page).to have_content('DESCRIPTION')
+      expect(page).to have_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
+    within(all('th')[2]) do
+      expect(page).to have_content('NAME')
+      expect(page).to have_no_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
+
+    within('table') { click_link('Name') }
+
+    # Check that icon transitions to Name, points up, and sorts the elements.
+    within(all('th')[1]) do
+      expect(page).to have_content('DESCRIPTION')
+      expect(page).to have_no_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
+    within(all('th')[2]) do
+      expect(page).to have_content('NAME')
+      expect(page).to have_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
+    expect(all('tr.element')[0]).to have_content('Hello I')
+    expect(all('tr.element')[1]).to have_content('Hello Me')
+    expect(all('tr.element')[2]).to have_content('Hello You')
+
+    # Now, sort by name, descending.
+    within('table') { click_link('Name') }
+
+    within(all('th')[1]) do
+      expect(page).to have_content('DESCRIPTION')
+      expect(page).to have_no_css('.icon-arrow-up')
+      expect(page).to have_no_css('.icon-arrow-down')
+    end
+    within(all('th')[2]) do
+      expect(page).to have_content('NAME')
+      expect(page).to have_no_css('.icon-arrow-up')
+      expect(page).to have_css('.icon-arrow-down')
+    end
+    expect(all('tr.element')[0]).to have_content('Hello You')
+    expect(all('tr.element')[1]).to have_content('Hello Me')
+    expect(all('tr.element')[2]).to have_content('Hello I')
   end
 
 end

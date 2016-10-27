@@ -10,8 +10,9 @@ class Api::V1::ElementsController < ApiController
         else
           current_property.elements
         end
-        @elements = if params[:order]
-          @elements.by_field(params[:order])
+        @elements = if params[:sort_by] || params[:order]
+          @elements.by_field(params[:sort_by] || params[:order],
+                             params[:sort_in])
         else
           @elements.by_title
         end

@@ -99,16 +99,23 @@ describe Api::V1::ElementsController do
         expect(el["options"]).to match_array(els)
       end
     end
-    describe 'ordering' do
-      it 'orders by attribute when told so' do
+    describe 'sorting/ordering' do
+      it 'sorts by attribute, but defaults to ascending order' do
         create(:element, :property => @property)
         response = get :index, :property_id => @property.id,
-                       :order => 'comments', :api_key => @property.api_key,
+                       :sort_by => 'comments', :api_key => @property.api_key,
                        :format => :json
         expect(response.body)
-          .to eq(@property.elements.by_field('comments').to_json)
+          .to eq(@property.elements.by_field('comments', 'asc').to_json)
       end
-      # Note: We've test responses without ordering above.
+      it 'sorts by attribute and direction when specified' do
+        create(:element, :property => @property)
+        response = get :index, :property_id => @property.id,
+                       :sort_by => 'comments', :sort_in => 'desc',
+                       :api_key => @property.api_key, :format => :json
+        expect(response.body)
+          .to eq(@property.elements.by_field('comments', 'desc').to_json)
+      end
     end
   end
 

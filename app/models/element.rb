@@ -20,9 +20,15 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Plugins
 
-  include Presenter
+  include Presenter, PgSearch
 
   has_superslug :title, :slug, :context => :property
+
+  pg_search_scope :search_by_title,
+                  :against => :title,
+                  :using => {
+                    :tsearch => { :prefix => true, :dictionary => "english" }
+                  }
 
   # ---------------------------------------- Attributes
 

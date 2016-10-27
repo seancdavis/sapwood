@@ -334,6 +334,10 @@ GEM
     parallel_tests (2.6.0)
       parallel
     pg (0.18.4)
+    pg_search (1.0.6)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
+      arel
     pickadate-rails (3.5.6.0)
       railties (>= 3.1.0)
     poltergeist (1.9.0)
@@ -525,6 +529,7 @@ DEPENDENCIES
   normalize-rails
   parallel_tests
   pg
+  pg_search
   pickadate-rails
   poltergeist
   quiet_assets

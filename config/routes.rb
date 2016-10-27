@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     get 'import' => 'properties#import', :as => :import
     patch 'import' => 'properties#process_import', :as => :process_import
     resources :users
+    get 'search' => 'elements#search', :as => 'search'
 
     resources :templates, :only => [], :path => 'elements' do
       resources :elements, :path => ''

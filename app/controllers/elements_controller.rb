@@ -48,6 +48,14 @@ class ElementsController < ApplicationController
     end
   end
 
+  def search
+    not_found unless params[:q]
+    @elements = current_property.elements.search_by_title(params[:q]).limit(10)
+    respond_to do |format|
+      format.json
+    end
+  end
+
   def new
     not_found if current_template.blank?
     @current_element = current_property.elements

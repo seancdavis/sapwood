@@ -41,6 +41,7 @@ gem 'pg_search'
 gem 'rmagick'
 gem 'simple_form'
 gem 'superslug'
+gem 'whenever'
 
 group :development do
   gem 'bullet'

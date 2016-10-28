@@ -1,0 +1,71 @@
+[
+  {
+    "title": "Default",
+    "fields": {
+      "name": {
+        "primary": true,
+        "type": "string",
+        "label": "String Label"
+      },
+      "description": {
+        "type": "text",
+        "label": "Text Label"
+      },
+      "address": {
+        "type": "geocode",
+        "label": "Geocode Label"
+      },
+      "comments": {
+        "type": "wysiwyg",
+        "label": "WYSIWYG Label"
+      },
+      "image": {
+        "type": "element",
+        "templates": ["Image"],
+        "label": "Element (Document) Label"
+      },
+      "images": {
+        "type": "elements",
+        "templates": ["Image"],
+        "label": "Elements (Documents) Label"
+      },
+      "mixed_bag": {
+        "type": "element",
+        "templates": ["Image", "Post"],
+        "label": "Element Label"
+      },
+      "mixed_bags": {
+        "type": "elements",
+        "templates": ["Image", "Post"],
+        "label": "Elements Label"
+      },
+      "complete": {
+        "type": "boolean",
+        "label": "Boolean Label"
+      },
+      "dropdown_menu": {
+        "type": "select",
+        "options": ["Option 1", "Option 2", "Option 3"],
+        "label": "Select Label"
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-mm-dd",
+        "label": "Date Label"
+      }
+    }
+  },
+  {
+    "title": "Image",
+    "type": "document",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  {
+    "title": "Post",
+    "fields": {
+      "name": { "primary": true }
+    }
+  }
+]

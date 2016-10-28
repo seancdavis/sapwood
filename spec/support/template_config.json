@@ -49,10 +49,6 @@
         "type": "geocode",
         "label": "Address"
       },
-      "image": {
-        "type": "document",
-        "label": "Image"
-      },
       "comments": {
         "type": "wysiwyg",
         "label": "Comments"

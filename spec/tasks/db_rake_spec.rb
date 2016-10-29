@@ -14,7 +14,7 @@ describe "Database Backups" do
     # Check that the directory is empty.
     expect(Dir.glob(file_pattern).size).to eq(0)
 
-    15.times { |idx| FileUtils.touch("#{backup_dir}/test_#{idx + 1}.psql") }
+    15.times { |idx| FileUtils.touch("#{backup_dir}/zzz_test_#{idx + 1}.psql") }
     expect(Dir.glob(file_pattern).size).to eq(15)
 
     Rake::Task['db:backup'].invoke

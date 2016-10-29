@@ -3,30 +3,18 @@
 <section>
   <div class="block half">
     <span class="count"><%= current_property.elements.size %></span>
-    <h3>
-      <%= current_property.label('elements').singularize
-                          .pluralize(current_property.elements.size) %>
-    </h3>
+    <h3>Elements</h3>
   </div>
   <div class="block half">
     <span class="count"><%= current_property_documents.size %></span>
-    <h3>
-      <%= current_property.label('documents').singularize
-                          .pluralize(current_property_documents.size) %>
-    </h3>
+    <h3>Documents</h3>
   </div>
   <div class="block half">
     <span class="count"><%= current_property.collections.size %></span>
-    <h3>
-      <%= current_property.label('collections').singularize
-                          .pluralize(current_property.collections.size) %>
-    </h3>
+    <h3>Collections</h3>
   </div>
   <div class="block half">
     <span class="count"><%= visible_property_users.size %></span>
-    <h3>
-      <%= current_property.label('users').singularize
-                          .pluralize(visible_property_users.size) %>
-    </h3>
+    <h3>Users</h3>
   </div>
 </section>

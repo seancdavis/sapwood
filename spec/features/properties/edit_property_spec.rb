@@ -19,16 +19,4 @@ feature 'Property Settings', :js => true do
     expect(page).to have_content(new_title)
   end
 
-  describe 'hiding sidebar labels' do
-    background { within('.properties') { click_link 'Edit' } }
-    scenario 'all should be shown/checked by default' do
-      expect(page).to have_css('input.label-visibility', :visible => false,
-                               :count => 5)
-    end
-    scenario 'toggling will add a hidden class to the parent' do
-      first('.label-input label').click
-      expect(page).to have_css('.label-input.hidden', :count => 1)
-    end
-  end
-
 end

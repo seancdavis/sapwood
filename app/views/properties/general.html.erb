@@ -1,0 +1,18 @@
+<%= page_header :title => "General Settings" %>
+
+<section class="body">
+  <%= minimal_form_for current_property do |f| %>
+    <div class="block">
+      <!-- <h3>General</h3> -->
+      <%= f.input :title, :autofocus => true, :label => 'Property Name' %>
+      <!-- <h3>Design</h3> -->
+      <div class="input color">
+        <label class="string">Block Color</label>
+        <br>
+        <span class="color-block"></span>
+        <%= f.input :color, :label => false, :wrapper => false %>
+      </div>
+    </div>
+    <%= f.submit 'Save Changes' %>
+  <% end %>
+</section>

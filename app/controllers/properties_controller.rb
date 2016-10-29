@@ -34,7 +34,12 @@ class PropertiesController < ApplicationController
 
   def edit
     not_found unless current_user.is_admin?
-    render "properties/setup/#{params[:step]}" if params[:step]
+    if params[:step]
+      render "properties/setup/#{params[:step]}"
+    elsif params[:screen]
+      not_found unless %w{general config keys}.include?(params[:screen])
+      render params[:screen]
+    end
   end
 
   def update
@@ -55,7 +60,7 @@ class PropertiesController < ApplicationController
         :csv => File.read(params[:property][:csv].path),
         :template_name => params[:property][:template_name]
       )
-      redirect_to edit_property_path(current_property),
+      redirect_to property_import_path(current_property),
                   :notice => "#{elements.size} elements imported!"
     rescue => e
       @error = e.class
@@ -70,7 +75,9 @@ class PropertiesController < ApplicationController
     end
 
     def redirect_path
-      params[:property][:redirect_to] || edit_property_path(current_property)
+      params[:property][:redirect_to] ||
+      request.referrer ||
+      edit_property_path(current_property, 'general')
     end
 
 end

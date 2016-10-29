@@ -1,0 +1,14 @@
+<%= page_header :title => "API Key" %>
+
+<section class="body">
+  <%= minimal_form_for current_property do |f| %>
+    <div class="block">
+      <h3>API Key</h3>
+      <p>
+        <code><%= current_property.api_key %></code>
+      </p>
+      <p><em>This property's API key is what enables you to retrieve data from
+      the property.</em></p>
+    <%#= f.submit 'Save Changes' %>
+  <% end %>
+</section>

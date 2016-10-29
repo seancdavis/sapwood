@@ -30,10 +30,11 @@ Rails.application.routes.draw do
 
   get 'geocoder/search' => 'geocoder#search'
 
-  resources :properties, :except => [:index, :destroy] do
+  resources :properties, :except => [:index, :destroy, :edit] do
     get 'setup/:step' => 'properties#edit', :as => :setup
-    get 'import' => 'properties#import', :as => :import
-    patch 'import' => 'properties#process_import', :as => :process_import
+    get 'tools/import' => 'properties#import', :as => :import
+    patch 'tools/import' => 'properties#process_import', :as => :process_import
+    get 'settings/:screen' => 'properties#edit', :as => :edit, :on => :member
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 

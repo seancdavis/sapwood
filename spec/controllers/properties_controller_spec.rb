@@ -106,9 +106,19 @@ describe PropertiesController do
         @user = create(:admin)
         sign_in @user
       end
-      it 'returns 200' do
-        get :edit, :id => @property.id
-        expect(response.status).to eq(200)
+      it 'returns 200 with a correct screen' do
+        %w{general config keys}.each do |screen|
+          get :edit, :id => @property.id, :screen => screen
+          expect(response.status).to eq(200)
+        end
+      end
+      it 'raises error without a screen' do
+        expect { get :edit, :id => @property.id }
+          .to raise_error(ActionController::UrlGenerationError)
+      end
+      it 'raises error with an incorrect screen' do
+        expect { get :edit, :id => @property.id, :screen => 'blah' }
+          .to raise_error(ActionController::RoutingError)
       end
     end
     context 'as a user (who has been assigned the property)' do
@@ -118,8 +128,10 @@ describe PropertiesController do
         sign_in @user
       end
       it 'returns 404' do
-        expect { get :edit, :id => @property.id }
-          .to raise_error(ActionController::RoutingError)
+        %w{general config keys}.each do |screen|
+          expect { get :edit, :id => @property.id, :screen => screen }
+            .to raise_error(ActionController::RoutingError)
+        end
       end
     end
   end

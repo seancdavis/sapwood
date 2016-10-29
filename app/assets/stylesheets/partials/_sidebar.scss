@@ -44,12 +44,28 @@ aside.main {
           @include size(rem(14));
           margin-right: rem(5);
         }
-        &.title a {
+        &.title .dropdown {
+          display: inline-block;
+          float: right;
+          &.active > a {
+            padding: rem(10);
+            background: $light;
+            color: $dark;
+          }
+          ul {
+            width: rem(200);
+            right: 2px;
+          }
+        }
+        &.title .dropdown > a {
+          padding: rem(10) 0;
+          line-height: 1;
+          transition: 0.25s ease;
+          border-radius: 3px;
+        }
+        &.title > a, &.title .dropdown > a {
           font-size: inherit;
           color: $light;
-          &.edit {
-            float: right;
-          }
           i {
             font-size: 1.25em;
           }

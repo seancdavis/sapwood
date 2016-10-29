@@ -9,6 +9,7 @@ feature 'New Users', :js => true do
       @admin = create(:admin)
       sign_in @admin
       click_link @property.title
+      first('.dropdown a.trigger').click
       click_link 'Users'
       click_link 'New User'
     end

@@ -10,6 +10,7 @@ feature 'Elements Search', :js => true do
     end
     sign_in (@user = create(:admin))
     click_link @property.title
+    click_link 'Defaults'
   end
 
   scenario 'shows nothing by default' do

@@ -102,17 +102,25 @@ feature 'Elements', :js => true do
       select els[0].title, :from => 'multiselect_many_things'
       select els[2].title, :from => 'multiselect_many_things'
       within('.multiselect.many_things .selected-options') do
-        expect(page).to have_css('li > span', :text => els[0].title)
-        expect(page).to have_no_css('li > span', :text => els[1].title)
-        expect(page).to have_css('li > span', :text => els[2].title)
+        expect(page).to have_css('li > a', :text => els[0].title)
+        expect(page).to have_no_css('li > a', :text => els[1].title)
+        expect(page).to have_css('li > a', :text => els[2].title)
+
+        # Verify that links are present in the items.
+        url = edit_property_template_element_path(@property, els[0].template, els[0])
+        expect(page).to have_link(els[0].title, :href => url)
+        url = edit_property_template_element_path(@property, els[1].template, els[1])
+        expect(page).to have_no_link(els[1].title, :href => url)
+        url = edit_property_template_element_path(@property, els[2].template, els[2])
+        expect(page).to have_link(els[2].title, :href => url)
 
         within("li[data-id='#{els[0].id}']") do
           click_link 'REMOVE'
         end
 
-        expect(page).to have_no_css('li > span', :text => els[0].title)
-        expect(page).to have_no_css('li > span', :text => els[1].title)
-        expect(page).to have_css('li > span', :text => els[2].title)
+        expect(page).to have_no_css('li > a', :text => els[0].title)
+        expect(page).to have_no_css('li > a', :text => els[1].title)
+        expect(page).to have_css('li > a', :text => els[2].title)
       end
 
       fill_in 'element[template_data][name]', :with => (title = Faker::Lorem.word)
@@ -120,9 +128,9 @@ feature 'Elements', :js => true do
       click_link title
 
       within('.multiselect.many_things .selected-options') do
-        expect(page).to have_no_css('li > span', :text => els[0].title)
-        expect(page).to have_no_css('li > span', :text => els[1].title)
-        expect(page).to have_css('li > span', :text => els[2].title)
+        expect(page).to have_no_css('li > a', :text => els[0].title)
+        expect(page).to have_no_css('li > a', :text => els[1].title)
+        expect(page).to have_css('li > a', :text => els[2].title)
       end
     end
     scenario 'has a textarea and wysiwyg editor' do

@@ -3,7 +3,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
   el: 'body'
 
   events:
-    'click .selected-options li a': 'removeOption'
+    'click .selected-options li a.remove': 'removeOption'
 
   initialize: (@container) ->
     @elementIds = @container.find('input').first().val().split(',')
@@ -15,7 +15,7 @@ class App.Components.ElementMultiSelect extends Backbone.View
       opt = @select.find('option:selected')
       @container.find('.selected-options').append """
         <li data-id="#{opt.val()}">
-          <span>#{opt.text()}</span>
+          <a href="#{opt.data('url')}" target="_blank">#{opt.text()}</a>
           <a href="#" class="remove">REMOVE</a>
         </li>
         """

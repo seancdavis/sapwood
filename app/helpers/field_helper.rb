@@ -131,7 +131,11 @@ module FieldHelper
                        :id => "multiselect_#{field.name}") do
         o2 = content_tag(:option, '', :class => 'placeholder')
         elements.each do |el|
-          o2 += content_tag(:option, el.title, :value => el.id)
+          o2 += content_tag(:option, el.title, :value => el.id, :data => {
+            :url => edit_property_template_element_path(
+              current_property, el.template, el
+            )
+          })
         end
         o2.html_safe
       end
@@ -139,7 +143,8 @@ module FieldHelper
         o2 = ''
         object.send(field.name).each do |el|
           o2 += content_tag(:li, :data => { :id => el.id }) do
-            o3  = content_tag(:span, el.title)
+            o3  = link_to(el.title, [:edit, current_property, el.template, el],
+                          :target => "_blank")
             o3 += content_tag(:a, 'REMOVE', :href => '#', :class => 'remove')
             o3.html_safe
           end

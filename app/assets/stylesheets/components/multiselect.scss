@@ -1,11 +1,11 @@
 div.input.multiselect {
 
   .selected-options li {
-    span {
+    > span, > a {
       display: inline-block;
       margin-right: $small-spacing;
     }
-    a {
+    a.remove {
       font-size: 75%;
       &:before {
         @include icon;

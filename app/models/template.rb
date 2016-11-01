@@ -46,6 +46,10 @@ class Template
     attributes['menu_label'] || name.pluralize
   end
 
+  def type
+    attributes['type'] || 'element'
+  end
+
   def security
     (attributes['security'] || {}).to_ostruct
   end

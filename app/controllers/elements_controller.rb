@@ -42,6 +42,10 @@ class ElementsController < ApplicationController
       format.html do
         if current_template && current_template.document?
           redirect_to [current_property, current_template, :documents]
+        elsif current_template &&
+              current_template.type == 'single_element' &&
+              @elements.size == 1
+          redirect_to [:edit, current_property, current_template, @elements[0]]
         end
       end
       format.json

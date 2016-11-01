@@ -4,7 +4,8 @@ feature 'Elements List', :js => true do
 
   background do
     @property = property_with_templates
-    @user = create(:admin)
+    @user = create(:user)
+    @user.properties << @property
     sign_in @user
     click_link @property.title
   end

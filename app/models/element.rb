@@ -48,6 +48,10 @@ class Element < ActiveRecord::Base
   }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
+  scope :last_updated, -> {
+    where('updated_at != created_at').order(:updated_at => :desc)
+  }
+  scope :last_created, -> { order(:created_at => :desc) }
 
   # ---------------------------------------- Validations
 

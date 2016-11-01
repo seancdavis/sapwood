@@ -10,6 +10,7 @@ class App.Routers.Router extends Backbone.Router
     new App.Components.Search
 
   routes:
+    'properties/:property_id': 'propertyDash'
     'properties/:property_id/settings/general': 'editProperty'
     'properties/:property_id/settings/config': 'codeEditor'
     'properties/:property_id/elements/:template/new': 'editElement'
@@ -17,6 +18,9 @@ class App.Routers.Router extends Backbone.Router
     'properties/:property_id/documents/:template': 'documents'
     'properties/:property_id/users/new': 'user'
     'properties/:property_id/users/:user_id/edit': 'user'
+
+  propertyDash: ->
+    $('.search input').first().focus()
 
   editProperty: ->
     new App.Views.EditProperty

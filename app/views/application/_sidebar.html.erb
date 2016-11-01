@@ -41,9 +41,9 @@
       </span>
     </div>
     <div class="search">
-      <input type="text" placeholder="search" id="search"
-             data-url="<%= property_search_path(current_property) %>">
-      <ul class="results"></ul>
+      <% unless request.path == property_path(current_property) %>
+        <%= render 'search' %>
+      <% end %>
     </div>
   </div>
   <nav>

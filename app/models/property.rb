@@ -13,10 +13,6 @@
 
 class Property < ActiveRecord::Base
 
-  # ---------------------------------------- Plugins
-
-  include Presenter
-
   # ---------------------------------------- Attributes
 
   attr_accessor :template_name, :csv

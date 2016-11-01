@@ -8,8 +8,22 @@
 ) %>
 
 <section class="body">
-  <div class="block">
-    <%= render visible_property_users %>
-    <%#= render current_property.users_with_access.sort_by { |u| u.p.name } %>
-  </div>
+  <% if visible_property_users.present? %>
+    <div class="block">
+      <table>
+        <thead>
+          <tr>
+            <!-- <th class="icon"></th> -->
+            <th class="primary">Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody class="users">
+          <%= render visible_property_users %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
 </section>

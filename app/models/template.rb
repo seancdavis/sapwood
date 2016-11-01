@@ -50,6 +50,10 @@ class Template
     attributes['type'] || 'element'
   end
 
+  def hidden?
+    attributes['hidden'] || false
+  end
+
   def security
     (attributes['security'] || {}).to_ostruct
   end

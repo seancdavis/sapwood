@@ -168,6 +168,14 @@
       "name": { "primary": true }
     }
   },
+  // Not shown in menu
+  {
+    "title": "Hidden",
+    "hidden": true,
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
   {
     "title": "-A & __ Fun(ny) - +Title^"
   }

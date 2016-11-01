@@ -96,7 +96,7 @@ class Property < ActiveRecord::Base
     menu = []
     used_spaces = []
     templates.each do |template|
-      next if used_spaces.include?(template.namespace)
+      next if used_spaces.include?(template.namespace) || template.hidden?
       if template.namespace.nil?
         menu << template
       else

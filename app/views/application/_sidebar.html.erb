@@ -2,7 +2,7 @@
 
 <aside class="main">
   <div class="controls">
-    <%= link_to 'Deck', deck_path  %>
+    <%= link_to 'Deck', deck_path if can_view_deck? %>
     <div class="current-property">
       <span class="color-block"
             style="background: <%= current_property.color %>"></span>

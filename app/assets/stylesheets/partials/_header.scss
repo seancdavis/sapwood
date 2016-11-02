@@ -1,12 +1,28 @@
 header.main {
-  a {
+  float: right;
+  margin-bottom: rem(50);
+
+  span.user {
     display: inline-block;
-    margin-left: rem(10);
+    margin-right: rem(10);
+    color: $dark;
+    font-size: 0.9em;
+  }
+
+  span.dot {
+    display: inline-block;
+    margin: 0 rem(5);
     font-size: 0.8em;
     line-height: 1.25em;
-    &.user {
-      color: $dark;
-      font-size: 0.9em;
+    &:before {
+      content: '\00B7';
     }
+  }
+
+  span.links a {
+    display: inline-block;
+    margin: 0;
+    font-size: 0.8em;
+    line-height: 1.25em;
   }
 }

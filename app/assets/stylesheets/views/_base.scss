@@ -17,23 +17,6 @@ body {
   }
 }
 
-// ---------------------------------------- Main Header
-
-#container header.main {
-  float: right;
-  margin-bottom: rem(50);
-  a {
-    display: inline-block;
-    margin-left: rem(10);
-    font-size: 0.8em;
-    line-height: 1.25em;
-    &.user {
-      color: $dark;
-      font-size: 0.9em;
-    }
-  }
-}
-
 // ---------------------------------------- Content Base
 
 #container .page-content {

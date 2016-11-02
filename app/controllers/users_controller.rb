@@ -85,8 +85,7 @@ class UsersController < ApplicationController
     end
 
     def verify_user_access
-      not_found if focused_user.nil?
-      not_found if focused_user.is_admin? && !current_user.is_admin?
+      not_found if focused_user.nil? || !current_user.is_admin?
     end
 
 end

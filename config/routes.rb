@@ -23,8 +23,8 @@ Rails.application.routes.draw do
 
   # ---------------------------------------- App
 
-  get 'profile/edit' => 'profile#edit', :as => :edit_profile
-  patch 'profile/edit' => 'profile#update', :as => :update_profile
+  get '(properties/:property_id)/profile/edit' => 'profile#edit', :as => :edit_profile
+  patch '(properties/:property_id)/profile/edit' => 'profile#update', :as => :update_profile
 
   get 'deck' => 'deck#show', :as => :deck
 

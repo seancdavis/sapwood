@@ -1,7 +1,10 @@
 <%= page_header :title => 'My Profile' %>
 
 <section class="body">
-  <%= minimal_form_for current_user, :url => update_profile_path do |f| %>
+  <%= minimal_form_for(
+    current_user,
+    :url => update_profile_path(:property_id => params[:property_id])
+  ) do |f| %>
     <div class="block aside">
       <%= f.input :name, :autofocus => true,
                   :required => (params[:setup].to_bool == true) %>

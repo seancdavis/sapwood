@@ -193,12 +193,13 @@ describe UsersController do
         expect { get :edit, :property_id => @property.id, :id => @user.id }
           .to raise_error(ActionController::RoutingError)
       end
-      it 'returns 200 for a user with property access' do
+      # This is temporary until we figure out the property roles.
+      it 'returns 404 for a user with property access' do
         user = create(:user)
         user.properties << @property
         sign_in user
-        get :edit, :property_id => @property.id, :id => @user.id
-        expect(response.status).to eq(200)
+        expect { get :edit, :property_id => @property.id, :id => @user.id }
+          .to raise_error(ActionController::RoutingError)
       end
     end
 

@@ -10,7 +10,7 @@ class ProfileController < ApplicationController
       if changing_password?
         sign_in(current_user, :bypass => true)
       end
-      redirect_to edit_profile_path, :notice => 'Profile updated successfully!'
+      redirect_to redirect_path, :notice => 'Profile updated successfully!'
     else
       render 'edit'
     end
@@ -26,6 +26,11 @@ class ProfileController < ApplicationController
     def changing_password?
       profile_params.include?(:password) &&
       profile_params.include?(:password_confirmation)
+    end
+
+    def redirect_path
+      return deck_path unless current_property
+      edit_profile_path(:property_id => params[:property_id])
     end
 
 end

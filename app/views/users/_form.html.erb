@@ -14,7 +14,11 @@
       <% if focused_user.id.present? %>
         <p><em>
           <% if focused_user == current_user %>
-            You need to visit <%= link_to 'your profile', edit_profile_path %>
+            You need to visit
+            <%= link_to(
+              'your profile',
+              edit_profile_path(:property_id => params[:property_id])
+            ) %>
             to edit your profile settings.
           <% else %>
             Only <%= focused_user.p.name %> can edit their name and email.

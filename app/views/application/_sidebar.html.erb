@@ -7,7 +7,7 @@
             style="background: <%= current_property.color %>"></span>
       <span class="title">
         <%= link_to current_property.title, current_property %>
-        <% if current_user.is_admin? %>
+        <% if is_property_admin? %>
           <div class="dropdown right">
             <a href="#" class="trigger"><i class="icon-settings"></i></a>
             <ul>

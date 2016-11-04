@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def accessible_properties
+    # TODO: Would prefer to come up with a caching mechanism and avoid memoizing
+    # within a model.
     @accessible_properties ||= begin
       return Property.all.to_a if is_admin?
       properties.to_a
@@ -51,6 +53,11 @@ class User < ActiveRecord::Base
 
   def has_access_to?(property)
     accessible_properties.include?(property)
+  end
+
+  def is_admin_of?(property)
+    return true if is_admin?
+    property_users.find_by_property_id(property.id).try(:is_admin?) || false
   end
 
   def property_ids
@@ -64,6 +71,10 @@ class User < ActiveRecord::Base
     (ids - property_ids).each do |new_id|
       properties << Property.find_by_id(new_id)
     end
+  end
+
+  def make_admin_in_properties!(ids)
+    property_users.where(:property_id => ids).update_all(:is_admin => true)
   end
 
   def set_sign_in_key!

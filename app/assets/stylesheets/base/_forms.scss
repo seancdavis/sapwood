@@ -12,7 +12,7 @@ form {
   aside ul li {
     font-size: 0.9em;
     margin: rem(7.5) 0;
-    &.clickable:hover {
+    &.clickable:hover, .clickable:hover {
       cursor: pointer;
     }
   }

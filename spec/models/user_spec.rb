@@ -61,4 +61,56 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe '#set_properties!' do
+    it 'adds the user to the given set of properties' do
+      p_01 = create(:property)
+      p_02 = create(:property)
+      p_03 = create(:property)
+      user = create(:user)
+      user.set_properties!([p_01.id, p_02.id])
+      user = User.find_by_id(user.id)
+      expect(user.has_access_to?(p_01)).to eq(true)
+      expect(user.has_access_to?(p_02)).to eq(true)
+      expect(user.has_access_to?(p_03)).to eq(false)
+    end
+  end
+
+  describe '#is_admin_of?' do
+    before(:each) { @property = create(:property) }
+    it 'returns true for admins' do
+      expect(create(:admin).is_admin_of?(@property)).to eq(true)
+    end
+    it 'returns true for property admins' do
+      user = create(:user)
+      user.properties << @property
+      user.property_users.first.update(:is_admin => true)
+      user = User.find_by_id(user.id)
+      expect(user.is_admin_of?(@property)).to eq(true)
+    end
+    it 'returns false for content editors' do
+      user = create(:user)
+      user.properties << @property
+      user = User.find_by_id(user.id)
+      expect(user.is_admin_of?(@property)).to eq(false)
+    end
+    it 'returns false for those without access' do
+      expect(create(:user).is_admin_of?(@property)).to eq(false)
+    end
+  end
+
+  describe '#make_admin_in_properties  !' do
+    it 'adds the user to the given set of properties' do
+      p_01 = create(:property)
+      p_02 = create(:property)
+      p_03 = create(:property)
+      user = create(:user)
+      user.set_properties!([p_01.id, p_02.id])
+      user.make_admin_in_properties!([p_01.id])
+      user = User.find_by_id(user.id)
+      expect(user.is_admin_of?(p_01)).to eq(true)
+      expect(user.is_admin_of?(p_02)).to eq(false)
+      expect(user.is_admin_of?(p_03)).to eq(false)
+    end
+  end
+
 end

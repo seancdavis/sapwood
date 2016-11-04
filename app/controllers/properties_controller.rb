@@ -33,7 +33,7 @@ class PropertiesController < ApplicationController
   end
 
   def edit
-    not_found unless current_user.is_admin?
+    not_found unless is_property_admin?
     if params[:step]
       render "properties/setup/#{params[:step]}"
     elsif params[:screen]
@@ -51,9 +51,11 @@ class PropertiesController < ApplicationController
   end
 
   def import
+    not_found unless is_property_admin?
   end
 
   def process_import
+    not_found unless is_property_admin?
     begin
       elements = ImportElements.call(
         :property_id => current_property.id,

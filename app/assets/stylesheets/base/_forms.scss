@@ -112,6 +112,21 @@ textarea {
   border-radius: $base-border-radius;
 }
 
+span.error {
+  display: block;
+  margin-top: rem(20);
+  font-weight: 600;
+  font-size: rem(18);
+  font-style: italic;
+  color: $error;
+  & + .body {
+    margin-top: rem(10);
+    .CodeMirror {
+      border: 1px solid $error;
+    }
+  }
+}
+
 form textarea.error {
   border-color: $error;
   color: $dark;

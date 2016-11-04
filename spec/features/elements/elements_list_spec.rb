@@ -130,7 +130,10 @@ feature 'Elements List', :js => true do
     expect(all('tr.element')[2]).to have_content('Hello You')
 
     # Now, sort by name, descending.
-    within('table') { click_link('Name') }
+    # ---
+    # TODO: This fails on Travis because of click coordinates, but can't
+    # recreate locally.
+    within('table') { all('th a', :text => 'NAME').first.trigger('click') }
 
     within(all('th')[1]) do
       expect(page).to have_content('DESCRIPTION')

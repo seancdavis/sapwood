@@ -168,6 +168,16 @@
       "name": { "primary": true }
     }
   },
+  // Redirect option
+  {
+    "title": "Redirector",
+    "after_save": {
+      "redirect": false
+    },
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
   // Not shown in menu
   {
     "title": "Hidden",

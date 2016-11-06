@@ -251,6 +251,19 @@ describe ElementsController do
         .to change { ActionMailer::Base.deliveries.size }.by(1)
       expect(ActionMailer::Base.deliveries.last.to).to eq([n_user.email])
     end
+    it 'goes back to the edit form when told so' do
+      user = create(:admin)
+      sign_in user
+      data = {
+        :template_data => { :name => (name = Faker::Lorem.words(4).join(' ')) },
+        :template_name => 'Redirector'
+      }
+      post :create, :property_id => @property.id, :template_id => 'Redirector',
+           :element => data
+      el = Element.find_by_title(name)
+      path = edit_property_template_element_path(@property, 'redirector', el)
+      expect(request).to redirect_to(path)
+    end
   end
 
 end

@@ -58,6 +58,10 @@ class Template
     (attributes['security'] || {}).to_ostruct
   end
 
+  def redirect_after_save?
+    attributes['after_save'] && attributes['after_save']['redirect']
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []

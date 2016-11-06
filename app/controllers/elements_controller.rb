@@ -70,7 +70,7 @@ class ElementsController < ApplicationController
     @current_element = current_property.elements.build(element_params)
     if current_element.save!
       send_notifications!
-      redirect_to [current_property, current_template, :elements],
+      redirect_to template_redirect_path,
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'new'
@@ -84,7 +84,7 @@ class ElementsController < ApplicationController
   def update
     if current_element.update(element_params)
       send_notifications!
-      redirect_to [current_property, current_template, :elements],
+      redirect_to template_redirect_path,
                   :notice => "#{current_template.title} saved successfully!"
     else
       render 'edit'
@@ -107,6 +107,14 @@ class ElementsController < ApplicationController
 
     def send_notifications!
       current_element.send_notifications!(action_name, current_user)
+    end
+
+    def template_redirect_path
+      if current_template.redirect_after_save?
+        [current_property, current_template, :elements]
+      else
+        [:edit, current_property, current_template, current_element]
+      end
     end
 
 end

@@ -44,7 +44,11 @@ class Element < ActiveRecord::Base
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(f, d = 'ASC') {
     return order("#{f} #{d}") if column_names.include?(f)
-    order("template_data ->> '#{f}' #{d}")
+    if f.split(':').size > 1
+      order("template_data #>> '{#{f.split(':').join(', ')}}' #{d}")
+    else
+      order("template_data ->> '#{f}' #{d}")
+    end
   }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }

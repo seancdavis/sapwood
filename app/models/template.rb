@@ -84,13 +84,16 @@ class Template
 
   def columns
     columns = []
-    (list['columns'] || default_columns).each do |field, attrs|
-      f = if %w(updated_at created_at).include?(field)
+    (list['columns'] || default_columns).each do |name, attrs|
+      f = if %w(updated_at created_at).include?(name)
         Field.new('name' => 'updated_at', 'type' => 'date')
       else
-        find_field(field)
+        find_field(attrs["field"]) || find_field(name)
       end
-      columns << Column.new(attrs.merge('field' => f))
+      # TODO: We don't need to give feedback here, but this should be caught
+      # when the config checker utility is added.
+      next if f.blank?
+      columns << Column.new(attrs.merge('name' => name, 'field' => f))
     end
     columns
   end

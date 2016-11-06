@@ -18,6 +18,7 @@
 #  is_admin               :boolean          default(FALSE)
 #  name                   :string
 #  sign_in_key            :string
+#  avatar_url             :string
 #
 
 require 'rails_helper'

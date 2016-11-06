@@ -4,9 +4,22 @@ header.main {
 
   span.user {
     display: inline-block;
+    vertical-align: middle;
     margin-right: rem(10);
     color: $dark;
     font-size: 0.9em;
+    line-height: 1;
+  }
+
+  .avatar {
+    display: inline-block;
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    margin-right: rem(5);
+    overflow: hidden;
+    border-radius: 100%;
+    line-height: 1;
   }
 
   span.dot {

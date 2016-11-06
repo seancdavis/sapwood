@@ -18,6 +18,8 @@ class App.Routers.Router extends Backbone.Router
     'properties/:property_id/documents/:template': 'documents'
     'properties/:property_id/users/new': 'user'
     'properties/:property_id/users/:user_id/edit': 'user'
+    'properties/:property_id/profile/edit': 'profile'
+    'profile/edit': 'profile'
 
   propertyDash: ->
     $('.search input').first().focus()
@@ -37,3 +39,6 @@ class App.Routers.Router extends Backbone.Router
 
   user: ->
     new App.Views.UserForm
+
+  profile: ->
+    new App.Components.Avatar

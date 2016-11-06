@@ -18,6 +18,7 @@
 #  is_admin               :boolean          default(FALSE)
 #  name                   :string
 #  sign_in_key            :string
+#  avatar_url             :string
 #
 
 class User < ActiveRecord::Base
@@ -39,6 +40,23 @@ class User < ActiveRecord::Base
 
   scope :admins, -> { where(:is_admin => true) }
   scope :alpha, -> { order(:name => :asc) }
+
+  # ---------------------------------------- Callbacks
+
+  before_save :set_avatar_url
+
+  def set_avatar_url
+    return if avatar_url.present?
+    hash = Digest::MD5.hexdigest(email.downcase)
+    self.avatar_url = "https://www.gravatar.com/avatar/#{hash}?s=100&d=retro"
+  end
+
+  after_save :process_avatar!
+
+  def process_avatar!
+    return nil if Rails.env.test? || !avatar_url_changed?
+    ProcessAvatar.delay.call(:user => self)
+  end
 
   # ---------------------------------------- Instance Methods
 

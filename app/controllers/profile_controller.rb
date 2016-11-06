@@ -19,7 +19,8 @@ class ProfileController < ApplicationController
   private
 
     def profile_params
-      params.require(:user).permit(:name, :password, :password_confirmation)
+      params.require(:user)
+            .permit(:name, :avatar_url, :password, :password_confirmation)
             .reject { |k,v| v.blank? }
     end
 

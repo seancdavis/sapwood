@@ -131,6 +131,7 @@ module FieldHelper
                        :id => "multiselect_#{field.name}") do
         o2 = content_tag(:option, '', :class => 'placeholder')
         elements.each do |el|
+          next if el.template.blank?
           o2 += content_tag(:option, el.title, :value => el.id, :data => {
             :url => edit_property_template_element_path(
               current_property, el.template, el

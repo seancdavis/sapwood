@@ -62,6 +62,10 @@ class Template
     attributes['after_save'] && attributes['after_save']['redirect']
   end
 
+  def page_length
+    attributes['page_length'] || 20
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []

@@ -12,6 +12,7 @@
   {
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
+    "page_length": 50,
     "security": {
       "create": {
         "allow": true,

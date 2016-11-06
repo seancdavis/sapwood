@@ -38,6 +38,8 @@ class ElementsController < ApplicationController
       params[:sort_in] = 'asc'
       current_property.elements.by_title.with_template(current_template.name)
     end
+    @elements = @elements.page(params[:page] || 1)
+                         .per(current_template.page_length)
     respond_to do |format|
       format.html do
         if current_template && current_template.document?

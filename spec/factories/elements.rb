@@ -22,13 +22,13 @@ FactoryGirl.define do
     title { Faker::Lorem.words(4).join(' ') }
     template_name 'Default'
     template_data {{
-      'name' => Faker::Lorem.words(4).join(' ')
+      'name' => Faker::Lorem.words(4).join(' ').titleize
     }}
     # publish_at "2016-01-16 16:15:28"
     trait :with_options do
       template_name 'All Options'
       template_data {{
-        'name' => Faker::Lorem.words(4).join(' '),
+        'name' => Faker::Lorem.words(4).join(' ').titleize,
         'comments' => Faker::Lorem.paragraph,
         'image' => create(:element, :document, :property => property,
                           :title => Faker::Company.bs.titleize).id.to_s,

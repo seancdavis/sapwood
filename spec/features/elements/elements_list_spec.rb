@@ -198,4 +198,16 @@ feature 'Elements List', :js => true do
     expect(find('tr.element:nth-child(3)')).to have_content('OH')
   end
 
+  scenario 'can have a specified page length' do
+    el = create(:element, :property => @property,
+      :template_name => 'All Options', :template_data => { :name => 'ZZZ' })
+    click_link 'All Options'
+    within('table') { find('th a', :text => 'NAME').trigger('click') }
+    expect(page).to have_content(el.title)
+    create_list(:element, 75, :with_options, :property => @property)
+    click_link 'All Options'
+    within('table') { find('th a', :text => 'NAME').trigger('click') }
+    expect(page).to have_no_content(el.title)
+  end
+
 end

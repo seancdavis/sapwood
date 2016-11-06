@@ -5,7 +5,8 @@ module ListHelper
     sort_in = 'asc'
     sort_in = 'desc' if params[:sort_by] == sort_by && params[:sort_in] == 'asc'
     property_template_elements_path(current_property, current_template,
-                                    :sort_by => sort_by, :sort_in => sort_in)
+                                    :sort_by => sort_by, :sort_in => sort_in,
+                                    :page => params[:page])
   end
 
   def list_sort_class(col)

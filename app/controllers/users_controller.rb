@@ -18,11 +18,13 @@
 #  is_admin               :boolean          default(FALSE)
 #  name                   :string
 #  sign_in_key            :string
+#  avatar_url             :string
 #
 
 class UsersController < ApplicationController
 
   before_filter :verify_property_access
+  before_filter :verify_property_admin_access
 
   def index
   end
@@ -52,19 +54,31 @@ class UsersController < ApplicationController
   end
 
   def edit
-    verify_user_access
+    not_found unless can_edit_focused_user?
     @properties = Property.alpha
   end
 
   def update
+    not_found unless can_edit_focused_user?
     if focused_user.update(user_params)
       unless focused_user.is_admin?
-        ids = if params[:user][:access]
-          params[:user][:access].keys.collect(&:to_i)
-        else
+        access_ids = if params[:user][:access].blank?
           []
+        else
+          editor_ids = if params[:user][:access][:editor].present?
+            params[:user][:access][:editor].keys.collect(&:to_i)
+          else
+            []
+          end
+          admin_ids = if params[:user][:access][:admin].present?
+            params[:user][:access][:admin].keys.collect(&:to_i)
+          else
+            []
+          end
+          (editor_ids + admin_ids).uniq.sort
         end
-        focused_user.set_properties!(ids)
+        focused_user.set_properties!(access_ids)
+        focused_user.make_admin_in_properties!(admin_ids)
       end
       redirect_to property_users_path(current_property),
                   :notice => 'User updated successfully!'
@@ -84,9 +98,14 @@ class UsersController < ApplicationController
       user_params.merge(:password => SecureRandom.hex(32))
     end
 
-    def verify_user_access
-      not_found if focused_user.nil?
-      not_found if focused_user.is_admin? && !current_user.is_admin?
+    def verify_property_admin_access
+      not_found unless is_property_admin?
+    end
+
+    def can_edit_focused_user?
+      return false if focused_user.blank?
+      return true if current_user.is_admin?
+      !focused_user.is_admin?
     end
 
 end

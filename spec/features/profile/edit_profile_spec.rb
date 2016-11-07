@@ -3,26 +3,39 @@ require 'rails_helper'
 feature 'My Profile', :js => true do
 
   background do
+    @property = create(:property)
     @user = create(:user)
+    @user.properties << @property
     sign_in @user
   end
+
+  scenario 'does not have a link when not within a property' do
+    # Need two properties to not be within a property
+    @user.properties << create(:property)
+    visit deck_path
+    expect(page).to have_no_content('Profile')
+  end
+
   scenario 'lets me change my name' do
-    click_link @user.name
-    name = Faker::Name.name
-    fill_in 'user[name]', :with => name
+    click_link @property.title
+    within('header.main') { click_link('Profile') }
+    fill_in 'user[name]', :with => (name = Faker::Name.name)
     click_button 'Save'
-    expect(page).to have_content(name)
+    within('header.main') { expect(page).to have_content(name) }
   end
-  scenario 'shows my list of properties' do
-    property = create(:property)
-    @user.properties << property
-    click_link @user.name
-    expect(page).to have_content(property.title)
+
+  scenario 'maintains the property sidebar' do
+    within('aside.main') { expect(page).to have_content(@property.title) }
   end
-  scenario 'does not show properties I can not access' do
+
+  scenario 'shows only the list of properties I can access' do
     property = create(:property)
-    click_link @user.name
-    expect(page).to have_no_content(property.title)
+    click_link @property.title
+    within('header.main') { click_link('Profile') }
+    within('form') do
+      expect(page).to have_content(@property.title)
+      expect(page).to have_no_content(property.title)
+    end
   end
 
 end

@@ -8,8 +8,12 @@
 <% end %>
 
 <section class="body properties">
-  <div class="block full">
-    <h2>Properties</h2>
-    <%= render my_properties %>
-  </div>
+  <% if my_properties.present? %>
+    <div class="block full">
+      <h2>Properties</h2>
+      <%= render my_properties %>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
 </section>

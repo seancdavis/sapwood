@@ -97,6 +97,21 @@ feature 'Elements', :js => true do
     scenario 'adds a form for uploading' do
       expect(page).to have_css('section.uploader > form', :visible => false)
     end
+    scenario 'can remove an uploaded document' do
+      doc = create(:element, :document, :property => @property,
+                   :title => Faker::Company.bs.titleize)
+      td = @element.template_data
+      @element.update!(:template_data => td.merge(:image => doc.id.to_s))
+      visit current_path
+      within('.document-uploader') do
+        expect(page).to have_content(doc.title)
+        click_link 'REMOVE'
+      end
+      click_button 'Save All Options'
+      expect(@element.reload.image).to eq(nil)
+      click_link @element.title
+      expect(page).to have_no_content(doc.title)
+    end
     scenario 'has a textarea' do
       expect(page).to have_css('textarea#element_template_data_comments',
                                :visible => false)

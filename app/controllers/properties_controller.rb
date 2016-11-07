@@ -2,17 +2,13 @@
 #
 # Table name: properties
 #
-#  id                   :integer          not null, primary key
-#  title                :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  color                :string
-#  labels               :json
-#  templates_raw        :text
-#  forms_raw            :text
-#  hidden_labels        :text             default([]), is an Array
-#  api_key              :string
-#  collection_types_raw :text
+#  id            :integer          not null, primary key
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  color         :string
+#  templates_raw :text
+#  api_key       :string
 #
 
 class PropertiesController < ApplicationController
@@ -37,8 +33,13 @@ class PropertiesController < ApplicationController
   end
 
   def edit
-    not_found unless current_user.is_admin?
-    render "properties/setup/#{params[:step]}" if params[:step]
+    not_found unless is_property_admin?
+    if params[:step]
+      render "properties/setup/#{params[:step]}"
+    elsif params[:screen]
+      not_found unless %w{general config keys}.include?(params[:screen])
+      render params[:screen]
+    end
   end
 
   def update
@@ -50,16 +51,18 @@ class PropertiesController < ApplicationController
   end
 
   def import
+    not_found unless is_property_admin?
   end
 
   def process_import
+    not_found unless is_property_admin?
     begin
       elements = ImportElements.call(
         :property_id => current_property.id,
         :csv => File.read(params[:property][:csv].path),
         :template_name => params[:property][:template_name]
       )
-      redirect_to edit_property_path(current_property),
+      redirect_to property_import_path(current_property),
                   :notice => "#{elements.size} elements imported!"
     rescue => e
       @error = e.class
@@ -70,19 +73,13 @@ class PropertiesController < ApplicationController
   private
 
     def property_params
-      hidden_labels = if params[:property] && params[:property][:hidden_labels]
-        params[:property][:hidden_labels].split(',')
-      else
-        []
-      end
-      params.require(:property)
-        .permit(:title, :color, :templates_raw, :collection_types_raw, :forms_raw,
-                :labels => Property.labels)
-        .merge(:hidden_labels => hidden_labels)
+      params.require(:property).permit(:title, :color, :templates_raw)
     end
 
     def redirect_path
-      params[:property][:redirect_to] || edit_property_path(current_property)
+      params[:property][:redirect_to] ||
+      request.referrer ||
+      edit_property_path(current_property, 'general')
     end
 
 end

@@ -2,20 +2,47 @@
 
 <aside class="main">
   <div class="controls">
-    <%= link_to 'Deck', deck_path  %>
     <div class="current-property">
       <span class="color-block"
             style="background: <%= current_property.color %>"></span>
       <span class="title">
         <%= link_to current_property.title, current_property %>
-        <%= link_to(edit_property_path(current_property),
-                    :class => 'edit') do %>
-          <i class="icon-settings"></i>
+        <% if is_property_admin? %>
+          <div class="dropdown right">
+            <a href="#" class="trigger"><i class="icon-settings"></i></a>
+            <ul>
+              <li><h3>Settings</h3></li>
+              <li>
+                <%= link_to 'General',
+                            edit_property_path(current_property, 'general') %>
+              </li>
+              <li>
+                <%= link_to 'Data Config',
+                            edit_property_path(current_property, 'config') %>
+              </li>
+              <li><h3>Security</h3></li>
+              <li>
+                <%= link_to 'Users',
+                            property_users_path(current_property) %>
+              </li>
+              <li>
+                <%= link_to 'API Key',
+                            edit_property_path(current_property, 'keys') %>
+              </li>
+              <li><h3>Tools</h3></li>
+              <li>
+                <%= link_to 'Import Elements',
+                            property_import_path(current_property) %>
+              </li>
+            </ul>
+          </div>
         <% end %>
       </span>
     </div>
     <div class="search">
-      <input type="text" placeholder="search">
+      <% unless request.path == property_path(current_property) %>
+        <%= render 'search' %>
+      <% end %>
     </div>
   </div>
   <nav>
@@ -32,11 +59,6 @@
         <% else %>
           <%= render :partial => 'sidebar_item', :locals => { :item => item } %>
         <% end %>
-      <% end %>
-      <% if current_user.is_admin? %>
-        <li>
-          <%= link_to 'Users', property_users_path(current_property)  %>
-        </li>
       <% end %>
     </ul>
   </nav>

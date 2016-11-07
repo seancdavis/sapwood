@@ -23,8 +23,26 @@ describe ElementsController do
   # ---------------------------------------- Index
 
   describe '#index' do
-    before(:each) { @property = property_with_templates }
+    context 'when template is a single_element' do
+      before(:each) do
+        @property = property_with_template_file('single_element')
+        @user = create(:user)
+        @user.properties << @property
+        sign_in @user
+      end
+      it 'returns 200 when no elements' do
+        get :index, :property_id => @property.id, :template_id => 'default'
+        expect(response.status).to eq(200)
+      end
+      it 'redirects to edit form when one element' do
+        el = create(:element, :property => @property)
+        tmpl = @property.find_template('Default')
+        get :index, :property_id => @property.id, :template_id => 'default'
+        expect(response).to redirect_to([:edit, @property, tmpl, el])
+      end
+    end
     context 'for an unassigned property' do
+      before(:each) { @property = property_with_templates }
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
@@ -40,6 +58,7 @@ describe ElementsController do
       end
     end
     context 'for an assigned property' do
+      before(:each) { @property = property_with_templates }
       it 'returns 200 for a user' do
         @user = create(:user)
         @user.properties << @property
@@ -49,6 +68,7 @@ describe ElementsController do
       end
     end
     context 'for a non-existant property' do
+      before(:each) { @property = property_with_templates }
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
@@ -57,6 +77,7 @@ describe ElementsController do
       end
     end
     context 'with templates' do
+      before(:each) { @property = property_with_templates }
       before(:each) do
         @property.update(:templates_raw => File.read(template_config_file))
         @user = create(:user)
@@ -64,6 +85,11 @@ describe ElementsController do
         sign_in @user
       end
       it 'returns 200 when template is found' do
+        get :index, :property_id => @property.id, :template_id => 'default'
+        expect(response.status).to eq(200)
+      end
+      it 'renders the index when one element' do
+        el = create(:element, :property => @property)
         get :index, :property_id => @property.id, :template_id => 'default'
         expect(response.status).to eq(200)
       end
@@ -224,6 +250,19 @@ describe ElementsController do
              :element => data }
         .to change { ActionMailer::Base.deliveries.size }.by(1)
       expect(ActionMailer::Base.deliveries.last.to).to eq([n_user.email])
+    end
+    it 'goes back to the edit form when told so' do
+      user = create(:admin)
+      sign_in user
+      data = {
+        :template_data => { :name => (name = Faker::Lorem.words(4).join(' ')) },
+        :template_name => 'Redirector'
+      }
+      post :create, :property_id => @property.id, :template_id => 'Redirector',
+           :element => data
+      el = Element.find_by_title(name)
+      path = edit_property_template_element_path(@property, 'redirector', el)
+      expect(request).to redirect_to(path)
     end
   end
 

@@ -1,32 +1,27 @@
 <%= page_header :title => current_property.title %>
 
 <section>
-  <div class="block half">
-    <span class="count"><%= current_property.elements.size %></span>
-    <h3>
-      <%= current_property.label('elements').singularize
-                          .pluralize(current_property.elements.size) %>
-    </h3>
-  </div>
-  <div class="block half">
-    <span class="count"><%= current_property_documents.size %></span>
-    <h3>
-      <%= current_property.label('documents').singularize
-                          .pluralize(current_property_documents.size) %>
-    </h3>
-  </div>
-  <div class="block half">
-    <span class="count"><%= current_property.collections.size %></span>
-    <h3>
-      <%= current_property.label('collections').singularize
-                          .pluralize(current_property.collections.size) %>
-    </h3>
-  </div>
-  <div class="block half">
-    <span class="count"><%= visible_property_users.size %></span>
-    <h3>
-      <%= current_property.label('users').singularize
-                          .pluralize(visible_property_users.size) %>
-    </h3>
-  </div>
+  <% if current_property.elements.count > 0 %>
+    <div class="block quiet search">
+      <%= render 'search' %>
+    </div>
+    <div class="block half">
+      <h3>Last Updated</h3>
+      <ul>
+        <%= render :partial => 'element_block',
+                   :collection => current_property.elements.last_updated.limit(5),
+                   :as => :element, :locals => { :date_col => 'updated_at' } %>
+      </ul>
+    </div>
+    <div class="block half">
+      <h3>Newest</h3>
+      <ul>
+        <%= render :partial => 'element_block',
+                   :collection => current_property.elements.last_created.limit(5),
+                   :as => :element, :locals => { :date_col => 'created_at' } %>
+      </ul>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
 </section>

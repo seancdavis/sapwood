@@ -28,6 +28,12 @@ feature 'Deck', :js => true do
       @user.properties << @property
       sign_in @user
     end
+    scenario 'will see catch for no content' do
+      Property.destroy_all
+      visit deck_path
+      expect(page).to have_content('Nothing here!')
+      expect(current_path).to eq('/deck')
+    end
     scenario 'can see all properties' do
       expect(page).to have_content(@property.title)
       (@properties - [@property]).each do |property|

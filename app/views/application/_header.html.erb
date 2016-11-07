@@ -1,4 +1,18 @@
 <header class="main">
-  <%= link_to current_user.p.name, edit_profile_path, :class => 'user' %>
-  <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
+  <span class="user">
+    <span class="avatar"><%= image_tag current_user.avatar_url %></span>
+    <%= current_user.p.name %>
+  </span>
+  <span class="links">
+    <% if current_property && can_view_deck? %>
+      <%= link_to 'Deck', deck_path %>
+      <span class="dot"></span>
+    <% end %>
+    <% if current_property %>
+      <%= link_to 'Profile',
+                  edit_profile_path(:property_id => current_property.id) %>
+      <span class="dot"></span>
+    <% end %>
+    <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
+  </span>
 </header>

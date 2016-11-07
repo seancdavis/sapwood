@@ -1,7 +1,10 @@
 <%= page_header :title => 'My Profile' %>
 
 <section class="body">
-  <%= minimal_form_for current_user, :url => update_profile_path do |f| %>
+  <%= simple_form_for(
+    current_user,
+    :url => update_profile_path(:property_id => params[:property_id])
+  ) do |f| %>
     <div class="block aside">
       <%= f.input :name, :autofocus => true,
                   :required => (params[:setup].to_bool == true) %>
@@ -9,6 +12,14 @@
         <p class="error">Add your name.</p>
       <% end %>
       <%= f.input :email, :required => true, :disabled => true %>
+      <div class="input avatar">
+        <label>Avatar</label>
+        <%= image_tag current_user.avatar_url, :class => 'avatar' %>
+        <br>
+        <%= link_to('Upload New Image', '#',
+                    :class => 'upload-avatar button') %>
+        <%= f.input :avatar_url, :as => :hidden %>
+      </div>
       <h3>Change Your Password</h3>
       <%= f.input :password, :required => (params[:setup].to_bool == true) %>
       <%= f.input :password_confirmation,
@@ -29,4 +40,27 @@
     </div>
     <%= f.submit 'Save' %>
   <% end %>
+</section>
+
+<% uid = SecureRandom.hex(12) %>
+<section class="uploader">
+  <%= s3_uploader_form(
+    :key => "#{Rails.env}/users/#{current_user.id}/${filename}",
+    :as => "user[avatar_url]",
+    :id => "fileupload"
+  ) do %>
+    <%= file_field_tag :file %>
+  <% end %>
+
+  <script id="template-upload" type="text/x-tmpl">
+  <div class="embedded upload">
+    <div class="content">
+      <h3>{%=o.name%}</h3>
+      <div class="progress"><div class="bar" style="width: 0%"></div></div>
+    </div>
+    <% if params[:multipart] %>
+      <p class="waiting">Waiting patiently in line ...</p>
+    <% end %>
+  </div>
+  </script>
 </section>

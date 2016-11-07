@@ -15,7 +15,8 @@
           <tr>
             <th class="icon"></th>
             <% current_template.columns.each do |col| %>
-              <th><%= col.label %></th>
+              <th><%= link_to col.label, list_sort_path(col),
+                              :class => list_sort_class(col) %></th>
             <% end %>
           </tr>
         </thead>
@@ -24,6 +25,7 @@
         </tbody>
       </table>
     </div>
+    <%= paginate @elements %>
   <% else %>
     <%= render 'empty' %>
   <% end %>

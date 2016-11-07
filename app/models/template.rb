@@ -46,6 +46,28 @@ class Template
     attributes['menu_label'] || name.pluralize
   end
 
+  def type
+    attributes['type'] || 'element'
+  end
+
+  def hidden?
+    attributes['hidden'] || false
+  end
+
+  def security
+    (attributes['security'] || {}).to_ostruct
+  end
+
+  def redirect_after_save?
+    return true if attributes['after_save'].nil?
+    return true if attributes['after_save']['redirect'].nil?
+    attributes['after_save']['redirect'].to_bool
+  end
+
+  def page_length
+    attributes['page_length'] || 20
+  end
+
   def associations
     return [] unless attributes['associations']
     associations = []
@@ -59,24 +81,29 @@ class Template
     associations.select { |f| f.name == name }.first
   end
 
+  def default_columns
+    {
+      primary_field.name => primary_field.attributes,
+      "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
+    }
+  end
+
+  def list
+    attributes['list'] || {}
+  end
+
   def columns
     columns = []
-    attributes.to_s
-    config = if attributes['list'] && attributes['list']['columns']
-      attributes['list']['columns']
-    else
-      {
-        primary_field.name => primary_field.attributes,
-        "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
-      }
-    end
-    config.each do |field, attrs|
-      f = if %w(updated_at created_at).include?(field)
+    (list['columns'] || default_columns).each do |name, attrs|
+      f = if %w(updated_at created_at).include?(name)
         Field.new('name' => 'updated_at', 'type' => 'date')
       else
-        find_field(field)
+        find_field(attrs["field"]) || find_field(name)
       end
-      columns << Column.new(attrs.merge('field' => f))
+      # TODO: We don't need to give feedback here, but this should be caught
+      # when the config checker utility is added.
+      next if f.blank?
+      columns << Column.new(attrs.merge('name' => name, 'field' => f))
     end
     columns
   end

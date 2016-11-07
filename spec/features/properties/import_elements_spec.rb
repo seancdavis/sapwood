@@ -6,8 +6,9 @@ feature 'Importing Elements', :js => true do
     @property = property_with_templates
     @user = create(:admin)
     sign_in @user
-    click_link 'Edit'
-    click_link 'Try it out.'
+    click_link @property.title
+    first('.dropdown a.trigger').click
+    click_link 'Import Elements'
   end
 
   scenario 'can be done via csv' do

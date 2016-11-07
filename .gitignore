@@ -21,3 +21,6 @@ config/unicorn.rb
 
 # Uploads
 public/assets/
+
+# Database backups
+db/backups/*.psql

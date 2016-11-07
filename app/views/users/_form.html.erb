@@ -14,7 +14,11 @@
       <% if focused_user.id.present? %>
         <p><em>
           <% if focused_user == current_user %>
-            You need to visit <%= link_to 'your profile', edit_profile_path %>
+            You need to visit
+            <%= link_to(
+              'your profile',
+              edit_profile_path(:property_id => params[:property_id])
+            ) %>
             to edit your profile settings.
           <% else %>
             Only <%= focused_user.p.name %> can edit their name and email.
@@ -22,9 +26,9 @@
         </em></p>
       <% end %>
       <aside>
-        <h3>Permissions</h3>
+        <h3>App Permissions</h3>
         <ul>
-          <li>
+          <li class="clickable">
             <span class="label">Sapwood Admin</span>
             <span class="switch">
               <%= f.check_box :is_admin %>
@@ -32,18 +36,32 @@
             </span>
           </li>
         </ul>
-        <hr>
-        <p><strong>Properties</strong></p>
+        <br><br>
+        <h3>Property Permissions</h3>
         <div class="non-admin">
           <ul class="properties-list">
             <% @properties.each do |property| %>
-              <li>
-                <span class="label"><%= property.title %></span>
-                <span class="switch">
-                  <input id="access-<%= property.id %>" type="checkbox"
-                         name="user[access][<%= property.id %>]" value="1"
-                         <%= 'checked' if focused_user.has_access_to?(property) %>>
-                  <label for="access-<%= property.id %>"></label>
+              <li class="switches">
+                <span class="group-label"><%= property.title %></span>
+                <span class="group clickable">
+                  <span class="label">Admin</span>
+                  <span class="switch access-admin">
+                    <input id="access-admin-<%= property.id %>" type="checkbox"
+                           name="user[access][admin][<%= property.id %>]"
+                           value="1"
+                           <%= 'checked' if focused_user.is_admin_of?(property) %>>
+                    <label for="access-admin-<%= property.id %>"></label>
+                  </span>
+                </span>
+                <span class="group clickable">
+                  <span class="label">Editor</span>
+                  <span class="switch access-editor">
+                    <input id="access-editor-<%= property.id %>" type="checkbox"
+                           name="user[access][editor][<%= property.id %>]"
+                           value="1"
+                           <%= 'checked' if focused_user.has_access_to?(property) %>>
+                    <label for="access-editor-<%= property.id %>"></label>
+                  </span>
                 </span>
               </li>
             <% end %>

@@ -13,8 +13,6 @@
                   :input_html => {
                     :class => ('error' unless current_property.valid_templates?)
                   } %>
-      <%= f.input :collection_types_raw, :label => 'Collections Config (JSON)' %>
-      <%= f.input :forms_raw, :label => 'Responses Config (JSON)' %>
 
       <h3>API Key</h3>
       <p>
@@ -29,31 +27,10 @@
         <span class="color-block"></span>
         <%= f.input :color, :label => false, :wrapper => false %>
       </div>
-      <h3>Labels</h3>
-      <%= f.simple_fields_for :labels do |ff| %>
-        <% Property.labels.each do |label| %>
-          <div class="label-input">
-            <%= ff.input label.to_sym, :required => false,
-                         :autofocus => (label == Property.labels.first),
-                         :wrapper => false,
-                         :input_html => {
-                            :value => current_property.label(label) } %>
-            <span class="switch">
-              <input type="checkbox" value="1" id="label-visibility-<%= label %>"
-                     class="label-visibility" data-label="<%= label %>"
-                     <%= 'checked' if !current_property.label_hidden?(label) %>>
-              <label for="label-visibility-<%= label %>"></label>
-            </span>
-          </div>
-          <br>
-        <% end %>
-      <% end %>
       <br>
       <h3>Import Via CSV</h3>
       <p>Import via CSV is a new feature.
       <%= link_to 'Try it out.', property_import_path(current_property) %></p>
-      <br><br><br>
-      <%= f.input :hidden_labels, :as => :hidden %>
     </aside>
     </div>
     <%= f.submit 'Save Changes' %>

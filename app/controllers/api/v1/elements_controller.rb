@@ -10,8 +10,9 @@ class Api::V1::ElementsController < ApiController
         else
           current_property.elements
         end
-        @elements = if params[:order]
-          @elements.by_field(params[:order])
+        @elements = if params[:sort_by] || params[:order]
+          @elements.by_field(params[:sort_by] || params[:order],
+                             params[:sort_in])
         else
           @elements.by_title
         end
@@ -32,7 +33,10 @@ class Api::V1::ElementsController < ApiController
 
   def create
     @template = current_property.find_template(params[:template])
-    forbidden if @template.nil?
+    forbidden if (
+      @template.try(:security).try(:create).try(:allow).blank? ||
+      @template.try(:security).try(:create).try(:secret) != params[:secret]
+    )
     @element = Element.new(:template_data => element_params.to_hash)
     @element.property = current_property
     @element.template_name = @template.name

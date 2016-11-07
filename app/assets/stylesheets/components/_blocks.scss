@@ -24,6 +24,9 @@ div.block {
   &.aside {
     padding-right: rem(275);
   }
+  &.no-padding {
+    padding: 0;
+  }
 
   aside {
     @include position(absolute, 0 0 null null);

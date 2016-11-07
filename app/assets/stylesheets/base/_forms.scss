@@ -12,7 +12,7 @@ form {
   aside ul li {
     font-size: 0.9em;
     margin: rem(7.5) 0;
-    &.clickable:hover {
+    &.clickable:hover, .clickable:hover {
       cursor: pointer;
     }
   }
@@ -110,6 +110,21 @@ textarea {
   border: 1px solid $md-grey;
   resize: vertical;
   border-radius: $base-border-radius;
+}
+
+span.error {
+  display: block;
+  margin-top: rem(20);
+  font-weight: 600;
+  font-size: rem(18);
+  font-style: italic;
+  color: $error;
+  & + .body {
+    margin-top: rem(10);
+    .CodeMirror {
+      border: 1px solid $error;
+    }
+  }
 }
 
 form textarea.error {

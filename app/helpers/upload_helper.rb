@@ -4,6 +4,10 @@ module UploadHelper
     key += "#{DateTime.now.strftime("%y%m%d-%H%M%S")}/${filename}"
   end
 
+  def avatar_upload_key
+    "#{Rails.env}/users/#{current_user.id}/${filename}"
+  end
+
   def s3_uploader_form(options = {}, &block)
     uploader = S3Uploader.new(options)
     form_tag(uploader.url, uploader.form_options) do

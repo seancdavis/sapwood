@@ -1,6 +1,9 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui/sortable
+#= require codemirror/codemirror
+#= require codemirror/keymap/sublime
+#= require codemirror/mode/javascript
 #= require pickadate/picker
 #= require pickadate/picker.date
 #= require underscore

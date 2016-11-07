@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, :except => [:auth]
   before_filter :verify_profile_completion, :except => [:auth]
 
-  helper_method :current_document,
+  helper_method :is_property_admin?,
+                :current_document,
                 :current_element,
                 :current_element?,
                 :current_property,
@@ -79,6 +80,10 @@ class ApplicationController < ActionController::Base
       current_property && current_property.id.present?
     end
 
+    def is_property_admin?
+      @is_property_admin ||= current_user.is_admin_of?(current_property)
+    end
+
     # ------------------------------------------ Templates
 
     def current_template
@@ -117,7 +122,7 @@ class ApplicationController < ActionController::Base
         users = if current_user.is_admin?
           current_property.users_with_access
         else
-          current_property.users
+          current_property.users - User.admins
         end
         users.sort_by { |u| u.p.name }
       end

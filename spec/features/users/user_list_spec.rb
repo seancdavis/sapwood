@@ -12,6 +12,7 @@ feature 'User List', :js => true do
       @admin = create(:admin)
       sign_in @admin
       click_link @property.title
+      first('.dropdown a.trigger').click
       click_link 'Users'
     end
     scenario 'does not contain users that do not have access' do
@@ -35,7 +36,8 @@ feature 'User List', :js => true do
       @admin = create(:admin)
       sign_in @user_02
       click_link @property.title
-      expect(page).to have_no_content('Users')
+      # expect(page).to have_no_content('Users')
+      expect(page).to have_no_css('.dropdown a.trigger')
     end
   end
 

@@ -20,9 +20,15 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Plugins
 
-  include Presenter
+  include Presenter, PgSearch
 
   has_superslug :title, :slug, :context => :property
+
+  pg_search_scope :search_by_title,
+                  :against => :title,
+                  :using => {
+                    :tsearch => { :prefix => true, :dictionary => "english" }
+                  }
 
   # ---------------------------------------- Attributes
 
@@ -36,9 +42,20 @@ class Element < ActiveRecord::Base
 
   scope :with_template, ->(name) { where(:template_name => name.split(',')) }
   scope :by_title, -> { order(:title => :asc) }
-  scope :by_field, ->(attr) { order("template_data ->> '#{attr}'") }
+  scope :by_field, ->(f, d = 'ASC') {
+    return order("#{f} #{d}") if column_names.include?(f)
+    if f.split(':').size > 1
+      order("template_data #>> '{#{f.split(':').join(', ')}}' #{d}")
+    else
+      order("template_data ->> '#{f}' #{d}")
+    end
+  }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
+  scope :last_updated, -> {
+    where('updated_at != created_at').order(:updated_at => :desc)
+  }
+  scope :last_created, -> { order(:created_at => :desc) }
 
   # ---------------------------------------- Validations
 

@@ -1,33 +1,47 @@
 require 'rails_helper'
 
-feature 'Property Settings', :js => true do
+feature 'Property', :js => true do
 
   background do
     @property = create(:property)
-    @user = create(:admin)
-    sign_in @user
   end
 
-  scenario 'enable a user to update the title' do
-    within('.properties') { click_link 'Edit' }
-    # Check that the API key is visible.
-    expect(page).to have_content(@property.api_key)
-    # Fill in the title and submit.
-    new_title = Faker::Lorem.words(5).join(' ')
-    fill_in 'property[title]', :with => new_title
-    click_button 'Save Changes'
-    expect(page).to have_content(new_title)
-  end
-
-  describe 'hiding sidebar labels' do
-    background { within('.properties') { click_link 'Edit' } }
-    scenario 'all should be shown/checked by default' do
-      expect(page).to have_css('input.label-visibility', :visible => false,
-                               :count => 5)
+  context 'as an admin' do
+    background do
+      @user = create(:admin)
+      sign_in @user
+      click_link @property.title
+      within('aside') { first('.dropdown a.trigger').click }
     end
-    scenario 'toggling will add a hidden class to the parent' do
-      first('.label-input label').click
-      expect(page).to have_css('.label-input.hidden', :count => 1)
+
+    scenario 'enable a user to update the title' do
+      within('aside') { click_link('General') }
+      new_title = Faker::Lorem.words(5).join(' ')
+      fill_in 'property[title]', :with => new_title
+      click_button 'Save Changes'
+      expect(page).to have_css('aside span.title', :text => new_title)
+    end
+
+    scenario 'can edit data configuration' do
+      within('aside') { click_link('Data Config') }
+      first('.CodeMirror').send_keys('[{"title": "Template 1"}]')
+      click_button 'Save Changes'
+      expect(page).to have_css('aside li', :text => 'Template 1')
+    end
+
+    scenario 'displays the API key' do
+      within('aside') { click_link('API Key') }
+      expect(page).to have_content(@property.api_key)
+    end
+  end
+
+  context 'as a regular user' do
+    scenario 'can not see link to any of the settings' do
+      @user = create(:user)
+      @user.properties << @property
+      sign_in @user
+      click_link @property.title
+      expect(page).to have_no_css('.dropdown a.trigger')
     end
   end
 

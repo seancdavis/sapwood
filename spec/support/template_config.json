@@ -12,7 +12,17 @@
   {
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
+    "page_length": 50,
+    "security": {
+      "create": {
+        "allow": true,
+        "secret": "b89b279213b15fa53c4a22f9"
+      }
+    },
     "list": {
+      "order": {
+        "by": "description"
+      },
       "columns": {
         "description": {},
         "name": { "primary": true },
@@ -39,10 +49,6 @@
       "address": {
         "type": "geocode",
         "label": "Address"
-      },
-      "image": {
-        "type": "document",
-        "label": "Image"
       },
       "comments": {
         "type": "wysiwyg",
@@ -84,6 +90,10 @@
       "complete": {
         "type": "boolean"
       },
+      "dropdown_menu": {
+        "type": "select",
+        "options": ["Option 1", "Option 2", "Option 3"]
+      },
       "date": {
         "type": "date",
         "format": "yyyy-mm-dd"
@@ -97,6 +107,18 @@
   // of a belongs_to association.
   {
     "title": "More Options",
+    // And show an example of missing a secret.
+    "security": {
+      "create": {
+        "allow": true
+      }
+    },
+    "list": {
+      "order": {
+        "by": "name",
+        "in": "desc"
+      }
+    },
     "fields": {
       "name": {
         "primary": true
@@ -143,6 +165,24 @@
   {
     "title": "Child",
     "namespace": "Parent",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  // Redirect option
+  {
+    "title": "Redirector",
+    "after_save": {
+      "redirect": false
+    },
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  // Not shown in menu
+  {
+    "title": "Hidden",
+    "hidden": true,
     "fields": {
       "name": { "primary": true }
     }

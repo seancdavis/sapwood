@@ -1,0 +1,5 @@
+img.avatar {
+  @include size(rem(40));
+  border-radius: 100%;
+  overflow: hidden;
+}

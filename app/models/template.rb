@@ -59,7 +59,9 @@ class Template
   end
 
   def redirect_after_save?
-    attributes['after_save'] && attributes['after_save']['redirect']
+    return true if attributes['after_save'].nil?
+    return true if attributes['after_save']['redirect'].nil?
+    attributes['after_save']['redirect'].to_bool
   end
 
   def page_length

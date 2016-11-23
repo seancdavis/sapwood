@@ -6,13 +6,13 @@ class Api::V1::ElementsController < ApiController
         options = {}
         @elements = if params[:template]
           options = { :includes => params[:includes] } if params[:includes]
-          current_property.elements.with_template(params[:template]).with_associations
+          current_property.elements.with_template(params[:template])
         else
-          current_property.elements.with_associations
+          current_property.elements
         end
         @elements = if params[:sort_by] || params[:order]
           @elements.by_field(params[:sort_by] || params[:order],
-                             params[:sort_in])
+                             params[:sort_in]).with_associations
         else
           @elements.by_title.with_associations
         end

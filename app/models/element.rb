@@ -112,7 +112,7 @@ class Element < ActiveRecord::Base
     ProcessImages.delay.call(:document => self) if image? && !processed?
   end
 
-  after_commit :update_associations
+  after_save :update_associations
 
   def update_associations
     return if template.blank?
@@ -121,7 +121,7 @@ class Element < ActiveRecord::Base
     element_fields.collect(&:name).each do |f|
       ids += (template_data[f] || '').split(',').map(&:to_i)
     end
-    self.associated_elements = Element.where(:id => ids)
+    self.associated_elements = property.elements.where(:id => ids)
     SapwoodCache.rebuild_element(self)
   end
 

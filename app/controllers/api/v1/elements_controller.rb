@@ -27,7 +27,8 @@ class Api::V1::ElementsController < ApiController
         @element = current_property.elements.where(:id => params[:id])
                                    .with_associations[0]
         not_found if @element.nil?
-        render(:json => @element.to_json)
+        options = params[:includes] ? { :includes => params[:includes] } : {}
+        render(:json => @element.to_json(options))
       end
     end
   end

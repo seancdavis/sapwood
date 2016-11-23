@@ -6,15 +6,15 @@ class Api::V1::ElementsController < ApiController
         options = {}
         @elements = if params[:template]
           options = { :includes => params[:includes] } if params[:includes]
-          current_property.elements.with_template(params[:template])
+          current_property.elements.with_template(params[:template]).with_associations
         else
-          current_property.elements
+          current_property.elements.with_associations
         end
         @elements = if params[:sort_by] || params[:order]
           @elements.by_field(params[:sort_by] || params[:order],
                              params[:sort_in])
         else
-          @elements.by_title
+          @elements.by_title.with_associations
         end
         render(:json => @elements.to_json(options))
       end
@@ -24,9 +24,10 @@ class Api::V1::ElementsController < ApiController
   def show
     respond_to do |f|
       f.json do
-        @element = current_property.elements.find_by_id(params[:id])
+        @element = current_property.elements.where(:id => params[:id])
+                                   .with_associations[0]
         not_found if @element.nil?
-        render(:json => @element.to_json(:includes => params[:includes]))
+        render(:json => @element.to_json)
       end
     end
   end
@@ -42,7 +43,7 @@ class Api::V1::ElementsController < ApiController
     @element.template_name = @template.name
     if @element.save
       @element.send_notifications!(action_name)
-      render :json => @element
+      render :json => @element.to_json
     else
       render :json => @element.errors.messages
     end

@@ -36,10 +36,16 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  belongs_to :property, :touch => true
+  belongs_to :property
+
+  has_many :element_associations, :foreign_key => 'source_id',
+           :dependent => :destroy
+  has_many :associated_elements, :through => :element_associations,
+           :source => 'target'
 
   # ---------------------------------------- Scopes
 
+  scope :with_associations, -> { includes(:property, :associated_elements) }
   scope :with_template, ->(name) { where(:template_name => name.split(',')) }
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(f, d = 'ASC') {
@@ -104,6 +110,19 @@ class Element < ActiveRecord::Base
   def process_images!
     return nil if Rails.env.test?
     ProcessImages.delay.call(:document => self) if image? && !processed?
+  end
+
+  after_commit :update_associations
+
+  def update_associations
+    return if template.blank?
+    element_fields = template.fields.select { |f| f.element? || f.elements? }
+    ids = []
+    element_fields.collect(&:name).each do |f|
+      ids += (template_data[f] || '').split(',').map(&:to_i)
+    end
+    self.associated_elements = Element.where(:id => ids)
+    SapwoodCache.rebuild_element(self)
   end
 
   # ---------------------------------------- Document Properties
@@ -188,7 +207,7 @@ class Element < ActiveRecord::Base
   # ---------------------------------------- Instance Methods
 
   def template
-    if !Rails.env.production? || id.blank?
+    if !SapwoodCache.enabled? || id.blank?
       return property.find_template(template_name)
     end
     Rails.cache.fetch("_p#{property_id}_e#{id}_template") do
@@ -207,6 +226,12 @@ class Element < ActiveRecord::Base
 
   def has_association?(name)
     association_names.include?(name.to_s)
+  end
+
+  # This is the backwards association
+  def associated_to_as_target
+    ElementAssociation.where(:target_id => id).includes(:source)
+      .collect(&:source)
   end
 
   def field_names
@@ -243,7 +268,7 @@ class Element < ActiveRecord::Base
     title
   end
 
-  def as_json(options = {})
+  def to_hash(options = {})
     response = {
       :id => id,
       :title => title,
@@ -281,6 +306,16 @@ class Element < ActiveRecord::Base
     response
   end
 
+  def as_json(options = {})
+    return to_hash(options) unless SapwoodCache.enabled?
+    ext = ''
+    options.each { |k,v| ext += "_#{k}_#{v}" }
+    Rails.cache.fetch("_p#{property_id}_e#{id}_as_json#{ext}") do
+      Rails.logger.info "REBUILD CACHE: [_p#{property_id}_e#{id}_as_json#{ext}]"
+      to_hash(options)
+    end
+  end
+
   def method_missing(method, *arguments, &block)
     return super unless has_field?(method.to_s) || has_association?(method.to_s)
     if has_field?(method.to_s)
@@ -288,29 +323,29 @@ class Element < ActiveRecord::Base
       case field.type
       when 'element'
         return nil if template_data[method.to_s].blank?
-        unless Rails.env.production?
-          return property.elements.find_by_id(template_data[method.to_s])
+        unless SapwoodCache.enabled?
+          return associated_elements
+            .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          property.elements.find_by_id(template_data[method.to_s])
+          associated_elements
+            .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
       when 'elements'
         return [] if template_data[method.to_s].blank?
         element_ids = template_data[method.to_s].split(',').collect(&:to_i)
-        unless Rails.env.production?
-          raw_els = property.elements.where(:id => element_ids) || []
+        unless SapwoodCache.enabled?
           elements = []
           element_ids.each do |id|
-            el = raw_els.select { |e| e.id == id }[0]
+            el = associated_elements.select { |e| e.id == id }[0]
             elements << el unless el.blank?
           end
           return elements
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
-          raw_els = property.elements.where(:id => element_ids) || []
           elements = []
           element_ids.each do |id|
-            el = raw_els.select { |e| e.id == id }[0]
+            el = associated_elements.select { |e| e.id == id }[0]
             elements << el unless el.blank?
           end
           return elements
@@ -325,7 +360,7 @@ class Element < ActiveRecord::Base
       end
     elsif has_association?(method.to_s)
       association = template.find_association(method.to_s)
-      unless Rails.env.production?
+      unless SapwoodCache.enabled?
         return property
           .elements.by_title.with_template(association.template)
           .reject { |e| e.template_data[association.field].blank? }

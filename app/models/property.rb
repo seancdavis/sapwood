@@ -44,11 +44,11 @@ class Property < ActiveRecord::Base
     update_columns(:api_key => SecureRandom.hex(25))
   end
 
-  after_touch :expire_caches
   after_save :expire_caches
 
-  def expire_caches
-    Rails.cache.delete_matched(/\_p#{id}\_(.*)/) if Rails.env.production?
+  def expire_caches(force = false)
+    return true unless force || (SapwoodCache.enabled? && templates_raw_changed?)
+    SapwoodCache.rebuild_property(self)
   end
 
   # ---------------------------------------- Instance Methods

@@ -20,6 +20,8 @@ body {
 // ---------------------------------------- Content Base
 
 #container .page-content {
+  position: relative;
+  z-index: 1;
 }
 
 

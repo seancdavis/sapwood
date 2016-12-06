@@ -91,7 +91,7 @@ class Element < ActiveRecord::Base
           .geocode(val).to_hash.merge(:raw => val)
       end
     end
-    update_columns(:template_data => template_data)
+    update(:template_data => template_data, :skip_geocode => true)
   end
 
   after_save :init_webhook
@@ -196,12 +196,12 @@ class Element < ActiveRecord::Base
 
   def archive!
     return false unless document?
-    update_columns(:archived => true)
+    update(:archived => true, :skip_geocode => true)
   end
 
   def processed!
     return false unless document?
-    update_columns(:processed => true)
+    update(:processed => true, :skip_geocode => true)
   end
 
   # ---------------------------------------- Instance Methods

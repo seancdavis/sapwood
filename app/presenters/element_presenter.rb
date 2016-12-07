@@ -19,7 +19,7 @@ class ElementPresenter
 
   def uploaded_at
     return nil unless @obj.document?
-    @obj.created_at.strftime('%m.%d.%y')
+    @obj.created_at.strftime('%b %d, %Y')
   end
 
   def thumb_url(size = :small)

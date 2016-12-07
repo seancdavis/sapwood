@@ -50,6 +50,19 @@ class Api::V1::ElementsController < ApiController
     end
   end
 
+  def generate_url
+    not_found unless params[:element_id] && params[:secret]
+    @element = current_property.elements.find_by_id(params[:element_id])
+    not_found if @element.blank?
+    @template = @element.template
+    not_found unless @template.private? &&
+                     @template.security.try(:read).try(:secret).present? &&
+                     params[:secret] == @template.security.read.secret
+    url = GetDocumentUrl.call :document => @element,
+                              :expires_in => params[:expires_in]
+    render :text => url
+  end
+
   def webhook
     Rails.logger.debug "****************************************"
     Rails.logger.debug "\n----- INCOMING WEBHOOK -----\n"

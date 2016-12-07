@@ -30,6 +30,7 @@ class DocumentsController < ApplicationController
       current_property.elements.with_template(current_template.name)
         .by_title.page(params[:page] || 1).per(12)
     end
+    @elements = @documents
     render :partial => 'list' if request.xhr?
   end
 

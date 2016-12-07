@@ -105,7 +105,7 @@ class Element < ActiveRecord::Base
     self.title = self.send(template.primary_field.name)
   end
 
-  after_create :process_images!, :if => :document?
+  after_create :process_images!, :if => :public_document?
 
   def process_images!
     return nil if Rails.env.test?
@@ -129,7 +129,7 @@ class Element < ActiveRecord::Base
 
   def set_document_title
     return false unless document?
-    if title.blank? || url.present?
+    if title.blank? && url.present?
       self.title = title_from_filename
       return unless template.primary_field
       self.template_data[template.primary_field.name.to_sym] = title_from_filename
@@ -144,6 +144,10 @@ class Element < ActiveRecord::Base
   def document?
     return false unless template?
     template.document?
+  end
+
+  def public_document?
+    public? && document?
   end
 
   def filename
@@ -202,6 +206,16 @@ class Element < ActiveRecord::Base
   def processed!
     return false unless document?
     update(:processed => true, :skip_geocode => true)
+  end
+
+  def private?
+    return false unless template?
+    template.private?
+  end
+
+  def public?
+    return false unless template?
+    template.public?
   end
 
   # ---------------------------------------- Instance Methods
@@ -288,7 +302,7 @@ class Element < ActiveRecord::Base
         response[k.to_sym] = response[k.to_sym].marshal_dump
       end
     end
-    if document?
+    if document? && public?
       response[:url] = url
       if image? && processed?
         response[:versions] = {}

@@ -90,4 +90,26 @@ describe Template, :type => :model do
     end
   end
 
+  describe '#private?, #public?, #aws_acl' do
+    before(:each) { @property = property_with_template_file('private_docs') }
+    it 'considers a template public unless specified as private' do
+      public_tmpl = @property.find_template('Public')
+      expect(public_tmpl.private?).to eq(false)
+      expect(public_tmpl.public?).to eq(true)
+      private_tmpl = @property.find_template('Private')
+      expect(private_tmpl.private?).to eq(true)
+      expect(private_tmpl.public?).to eq(false)
+      # It's private even though it won't be accessible via the API.
+      invalid_tmpl = @property.find_template('Invalid')
+      expect(invalid_tmpl.private?).to eq(true)
+      expect(invalid_tmpl.public?).to eq(false)
+    end
+    it 'returns the correct ACL upload value' do
+      public_tmpl = @property.find_template('Public')
+      expect(public_tmpl.aws_acl).to eq('public-read')
+      private_tmpl = @property.find_template('Private')
+      expect(private_tmpl.aws_acl).to eq('private')
+    end
+  end
+
 end

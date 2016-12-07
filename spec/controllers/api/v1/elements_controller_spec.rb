@@ -272,4 +272,42 @@ describe Api::V1::ElementsController do
     end
   end
 
+  # ---------------------------------------- Generate URL
+
+  describe '#generate_url' do
+    before(:each) { @property = property_with_template_file('private_docs') }
+    it 'return 200 when everything is in place' do
+      element = create(:element, :document, :property => @property,
+                       :template_name => 'Private')
+      request = post :generate_url, :property_id => @property.id,
+                     :api_key => @property.api_key, :format => :json,
+                     :element_id => element.id, :secret => 'abc123'
+      expect(request.body.starts_with?('http')).to eq(true)
+    end
+    it 'returns a 404 without an element id' do
+      expect {
+        post :generate_url, :property_id => @property.id, :secret => 'abc123',
+             :api_key => @property.api_key, :format => :json
+      }.to raise_error(ActionController::RoutingError)
+    end
+    it 'return 404 when secret does not match' do
+      element = create(:element, :document, :property => @property,
+                       :template_name => 'Private')
+      expect {
+        post :generate_url, :property_id => @property.id,
+             :api_key => @property.api_key, :format => :json,
+             :element_id => element.id, :secret => 'abc1234'
+      }.to raise_error(ActionController::RoutingError)
+    end
+    it 'return 404 when there is no secret' do
+      element = create(:element, :document, :property => @property,
+                       :template_name => 'Invalid')
+      expect {
+        post :generate_url, :property_id => @property.id,
+             :api_key => @property.api_key, :format => :json,
+             :element_id => element.id
+      }.to raise_error(ActionController::RoutingError)
+    end
+  end
+
 end

@@ -5,7 +5,8 @@
     :key => document_upload_key,
     :as => "document[url]",
     :id => "fileupload-#{uid}",
-    :html => { :multipart => params[:multipart] || false }
+    :html => { :multipart => params[:multipart] || false },
+    :acl => current_template.aws_acl
   ) do %>
     <%= file_field_tag :file, :multiple => params[:multipart] || false %>
   <% end %>

@@ -9,10 +9,12 @@ body {
   background: $lt-grey;
 
   #container {
-    max-width: rem(800);
     margin: rem(25) auto;
-    &.sidebar {
-      padding-left: rem(250);
+    @include desktop {
+      max-width: rem(800);
+      &.sidebar {
+        padding-left: rem(250);
+      }
     }
   }
 }
@@ -20,16 +22,27 @@ body {
 // ---------------------------------------- Content Base
 
 #container .page-content {
+  position: relative;
+  z-index: 1;
 }
 
 
 // ---------------------------------------- Page Header
 
 #container .page-content header.page {
+  margin-top: rem(30);
+  text-align: center;
+  @include desktop {
+    margin-top: 0;
+    text-align: left;
+  }
   h1 {
-    display: inline-block;
     vertical-align: middle;
-    margin: 0 rem(15) 0 0;
+    margin: 0 rem(15) rem(5) 0;
+    @include desktop {
+      display: inline-block;
+      margin-bottom: 0;
+    }
   }
   .primary-action {
     position: relative;

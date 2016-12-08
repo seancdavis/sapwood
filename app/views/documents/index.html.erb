@@ -12,7 +12,8 @@
     :post => property_template_documents_path(current_property, current_template),
     :key => document_upload_key,
     :html => { :multipart => true },
-    :as => "document[url]"
+    :as => "document[url]",
+    :acl => current_template.aws_acl
   ) do %>
     <%= file_field_tag :file, :multiple => true %>
   <% end %>
@@ -29,5 +30,5 @@
 </section>
 
 <section class="body">
-  <%= render 'list' %>
+  <%= render(current_template.private? ? 'elements/list' : 'list') %>
 </section>

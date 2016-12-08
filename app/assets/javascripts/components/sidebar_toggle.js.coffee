@@ -7,6 +7,6 @@ class App.Components.SidebarToggle extends Backbone.View
 
   toggleSidebar: (e) ->
     e.preventDefault()
-    $('#sidebar-trigger').toggleClass('active')
-    $('aside.main').toggleClass('hidden')
+    $('#sidebar-trigger').toggleClass('toggle')
+    $('aside.main').toggleClass('toggle')
     $('#container').toggleClass('sidebar')

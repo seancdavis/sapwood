@@ -38,6 +38,18 @@ class Template
     respond_to?(:type) && type == 'document'
   end
 
+  def aws_acl
+    private? ? 'private' : 'public-read'
+  end
+
+  def private?
+    security.try(:private).to_bool
+  end
+
+  def public?
+    !private?
+  end
+
   def path_method
     "property_template_#{document? ? 'documents' : 'elements'}_path"
   end

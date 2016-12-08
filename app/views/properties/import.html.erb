@@ -28,6 +28,8 @@
                   :collection => current_property
                     .templates.map { |t| [t.name, t.name] } %>
     </div>
-    <%= f.submit 'Import Elements' %>
+    <div class="form-actions">
+      <%= f.submit 'Import Elements' %>
+    </div>
   <% end %>
 </section>

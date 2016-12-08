@@ -7,26 +7,4 @@
     :options => { :class => 'new button' }
   }) %>
 
-<section class="body">
-  <% if @elements.present? %>
-    <div class="block">
-      <table>
-        <thead>
-          <tr>
-            <th class="icon"></th>
-            <% current_template.columns.each do |col| %>
-              <th><%= link_to col.label, list_sort_path(col),
-                              :class => list_sort_class(col) %></th>
-            <% end %>
-          </tr>
-        </thead>
-        <tbody class="elements">
-          <%= render @elements %>
-        </tbody>
-      </table>
-    </div>
-    <%= paginate @elements %>
-  <% else %>
-    <%= render 'empty' %>
-  <% end %>
-</section>
+<%= render 'list' %>

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
           post 'webhook', :on => :collection if Rails.env.development?
         end
         resources :collections, :only => [:index, :show]
+        post 'generate_url' => 'elements#generate_url'
       end
     end
   end

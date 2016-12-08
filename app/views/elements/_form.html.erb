@@ -26,22 +26,28 @@
             <dd><%= current_element.p.updated_at %></dd>
           <% end %>
           <% if current_template.document? %>
-            <dt>Uploaded:</dt>
-            <dd><%= current_element.p.uploaded_at %></dd>
             <dt>URL:</dt>
-            <dd><%= link_to current_element.url, current_element.url %></dd>
+            <dd>
+              <% if current_element.private? %>
+                [Private]
+              <% else %>
+                <%= link_to current_element.url, current_element.url %>
+              <% end %>
+            </dd>
           <% end %>
           <dt>Template:</dt>
           <dd><%= current_template.title %></dd>
         </dl>
       </aside>
     </div>
-    <%= f.submit "Save #{current_template.title}" %>
-    <% if current_element? %>
-      <%= link_to "Delete #{current_template.title}",
-                  [current_property, current_template, current_element],
-                  :class => 'button delete', :method => :delete,
-                  :data => { :confirm => 'Are you sure?' } %>
-    <% end %>
+    <div class="form-actions">
+      <%= f.submit "Save #{current_template.title}" %>
+      <% if current_element? %>
+        <%= link_to "Delete #{current_template.title}",
+                    [current_property, current_template, current_element],
+                    :class => 'button delete', :method => :delete,
+                    :data => { :confirm => 'Are you sure?' } %>
+      <% end %>
+    </div>
   <% end %>
 </section>

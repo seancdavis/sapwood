@@ -61,7 +61,7 @@ feature 'Geocoder', :js => true do
     end
     scenario 'provides geocode feedback for a valid address' do
       fill_in 'element[template_data][address]', :with => 'lytle place, 45202'
-      expect(page).to have_content('Lytle St, Cincinnati, OH 45202, USA')
+      expect(page).to have_content('621 E Mehring Way, Cincinnati, OH 45202')
     end
     scenario 'provides feedback if it can not locate an address' do
       fill_in 'element[template_data][address]', :with => 'jkhjklhjkljkhlkjlh'
@@ -79,7 +79,7 @@ feature 'Geocoder', :js => true do
       click_link @element.title
       value = find_field('element[template_data][address]').value
       expect(value).to eq('lytle place, 45202')
-      expect(page).to have_content('Lytle St, Cincinnati, OH 45202, USA')
+      expect(page).to have_content('621 E Mehring Way, Cincinnati, OH 45202')
     end
   end
 

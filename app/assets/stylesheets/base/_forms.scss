@@ -178,3 +178,14 @@ form .error {
   font-size: 90%;
   color: $error;
 }
+
+form .form-actions {
+  text-align: center;
+  @include tablet {
+    padding-left: rem(15);
+    text-align: left;
+  }
+  @include desktop {
+    padding-left: 0;
+  }
+}

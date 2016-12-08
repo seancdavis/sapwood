@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Public",
+    "type": "document",
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  {
+    "title": "Private",
+    "type": "document",
+    "security": {
+      "private": true,
+      "read": {
+        "secret": "abc123"
+      }
+    },
+    "fields": {
+      "name": { "primary": true }
+    }
+  },
+  {
+    "title": "Invalid",
+    "type": "document",
+    "security": { "private": true },
+    "fields": {
+      "name": { "primary": true }
+    }
+  }
+]

@@ -12,6 +12,29 @@ footer.main {
 
 }
 
-#container.sidebar + footer.main {
+body.deck.show, body.sessions, body.passwords {
+  #container + footer.main {
+    display: none;
+    @include desktop {
+      display: block;
+    }
+  }
+}
+
+#container + footer.main {
+  z-index: 999;
   background: $light;
+  @include desktop {
+    z-index: 0;
+    background: transparent;
+  }
+}
+
+#container.sidebar + footer.main {
+  display: none;
+  @include desktop {
+    display: block;
+    z-index: 999;
+    background: $light;
+  }
 }

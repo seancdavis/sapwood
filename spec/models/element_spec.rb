@@ -38,7 +38,7 @@ RSpec.describe Element, :type => :model do
                   province district provider full_address is_us? ll precision
                   district_fips state_fips block_fips sub_premise raw)
         keys.each do |key|
-          expect(@element.template_data['address'].keys).to include(key.to_sym)
+          expect(@element.template_data['address'].keys).to include(key)
         end
       end
       it 'returns a OpenStruct object when accessed through dynamic method' do

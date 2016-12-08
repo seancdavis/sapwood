@@ -1,5 +1,9 @@
 .pagination {
+  text-align: center;
   margin-top: 15px;
+  @include desktop {
+    text-align: left;
+  }
   a {
     display: inline-block;
     margin: 5px;

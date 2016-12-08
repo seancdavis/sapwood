@@ -1,13 +1,13 @@
 
 // ---------------------------------------- Vendor
 
+@import 'bourbon';
+@import 'normalize-rails';
 @import 'trumbowyg';
 @import 'jquery-ui/sortable';
 @import 'codemirror/codemirror';
 @import 'pickadate/default';
 @import 'pickadate/default.date';
-@import 'bourbon';
-@import 'normalize-rails';
 @import 'base/base';
 
 // ---------------------------------------- Components

@@ -7,6 +7,27 @@
             style="background: <%= current_property.color %>"></span>
       <span class="title">
         <%= link_to current_property.title, current_property %>
+        <div class="dropdown right mobile user">
+          <a href="#" class="trigger"><i class="icon-user"></i></a>
+          <ul class="mobile">
+            <li><h3><%= current_user.name %></h3></li>
+            <% if current_property && can_view_deck? %>
+              <li><%= link_to 'Deck', deck_path %></li>
+            <% end %>
+            <% if current_property %>
+              <li>
+                <%= link_to(
+                  'Profile',
+                  edit_profile_path(:property_id => current_property.id)
+                ) %>
+              </li>
+            <% end %>
+            <li>
+              <%= link_to 'Sign Out', destroy_user_session_path,
+                          :method => :delete %>
+            </li>
+          </ul>
+        </div>
         <% if is_property_admin? %>
           <div class="dropdown right">
             <a href="#" class="trigger"><i class="icon-settings"></i></a>

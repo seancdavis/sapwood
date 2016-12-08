@@ -3,11 +3,24 @@
   z-index: 99999;
   text-transform: uppercase;
   font-size: 0.8em;
-  color: $light;
-  &.active {
-    color: $dark;
+  color: $dark;
+  &.toggle {
+    color: $light;
     span {
-      display: none;
+      display: inline;
+    }
+  }
+  span {
+    display: none;
+  }
+  @include desktop {
+    color: $light;
+    span {
+      display: inline;
+    }
+    &.toggle {
+      color: $dark;
+      span { display: none; }
     }
   }
 }
@@ -15,13 +28,21 @@
 aside.main {
   @include position(fixed, 0 null null 0);
   @include size(rem(250) 100vh);
+  display: none;
   padding-bottom: 50px;
   overflow-y: scroll;
   box-sizing: border-box;
   background: $light;
   box-shadow: $box-shadow;
-  &.hidden {
-    display: none;
+  z-index: 99;
+  &.toggle {
+    display: block;
+  }
+  @include desktop {
+    display: block;
+    &.toggle {
+      display: none;
+    }
   }
 
   div.controls {
@@ -45,8 +66,13 @@ aside.main {
           margin-right: rem(5);
         }
         &.title .dropdown {
-          display: inline-block;
           float: right;
+          & + .dropdown {
+            margin-right: rem(10);
+            @include desktop {
+              margin-right: 0;
+            }
+          }
           &.active > a {
             padding: rem(10);
             background: $light;

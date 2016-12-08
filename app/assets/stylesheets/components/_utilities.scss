@@ -1,3 +1,16 @@
 .hidden {
   visibility: hidden;
 }
+
+.mobile {
+  @include desktop {
+    display: none;
+  }
+}
+
+.desktop {
+  display: none;
+  @include desktop {
+    display: inherit;
+  }
+}

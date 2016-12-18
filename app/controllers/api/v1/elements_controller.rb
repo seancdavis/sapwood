@@ -42,6 +42,7 @@ class Api::V1::ElementsController < ApiController
     @element = Element.new(:template_data => element_params.to_hash)
     @element.property = current_property
     @element.template_name = @template.name
+    @element.url = params[:url] if @template.document?
     if @element.save
       @element.send_notifications!(action_name)
       render :json => @element.to_json

@@ -99,7 +99,9 @@ class Element < ActiveRecord::Base
   before_validation :set_title
 
   def set_title
-    set_document_title if document?
+    if document? && self.send(template.primary_field.name).blank?
+      set_document_title
+    end
     return if template.blank? || template.primary_field.blank? ||
               self.send(template.primary_field.name).blank?
     self.title = self.send(template.primary_field.name)

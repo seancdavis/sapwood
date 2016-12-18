@@ -329,6 +329,11 @@ RSpec.describe Element, :type => :model do
                      :template_data => {})
         expect(doc.title).to eq('Example')
       end
+      it 'does not set the title from the filename if primary field present' do
+        doc = create(:element, :document, :from_system, :property => @property,
+                     :template_data => { :name => 'Testing 123' })
+        expect(doc.title).to eq('Testing 123')
+      end
       it 'does not set the title if it already exists' do
         el = create(:element, :document, :title => 'Title')
         expect(el.title).to eq('Title')

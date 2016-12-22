@@ -40,6 +40,7 @@ class SapwoodCache
     return unless SapwoodCache.enabled?
     SapwoodCache.delete_property(property)
     property.elements.each { |el| el.reload.as_json }
+    property.elements.floating.each { |el| el.destroy }
   end
 
   def rebuild_element(element)

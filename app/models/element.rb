@@ -62,6 +62,10 @@ class Element < ActiveRecord::Base
     where('updated_at != created_at').order(:updated_at => :desc)
   }
   scope :last_created, -> { order(:created_at => :desc) }
+  scope :floating, -> {
+    where('updated_at <= ?', DateTime.now - 1.week).to_a
+      .select { |el| el.template.blank? }
+  }
 
   # ---------------------------------------- Validations
 
@@ -122,7 +126,7 @@ class Element < ActiveRecord::Base
     ids = []
     element_fields.collect(&:name).each do |f|
       ids += (template_data[f] || '').split(',').map(&:to_i)
-    end
+  end
     self.associated_elements = property.elements.where(:id => ids)
     SapwoodCache.rebuild_element(self)
   end

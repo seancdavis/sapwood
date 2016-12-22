@@ -134,6 +134,19 @@ class Element < ActiveRecord::Base
     trigger_webhook
   end
 
+  before_validation 'strip_template_data'
+
+  def strip_template_data
+    return true if template.nil?
+    template_data.each do |k,v|
+      field = template.find_field(k.to_s)
+      next unless field.nil?
+      self.template_data.except!(k)
+    end
+    keys = template.fields.collect(&:name) - template_data.stringify_keys.keys
+    keys.each { |k| self.template_data[k] = nil }
+  end
+
   # ---------------------------------------- Document Properties
 
   def set_document_title
@@ -304,8 +317,7 @@ class Element < ActiveRecord::Base
     return response unless template?
     template_data.each do |k,v|
       field = template.find_field(k)
-      next if field.nil?
-      response[k.to_sym] = field.sendable? ? send(k) : v
+      response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
       # TODO: Quick fix for geocode fields -- need a test for this
       if response[k.to_sym].is_a?(OpenStruct)
         response[k.to_sym] = response[k.to_sym].marshal_dump
@@ -377,6 +389,11 @@ class Element < ActiveRecord::Base
         geo = template_data[method.to_s]
         geo.is_a?(Hash) ? geo.to_ostruct : geo
       when 'boolean'
+        # puts '---'
+        # puts 'boolean'
+        # puts template_data[method.to_s]
+        # puts template_data[method.to_s].class
+        # puts template_data[method.to_s].to_bool
         template_data[method.to_s].to_bool
       else
         template_data[method.to_s]

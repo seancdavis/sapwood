@@ -210,4 +210,16 @@ feature 'Elements List', :js => true do
     expect(page).to have_no_content(el.title)
   end
 
+  scenario 'supports different column types' do
+    property = property_with_template_file('list_options')
+    @user.properties << property
+    el_01 = create(:element, :property => property, :template_name => 'Date',
+                   :template_data => { :date => '2016-10-01' })
+    visit deck_path
+    click_link property.title
+    click_link 'Dates'
+
+    expect(page).to have_content('2016-10-01')
+  end
+
 end

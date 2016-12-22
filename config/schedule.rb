@@ -19,6 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 
+every 1.day, :at => '4:00 am' do
+  rake "db:purge_backups"
+end
+
 every 1.day, :at => '4:30 am' do
   rake "db:backup"
 end

@@ -117,11 +117,15 @@
       "order": {
         "by": "name",
         "in": "desc"
+      },
+      "columns": {
+        "name": {},
+        "updated_at": {}
       }
     },
     "fields": {
       "name": {
-        "primary": true
+        // "primary": true
       },
       "option": {
         "type": "element",

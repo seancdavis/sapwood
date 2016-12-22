@@ -95,10 +95,8 @@ class Element < ActiveRecord::Base
           .geocode(val).to_hash.merge(:raw => val)
       end
     end
-    update(:template_data => template_data, :skip_geocode => true)
+    update_columns(:template_data => template_data)
   end
-
-  after_save :init_webhook
 
   before_validation :set_title
 
@@ -126,9 +124,14 @@ class Element < ActiveRecord::Base
     ids = []
     element_fields.collect(&:name).each do |f|
       ids += (template_data[f] || '').split(',').map(&:to_i)
-  end
+    end
     self.associated_elements = property.elements.where(:id => ids)
     SapwoodCache.rebuild_element(self)
+  end
+
+  def rebuild_cache
+    self.reload.as_json
+    trigger_webhook
   end
 
   # ---------------------------------------- Document Properties
@@ -399,7 +402,7 @@ class Element < ActiveRecord::Base
 
   private
 
-    def init_webhook
+    def trigger_webhook
       return false unless template?
       Webhook.delay.call(:element => self) if template.webhook?
     end

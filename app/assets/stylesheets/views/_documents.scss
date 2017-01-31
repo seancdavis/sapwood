@@ -20,6 +20,9 @@
       background: rgba($action-color, 0.9);
       color: $light;
     }
+    &.private {
+      height: 44px;
+    }
 
     a {
       @include position(absolute, 0 null null 0);

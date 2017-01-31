@@ -37,7 +37,7 @@ RSpec.describe Element, :type => :model do
         keys = %w(success lat lng country_code city state zip street_address
                   province district provider full_address is_us? ll precision
                   district_fips state_fips block_fips sub_premise raw)
-        keys.each do |key|
+        keys.map(&:to_sym).each do |key|
           expect(@element.template_data['address'].keys).to include(key)
         end
       end
@@ -194,8 +194,7 @@ RSpec.describe Element, :type => :model do
         # nil
         expect(@element.complete).to eq(false)
         # Set to "1" and test.
-        # @element.template_data_will_change!
-        @element.template_data.merge!(:complete => 1)
+        @element.template_data = @element.template_data.merge(:complete => 1)
         @element.save
         expect(@element.reload.complete).to eq(true)
       end
@@ -248,6 +247,14 @@ RSpec.describe Element, :type => :model do
       el = create(:element, :property => @property, :template_name => 'NO!')
       expect(el.as_json.present?).to eq(true)
     end
+    it 'skips bad attrs and fills in missing ones' do
+      element = create(:element, :template_name => 'All Options',
+                       :property => @property,
+                       :template_data => {
+                        'name' => 'Hello World', 'balls' => 'no_thanks' })
+      expect(element.reload.template_data.keys).to include('comments')
+      expect(element.reload.template_data.keys).to_not include('balls')
+    end
     it 'has references to all necessary attributes' do
       # This is our element.
       element = create(:element, :with_options, :with_address,
@@ -283,7 +290,9 @@ RSpec.describe Element, :type => :model do
       ]
       element[:template_data]['mixed_bags'] = mixed_bag_els.collect(&:id).join(',')
       # Save our element.
+      puts element.template_data
       element.save!
+      puts element.template_data
 
       # Check JSON.
       json = element.as_json(:includes => 'options')
@@ -328,6 +337,11 @@ RSpec.describe Element, :type => :model do
         doc = create(:element, :document, :from_system, :property => @property,
                      :template_data => {})
         expect(doc.title).to eq('Example')
+      end
+      it 'does not set the title from the filename if primary field present' do
+        doc = create(:element, :document, :from_system, :property => @property,
+                     :template_data => { :name => 'Testing 123' })
+        expect(doc.title).to eq('Testing 123')
       end
       it 'does not set the title if it already exists' do
         el = create(:element, :document, :title => 'Title')

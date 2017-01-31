@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Date",
+    "list": {
+      "columns": {
+        "date": {}
+      }
+    },
+    "fields": {
+      "date": {
+        "type": "date",
+        "primary": true
+      }
+    }
+  }
+]

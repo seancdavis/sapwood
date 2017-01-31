@@ -117,11 +117,15 @@
       "order": {
         "by": "name",
         "in": "desc"
+      },
+      "columns": {
+        "name": {},
+        "updated_at": {}
       }
     },
     "fields": {
       "name": {
-        "primary": true
+        // "primary": true
       },
       "option": {
         "type": "element",
@@ -157,6 +161,12 @@
   {
     "title": "Image",
     "type": "document",
+    "security":{
+      "create": {
+        "allow": true,
+        "secret": "031a742e4f188cedae3f1873"
+      }
+    },
     "fields": {
       "name": { "primary": true }
     }

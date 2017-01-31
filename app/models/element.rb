@@ -62,6 +62,10 @@ class Element < ActiveRecord::Base
     where('updated_at != created_at').order(:updated_at => :desc)
   }
   scope :last_created, -> { order(:created_at => :desc) }
+  scope :floating, -> {
+    where('updated_at <= ?', DateTime.now - 1.week).to_a
+      .select { |el| el.template.blank? }
+  }
 
   # ---------------------------------------- Validations
 
@@ -91,15 +95,15 @@ class Element < ActiveRecord::Base
           .geocode(val).to_hash.merge(:raw => val)
       end
     end
-    update(:template_data => template_data, :skip_geocode => true)
+    update_columns(:template_data => template_data)
   end
-
-  after_save :init_webhook
 
   before_validation :set_title
 
   def set_title
-    set_document_title if document?
+    if document? && self.send(template.primary_field.name).blank?
+      set_document_title
+    end
     return if template.blank? || template.primary_field.blank? ||
               self.send(template.primary_field.name).blank?
     self.title = self.send(template.primary_field.name)
@@ -123,6 +127,24 @@ class Element < ActiveRecord::Base
     end
     self.associated_elements = property.elements.where(:id => ids)
     SapwoodCache.rebuild_element(self)
+  end
+
+  def rebuild_cache
+    self.reload.as_json
+    trigger_webhook
+  end
+
+  before_validation 'strip_template_data'
+
+  def strip_template_data
+    return true if template.nil?
+    template_data.each do |k,v|
+      field = template.find_field(k.to_s)
+      next unless field.nil?
+      self.template_data.except!(k)
+    end
+    keys = template.fields.collect(&:name) - template_data.stringify_keys.keys
+    keys.each { |k| self.template_data[k] = nil }
   end
 
   # ---------------------------------------- Document Properties
@@ -295,8 +317,7 @@ class Element < ActiveRecord::Base
     return response unless template?
     template_data.each do |k,v|
       field = template.find_field(k)
-      next if field.nil?
-      response[k.to_sym] = field.sendable? ? send(k) : v
+      response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
       # TODO: Quick fix for geocode fields -- need a test for this
       if response[k.to_sym].is_a?(OpenStruct)
         response[k.to_sym] = response[k.to_sym].marshal_dump
@@ -368,6 +389,11 @@ class Element < ActiveRecord::Base
         geo = template_data[method.to_s]
         geo.is_a?(Hash) ? geo.to_ostruct : geo
       when 'boolean'
+        # puts '---'
+        # puts 'boolean'
+        # puts template_data[method.to_s]
+        # puts template_data[method.to_s].class
+        # puts template_data[method.to_s].to_bool
         template_data[method.to_s].to_bool
       else
         template_data[method.to_s]
@@ -393,7 +419,7 @@ class Element < ActiveRecord::Base
 
   private
 
-    def init_webhook
+    def trigger_webhook
       return false unless template?
       Webhook.delay.call(:element => self) if template.webhook?
     end

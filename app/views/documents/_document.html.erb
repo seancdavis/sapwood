@@ -1,8 +1,8 @@
-<article class="document <%= document.image? ? 'img' : 'doc' %>"
+<article class="document <%= document.image? ? 'img' : 'doc' %> <%= 'private' if document.private? %>"
          data-id="<%= document.id %>" data-title="<%= document.title %>"
-         data-url="<%= document.version(:small, true) %>"
-         data-image="<%= document.image? %>"
-         style="background-image: url('<%= document.version(:medium) if document.image? %>')">
+         data-url="<%= document.version(:small, true) unless document.private? %>"
+         data-image="<%= document.private? ? false : document.image? %>"
+         style="background-image: url('<%= document.version(:medium) if document.image? && !document.private? %>')">
   <%= link_to [:edit, current_property, current_template, document] do %>
     <span class="title">
       <%=  document.title %>

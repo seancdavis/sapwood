@@ -2,12 +2,9 @@ require 'rails_helper'
 
 describe Template, :type => :model do
 
-  let(:property) { create(:property) }
+  let(:property) { property_with_templates }
 
   before(:each) do
-    file = File.expand_path('../../support/template_config.json', __FILE__)
-    @raw_templates = File.read(file)
-    property.update!(:templates_raw => @raw_templates)
     @template = property.find_template('Default')
   end
 
@@ -60,7 +57,11 @@ describe Template, :type => :model do
       expect(template.columns.class).to eq(Array)
       expect(template.columns[0].class).to eq(Column)
     end
-    it 'has a default set of columns' do
+    it 'will set a primary field when not specified' do
+      template = property.find_template('More Options')
+      expect(template.columns.select(&:primary?).present?).to eq(true)
+      col = template.columns.select(&:primary?)[0]
+      expect(col.name).to eq('name')
     end
     it 'can find an column when it exists' do
       template = property.find_template('all-options')

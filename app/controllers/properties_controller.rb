@@ -30,6 +30,10 @@ class PropertiesController < ApplicationController
   end
 
   def show
+    @last_updated = current_property.elements.last_updated.limit(20)
+      .select { |el| el.template.present? }.first(5)
+    @last_created = current_property.elements.last_created.limit(20)
+      .select { |el| el.template.present? }.first(5)
   end
 
   def edit

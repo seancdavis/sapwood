@@ -26,6 +26,16 @@ feature 'Documents List', :js => true do
       expect(page).to have_css('section.body article.document')
       expect(page).to have_no_css('section.body table')
     end
+    scenario 'has a filter by title' do
+      create(:element, :document, :property => @property,
+             :template_name => 'Public', :template_data => {})
+      click_link 'Public'
+      expect(page).to have_content('178947853882959841 1454569459')
+      click_link '0-9'
+      expect(page).to have_content('178947853882959841 1454569459')
+      click_link 'A'
+      expect(page).to have_no_content('178947853882959841 1454569459')
+    end
     scenario 'private docs has a table and not tiles' do
       create(:element, :document, :property => @property,
              :template_name => 'Private')

@@ -33,7 +33,11 @@ class Column
   def output(element)
     return '' if element.send(field.name).blank?
     if field.date?
-      element.send(field.name).strftime(_format || '%b %d, %Y')
+      begin
+        element.send(field.name).strftime(_format || '%b %d, %Y')
+      rescue NoMethodError => e
+        element.send(field.name)
+      end
     elsif field.geocode?
       return element.send(field.name).try(_format) if _format.present?
       element.send(field.name).try(:raw)

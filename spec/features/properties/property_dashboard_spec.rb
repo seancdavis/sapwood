@@ -38,6 +38,12 @@ feature 'Property', :js => true do
         expect(page).to have_content('Farts')
       end
     end
+    scenario 'does not show elements without a template' do
+      el = @property.elements.find_by_title('Picnic')
+      el.update(:template_name => 'Wrong Template Name!')
+      click_link @property.title
+      expect(page).to have_no_content('Picnic')
+    end
     scenario 'has a functioning search box' do
       click_link @property.title
       # The sidebar should not have a search box.

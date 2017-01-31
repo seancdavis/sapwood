@@ -14,10 +14,6 @@
 
 class Document < ActiveRecord::Base
 
-  # ---------------------------------------- Plugins
-
-  include Presenter
-
   # ---------------------------------------- Associations
 
   belongs_to :property, :touch => true

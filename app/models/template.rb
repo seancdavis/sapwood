@@ -117,6 +117,7 @@ class Template
       next if f.blank?
       columns << Column.new(attrs.merge('name' => name, 'field' => f))
     end
+    columns[0].attributes['primary'] = true if columns.select(&:primary?).blank?
     columns
   end
 

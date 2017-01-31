@@ -39,7 +39,8 @@ class SapwoodCache
   def rebuild_property(property)
     return unless SapwoodCache.enabled?
     SapwoodCache.delete_property(property)
-    property.elements.each { |el| el.reload.as_json }
+    property.elements.each { |el| el.rebuild_cache }
+    property.elements.floating.each { |el| el.destroy }
   end
 
   def rebuild_element(element)
@@ -49,10 +50,8 @@ class SapwoodCache
     SapwoodCache.delete_element(element)
     # Bust cache of element's that have this one in their associations.
     elements.each { |el| SapwoodCache.delete_element(el) }
-    # Rebuild this element's as_json (without includes) cache.
-    element.reload.as_json
-    # Rebuild associated elements' as_json (without includes) cache.
-    elements.each { |el| el.reload.as_json }
+    # Rebuild this and associated elements' as_json (without includes) cache.
+    ([element] + elements).uniq.each { |el| el.rebuild_cache }
   end
 
   handle_asynchronously :rebuild_property

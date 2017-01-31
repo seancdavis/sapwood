@@ -8,16 +8,14 @@
     <div class="block half">
       <h3>Last Updated</h3>
       <ul>
-        <%= render :partial => 'element_block',
-                   :collection => current_property.elements.last_updated.limit(5),
+        <%= render :partial => 'element_block', :collection => @last_updated,
                    :as => :element, :locals => { :date_col => 'updated_at' } %>
       </ul>
     </div>
     <div class="block half">
       <h3>Newest</h3>
       <ul>
-        <%= render :partial => 'element_block',
-                   :collection => current_property.elements.last_created.limit(5),
+        <%= render :partial => 'element_block', :collection => @last_created,
                    :as => :element, :locals => { :date_col => 'created_at' } %>
       </ul>
     </div>

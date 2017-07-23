@@ -38,6 +38,7 @@ gem 'jbuilder'
 gem 'jquery-fileupload-rails'
 gem 'kaminari'
 gem 'pg_search'
+gem 'pry'
 gem 'rmagick'
 gem 'simple_form'
 gem 'superslug'
@@ -84,6 +85,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'capybara-screenshot'
   gem 'parallel_tests'
+  gem 'rubocop'
 end
 
 gem "codeclimate-test-reporter", :group => :test, :require => nil

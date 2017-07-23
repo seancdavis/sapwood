@@ -53,14 +53,16 @@ class Api::V1::ElementsController < ApiController
 
   def update
     @element = current_property.elements.find_by_id(params[:id])
+    not_found if @element.blank?
     @template = @element.property.find_template(@element.template_name)
+    not_found if @template.blank?
     forbidden if (
       @template.try(:security).try(:update).try(:allow).blank? ||
       @template.try(:security).try(:update).try(:secret) != params[:secret]
     )
     template_data = @element.template_data
     @template.fields.collect(&:name).each do |name|
-      next unless params[name].present?
+      next unless params[name].present? || params[name] == false
       if @template.find_field(name).boolean?
         params[name] = (params[name].to_bool == true) ? '1' : '0'
       end

@@ -69,7 +69,7 @@ class Api::V1::ElementsController < ApiController
     @element.template_data = template_data
     if @element.save
       @element.reload.send_notifications!(action_name)
-      render :json => @element.to_json
+      render :json => @element.to_hash
     else
       render :json => @element.errors.messages
     end

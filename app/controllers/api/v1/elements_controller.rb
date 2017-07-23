@@ -51,6 +51,30 @@ class Api::V1::ElementsController < ApiController
     end
   end
 
+  def update
+    @element = current_property.elements.find_by_id(params[:id])
+    @template = @element.property.find_template(@element.template_name)
+    forbidden if (
+      @template.try(:security).try(:update).try(:allow).blank? ||
+      @template.try(:security).try(:update).try(:secret) != params[:secret]
+    )
+    template_data = @element.template_data
+    @template.fields.collect(&:name).each do |name|
+      next unless params[name].present?
+      if @template.find_field(name).boolean?
+        params[name] = (params[name].to_bool == true) ? '1' : '0'
+      end
+      template_data[name] = params[name]
+    end
+    @element.template_data = template_data
+    if @element.save
+      @element.reload.send_notifications!(action_name)
+      render :json => @element.to_json
+    else
+      render :json => @element.errors.messages
+    end
+  end
+
   def generate_url
     not_found unless params[:element_id] && params[:secret]
     @element = current_property.elements.find_by_id(params[:element_id])

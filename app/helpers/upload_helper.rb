@@ -31,7 +31,7 @@ module UploadHelper
           Sapwood.config.amazon_aws.bucket : ENV['aws_bucket'],
         acl: "public-read",
         expiration: 10.hours.from_now,
-        max_file_size: 50.megabytes,
+        max_file_size: 2.gigabytes,
         as: "file"
       )
     end

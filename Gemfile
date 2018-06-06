@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # ------------------------------------------ Base
 
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.1.0'
 # TODO: Replace with Puma for Heroku.
 gem 'unicorn-rails'
 gem 'pg'

@@ -14,7 +14,7 @@
 
 class DocumentsController < ApplicationController
 
-  before_filter :verify_property_access
+  before_action :verify_property_access
 
   def index
     not_found if current_template.nil?

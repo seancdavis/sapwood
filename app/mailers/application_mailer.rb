@@ -4,7 +4,7 @@ class ApplicationMailer < ActionMailer::Base
 
   layout 'mailer'
 
-  before_filter :reload_sapwood
+  before_action :reload_sapwood
 
   private
 

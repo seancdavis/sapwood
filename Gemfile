@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # ------------------------------------------ Base
 
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 # TODO: Replace with Puma for Heroku.
 gem 'unicorn-rails'
 gem 'pg'
@@ -36,6 +36,7 @@ gem 'actionpack-action_caching'
 gem 'ancestry'
 # TODO: Will heartwood-uploader take care of this?
 gem 'aws-sdk'
+gem 'bootsnap'
 # TODO: Replace with heartwood-uploader.
 # gem 'carrierwave_direct'
 # TODO: What is this for?
@@ -68,9 +69,6 @@ group :development do
   # or is there a better approach rather than using a gem? This:
   # https://github.com/ryanb/letter_opener ???
   # gem 'mailcatcher'
-
-  # TODO: Is this something we need? If so, how to get it to work with Rails 5+
-  # gem 'quiet_assets'
 end
 
 group :production do

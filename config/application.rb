@@ -20,7 +20,7 @@ module App
 
     config.generators do |g|
       g.fixture true
-      g.fixture_replacement "factory_girl"
+      g.fixture_replacement "factory_bot"
       g.test_framework :rspec
       g.assets false
       g.view_specs false

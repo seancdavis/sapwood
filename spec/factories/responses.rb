@@ -9,7 +9,7 @@
 #  updated_at  :datetime         not null
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :response do
     property_id 1
 data ""

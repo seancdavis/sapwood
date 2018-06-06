@@ -99,8 +99,7 @@ end
 group :development, :test do
   # TODO: Remove
   gem 'annotate'
-  # TODO: Update to factory bot
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'
   gem 'guard-rspec'

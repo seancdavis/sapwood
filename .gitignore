@@ -17,7 +17,6 @@
 /config/database.yml
 /config/sapwood*yml
 !/config/sapwood.default.yml
-config/unicorn.rb
 
 # Uploads
 public/assets/

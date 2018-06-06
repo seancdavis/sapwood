@@ -4,7 +4,7 @@ class GeocoderController < ApplicationController
     not_found unless params[:q]
     @geocode = Geokit::Geocoders::GoogleGeocoder.geocode(params[:q])
     respond_to do |format|
-      format.json { render :text => @geocode.to_json }
+      format.json { render plain: @geocode.to_json }
     end
   end
 

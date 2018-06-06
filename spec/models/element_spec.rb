@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
-
 require 'rails_helper'
 
 RSpec.describe Element, :type => :model do
@@ -35,9 +17,9 @@ RSpec.describe Element, :type => :model do
       end
       it 'converts the value to a geocoded hash' do
         keys = %w(success lat lng country_code city state zip street_address
-                  province district provider full_address is_us? ll precision
+                  district provider full_address is_us? ll precision
                   district_fips state_fips block_fips sub_premise raw)
-        keys.map(&:to_sym).each do |key|
+        keys.each do |key|
           expect(@element.template_data['address'].keys).to include(key)
         end
       end
@@ -48,13 +30,14 @@ RSpec.describe Element, :type => :model do
         expect(@element.address.raw).to eq(@address)
       end
       it 'can return latitude' do
-        expect(@element.address.lat).to eq(39.1081586)
+        expect(@element.address.lat.round(3)).to eq(39.108)
       end
       it 'can return longitude' do
-        expect(@element.address.lng).to eq(-84.51938249999999)
+        expect(@element.address.lng.round(3)).to eq(-84.519)
       end
       it 'can return a lat/lng string' do
-        expect(@element.address.ll).to eq('39.1081586,-84.51938249999999')
+        combined = @element.address.ll.split(',').collect { |x| x.to_f.round(3) }
+        expect(combined).to match_array([39.108, -84.519])
       end
       it 'can return the street address' do
         expect(@element.address.street_address).to eq('1216 Central Parkway')
@@ -304,7 +287,7 @@ RSpec.describe Element, :type => :model do
       expect(json[:updated_at]).to eq(element.updated_at)
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(element.comments)
-      expect(json[:address][:raw]).to eq('1216 Central Pkwy, 45202')
+      expect(json[:address][:raw].class).to eq(OpenStruct)
       expect(json[:complete]).to eq(true)
       # Document fields should return an element object.
       expect(json[:image][:url]).to eq(example_image_url)

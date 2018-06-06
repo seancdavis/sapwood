@@ -12,7 +12,7 @@
 #  field_data           :json             default({})
 #
 
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
 
   # ---------------------------------------- Plugins
 

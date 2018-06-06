@@ -12,7 +12,7 @@
 #  processed   :boolean          default(FALSE)
 #
 
-class Document < ActiveRecord::Base
+class Document < ApplicationRecord
 
   # ---------------------------------------- Associations
 

@@ -11,7 +11,7 @@
 #  api_key       :string
 #
 
-class Property < ActiveRecord::Base
+class Property < ApplicationRecord
 
   # ---------------------------------------- Attributes
 

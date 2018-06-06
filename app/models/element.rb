@@ -16,7 +16,7 @@
 #  processed     :boolean          default(FALSE)
 #
 
-class Element < ActiveRecord::Base
+class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
 

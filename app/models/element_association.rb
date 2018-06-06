@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #
 
-class ElementAssociation < ActiveRecord::Base
+class ElementAssociation < ApplicationRecord
 
   # ---------------------------------------- Associations
 

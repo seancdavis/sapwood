@@ -10,7 +10,7 @@
 #  is_admin    :boolean          default(FALSE)
 #
 
-class PropertyUser < ActiveRecord::Base
+class PropertyUser < ApplicationRecord
 
   # ---------------------------------------- Associations
 

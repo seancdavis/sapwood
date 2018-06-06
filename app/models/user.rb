@@ -21,7 +21,7 @@
 #  avatar_url             :string
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   # ---------------------------------------- Plugins
 

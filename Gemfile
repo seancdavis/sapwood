@@ -13,8 +13,8 @@ gem 'pg'
 gem 'sass-rails'
 gem 'uglifier'
 # TODO: Replace this with Bootstrap eventually.
-gem 'bourbon'
-gem 'neat'
+gem 'bourbon', '~> 4.2.6'
+gem 'neat', '~> 1.7.2'
 gem 'normalize-rails'
 
 # javascripts helpers
@@ -23,7 +23,7 @@ gem 'backbone-on-rails'
 # TODO: Replace with es6
 gem 'coffee-rails'
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 5.0.5'
 gem 'pickadate-rails'
 
 # ------------------------------------------ Utilities

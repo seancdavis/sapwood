@@ -111,6 +111,3 @@ group :development, :test do
   gem 'capybara-screenshot'
   gem 'parallel_tests'
 end
-
-# TODO: Can this be removed?
-gem "codeclimate-test-reporter", :group => :test, :require => nil

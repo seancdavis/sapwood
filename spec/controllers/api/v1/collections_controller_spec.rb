@@ -12,11 +12,11 @@ describe Api::V1::CollectionsController do
         .to raise_error(ActionController::UrlGenerationError)
     end
     it 'raises 403 when no api_key' do
-      expect { get :index, :property_id => @property.id }
+      expect { get :index, params: { :property_id => @property.id } }
         .to raise_error(ActionController::RoutingError)
     end
     it 'raises 403 when api_key does not match a property' do
-      expect { get :index, :property_id => @property.id, :api_key => '123' }
+      expect { get :index, params: { :property_id => @property.id, :api_key => '123' } }
         .to raise_error(ActionController::RoutingError)
     end
     context 'with collections' do
@@ -28,8 +28,8 @@ describe Api::V1::CollectionsController do
                        :property => property_with_templates)
       end
       it 'responds with all property ELEMENTS! as json' do
-        response = get :index, :property_id => @property.id,
-                       :api_key => @property.api_key, :format => :json
+        response = get :index, params: { :property_id => @property.id,
+                       :api_key => @property.api_key, :format => :json }
         @property.elements.each do |el|
           expect(response.body).to include(el.to_json)
         end
@@ -42,9 +42,9 @@ describe Api::V1::CollectionsController do
                          :template_name => 'Default')
         bad_el = create(:element, :property => @property,
                         :template_name => 'All Options')
-        response = get :index, :property_id => @property.id,
+        response = get :index, params: { :property_id => @property.id,
                        :api_key => @property.api_key, :format => :json,
-                       :type => 'Default'
+                       :type => 'Default' }
         expect(response.body).to include(good_el.to_json)
         expect(response.body).to_not include(bad_el.to_json)
         expect(response.body).to_not include(@c_01.to_json)
@@ -52,9 +52,9 @@ describe Api::V1::CollectionsController do
         expect(response.body).to_not include(@c_03.to_json)
       end
       it 'returns no collections if the type does not exist' do
-        response = get :index, :property_id => @property.id,
+        response = get :index, params: { :property_id => @property.id,
                        :api_key => @property.api_key, :format => :json,
-                       :type => 'WRONG! Collection'
+                       :type => 'WRONG! Collection' }
         expect(response.body).to eq('[]')
       end
     end
@@ -70,23 +70,23 @@ describe Api::V1::CollectionsController do
     end
     it 'raises 403 when no api_key' do
       expect {
-        get :show, :property_id => @property.id, :id => @collection
+        get :show, params: { :property_id => @property.id, :id => @collection }
       }.to raise_error(ActionController::RoutingError)
     end
     it 'raises 403 when api_key does not match a property' do
-      expect { get :show, :property_id => @property.id, :id => @collection,
-                   :api_key => '123'
+      expect { get :show, params: { :property_id => @property.id, :id => @collection,
+                   :api_key => '123' }
       }.to raise_error(ActionController::RoutingError)
     end
     it 'is not found when trying to access a collection' do
-      expect { get :show, :property_id => @property.id, :id => @collection,
-                   :api_key => @property.api_key, :format => :json
+      expect { get :show, params: { :property_id => @property.id, :id => @collection,
+                   :api_key => @property.api_key, :format => :json }
       }.to raise_error(ActionController::RoutingError)
     end
     it 'responds with the MATCHING ELEMENT! as json' do
       el = create(:element, :property => @property)
-      response = get :show, :property_id => @property.id, :id => el,
-                     :api_key => @property.api_key, :format => :json
+      response = get :show, params: { :property_id => @property.id, :id => el,
+                     :api_key => @property.api_key, :format => :json }
       expect(response.body).to eq(el.to_json)
     end
   end

@@ -32,23 +32,6 @@ module FieldHelper
                    :input_html => { :data => { :format => field.format } }
   end
 
-  def field_geocode_html(form_obj, field, object)
-    value = if form_obj.object[field.name].nil?
-      nil
-    else
-      form_obj.object[field.name]['raw']
-    end
-    content_tag(:div, :class => 'geocoder') do
-      o = form_obj.input(
-        field.name.to_sym,
-        :as => :text,
-        :required => field.required?, :label => field.label,
-        :readonly => field.read_only?,
-        :input_html => { :class => 'geocode', :value => value }
-      )
-    end
-  end
-
   def field_element_html(form_obj, field, object)
     if field.respond_to?(:templates) && field.templates.present? &&
        field.templates.size == 1 &&

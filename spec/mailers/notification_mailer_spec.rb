@@ -6,8 +6,7 @@ RSpec.describe UserMailer, :type => :mailer do
     before(:each) do
       # remove_config
       @property = property_with_templates
-      @element = create(:element, :with_options, :with_address,
-                        :property => @property)
+      @element = create(:element, :with_options, :property => @property)
       @user = create(:admin)
       @notification = create(:notification, :user => @user,
                              :property => @property)

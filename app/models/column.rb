@@ -26,8 +26,7 @@ class Column
   end
 
   def sort_by
-    return field.name unless field.geocode? && _format.present?
-    "#{field.name}:#{_format}"
+    field.name
   end
 
   def output(element)
@@ -38,9 +37,6 @@ class Column
       rescue NoMethodError => e
         element.send(field.name)
       end
-    elsif field.geocode?
-      return element.send(field.name).try(_format) if _format.present?
-      element.send(field.name).try(:raw)
     else
       element.send(field.name)
     end

@@ -150,54 +150,6 @@ feature 'Elements List', :js => true do
     expect(find('tr.element:nth-child(3)')).to have_content('Hello I')
   end
 
-  scenario 'supports address parts' do
-    property = property_with_template_file('address_list')
-    @user.properties << property
-    el_01 = create(
-      :element, :property => property, :template_name => 'Default',
-      :template_data => {
-        :name => Faker::Lorem.sentence, :address => '1225 Elm St, 45202'
-      }
-    )
-    el_02 = create(
-      :element, :property => property, :template_name => 'Default',
-      :template_data => {
-        :name => Faker::Lorem.sentence, :address => '8 Wall St, 28801'
-      }
-    )
-    el_03 = create(
-      :element, :property => property, :template_name => 'Default',
-      :template_data => {
-        :name => Faker::Lorem.sentence, :address => '1 Ahwahnee Drive, 95389'
-      }
-    )
-    visit deck_path
-    click_link property.title
-    click_link 'Defaults'
-
-    # Check that we have the address parts.
-    expect(page).to have_css('td', :text => '1225 Elm St, 45202')
-    expect(page).to have_css('td', :text => 'Cincinnati')
-    expect(page).to have_css('td', :text => 'OH')
-
-    # Check headings
-    expect(page).to have_css('th', :text => 'LOCATION')
-    expect(page).to have_css('th', :text => 'CITY')
-    expect(page).to have_css('th', :text => 'US STATE')
-
-    # Sort by city
-    within('table') { find('th a', :text => 'CITY').trigger('click') }
-    expect(find('tr.element:nth-child(1)')).to have_content('Asheville')
-    expect(find('tr.element:nth-child(2)')).to have_content('Cincinnati')
-    expect(find('tr.element:nth-child(3)')).to have_content('Yosemite National Park')
-
-    # And state
-    within('table') { find('th a', :text => 'US STATE').trigger('click') }
-    expect(find('tr.element:nth-child(1)')).to have_content('CA')
-    expect(find('tr.element:nth-child(2)')).to have_content('NC')
-    expect(find('tr.element:nth-child(3)')).to have_content('OH')
-  end
-
   scenario 'can have a specified page length' do
     el = create(:element, :property => @property,
       :template_name => 'All Options', :template_data => { :name => 'ZZZ' })

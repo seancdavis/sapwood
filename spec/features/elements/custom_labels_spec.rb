@@ -12,9 +12,9 @@ feature 'Element Field Labels', :js => true do
 
   scenario 'has a custom label for every field type' do
     [
-      'STRING LABEL', 'TEXT LABEL', 'GEOCODE LABEL', 'WYSIWYG LABEL',
-      'ELEMENT (DOCUMENT) LABEL', 'ELEMENTS (DOCUMENTS) LABEL', 'ELEMENT LABEL',
-      'ELEMENTS LABEL', 'Boolean Label', 'SELECT LABEL', 'DATE LABEL'
+      'STRING LABEL', 'TEXT LABEL', 'WYSIWYG LABEL', 'ELEMENT (DOCUMENT) LABEL',
+      'ELEMENTS (DOCUMENTS) LABEL', 'ELEMENT LABEL', 'ELEMENTS LABEL',
+      'Boolean Label', 'SELECT LABEL', 'DATE LABEL'
     ].each do |label|
       expect(page).to have_css('label', :text => label)
     end

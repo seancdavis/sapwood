@@ -46,11 +46,7 @@ class Element < ApplicationRecord
   scope :by_title, -> { order(:title => :asc) }
   scope :by_field, ->(f, d = 'ASC') {
     return order("#{f} #{d}") if column_names.include?(f)
-    if f.split(':').size > 1
-      order("template_data #>> '{#{f.split(':').join(', ')}}' #{d}")
-    else
-      order("template_data ->> '#{f}' #{d}")
-    end
+    order(Arel.sql("template_data ->> '#{f}' #{d}"))
   }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }

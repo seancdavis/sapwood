@@ -40,5 +40,7 @@ module App
     config.active_job.queue_adapter = :delayed_job
 
     config.active_support.escape_html_entities_in_json = false
+
+    config.exceptions_app = self.routes
   end
 end

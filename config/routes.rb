@@ -2,6 +2,12 @@ Rails.application.routes.draw do
 
   match '*all' => 'api#options', :via => :options
 
+  # ---------------------------------------- | Errors
+
+  get '/404' => 'errors#not_found'
+  get '/422' => 'errors#unacceptable'
+  get '/500' => 'errors#server_error'
+
   # ---------------------------------------- API
 
   namespace :api do

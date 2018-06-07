@@ -16,7 +16,7 @@
 #  processed     :boolean          default(FALSE)
 #
 
-class Element < ActiveRecord::Base
+class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
 
@@ -134,7 +134,7 @@ class Element < ActiveRecord::Base
     trigger_webhook
   end
 
-  before_validation 'strip_template_data'
+  before_validation :strip_template_data
 
   def strip_template_data
     return true if template.nil?

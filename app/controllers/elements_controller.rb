@@ -18,7 +18,7 @@
 
 class ElementsController < ApplicationController
 
-  before_filter :verify_property_access
+  before_action :verify_property_access
 
   def index
     not_found if current_template.nil? && params[:template_id] != '__all'

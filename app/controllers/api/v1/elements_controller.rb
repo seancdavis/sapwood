@@ -61,7 +61,7 @@ class Api::V1::ElementsController < ApiController
                      params[:secret] == @template.security.read.secret
     url = GetDocumentUrl.call :document => @element,
                               :expires_in => params[:expires_in]
-    render :text => url
+    render(plain: url)
   end
 
   def webhook

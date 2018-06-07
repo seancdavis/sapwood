@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
 
-  skip_before_filter :verify_profile_completion
+  skip_before_action :verify_profile_completion
 
   def edit
   end

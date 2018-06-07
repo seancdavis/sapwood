@@ -23,8 +23,8 @@
 
 class UsersController < ApplicationController
 
-  before_filter :verify_property_access
-  before_filter :verify_property_admin_access
+  before_action :verify_property_access
+  before_action :verify_property_admin_access
 
   def index
   end

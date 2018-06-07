@@ -1,7 +1,7 @@
 class ApiController < ActionController::Base
 
-  before_filter :allow_cors
-  before_filter :authenticate_api_user!, :except => [:options]
+  before_action :allow_cors
+  before_action :authenticate_api_user!, :except => [:options]
 
   caches_action :index, :cache_path => :index_cache_path.to_proc
   caches_action :show, :cache_path => :show_cache_path.to_proc

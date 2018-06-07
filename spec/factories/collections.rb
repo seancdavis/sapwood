@@ -12,7 +12,7 @@
 #  field_data           :json             default({})
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :collection do
     property
     title { Faker::App.name }

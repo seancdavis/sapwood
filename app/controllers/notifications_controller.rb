@@ -12,7 +12,7 @@
 
 class NotificationsController < ApplicationController
 
-  before_filter :verify_property_access
+  before_action :verify_property_access
 
   def create
     not_found if params[:template].blank?

@@ -9,7 +9,7 @@
 #  updated_at  :datetime         not null
 #
 
-class Response < ActiveRecord::Base
+class Response < ApplicationRecord
 
   # ---------------------------------------- Associations
 

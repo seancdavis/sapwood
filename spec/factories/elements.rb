@@ -16,7 +16,7 @@
 #  processed     :boolean          default(FALSE)
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :element do
     property
     title { Faker::Lorem.words(4).join(' ') }

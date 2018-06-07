@@ -94,9 +94,9 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include SapwoodConfigHelpers
-  config.include FeatureHelpers, :type => :feature
+  config.include FeatureHelpers, type: :feature
   config.include GeneralHelpers
 
 end

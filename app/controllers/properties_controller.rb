@@ -13,7 +13,7 @@
 
 class PropertiesController < ApplicationController
 
-  before_filter :verify_property_access, :except => [:new, :create]
+  before_action :verify_property_access, :except => [:new, :create]
 
   def new
     not_found unless current_user.is_admin?

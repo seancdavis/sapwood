@@ -28,12 +28,6 @@ class SapwoodCache
     # api/elements#index
     Rails.cache.delete_matched(/\_p#{p_id}\_elements\#index(.*)/)
     Rails.logger.info "DELETE CACHE: /\_p#{p_id}\_elements\#index(.*)/"
-    # api/collections#show
-    Rails.cache.delete_matched(/\_p#{p_id}\_collections\#show\_#{el.id}\_(.*)/)
-    Rails.logger.info "DELETE CACHE: /\_p#{p_id}\_collections\#show\_#{el.id}\_(.*)/"
-    # api/collections#index
-    Rails.cache.delete_matched(/\_p#{p_id}\_collections\#index(.*)/)
-    Rails.logger.info "DELETE CACHE: /\_p#{p_id}\_collections\#index(.*)/"
   end
 
   def rebuild_property(property)

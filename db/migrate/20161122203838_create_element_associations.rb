@@ -7,6 +7,6 @@ class CreateElementAssociations < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    Element.all.each { |e| e.update!(:skip_geocode => true) }
+    Element.all.each { |e| e.update! }
   end
 end

@@ -30,10 +30,6 @@ class Element < ApplicationRecord
                     :tsearch => { :prefix => true, :dictionary => "english" }
                   }
 
-  # ---------------------------------------- Attributes
-
-  attr_accessor :skip_geocode
-
   # ---------------------------------------- Associations
 
   belongs_to :property
@@ -72,31 +68,6 @@ class Element < ApplicationRecord
   validates :title, :template_name, :presence => true
 
   # ---------------------------------------- Callbacks
-
-  after_save :geocode_addresses
-
-  def geocode_addresses
-    return unless template? && skip_geocode.blank?
-    template.geocode_fields.each do |field|
-      val = template_data[field.name]
-      if val.blank?
-        template_data[field.name] = { :raw => nil }
-        next
-      end
-      begin
-        val = val[:raw] if val.is_a?(Hash) && val[:raw].present?
-        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-          .geocode(val).to_hash.merge(:raw => val)
-      rescue
-        # If we hit too many queries, we can sleep for a second and then try
-        # again.
-        sleep 1
-        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-          .geocode(val).to_hash.merge(:raw => val)
-      end
-    end
-    update_columns(:template_data => template_data)
-  end
 
   before_validation :set_title
 
@@ -222,12 +193,12 @@ class Element < ApplicationRecord
 
   def archive!
     return false unless document?
-    update(:archived => true, :skip_geocode => true)
+    update(:archived => true)
   end
 
   def processed!
     return false unless document?
-    update(:processed => true, :skip_geocode => true)
+    update(:processed => true)
   end
 
   def private?
@@ -318,10 +289,6 @@ class Element < ApplicationRecord
     template_data.each do |k,v|
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
-      # TODO: Quick fix for geocode fields -- need a test for this
-      if response[k.to_sym].is_a?(OpenStruct)
-        response[k.to_sym] = response[k.to_sym].marshal_dump
-      end
     end
     if document? && public?
       response[:url] = url
@@ -385,9 +352,6 @@ class Element < ApplicationRecord
           end
           return elements
         end
-      when 'geocode'
-        geo = template_data[method.to_s]
-        geo.is_a?(Hash) ? geo.to_ostruct : geo
       when 'boolean'
         # puts '---'
         # puts 'boolean'

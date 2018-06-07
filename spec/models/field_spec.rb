@@ -6,7 +6,6 @@ describe Field, :type => :model do
     @property = property_with_templates
     @template = @property.find_template('all-options')
     @name = @template.find_field('name')
-    @address = @template.find_field('address')
     @comments = @template.find_field('comments')
     @image = @template.find_field('image')
     @images = @template.find_field('images')
@@ -14,21 +13,12 @@ describe Field, :type => :model do
     @many_things = @template.find_field('many_things')
     @complete = @template.find_field('complete')
 
-    @fields = [@name, @address, @comments, @image, @images, @one_thing,
-               @many_things, @complete]
-  end
-
-  describe '#name. #title' do
-    it 'has a name and title' do
-      expect(@address.name).to eq('address')
-      expect(@address.title).to eq('address')
-    end
+    @fields = [@name, @comments, @image, @images, @one_thing, @many_things, @complete]
   end
 
   describe '#type, #method_missing(?), #sendable?' do
     it 'returns the type, and assumes string when not set' do
       expect(@name.type).to eq('string')
-      expect(@address.type).to eq('geocode')
       expect(@image.type).to eq('element')
       expect(@comments.type).to eq('wysiwyg')
       expect(@image.type).to eq('element')
@@ -40,9 +30,6 @@ describe Field, :type => :model do
     it 'has boolean methods to check for field type' do
       expect(@name.string?).to eq(true)
       (@fields - [@name]).each { |f| expect(f.string?).to eq(false) }
-
-      expect(@address.geocode?).to eq(true)
-      (@fields - [@address]).each { |f| expect(f.geocode?).to eq(false) }
 
       expect(@comments.wysiwyg?).to eq(true)
       (@fields - [@comments]).each { |f| expect(f.wysiwyg?).to eq(false) }

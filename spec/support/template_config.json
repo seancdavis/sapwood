@@ -46,10 +46,6 @@
         "type": "string",
         "label": "Description"
       },
-      "address": {
-        "type": "geocode",
-        "label": "Address"
-      },
       "comments": {
         "type": "wysiwyg",
         "label": "Comments"

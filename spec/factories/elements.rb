@@ -34,14 +34,6 @@ FactoryBot.define do
                           :title => Faker::Company.bs.titleize).id.to_s,
       }}
     end
-    trait :with_address do
-      template_data {{
-        'address' => '1216 Central Pkwy, 45202',
-        'comments' => Faker::Lorem.paragraph,
-        'image' => create(:element, :document, :property => property,
-                          :title => Faker::Company.bs.titleize).id.to_s
-      }}
-    end
     trait :document do
       title { nil }
       template_name 'Image'

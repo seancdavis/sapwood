@@ -43,8 +43,6 @@ gem 'daemons'
 # TODO: Can this be replaced with redis when deploying to Heroku?
 gem 'delayed_job_active_record'
 gem 'devise'
-# TODO: Can remove when geocoding is removed.
-gem 'geokit'
 # TODO: What is this for?
 gem 'highline'
 gem 'jbuilder'

@@ -11,10 +11,6 @@
         "type": "text",
         "label": "Text Label"
       },
-      "address": {
-        "type": "geocode",
-        "label": "Geocode Label"
-      },
       "comments": {
         "type": "wysiwyg",
         "label": "WYSIWYG Label"

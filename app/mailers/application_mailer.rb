@@ -1,15 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
 
-  default :from => Sapwood.config.default_from
+  default :from => ENV['DEFAULT_FROM_EMAIL']
 
   layout 'mailer'
-
-  before_action :reload_sapwood
-
-  private
-
-    def reload_sapwood
-      Sapwood.reload!
-    end
 
 end

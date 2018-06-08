@@ -13,4 +13,8 @@ module GeneralHelpers
     'https://s-media-cache-ak0.pinimg.com/custom_covers/30x30/178947853882959841_1454569459.jpg'
   end
 
+  def template_config_file
+    File.expand_path('./template_config.json', __dir__)
+  end
+
 end

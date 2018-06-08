@@ -4,12 +4,11 @@ RSpec.describe UserMailer, :type => :mailer do
 
   describe '#welcome' do
     before(:each) do
-      remove_config
       @user = create(:user)
       @mail = UserMailer.welcome(@user)
     end
     it 'sends from the settings default' do
-      email = Sapwood.config.default_from.split('<')[-1][0..-2]
+      email = ENV['DEFAULT_FROM_EMAIL'].split('<')[-1][0..-2]
       expect(@mail.from).to eq([email])
     end
     it 'sends to the user' do

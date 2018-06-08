@@ -29,24 +29,15 @@ class ProcessAvatar
     # ---------------------------------------- AWS Setup / Credentials
 
     def key
-      @key ||= begin
-        return ENV['aws_access_key_id'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.access_key_id
-      end
+      @key ||= ENV['AWS_ACCESS_KEY_ID']
     end
 
     def secret
-      @secret ||= begin
-        return ENV['aws_secret_access_key'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.secret_access_key
-      end
+      @secret ||= ENV['AWS_SECRET_ACCESS_KEY']
     end
 
     def bucket
-      @bucket ||= begin
-        return ENV['aws_bucket'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.bucket
-      end
+      @bucket ||= ENV['AWS_BUCKET']
     end
 
     def region

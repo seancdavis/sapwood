@@ -95,7 +95,6 @@ RSpec.configure do |config|
   end
 
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include SapwoodConfigHelpers
   config.include FeatureHelpers, type: :feature
   config.include GeneralHelpers
 

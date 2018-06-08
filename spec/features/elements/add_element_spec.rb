@@ -39,7 +39,6 @@ feature 'Elements', :js => true do
 
   context 'using All Options template' do
     background do
-      add_test_config
       click_link 'All Options'
       click_link 'New All Options'
     end

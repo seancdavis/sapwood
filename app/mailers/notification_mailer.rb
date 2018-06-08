@@ -11,7 +11,7 @@ class NotificationMailer < ApplicationMailer
     else
       "#{@template.name} #{@element.title} updated in #{@property.title}"
     end
-    mail :to => @user.email, :from => Sapwood.config.default_from,
+    mail :to => @user.email, :from => ENV['DEFAULT_FROM_EMAIL'],
          :subject => @subject
   end
 

@@ -4,7 +4,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @user.set_sign_in_key!
     @user.reload
-    mail :to => @user.email, :from => Sapwood.config.default_from,
+    mail :to => @user.email, :from => ENV['DEFAULT_FROM_EMAIL'],
          :subject => 'Welcome to Sapwood!'
   end
 

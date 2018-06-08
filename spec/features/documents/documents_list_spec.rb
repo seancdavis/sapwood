@@ -3,7 +3,6 @@ require 'rails_helper'
 feature 'Documents List', :js => true do
 
   background do
-    add_test_config
     @property = property_with_template_file('private_docs')
     @user = create(:admin)
     sign_in @user

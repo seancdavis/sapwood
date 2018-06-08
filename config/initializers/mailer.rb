@@ -7,11 +7,11 @@ if Rails.env.development? || Rails.env.test?
     :port => 1025
   }
 else
-  ActionMailer::Base.default_url_options = { :host => Sapwood.config.url }
+  ActionMailer::Base.default_url_options = { :host => ENV['URL'] }
   ActionMailer::Base.smtp_settings = {
-    :user_name => Sapwood.config.send_grid.user_name,
-    :password => Sapwood.config.send_grid.password,
-    :domain => Sapwood.config.send_grid.domain,
+    :user_name => ENV['SEND_GRID_USER_NAME'],
+    :password => ENV['SEND_GRID_PASSWORD'],
+    :domain => ENV['SEND_GRID_DOMAIN'],
     :address => 'smtp.sendgrid.net',
     :port => 587,
     :authentication => :plain,

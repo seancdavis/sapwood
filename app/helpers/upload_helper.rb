@@ -22,13 +22,9 @@ module UploadHelper
       @options = options.reverse_merge(
         id: "fileupload",
         method: "post",
-        aws_access_key_id: Sapwood.config.amazon_aws ?
-          Sapwood.config.amazon_aws.access_key_id : ENV['aws_access_key_id'],
-        aws_secret_access_key: Sapwood.config.amazon_aws ?
-          Sapwood.config.amazon_aws.secret_access_key :
-          ENV['aws_secret_access_key'],
-        bucket: Sapwood.config.amazon_aws ?
-          Sapwood.config.amazon_aws.bucket : ENV['aws_bucket'],
+        aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+        aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+        bucket: ENV['AWS_BUCKET'],
         acl: "public-read",
         expiration: 10.hours.from_now,
         max_file_size: 2.gigabytes,

@@ -8,7 +8,7 @@ class ProfileController < ApplicationController
   def update
     if current_user.update(profile_params)
       if changing_password?
-        sign_in(current_user, :bypass => true)
+        bypass_sign_in(current_user)
       end
       redirect_to redirect_path, :notice => 'Profile updated successfully!'
     else

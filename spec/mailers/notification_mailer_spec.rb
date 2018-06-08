@@ -4,7 +4,6 @@ RSpec.describe UserMailer, :type => :mailer do
 
   describe '#welcome' do
     before(:each) do
-      # remove_config
       @property = property_with_templates
       @element = create(:element, :with_options, :property => @property)
       @user = create(:admin)
@@ -54,7 +53,7 @@ RSpec.describe UserMailer, :type => :mailer do
       )
     end
     it 'sends from the settings default' do
-      email = Sapwood.config.default_from.split('<')[-1][0..-2]
+      email = ENV['DEFAULT_FROM_EMAIL'].split('<')[-1][0..-2]
       expect(@mail.from).to eq([email])
     end
     it 'sends to the user' do

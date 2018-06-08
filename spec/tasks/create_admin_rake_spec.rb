@@ -4,8 +4,6 @@ require 'rake'
 describe 'rake sapwood:create_admin' do
 
   before do
-    remove_config
-    add_test_config
     load File.expand_path("../../../lib/tasks/sapwood/create_admin.rake", __FILE__)
     Rake::Task.define_task(:environment)
   end

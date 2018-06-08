@@ -61,8 +61,8 @@ Rails.application.configure do
 
   config.action_mailer.preview_path = "#{Rails.root}/test/mailers/previews"
 
-  config.action_controller.asset_host = Sapwood.config.url
-  config.action_mailer.asset_host = Sapwood.config.url
+  config.action_controller.asset_host = ENV['URL']
+  config.action_mailer.asset_host = ENV['URL']
 
   ActiveRecordQueryTrace.enabled = false
 

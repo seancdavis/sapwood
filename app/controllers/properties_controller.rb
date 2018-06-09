@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: properties
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  templates_raw :text
-#  api_key       :string
-#
-
 class PropertiesController < ApplicationController
 
   before_action :verify_property_access, :except => [:new, :create]

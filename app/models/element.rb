@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
-
 class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
@@ -74,13 +56,6 @@ class Element < ApplicationRecord
     return if template.blank? || template.primary_field.blank? ||
               self.send(template.primary_field.name).blank?
     self.title = self.send(template.primary_field.name)
-  end
-
-  after_create :process_images!, :if => :public_document?
-
-  def process_images!
-    return nil if Rails.env.test?
-    ProcessImages.delay.call(:document => self) if image? && !processed?
   end
 
   after_save :update_associations

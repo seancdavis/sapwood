@@ -1,17 +1,3 @@
-# == Schema Information
-#
-# Table name: documents
-#
-#  id          :integer          not null, primary key
-#  title       :string
-#  url         :string
-#  property_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  archived    :boolean          default(FALSE)
-#  processed   :boolean          default(FALSE)
-#
-
 class Document < ApplicationRecord
 
   # ---------------------------------------- Associations
@@ -27,8 +13,6 @@ class Document < ApplicationRecord
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
 
   # ---------------------------------------- Callbacks
-
-  after_create :process_images!
 
   after_save :set_title_if_blank
 
@@ -90,15 +74,6 @@ class Document < ApplicationRecord
       response[:versions][:"#{v}_crop"] = version(v, true)
     end
     response
-  end
-
-  def process_images!
-    return nil if Rails.env.test?
-    ProcessImages.delay.call(:document => self) if image? && !processed?
-  end
-
-  def processed!
-    update_columns(:processed => true)
   end
 
   # ---------------------------------------- Private Methods

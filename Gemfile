@@ -46,6 +46,7 @@ gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
 # TODO: What is this for?
 gem 'highline'
+gem 'imgix-rails'
 gem 'jbuilder'
 # TODO: heartwood-uploader will take care of this.
 gem 'jquery-fileupload-rails'
@@ -94,8 +95,6 @@ end
 # ------------------------------------------ Testing
 
 group :development, :test do
-  # TODO: Remove
-  gem 'annotate'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'

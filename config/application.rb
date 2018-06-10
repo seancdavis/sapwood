@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -19,7 +21,7 @@ module App
 
     config.generators do |g|
       g.fixture true
-      g.fixture_replacement "factory_bot"
+      g.fixture_replacement 'factory_bot'
       g.test_framework :rspec
       g.assets false
       g.view_specs false

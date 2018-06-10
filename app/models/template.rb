@@ -1,5 +1,6 @@
-class Template
+# frozen_string_literal: true
 
+class Template
   def initialize(options = {})
     @attributes ||= options
     self
@@ -96,7 +97,7 @@ class Template
   def default_columns
     {
       primary_field.name => primary_field.attributes,
-      "updated_at" => { "label" => "Last Modified", "format" => "%b %d, %Y" }
+      'updated_at' => { 'label' => 'Last Modified', 'format' => '%b %d, %Y' }
     }
   end
 
@@ -110,7 +111,7 @@ class Template
       f = if %w(updated_at created_at).include?(name)
         Field.new('name' => 'updated_at', 'type' => 'date')
       else
-        find_field(attrs["field"]) || find_field(name)
+        find_field(attrs['field']) || find_field(name)
       end
       # TODO: We don't need to give feedback here, but this should be caught
       # when the config checker utility is added.
@@ -128,7 +129,7 @@ class Template
   def fields
     return [] unless attributes['fields']
     fields = []
-    if attributes['fields'].select { |n,d| d['primary'].to_bool }.blank?
+    if attributes['fields'].select { |n, d| d['primary'].to_bool }.blank?
       attributes['fields'][attributes['fields'].keys[0]]['primary'] = true
     end
     attributes['fields'].each do |name, data|
@@ -154,5 +155,4 @@ class Template
   def respond_to?(method, include_private = false)
     (attributes.keys + ['namespace']).include?(method.to_s)
   end
-
 end

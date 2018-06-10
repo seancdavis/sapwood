@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: element_associations
@@ -10,10 +12,8 @@
 #
 
 class ElementAssociation < ApplicationRecord
-
   # ---------------------------------------- Associations
 
-  belongs_to :source, :class_name => 'Element'
-  belongs_to :target, :class_name => 'Element'
-
+  belongs_to :source, class_name: 'Element'
+  belongs_to :target, class_name: 'Element'
 end

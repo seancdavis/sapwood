@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveExtraPropertyConfigs < ActiveRecord::Migration
   def change
     remove_column :properties, :labels, :json

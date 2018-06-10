@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddApiKeyToProperties < ActiveRecord::Migration
   def change
     add_column :properties, :api_key, :string

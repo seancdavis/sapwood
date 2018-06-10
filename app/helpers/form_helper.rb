@@ -1,10 +1,10 @@
-module FormHelper
+# frozen_string_literal: true
 
+module FormHelper
   def minimal_form_for(object, *args, &block)
     options = args.extract_options!
     simple_form_for(object,
-                    *(args << options.merge(:builder => MinimalFormBuilder)),
+                    *(args << options.merge(builder: MinimalFormBuilder)),
                     &block)
   end
-
 end

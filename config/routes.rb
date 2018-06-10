@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
 
   match '*all' => 'api#options', :via => :options
@@ -12,9 +14,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :properties, :only => [:show] do
-        resources :elements, :only => [:index, :show, :create] do
-          post 'webhook', :on => :collection if Rails.env.development?
+      resources :properties, only: [:show] do
+        resources :elements, only: [:index, :show, :create] do
+          post 'webhook', on: :collection if Rails.env.development?
         end
         post 'generate_url' => 'elements#generate_url'
       end
@@ -34,7 +36,7 @@ Rails.application.routes.draw do
 
   get 'deck' => 'deck#show', :as => :deck
 
-  resources :properties, :except => [:index, :destroy, :edit] do
+  resources :properties, except: [:index, :destroy, :edit] do
     get 'setup/:step' => 'properties#edit', :as => :setup
     get 'tools/import' => 'properties#import', :as => :import
     patch 'tools/import' => 'properties#process_import', :as => :process_import
@@ -42,15 +44,15 @@ Rails.application.routes.draw do
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 
-    resources :templates, :only => [], :path => 'elements' do
-      resources :elements, :path => ''
+    resources :templates, only: [], path: 'elements' do
+      resources :elements, path: ''
     end
-    resources :templates, :only => [], :path => 'documents' do
-      resources :documents, :path => ''
+    resources :templates, only: [], path: 'documents' do
+      resources :documents, path: ''
     end
-    resources :notifications, :only => [:create]
+    resources :notifications, only: [:create]
   end
 
-  root :to => 'application#home'
+  root to: 'application#home'
 
 end

@@ -1,8 +1,9 @@
-module PartialsHelper
+# frozen_string_literal: true
 
+module PartialsHelper
   def render_partial(name, options = {})
-    render :partial => "application/#{name}",
-           :locals => { :options => options }
+    render partial: "application/#{name}",
+           locals: { options: options }
   end
 
   def page_header(options = {})
@@ -10,7 +11,7 @@ module PartialsHelper
   end
 
   def card(options = {}, &block)
-    render_partial('card', options.merge(:content => capture(&block)))
+    render_partial('card', options.merge(content: capture(&block)))
   end
 
   def svg(name)
@@ -18,5 +19,4 @@ module PartialsHelper
     return File.read(file_path).html_safe if File.exists?(file_path)
     '(not found)'
   end
-
 end

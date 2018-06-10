@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 require 'aws-sdk'
 require 'rmagick'
 
 class ProcessAvatar
-
   include Magick
 
   def initialize(options = {})
-    raise "You must provide a user." if options[:user].blank?
+    raise 'You must provide a user.' if options[:user].blank?
     @user = options[:user]
   end
 
@@ -20,7 +21,7 @@ class ProcessAvatar
     resize_image
     upload_image
     delete_image
-    @user.update_columns(:avatar_url => dest_url)
+    @user.update_columns(avatar_url: dest_url)
     true
   end
 
@@ -49,9 +50,9 @@ class ProcessAvatar
     end
 
     def s3
-      @s3 ||= Aws::S3::Client.new :region => region,
-                                  :access_key_id => key,
-                                  :secret_access_key => secret
+      @s3 ||= Aws::S3::Client.new region: region,
+                                  access_key_id: key,
+                                  secret_access_key: secret
     end
 
     # ---------------------------------------- File References
@@ -110,8 +111,8 @@ class ProcessAvatar
     # ---------------------------------------- Actions
 
     def download_file
-      s3.get_object :response_target => temp_file_path,
-                    :bucket => bucket, :key => s3_file_path
+      s3.get_object response_target: temp_file_path,
+                    bucket: bucket, key: s3_file_path
     end
 
     def orient_image
@@ -125,8 +126,8 @@ class ProcessAvatar
 
     def upload_image
       File.open(temp_resized_path, 'rb') do |file|
-        s3.put_object :bucket => bucket, :key => s3_file_dest, :body => file,
-                      :acl => 'public-read'
+        s3.put_object bucket: bucket, key: s3_file_dest, body: file,
+                      acl: 'public-read'
       end
     end
 
@@ -134,5 +135,4 @@ class ProcessAvatar
       FileUtils.rm(temp_file_path)
       FileUtils.rm(temp_resized_path)
     end
-
 end

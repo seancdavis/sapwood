@@ -1,5 +1,6 @@
-class Column
+# frozen_string_literal: true
 
+class Column
   def initialize(options)
     @attributes ||= options
     self
@@ -50,5 +51,4 @@ class Column
   def respond_to?(method, include_private = false)
     attributes.keys.include?(method.to_s)
   end
-
 end

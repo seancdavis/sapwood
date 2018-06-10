@@ -1,5 +1,6 @@
-class ErrorsController < ApplicationController
+# frozen_string_literal: true
 
+class ErrorsController < ApplicationController
   skip_before_action :authenticate_user!
   skip_before_action :verify_profile_completion
 
@@ -14,5 +15,4 @@ class ErrorsController < ApplicationController
   def unacceptable
     render status: 422
   end
-
 end

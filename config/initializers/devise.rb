@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 
 # Use this hook to configure devise mailer, warden hooks and so forth.

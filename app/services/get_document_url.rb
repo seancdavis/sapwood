@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 require 'aws-sdk'
 
 class GetDocumentUrl
-
   attr_accessor :document, :expires_in
 
   def initialize(options = {})
     @document = options[:document]
-    raise "You must provide a document." if @document.blank?
+    raise 'You must provide a document.' if @document.blank?
     set_options(options)
   end
 
@@ -16,13 +17,13 @@ class GetDocumentUrl
 
   def call
     return @document.url unless @document.private?
-    s3_object.presigned_url(:get, :expires_in => @options[:expires_in])
+    s3_object.presigned_url(:get, expires_in: @options[:expires_in])
   end
 
   private
 
     def set_options(options)
-      @options = options.reverse_merge(:expires_in => 60)
+      @options = options.reverse_merge(expires_in: 60)
     end
 
     # ---------------------------------------- AWS Setup / Credentials
@@ -48,9 +49,9 @@ class GetDocumentUrl
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new :region => region,
-                                         :access_key_id => key,
-                                         :secret_access_key => secret
+      @s3_client ||= Aws::S3::Client.new region: region,
+                                         access_key_id: key,
+                                         secret_access_key: secret
     end
 
     # ---------------------------------------- Document Helpers
@@ -62,7 +63,7 @@ class GetDocumentUrl
     # ---------------------------------------- S3 Helpers
 
     def s3_bucket
-      @s3_bucket ||= Aws::S3::Bucket.new(bucket_name, :client => s3_client)
+      @s3_bucket ||= Aws::S3::Bucket.new(bucket_name, client: s3_client)
     end
 
     def s3_object
@@ -76,5 +77,4 @@ class GetDocumentUrl
     def s3_file_path
       "#{s3_dir}/#{@document.filename}"
     end
-
 end

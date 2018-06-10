@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Presenter
   extend ActiveSupport::Concern
 
@@ -15,5 +17,4 @@ module Presenter
       p.send(method)
     end
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.document do
   json.id @document.id
   json.url edit_property_template_document_path(current_property, current_template, @document)

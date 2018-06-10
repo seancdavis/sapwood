@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -23,7 +25,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
+RSpec.describe User, type: :model do
 
   describe '#accessible_properties' do
     before(:each) do
@@ -84,7 +86,7 @@ RSpec.describe User, :type => :model do
     it 'returns true for property admins' do
       user = create(:user)
       user.properties << @property
-      user.property_users.first.update(:is_admin => true)
+      user.property_users.first.update(is_admin: true)
       user = User.find_by_id(user.id)
       expect(user.is_admin_of?(@property)).to eq(true)
     end

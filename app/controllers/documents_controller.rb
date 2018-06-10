@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: documents
@@ -13,7 +15,6 @@
 #
 
 class DocumentsController < ApplicationController
-
   before_action :verify_property_access
 
   def index
@@ -31,11 +32,11 @@ class DocumentsController < ApplicationController
         .by_title.page(params[:page] || 1).per(12)
     end
     @elements = @documents
-    render :partial => 'list' if request.xhr?
+    render partial: 'list' if request.xhr?
   end
 
   def new
-    render :layout => false
+    render layout: false
   end
 
   def create
@@ -48,8 +49,7 @@ class DocumentsController < ApplicationController
 
     def create_params
       params.require(:document).permit(:url)
-            .merge(:property => current_property,
-                   :template_name => current_template.name)
+            .merge(property: current_property,
+                   template_name: current_template.name)
     end
-
 end

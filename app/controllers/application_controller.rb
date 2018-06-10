@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery :with => :exception
+  protect_from_forgery with: :exception
 
-  before_action :authenticate_user!, :except => [:auth]
-  before_action :verify_profile_completion, :except => [:auth]
+  before_action :authenticate_user!, except: [:auth]
+  before_action :verify_profile_completion, except: [:auth]
 
   helper_method :is_property_admin?,
                 :current_document,
@@ -50,11 +52,11 @@ class ApplicationController < ActionController::Base
     end
 
     def verify_profile_completion
-      if(user_signed_in? &&
+      if (user_signed_in? &&
          controller_name != 'sessions' &&
          current_user.name.blank?)
-        redirect_to edit_profile_path(:setup => true),
-                    :alert => 'You need to complete your profile.'
+        redirect_to edit_profile_path(setup: true),
+                    alert: 'You need to complete your profile.'
       end
     end
 
@@ -134,5 +136,4 @@ class ApplicationController < ActionController::Base
         visible_property_users.select { |u| u.id.to_i == p.to_i }.first
       end
     end
-
 end

@@ -1,5 +1,6 @@
-class MinimalFormBuilder < SimpleForm::FormBuilder
+# frozen_string_literal: true
 
+class MinimalFormBuilder < SimpleForm::FormBuilder
   def input(attribute_name, options = {}, &block)
     if options[:placeholder].nil?
       options[:placeholder] ||= if object.class.respond_to?(:human_attribute_name)
@@ -12,5 +13,4 @@ class MinimalFormBuilder < SimpleForm::FormBuilder
 
     super
   end
-
 end

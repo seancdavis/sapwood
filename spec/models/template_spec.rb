@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe Template, :type => :model do
+describe Template, type: :model do
 
   let(:property) { property_with_templates }
 
@@ -25,7 +27,7 @@ describe Template, :type => :model do
 
   describe '#slug' do
     it 'removes unwanted characters from title and returns' do
-      template = property.find_template("-A & __ Fun(ny) - +Title^")
+      template = property.find_template('-A & __ Fun(ny) - +Title^')
       expect(template.slug).to eq('a-fun-ny-title')
       expect(@template.slug).to eq('default')
     end

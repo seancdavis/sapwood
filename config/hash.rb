@@ -1,5 +1,6 @@
-class Hash
+# frozen_string_literal: true
 
+class Hash
   def to_ostruct
     convert_to_ostruct_recursive(self)
   end
@@ -19,5 +20,4 @@ class Hash
       end
       result
     end
-
 end

@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 class ApiController < ActionController::Base
-
   before_action :allow_cors
-  before_action :authenticate_api_user!, :except => [:options]
+  before_action :authenticate_api_user!, except: [:options]
 
-  caches_action :index, :cache_path => :index_cache_path.to_proc
-  caches_action :show, :cache_path => :show_cache_path.to_proc
+  caches_action :index, cache_path: :index_cache_path.to_proc
+  caches_action :show, cache_path: :show_cache_path.to_proc
 
   helper_method :current_property
 
   def options
-    render :nothing => true
+    render nothing: true
   end
 
   protected
@@ -24,7 +25,7 @@ class ApiController < ActionController::Base
 
     def q_to_s
       q = ''
-      request.query_parameters.each { |k,v| q += "_#{k}_#{v}" }
+      request.query_parameters.each { |k, v| q += "_#{k}_#{v}" }
       q
     end
 
@@ -52,5 +53,4 @@ class ApiController < ActionController::Base
       headers['Access-Control-Request-Method'] = '*'
       headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     end
-
 end

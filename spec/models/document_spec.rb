@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: documents
@@ -14,7 +16,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Document, :type => :model do
+RSpec.describe Document, type: :model do
 
   let(:document) { create(:document, :from_system) }
 
@@ -23,7 +25,7 @@ RSpec.describe Document, :type => :model do
       expect(document.title).to eq('Example')
     end
     it 'does not set the title if it already exists' do
-      expect(create(:document, :title => 'Title').title).to_not eq('Example')
+      expect(create(:document, title: 'Title').title).to_not eq('Example')
     end
   end
 

@@ -1,5 +1,6 @@
-class ElementPresenter
+# frozen_string_literal: true
 
+class ElementPresenter
   def initialize(obj)
     @obj = obj
   end
@@ -38,5 +39,4 @@ class ElementPresenter
     def h
       ActionController::Base.helpers
     end
-
 end

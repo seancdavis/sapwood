@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFolders < ActiveRecord::Migration
   def change
     create_table :folders do |t|
@@ -5,7 +7,7 @@ class CreateFolders < ActiveRecord::Migration
       t.string :slug
       t.string :ancestry
       t.integer :property_id
-      t.integer :position, :default => 0
+      t.integer :position, default: 0
 
       t.timestamps null: false
     end

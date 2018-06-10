@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class ImportElements
-
   def initialize(options = {})
     @options = options
     required_args.each do |arg|
-      raise "Missing required option: #{arg.to_s}" if @options[arg].blank?
+      raise "Missing required option: #{arg}" if @options[arg].blank?
     end
   end
 
@@ -16,9 +17,9 @@ class ImportElements
   def call
     elements = []
     ActiveRecord::Base.transaction do
-      CSV.parse(csv, :headers => true) do |row|
+      CSV.parse(csv, headers: true) do |row|
         attrs = {}
-        element = property.elements.new(:template_name => template.name)
+        element = property.elements.new(template_name: template.name)
         row.to_hash.each do |attr, value|
           if template.find_field(attr).present?
             element.template_data = element.template_data.merge(attr => value)
@@ -62,5 +63,4 @@ class ImportElements
     def required_args
       [:csv, :template_name, :property_id]
     end
-
 end

@@ -1,5 +1,6 @@
-class SapwoodCache
+# frozen_string_literal: true
 
+class SapwoodCache
   def self.enabled?
     Rails.application.config.action_controller.perform_caching
   end
@@ -50,5 +51,4 @@ class SapwoodCache
 
   handle_asynchronously :rebuild_property
   handle_asynchronously :rebuild_element
-
 end

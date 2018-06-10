@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCollectionsRawToProperties < ActiveRecord::Migration
   def change
     add_column :properties, :collection_types_raw, :text

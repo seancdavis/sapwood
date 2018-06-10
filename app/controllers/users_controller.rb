@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -22,7 +24,6 @@
 #
 
 class UsersController < ApplicationController
-
   before_action :verify_property_access
   before_action :verify_property_admin_access
 
@@ -41,7 +42,7 @@ class UsersController < ApplicationController
         UserMailer.welcome(focused_user).deliver_now
         focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
-                    :notice => 'User added successfully!'
+                    notice: 'User added successfully!'
       else
         @properties = Property.alpha.to_a - [current_property]
         render 'new'
@@ -49,7 +50,7 @@ class UsersController < ApplicationController
     else
       focused_user.properties << current_property
       redirect_to property_users_path(current_property),
-                  :notice => 'User added successfully!'
+                  notice: 'User added successfully!'
     end
   end
 
@@ -81,7 +82,7 @@ class UsersController < ApplicationController
         focused_user.make_admin_in_properties!(admin_ids)
       end
       redirect_to property_users_path(current_property),
-                  :notice => 'User updated successfully!'
+                  notice: 'User updated successfully!'
     else
       @properties = Property.alpha
       render 'edit'
@@ -95,7 +96,7 @@ class UsersController < ApplicationController
     end
 
     def user_params_with_password
-      user_params.merge(:password => SecureRandom.hex(32))
+      user_params.merge(password: SecureRandom.hex(32))
     end
 
     def verify_property_admin_access
@@ -107,5 +108,4 @@ class UsersController < ApplicationController
       return true if current_user.is_admin?
       !focused_user.is_admin?
     end
-
 end

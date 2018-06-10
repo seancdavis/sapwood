@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: property_users
@@ -11,10 +13,8 @@
 #
 
 class PropertyUser < ApplicationRecord
-
   # ---------------------------------------- Associations
 
   belongs_to :property
   belongs_to :user
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: responses
@@ -11,5 +13,5 @@
 
 require 'rails_helper'
 
-RSpec.describe Response, :type => :model do
+RSpec.describe Response, type: :model do
 end

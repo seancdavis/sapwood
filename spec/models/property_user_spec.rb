@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: property_users
@@ -12,5 +14,5 @@
 
 require 'rails_helper'
 
-RSpec.describe PropertyUser, :type => :model do
+RSpec.describe PropertyUser, type: :model do
 end

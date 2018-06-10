@@ -1,11 +1,12 @@
-require "net/http"
-require "uri"
+# frozen_string_literal: true
+
+require 'net/http'
+require 'uri'
 
 class Webhook
-
   def initialize(options = {})
     @options = options
-    raise "Missing option: element" unless options[:element]
+    raise 'Missing option: element' unless options[:element]
   end
 
   def self.call(options = {})
@@ -29,5 +30,4 @@ class Webhook
     def form_data
       @form_data ||= element.as_json.stringify_keys
     end
-
 end

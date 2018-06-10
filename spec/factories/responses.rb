@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: responses
@@ -12,7 +14,7 @@
 FactoryBot.define do
   factory :response do
     property_id 1
-data ""
+    data ''
   end
 
 end

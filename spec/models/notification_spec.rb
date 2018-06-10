@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -12,5 +14,5 @@
 
 require 'rails_helper'
 
-RSpec.describe Notification, :type => :model do
+RSpec.describe Notification, type: :model do
 end

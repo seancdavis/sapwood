@@ -1,5 +1,6 @@
-class UserPresenter
+# frozen_string_literal: true
 
+class UserPresenter
   def initialize(obj)
     @obj = obj
   end
@@ -7,5 +8,4 @@ class UserPresenter
   def name
     @obj.name.blank? ? @obj.email : @obj.name
   end
-
 end

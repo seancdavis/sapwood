@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: responses
@@ -10,9 +12,7 @@
 #
 
 class Response < ApplicationRecord
-
   # ---------------------------------------- Associations
 
-  belongs_to :property, :touch => true
-
+  belongs_to :property, touch: true
 end

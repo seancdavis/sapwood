@@ -1,15 +1,17 @@
 language: ruby
 rvm:
-- 2.5.0
+  - 2.5.0
 services:
-- postgresql
+  - postgresql
 addons:
   postgresql: '9.3'
   code_climate:
     repo_token: aea924f2eddecf74fde39a106043b366b80fb0c78f246a0f7e4557de4572a143
 before_script:
-- rm config/database.yml && cp config/database.travis.yml config/database.yml
-- psql -c 'create database travis_ci_test;' -U postgres
+  - rm config/database.yml && cp config/database.travis.yml config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+script:
+  - bundle exec rubocop -R
 env:
   global:
   - secure: H4kvj8UDtIjLZPAjZUUgkPeANsoAl9J9Fs/RgAn3hPqbOpgTXgabgwHr0Hmt8gkvzLUdY4o/PsN/EgCOzog/3qRKTWY/bDW+5TDzjjF86PWndhsAH7pswB/AlD4paE3cs6Tf7f4Kc9lTwRObBPtJYGhijdrXA9ES6kWsWKV6sVTMdKZQpkyFMPbGyKTno+/p4qRxmGb98VbeCmMEwW0JD4N+Bt8qwmxG5KkiT1u6jgU0MfMDyf6VQYp7zn40xMQjFJXaY9OlyGCfphTM47E7ujPlokFc2Fu7KXPLc7HbjRHnXCYLgeibl3x4DDaONpjuZmLMs7TP9WJ3UYNQJy9U4BO/e6mCAfTGMxw++u57z2jp7B056pFV3CXaLGZ67xeEVsntmz3VY8XMK5hVMO3gdIltVvGKx0yq52arSNZPOViH2NJzBn4sNccsxyE8vBVJUGql0AoUj1AmW9cnvPG/l47hnznwaDl37A7OTso8M/7WuRl74eBNXl3+diAZ481hM/BueVUQnhyvxTHNBbirLehzVZuAJzpvDBgSWfwGLiUAhET0PWI72g3A/bZ5F33uH3sq298I8ef9NIqwOBYeUutZPrdo+ZbyAhkVCE0evxm2loRP1MlUqf91DEPpkYqcaz/+qRGUoHg3n9sqS6rlghmm8JesX27AO1M8ZIKcZFY=

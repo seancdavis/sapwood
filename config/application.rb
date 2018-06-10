@@ -42,11 +42,9 @@ module App
 
     config.exceptions_app = self.routes
 
-    if ENV['IMGIX_SOURCE'].present?
-      config.imgix = {
-        source: ENV['IMGIX_SOURCE'],
-        secure_url_token: ENV['IMGIX_TOKEN'] || nil
-      }
-    end
+    config.imgix = {
+      source: ENV['IMGIX_SOURCE'],
+      secure_url_token: ENV['IMGIX_TOKEN'] || nil
+    }
   end
 end

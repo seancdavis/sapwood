@@ -174,9 +174,7 @@ RSpec.describe Element, :type => :model do
       ]
       element[:template_data]['mixed_bags'] = mixed_bag_els.collect(&:id).join(',')
       # Save our element.
-      puts element.template_data
       element.save!
-      puts element.template_data
 
       # Check JSON.
       json = element.as_json(:includes => 'options')
@@ -233,17 +231,12 @@ RSpec.describe Element, :type => :model do
     end
 
     describe '#as_json' do
-      it 'has a url reference' do
-        expect(document.as_json({})[:url]).to eq(document.url)
+      it 'has a url reference from imgix' do
+        imgix_url = ActionController::Base.helpers.ix_image_url(document.path)
+        expect(document.as_json({})[:url]).to eq(imgix_url)
       end
       it 'does not have versions if not processed' do
         expect(document.as_json({})[:versions]).to eq(nil)
-      end
-      it 'has a reference to versions if it is an image and processed' do
-        json = document.as_json({})
-        versions = %w{xsmall xsmall_crop small small_crop medium medium_crop
-                      large large_crop xlarge xlarge_crop}
-        expect(json[:versions].keys.map(&:to_s)).to match_array(versions)
       end
     end
   end

@@ -102,7 +102,7 @@ class Element < ApplicationRecord
 
   def title_from_filename
     return nil unless document?
-    url.split('/').last.split('.').first.titleize
+    File.basename(url.to_s, '.*').titleize
   end
 
   def document?

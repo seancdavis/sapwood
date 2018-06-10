@@ -6,7 +6,6 @@ class Property < ApplicationRecord
 
   # ---------------------------------------- Associations
 
-  has_many :documents, :dependent => :destroy
   has_many :elements, :dependent => :destroy
   has_many :notifications, :dependent => :destroy
   has_many :property_users, :dependent => :destroy

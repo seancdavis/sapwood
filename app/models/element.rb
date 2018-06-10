@@ -222,7 +222,7 @@ class Element < ApplicationRecord
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
     end
-    response[:url] = url if document? && public?
+    response[:url] = ActionController::Base.helpers.ix_image_url(path) if document? && public?
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)

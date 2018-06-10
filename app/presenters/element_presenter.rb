@@ -14,7 +14,7 @@ class ElementPresenter
 
   def file_type
     return nil unless @obj.document?
-    @obj.url.split('.').last.downcase
+    File.extname(@obj.url.to_s).remove('.').downcase
   end
 
   def uploaded_at

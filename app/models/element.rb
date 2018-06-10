@@ -114,62 +114,23 @@ class Element < ApplicationRecord
     public? && document?
   end
 
-  def filename
-    return nil unless document?
-    url.split('/').last
+  def url
+    return nil unless document? && super.present?
+    URI.parse(URI.encode(super))
   end
 
-  def filename_no_ext
-    return nil unless document?
-    filename.split('.')[0..-2].join('.')
-  end
-
-  def file_ext
-    return nil unless document?
-    url.split('.').last.downcase
-  end
-
-  def safe_url
-    return nil unless document?
-    URI.encode(url)
-  end
-
-  def uri
-    return nil unless document?
-    URI.parse(safe_url)
-  end
-
-  def s3_base
-    return nil unless document?
-    "#{uri.scheme}://#{uri.host}"
-  end
-
-  def s3_dir
-    return nil unless document?
-    uri.path.split('/').reject(&:blank?)[0..-2].join('/')
-  end
-
-  def version(name, crop = false)
-    return nil unless document?
-    return safe_url.to_s if !processed? || !image?
-    alt = crop ? '_crop' : nil
-    filename = "#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
-    URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
+  def path
+    url.present? ? url.path : nil
   end
 
   def image?
     return false unless document?
-    %(jpeg jpg png gif svg).include?(file_ext)
+    %(jpeg jpg png gif svg).include?(File.extname(path).remove('.'))
   end
 
   def archive!
     return false unless document?
-    update(:archived => true)
-  end
-
-  def processed!
-    return false unless document?
-    update(:processed => true)
+    update(archived: true)
   end
 
   def private?
@@ -261,16 +222,7 @@ class Element < ApplicationRecord
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
     end
-    if document? && public?
-      response[:url] = url
-      if image? && processed?
-        response[:versions] = {}
-        %w(xsmall small medium large xlarge).each do |v|
-          response[:versions][:"#{v}"] = version(v, false)
-          response[:versions][:"#{v}_crop"] = version(v, true)
-        end
-      end
-    end
+    response[:url] = url if document? && public?
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)

@@ -22,21 +22,4 @@ class ElementPresenter
     @obj.created_at.strftime('%b %d, %Y')
   end
 
-  def thumb_url(size = :small)
-    return nil unless @obj.document?
-    return @obj.version(size, true) if @obj.image? && @obj.processed?
-    h.image_path('document.png')
-  end
-
-  def thumb(size = :small)
-    return nil unless @obj.document?
-    h.image_tag(thumb_url)
-  end
-
-  private
-
-    def h
-      ActionController::Base.helpers
-    end
-
 end

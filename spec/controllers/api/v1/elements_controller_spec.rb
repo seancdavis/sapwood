@@ -233,7 +233,6 @@ describe Api::V1::ElementsController do
       expect(@property.elements.count).to eq(1)
       el = @property.elements.first
       expect(el.url).to eq('http://www.pdf995.com/samples/pdf.pdf')
-      expect(el.file_ext).to eq('pdf')
     end
     it 'can be created while missing a secret if not configured' do
       name = Faker::Lorem.sentence

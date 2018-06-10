@@ -240,42 +240,10 @@ RSpec.describe Element, :type => :model do
         expect(document.as_json({})[:versions]).to eq(nil)
       end
       it 'has a reference to versions if it is an image and processed' do
-        document.processed!
         json = document.as_json({})
         versions = %w{xsmall xsmall_crop small small_crop medium medium_crop
                       large large_crop xlarge xlarge_crop}
         expect(json[:versions].keys.map(&:to_s)).to match_array(versions)
-      end
-    end
-
-    describe '#filename, #filename_no_ext, #file_ext' do
-      let(:document) { build(:document) }
-      it 'returns appropriate filename parts' do
-        expect(document.filename).to eq('178947853882959841_1454569459.jpg')
-        expect(document.filename_no_ext).to eq('178947853882959841_1454569459')
-        expect(document.file_ext).to eq('jpg')
-      end
-    end
-
-    describe '#safe_url, #uri, #s3_base, #s3_dir' do
-      let(:document) { build(:document, :from_s3) }
-      it 'returns appropraite uri segments' do
-        expect(document.safe_url).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
-        expect(document.uri).to eq(URI.parse(document.safe_url))
-        expect(document.s3_base).to eq('https://sapwood.s3.amazonaws.com')
-        expect(document.s3_dir).to eq('development/properties/1/xxxxxx-xxxxxx')
-      end
-    end
-
-    describe '#version' do
-      let(:document) { build(:document, :from_s3) }
-      it 'returns the main URL if it has not been processed' do
-        expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray.jpg')
-      end
-      it 'returns the correct url for a version with and without crop' do
-        document.processed = true
-        expect(document.version(:large)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large.jpg')
-        expect(document.version(:large, true)).to eq('https://sapwood.s3.amazonaws.com/development/properties/1/xxxxxx-xxxxxx/Bill%20Murray_large_crop.jpg')
       end
     end
   end

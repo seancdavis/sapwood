@@ -28,13 +28,6 @@ class User < ApplicationRecord
     self.avatar_url = "https://www.gravatar.com/avatar/#{hash}?s=100&d=retro"
   end
 
-  after_save :process_avatar!
-
-  def process_avatar!
-    return nil if Rails.env.test? || !avatar_url_changed?
-    ProcessAvatar.delay.call(:user => self)
-  end
-
   # ---------------------------------------- Instance Methods
 
   def accessible_properties

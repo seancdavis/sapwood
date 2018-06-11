@@ -22,5 +22,4 @@ class ElementPresenter
     return nil unless @obj.document?
     @obj.created_at.strftime('%b %d, %Y')
   end
-
 end

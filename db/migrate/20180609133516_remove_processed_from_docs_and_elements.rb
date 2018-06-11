@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveProcessedFromDocsAndElements < ActiveRecord::Migration[5.2]
   def change
     remove_column :documents, :processed, :boolean, default: false

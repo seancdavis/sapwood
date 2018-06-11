@@ -1,20 +1,5 @@
-<<<<<<< HEAD
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: notifications
-#
-#  id            :integer          not null, primary key
-#  user_id       :integer
-#  property_id   :integer
-#  template_name :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-
-=======
->>>>>>> v3.0
 module NotificationsHelper
   def notification_on?
     return false if current_template.blank? || current_property.blank?

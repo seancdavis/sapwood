@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Element < ApplicationRecord
   # ---------------------------------------- Plugins
 
@@ -118,22 +120,8 @@ class Element < ApplicationRecord
     URI.parse(URI.encode(super))
   end
 
-<<<<<<< HEAD
-  def s3_dir
-    return nil unless document?
-    uri.path.split('/').reject(&:blank?)[0..-2].join('/')
-  end
-
-  def version(name, crop = false)
-    return nil unless document?
-    return safe_url.to_s if !processed? || !image?
-    alt = crop ? '_crop' : nil
-    filename = "#{filename_no_ext}_#{name}#{alt}.#{file_ext}"
-    URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
-=======
   def path
     url.present? ? url.path : nil
->>>>>>> v3.0
   end
 
   def image?
@@ -144,14 +132,6 @@ class Element < ApplicationRecord
   def archive!
     return false unless document?
     update(archived: true)
-<<<<<<< HEAD
-  end
-
-  def processed!
-    return false unless document?
-    update(processed: true)
-=======
->>>>>>> v3.0
   end
 
   def private?

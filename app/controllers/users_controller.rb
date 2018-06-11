@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :verify_property_access
   before_action :verify_property_admin_access

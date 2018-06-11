@@ -64,21 +64,13 @@ module FieldHelper
                           readonly: field.read_only?
       o += content_tag(:label, field.label)
       if document.present?
-<<<<<<< HEAD
         o += content_tag(:div, class: 'document-url') do
-          link_to(document.url) do
-            o2 = ''
-            if document.public_document?
-              o2 += image_tag(document.version(:xsmall, true))
-=======
-        o += content_tag(:div, :class => 'document-url') do
           link_to(document.url.to_s) do
-            o2  = ''
+            o2 = ''
             if document.public? && document.image?
               o2 += ix_image_tag(document.path, auto: 'format,compress', w: 100, h: 100, fit: 'crop', sizes: '50px')
             else
               o2 += image_tag('document.png')
->>>>>>> v3.0
             end
             o2 += content_tag(:span, document.title)
             o2 += content_tag(:a, 'REMOVE', href: '#', class: 'remove')
@@ -167,19 +159,11 @@ module FieldHelper
       o += content_tag(:ul, class: 'selected-documents') do
         o2 = ''
         documents.each do |document|
-<<<<<<< HEAD
           o2 += content_tag(:li, class: 'document-url',
                             data: { id: document.id }) do
-            o3 = document.p.thumb
-            o3 += link_to(document.title, document.url, class: 'filename')
-            o3 += content_tag(:a, 'REMOVE', href: '#', class: 'remove')
-=======
-          o2 += content_tag(:li, :class => 'document-url',
-                            :data => { :id => document.id }) do
             o3 = image_tag(image_thumb_url(document))
-            o3 += link_to(document.title, document.url.to_s, :class => 'filename')
-            o3 += content_tag(:a, 'REMOVE', :href => '#', :class => 'remove')
->>>>>>> v3.0
+            o3 += link_to(document.title, document.url.to_s, class: 'filename')
+            o3 += content_tag(:a, 'REMOVE', href: '#', class: 'remove')
             o3.html_safe
           end
         end

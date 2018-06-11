@@ -16,7 +16,7 @@ class GetDocumentUrl
   end
 
   def call
-    return @document.url unless @document.private?
+    return @document.url.to_s unless @document.private?
     s3_object.presigned_url(:get, expires_in: @options[:expires_in])
   end
 
@@ -26,55 +26,23 @@ class GetDocumentUrl
       @options = options.reverse_merge(expires_in: 60)
     end
 
-    # ---------------------------------------- AWS Setup / Credentials
-
-    def key
-      @key ||= ENV['AWS_ACCESS_KEY_ID']
-    end
-
-    def secret
-      @secret ||= ENV['AWS_SECRET_ACCESS_KEY']
-    end
-
-    def bucket_name
-      @bucket_name ||= ENV['AWS_BUCKET']
-    end
-
-    def region
-      'us-east-1'
-    end
-
     def s3_credentials
-      Aws::Credentials.new(key, secret)
+      Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new region: region,
-                                         access_key_id: key,
-                                         secret_access_key: secret
-    end
-
-    # ---------------------------------------- Document Helpers
-
-    def document_url
-      @document_url ||= URI.escape(@document.url)
+      @s3_client ||= Aws::S3::Client.new region: 'us-east-1',
+                                         access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+                                         secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     end
 
     # ---------------------------------------- S3 Helpers
 
     def s3_bucket
-      @s3_bucket ||= Aws::S3::Bucket.new(bucket_name, client: s3_client)
+      @s3_bucket ||= Aws::S3::Bucket.new(ENV['AWS_BUCKET'], client: s3_client)
     end
 
     def s3_object
-      @s3_object ||= s3_bucket.object(s3_file_path)
-    end
-
-    def s3_dir
-      @s3_dir ||= document_url.split('/')[3..-2].join('/')
-    end
-
-    def s3_file_path
-      "#{s3_dir}/#{@document.filename}"
+      @s3_object ||= s3_bucket.object(@document.path)
     end
 end

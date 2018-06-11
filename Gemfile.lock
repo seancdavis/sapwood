@@ -49,9 +49,6 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     ancestry (3.0.2)
       activerecord (>= 3.2.0)
-    annotate (2.7.4)
-      activerecord (>= 3.2, < 6.0)
-      rake (>= 10.4, < 13.0)
     arel (9.0.0)
     ast (2.4.0)
     awesome_print (1.8.0)
@@ -735,6 +732,10 @@ GEM
     hirb (0.7.3)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
+    imgix (1.1.0)
+      addressable
+    imgix-rails (2.1.4)
+      imgix (~> 1.1, >= 1.1.0)
     jaro_winkler (1.5.1)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -945,7 +946,6 @@ DEPENDENCIES
   actionpack-action_caching
   active_record_query_trace
   ancestry
-  annotate
   awesome_print
   aws-sdk
   backbone-on-rails
@@ -967,6 +967,7 @@ DEPENDENCIES
   guard-rspec
   highline
   hirb
+  imgix-rails
   jbuilder
   jquery-fileupload-rails
   jquery-rails

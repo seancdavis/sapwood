@@ -1,23 +1,3 @@
-# frozen_string_literal: true
-
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
-
 class Element < ApplicationRecord
   # ---------------------------------------- Plugins
 
@@ -77,13 +57,6 @@ class Element < ApplicationRecord
     self.title = self.send(template.primary_field.name)
   end
 
-  after_create :process_images!, if: :public_document?
-
-  def process_images!
-    return nil if Rails.env.test?
-    ProcessImages.delay.call(document: self) if image? && !processed?
-  end
-
   after_save :update_associations
 
   def update_associations
@@ -128,7 +101,7 @@ class Element < ApplicationRecord
 
   def title_from_filename
     return nil unless document?
-    url.split('/').last.split('.').first.titleize
+    File.basename(url.to_s, '.*').titleize
   end
 
   def document?
@@ -140,36 +113,12 @@ class Element < ApplicationRecord
     public? && document?
   end
 
-  def filename
-    return nil unless document?
-    url.split('/').last
+  def url
+    return nil unless document? && super.present?
+    URI.parse(URI.encode(super))
   end
 
-  def filename_no_ext
-    return nil unless document?
-    filename.split('.')[0..-2].join('.')
-  end
-
-  def file_ext
-    return nil unless document?
-    url.split('.').last.downcase
-  end
-
-  def safe_url
-    return nil unless document?
-    URI.encode(url)
-  end
-
-  def uri
-    return nil unless document?
-    URI.parse(safe_url)
-  end
-
-  def s3_base
-    return nil unless document?
-    "#{uri.scheme}://#{uri.host}"
-  end
-
+<<<<<<< HEAD
   def s3_dir
     return nil unless document?
     uri.path.split('/').reject(&:blank?)[0..-2].join('/')
@@ -181,21 +130,28 @@ class Element < ApplicationRecord
     alt = crop ? '_crop' : nil
     filename = "#{filename_no_ext}_#{name}#{alt}.#{file_ext}"
     URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
+=======
+  def path
+    url.present? ? url.path : nil
+>>>>>>> v3.0
   end
 
   def image?
     return false unless document?
-    %(jpeg jpg png gif svg).include?(file_ext)
+    %(jpeg jpg png gif svg).include?(File.extname(path).remove('.'))
   end
 
   def archive!
     return false unless document?
     update(archived: true)
+<<<<<<< HEAD
   end
 
   def processed!
     return false unless document?
     update(processed: true)
+=======
+>>>>>>> v3.0
   end
 
   def private?
@@ -287,16 +243,7 @@ class Element < ApplicationRecord
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
     end
-    if document? && public?
-      response[:url] = url
-      if image? && processed?
-        response[:versions] = {}
-        %w(xsmall small medium large xlarge).each do |v|
-          response[:versions][:"#{v}"] = version(v, false)
-          response[:versions][:"#{v}_crop"] = version(v, true)
-        end
-      end
-    end
+    response[:url] = ActionController::Base.helpers.ix_image_url(path) if document? && public?
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)

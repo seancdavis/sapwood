@@ -1,19 +1,3 @@
-# frozen_string_literal: true
-
-# == Schema Information
-#
-# Table name: documents
-#
-#  id          :integer          not null, primary key
-#  title       :string
-#  url         :string
-#  property_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  archived    :boolean          default(FALSE)
-#  processed   :boolean          default(FALSE)
-#
-
 class DocumentsController < ApplicationController
   before_action :verify_property_access
 

@@ -10,7 +10,6 @@ addons:
 before_script:
   - rm config/database.yml && cp config/database.travis.yml config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
-script:
   - bundle exec rubocop -R
 env:
   global:

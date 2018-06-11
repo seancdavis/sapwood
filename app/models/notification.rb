@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Notification < ApplicationRecord
+
   # ---------------------------------------- Associations
 
   belongs_to :user
@@ -15,4 +16,5 @@ class Notification < ApplicationRecord
   # ---------------------------------------- Validations
 
   validates :user_id, :property_id, :template_name, presence: true
+
 end

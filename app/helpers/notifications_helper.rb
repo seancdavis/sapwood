@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module NotificationsHelper
+
   def notification_on?
     return false if current_template.blank? || current_property.blank?
     current_user.notifications.for_template(current_template)
@@ -13,4 +14,5 @@ module NotificationsHelper
                                 template: URI.encode(template),
                                 redirect_to: request.path
   end
+
 end

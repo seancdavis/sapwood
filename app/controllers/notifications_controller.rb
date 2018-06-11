@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class NotificationsController < ApplicationController
+
   before_action :verify_property_access
 
   def create
@@ -25,4 +26,5 @@ class NotificationsController < ApplicationController
     redirect_to params[:redirect_to] || request.referrer || current_property,
                 notice: notice
   end
+
 end

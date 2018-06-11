@@ -12,6 +12,7 @@ Bundler.require(*Rails.groups)
 
 module App
   class Application < Rails::Application
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
@@ -48,5 +49,6 @@ module App
       source: ENV['IMGIX_SOURCE'],
       secure_url_token: ENV['IMGIX_TOKEN'] || nil
     }
+
   end
 end

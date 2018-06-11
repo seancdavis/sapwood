@@ -4,6 +4,7 @@ require 'aws-sdk'
 require 'rmagick'
 
 class ProcessImages
+
   include Magick
 
   def initialize(options = {})
@@ -149,4 +150,5 @@ class ProcessImages
     def delete_files
       upload_paths.each { |temp_path, s3_path| FileUtils.rm(temp_path) }
     end
+
 end

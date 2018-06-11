@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module PartialsHelper
+
   def render_partial(name, options = {})
     render partial: "application/#{name}",
            locals: { options: options }
@@ -19,4 +20,5 @@ module PartialsHelper
     return File.read(file_path).html_safe if File.exists?(file_path)
     '(not found)'
   end
+
 end

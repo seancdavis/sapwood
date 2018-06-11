@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ProfileController < ApplicationController
+
   skip_before_action :verify_profile_completion
 
   def edit
@@ -34,4 +35,5 @@ class ProfileController < ApplicationController
       return deck_path unless current_property
       edit_profile_path(property_id: params[:property_id])
     end
+
 end

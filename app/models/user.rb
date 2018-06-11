@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+
   # ---------------------------------------- Plugins
 
   include Presenter
@@ -77,4 +78,5 @@ class User < ApplicationRecord
   def sign_in_id
     Digest::MD5.hexdigest("#{id}//#{created_at}")
   end
+
 end

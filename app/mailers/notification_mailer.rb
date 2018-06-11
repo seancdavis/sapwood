@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class NotificationMailer < ApplicationMailer
+
   def notify(options = {})
     @notification = options[:notification]
     @user = @notification.user
@@ -15,4 +16,5 @@ class NotificationMailer < ApplicationMailer
     mail to: @user.email, from: ENV['DEFAULT_FROM_EMAIL'],
          subject: @subject
   end
+
 end

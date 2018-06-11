@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Property < ApplicationRecord
+
   # ---------------------------------------- Attributes
 
   attr_accessor :template_name, :csv
@@ -92,4 +93,5 @@ class Property < ApplicationRecord
     end
     menu
   end
+
 end

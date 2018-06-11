@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module UploadHelper
+
   def document_upload_key
     key  = "#{Rails.env}/properties/#{current_property.id}/"
     key += "#{DateTime.now.strftime("%y%m%d-%H%M%S")}/${filename}"
@@ -20,6 +21,7 @@ module UploadHelper
   end
 
   class S3Uploader
+
     def initialize(options)
       @options = options.reverse_merge(
         id: 'fileupload',
@@ -88,5 +90,7 @@ module UploadHelper
         )
       ).gsub("\n", '')
     end
+
   end
+
 end

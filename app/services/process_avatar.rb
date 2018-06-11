@@ -4,6 +4,7 @@ require 'aws-sdk'
 require 'rmagick'
 
 class ProcessAvatar
+
   include Magick
 
   def initialize(options = {})
@@ -135,4 +136,5 @@ class ProcessAvatar
       FileUtils.rm(temp_file_path)
       FileUtils.rm(temp_resized_path)
     end
+
 end

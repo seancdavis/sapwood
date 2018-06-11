@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreateNotifications < ActiveRecord::Migration
+
   def change
     create_table :notifications do |t|
       t.integer :user_id
@@ -10,4 +11,5 @@ class CreateNotifications < ActiveRecord::Migration
       t.timestamps null: false
     end
   end
+
 end

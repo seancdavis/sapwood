@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreatePropertyUsers < ActiveRecord::Migration
+
   def change
     create_table :property_users do |t|
       t.integer :property_id
@@ -9,4 +10,5 @@ class CreatePropertyUsers < ActiveRecord::Migration
       t.timestamps null: false
     end
   end
+
 end

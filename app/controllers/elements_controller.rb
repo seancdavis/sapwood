@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ElementsController < ApplicationController
+
   before_action :verify_property_access
 
   def index
@@ -103,4 +104,5 @@ class ElementsController < ApplicationController
         [:edit, current_property, current_template, current_element]
       end
     end
+
 end

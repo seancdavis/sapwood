@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ElementsController < ApiController
+
   def index
     respond_to do |f|
       f.json do
@@ -78,4 +79,5 @@ class Api::V1::ElementsController < ApiController
     def element_params
       params.permit(@template.fields.collect(&:name))
     end
+
 end

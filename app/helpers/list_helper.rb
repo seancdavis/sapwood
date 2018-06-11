@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ListHelper
+
   def list_sort_path(col)
     sort_by = col.sort_by
     sort_in = 'asc'
@@ -14,4 +15,5 @@ module ListHelper
     return nil unless params[:sort_by] == col.sort_by
     "active #{params[:sort_in] == 'asc' ? 'icon-arrow-up' : 'icon-arrow-down'}"
   end
+
 end

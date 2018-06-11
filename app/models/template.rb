@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Template
+
   def initialize(options = {})
     @attributes ||= options
     self
@@ -155,4 +156,5 @@ class Template
   def respond_to?(method, include_private = false)
     (attributes.keys + ['namespace']).include?(method.to_s)
   end
+
 end

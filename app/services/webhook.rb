@@ -4,6 +4,7 @@ require 'net/http'
 require 'uri'
 
 class Webhook
+
   def initialize(options = {})
     @options = options
     raise 'Missing option: element' unless options[:element]
@@ -30,4 +31,5 @@ class Webhook
     def form_data
       @form_data ||= element.as_json.stringify_keys
     end
+
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
+
   before_action :verify_property_access
 
   def index
@@ -38,4 +39,5 @@ class DocumentsController < ApplicationController
             .merge(property: current_property,
                    template_name: current_template.name)
     end
+
 end

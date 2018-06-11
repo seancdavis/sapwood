@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Field
+
   include ActionView::Helpers
 
   def initialize(options)
@@ -64,4 +65,5 @@ class Field
   def html_options
     attributes
   end
+
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PropertiesController < ApplicationController
+
   before_action :verify_property_access, except: [:new, :create]
 
   def new
@@ -73,4 +74,5 @@ class PropertiesController < ApplicationController
       request.referrer ||
       edit_property_path(current_property, 'general')
     end
+
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module GeneralHelpers
+
   def property_with_templates
     create(:property, templates_raw: File.read(template_config_file))
   end
@@ -17,4 +18,5 @@ module GeneralHelpers
   def template_config_file
     File.expand_path('./template_config.json', __dir__)
   end
+
 end

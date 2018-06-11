@@ -3,6 +3,7 @@
 require 'aws-sdk'
 
 class GetDocumentUrl
+
   attr_accessor :document, :expires_in
 
   def initialize(options = {})
@@ -45,4 +46,5 @@ class GetDocumentUrl
     def s3_object
       @s3_object ||= s3_bucket.object(@document.path)
     end
+
 end

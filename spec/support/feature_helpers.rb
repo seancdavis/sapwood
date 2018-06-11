@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module FeatureHelpers
+
   def sign_in(user, password = 'password')
     visit root_path
     fill_in 'user[email]', with: user.email
@@ -31,4 +32,5 @@ module FeatureHelpers
   def finished_all_ajax_requests?
     page.evaluate_script('jQuery.active').zero?
   end
+
 end

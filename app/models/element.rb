@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Element < ApplicationRecord
+
   # ---------------------------------------- Plugins
 
   include Presenter, PgSearch
@@ -311,4 +312,5 @@ class Element < ApplicationRecord
       return false unless template?
       Webhook.delay.call(element: self) if template.webhook?
     end
+
 end

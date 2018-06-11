@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module FieldHelper
+
   def field_string_html(form_obj, field, object)
     form_obj.input field.name.to_sym, required: field.required?,
                    label: field.label, readonly: field.read_only?
@@ -186,4 +187,5 @@ module FieldHelper
                    readonly: field.read_only?,
                    input_html: { class: 'wysiwyg' }
   end
+
 end

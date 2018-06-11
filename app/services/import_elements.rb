@@ -3,6 +3,7 @@
 require 'csv'
 
 class ImportElements
+
   def initialize(options = {})
     @options = options
     required_args.each do |arg|
@@ -63,4 +64,5 @@ class ImportElements
     def required_args
       [:csv, :template_name, :property_id]
     end
+
 end

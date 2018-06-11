@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ElementPresenter
+
   def initialize(obj)
     @obj = obj
   end
@@ -22,4 +23,5 @@ class ElementPresenter
     return nil unless @obj.document?
     @obj.created_at.strftime('%b %d, %Y')
   end
+
 end

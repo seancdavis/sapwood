@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreateDocuments < ActiveRecord::Migration
+
   def change
     create_table :documents do |t|
       t.string :title
@@ -10,4 +11,5 @@ class CreateDocuments < ActiveRecord::Migration
       t.timestamps null: false
     end
   end
+
 end

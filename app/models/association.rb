@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Association
+
   def initialize(options)
     @attributes ||= options
     self
@@ -22,4 +23,5 @@ class Association
   def respond_to?(method, include_private = false)
     attributes.keys.include?(method.to_s)
   end
+
 end

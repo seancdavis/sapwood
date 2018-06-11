@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Document < ApplicationRecord
+
   # ---------------------------------------- Associations
 
   belongs_to :property, touch: true
@@ -97,4 +98,5 @@ class Document < ApplicationRecord
         update_columns(title: url.split('/').last.split('.').first.titleize)
       end
     end
+
 end

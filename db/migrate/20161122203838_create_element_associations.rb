@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreateElementAssociations < ActiveRecord::Migration
+
   def change
     create_table :element_associations do |t|
       t.integer :source_id
@@ -11,4 +12,5 @@ class CreateElementAssociations < ActiveRecord::Migration
 
     Element.all.each { |e| e.update! }
   end
+
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreateFolders < ActiveRecord::Migration
+
   def change
     create_table :folders do |t|
       t.string :title
@@ -15,4 +16,5 @@ class CreateFolders < ActiveRecord::Migration
     remove_column :elements, :ancestry, :string
     add_column :elements, :folder_id, :integer
   end
+
 end

@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: properties
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  templates_raw :text
-#  api_key       :string
-#
-
 class Property < ApplicationRecord
 
   # ---------------------------------------- Attributes
@@ -19,7 +6,6 @@ class Property < ApplicationRecord
 
   # ---------------------------------------- Associations
 
-  has_many :documents, :dependent => :destroy
   has_many :elements, :dependent => :destroy
   has_many :notifications, :dependent => :destroy
   has_many :property_users, :dependent => :destroy

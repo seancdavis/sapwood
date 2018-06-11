@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
-
 FactoryBot.define do
   factory :element do
     property

@@ -1,26 +1,3 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  is_admin               :boolean          default(FALSE)
-#  name                   :string
-#  sign_in_key            :string
-#  avatar_url             :string
-#
-
 class User < ApplicationRecord
 
   # ---------------------------------------- Plugins
@@ -49,13 +26,6 @@ class User < ApplicationRecord
     return if avatar_url.present?
     hash = Digest::MD5.hexdigest(email.downcase)
     self.avatar_url = "https://www.gravatar.com/avatar/#{hash}?s=100&d=retro"
-  end
-
-  after_save :process_avatar!
-
-  def process_avatar!
-    return nil if Rails.env.test? || !avatar_url_changed?
-    ProcessAvatar.delay.call(:user => self)
   end
 
   # ---------------------------------------- Instance Methods

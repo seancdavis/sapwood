@@ -31,7 +31,7 @@
               <% if current_element.private? %>
                 [Private]
               <% else %>
-                <%= link_to current_element.url, current_element.url %>
+                <%= link_to current_element.url.to_s, current_element.url.to_s %>
               <% end %>
             </dd>
           <% end %>

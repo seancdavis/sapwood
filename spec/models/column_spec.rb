@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe Column, :type => :model do
+describe Column, type: :model do
 
   before(:each) do
     @property = property_with_templates

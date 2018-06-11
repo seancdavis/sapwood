@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class PropertiesController < ApplicationController
 
-  before_action :verify_property_access, :except => [:new, :create]
+  before_action :verify_property_access, except: [:new, :create]
 
   def new
     not_found unless current_user.is_admin?
@@ -49,12 +51,12 @@ class PropertiesController < ApplicationController
     not_found unless is_property_admin?
     begin
       elements = ImportElements.call(
-        :property_id => current_property.id,
-        :csv => File.read(params[:property][:csv].path),
-        :template_name => params[:property][:template_name]
+        property_id: current_property.id,
+        csv: File.read(params[:property][:csv].path),
+        template_name: params[:property][:template_name]
       )
       redirect_to property_import_path(current_property),
-                  :notice => "#{elements.size} elements imported!"
+                  notice: "#{elements.size} elements imported!"
     rescue => e
       @error = e.class
       render 'import'

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module UploadHelper
+
   def document_upload_key
     key  = "#{Rails.env}/properties/#{current_property.id}/"
     key += "#{DateTime.now.strftime("%y%m%d-%H%M%S")}/${filename}"
@@ -18,17 +21,18 @@ module UploadHelper
   end
 
   class S3Uploader
+
     def initialize(options)
       @options = options.reverse_merge(
-        id: "fileupload",
-        method: "post",
+        id: 'fileupload',
+        method: 'post',
         aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
         aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
         bucket: ENV['AWS_BUCKET'],
-        acl: "public-read",
+        acl: 'public-read',
         expiration: 10.hours.from_now,
         max_file_size: 2.gigabytes,
-        as: "file"
+        as: 'file'
       )
     end
 
@@ -52,7 +56,7 @@ module UploadHelper
         :policy => policy,
         :signature => signature,
         :content_type => nil,
-        "AWSAccessKeyId" => @options[:aws_access_key_id],
+        'AWSAccessKeyId' => @options[:aws_access_key_id],
       }
     end
 
@@ -61,19 +65,19 @@ module UploadHelper
     end
 
     def policy
-      Base64.encode64(policy_data.to_json).gsub("\n", "")
+      Base64.encode64(policy_data.to_json).gsub("\n", '')
     end
 
     def policy_data
       {
         expiration: @options[:expiration],
         conditions: [
-          ["starts-with", "$utf8", ""],
-          ["starts-with", "$key", ""],
-          ["starts-with", "$Content-Type", ""],
-          ["content-length-range", 0, @options[:max_file_size]],
-          {bucket: @options[:bucket]},
-          {acl: @options[:acl]}
+          ['starts-with', '$utf8', ''],
+          ['starts-with', '$key', ''],
+          ['starts-with', '$Content-Type', ''],
+          ['content-length-range', 0, @options[:max_file_size]],
+          { bucket: @options[:bucket] },
+          { acl: @options[:acl] }
         ]
       }
     end
@@ -84,7 +88,9 @@ module UploadHelper
           OpenSSL::Digest.new('sha1'),
           @options[:aws_secret_access_key], policy
         )
-      ).gsub("\n", "")
+      ).gsub("\n", '')
     end
+
   end
+
 end

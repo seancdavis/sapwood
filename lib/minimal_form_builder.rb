@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MinimalFormBuilder < SimpleForm::FormBuilder
 
   def input(attribute_name, options = {}, &block)

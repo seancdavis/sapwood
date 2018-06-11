@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Notifications', :js => true do
+feature 'Notifications', js: true do
 
   scenario 'can be toggled for any template' do
     @property = property_with_templates

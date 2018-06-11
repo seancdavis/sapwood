@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'aws-sdk'
 
 class GetDocumentUrl
@@ -6,7 +8,7 @@ class GetDocumentUrl
 
   def initialize(options = {})
     @document = options[:document]
-    raise "You must provide a document." if @document.blank?
+    raise 'You must provide a document.' if @document.blank?
     set_options(options)
   end
 

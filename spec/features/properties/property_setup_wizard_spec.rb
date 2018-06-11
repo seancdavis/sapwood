@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Property Setup Wizard' do
@@ -10,11 +12,11 @@ feature 'Property Setup Wizard' do
 
   scenario 'It can run through the entire process' do
     click_link 'New Property'
-    fill_in 'Title', :with => @property.title
+    fill_in 'Title', with: @property.title
     click_button 'Next'
-    fill_in 'Color', :with => @property.color
+    fill_in 'Color', with: @property.color
     click_button 'Next'
-    fill_in 'property[templates_raw]', :with => File.read(template_config_file)
+    fill_in 'property[templates_raw]', with: File.read(template_config_file)
     click_button 'Next'
     expect(page).to have_content('Go To Property')
     property = Property.first
@@ -23,9 +25,9 @@ feature 'Property Setup Wizard' do
     expect(JSON.parse(property.templates_raw))
       .to eq(JSON.parse(File.read(template_config_file)))
     within('aside') do
-        expect(page).to have_content('Defaults')
-        expect(page).to have_content('All Options')
-        expect(page).to have_content('More Options')
+      expect(page).to have_content('Defaults')
+      expect(page).to have_content('All Options')
+      expect(page).to have_content('More Options')
     end
   end
 

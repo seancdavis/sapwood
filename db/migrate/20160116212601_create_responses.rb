@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateResponses < ActiveRecord::Migration
+
   def change
     create_table :responses do |t|
       t.integer :property_id
@@ -7,4 +10,5 @@ class CreateResponses < ActiveRecord::Migration
       t.timestamps null: false
     end
   end
+
 end

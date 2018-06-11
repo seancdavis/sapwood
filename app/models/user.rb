@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
 
   # ---------------------------------------- Plugins
@@ -10,13 +12,13 @@ class User < ApplicationRecord
   # ---------------------------------------- Associations
 
   has_many :property_users
-  has_many :properties, :through => :property_users
+  has_many :properties, through: :property_users
   has_many :notifications
 
   # ---------------------------------------- Scopes
 
-  scope :admins, -> { where(:is_admin => true) }
-  scope :alpha, -> { order(:name => :asc) }
+  scope :admins, -> { where(is_admin: true) }
+  scope :alpha, -> { order(name: :asc) }
 
   # ---------------------------------------- Callbacks
 
@@ -62,15 +64,15 @@ class User < ApplicationRecord
   end
 
   def make_admin_in_properties!(ids)
-    property_users.where(:property_id => ids).update_all(:is_admin => true)
+    property_users.where(property_id: ids).update_all(is_admin: true)
   end
 
   def set_sign_in_key!
-    update_columns(:sign_in_key => SecureRandom.hex(32))
+    update_columns(sign_in_key: SecureRandom.hex(32))
   end
 
   def delete_sign_in_key!
-    update_columns(:sign_in_key => nil)
+    update_columns(sign_in_key: nil)
   end
 
   def sign_in_id

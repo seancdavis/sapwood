@@ -1,31 +1,33 @@
+# frozen_string_literal: true
+
 class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
 
   include Presenter, PgSearch
 
-  has_superslug :title, :slug, :context => :property
+  has_superslug :title, :slug, context: :property
 
   pg_search_scope :search_by_title,
-                  :against => :title,
-                  :using => {
-                    :tsearch => { :prefix => true, :dictionary => "english" }
+                  against: :title,
+                  using: {
+                    tsearch: { prefix: true, dictionary: 'english' }
                   }
 
   # ---------------------------------------- Associations
 
   belongs_to :property
 
-  has_many :element_associations, :foreign_key => 'source_id',
-           :dependent => :destroy
-  has_many :associated_elements, :through => :element_associations,
-           :source => 'target'
+  has_many :element_associations, foreign_key: 'source_id',
+           dependent: :destroy
+  has_many :associated_elements, through: :element_associations,
+           source: 'target'
 
   # ---------------------------------------- Scopes
 
   scope :with_associations, -> { includes(:property, :associated_elements) }
-  scope :with_template, ->(name) { where(:template_name => name.split(',')) }
-  scope :by_title, -> { order(:title => :asc) }
+  scope :with_template, ->(name) { where(template_name: name.split(',')) }
+  scope :by_title, -> { order(title: :asc) }
   scope :by_field, ->(f, d = 'ASC') {
     return order("#{f} #{d}") if column_names.include?(f)
     order(Arel.sql("template_data ->> '#{f}' #{d}"))
@@ -33,9 +35,9 @@ class Element < ApplicationRecord
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
   scope :last_updated, -> {
-    where('updated_at != created_at').order(:updated_at => :desc)
+    where('updated_at != created_at').order(updated_at: :desc)
   }
-  scope :last_created, -> { order(:created_at => :desc) }
+  scope :last_created, -> { order(created_at: :desc) }
   scope :floating, -> {
     where('updated_at <= ?', DateTime.now - 1.week).to_a
       .select { |el| el.template.blank? }
@@ -43,7 +45,7 @@ class Element < ApplicationRecord
 
   # ---------------------------------------- Validations
 
-  validates :title, :template_name, :presence => true
+  validates :title, :template_name, presence: true
 
   # ---------------------------------------- Callbacks
 
@@ -67,7 +69,7 @@ class Element < ApplicationRecord
     element_fields.collect(&:name).each do |f|
       ids += (template_data[f] || '').split(',').map(&:to_i)
     end
-    self.associated_elements = property.elements.where(:id => ids)
+    self.associated_elements = property.elements.where(id: ids)
     SapwoodCache.rebuild_element(self)
   end
 
@@ -80,7 +82,7 @@ class Element < ApplicationRecord
 
   def strip_template_data
     return true if template.nil?
-    template_data.each do |k,v|
+    template_data.each do |k, v|
       field = template.find_field(k.to_s)
       next unless field.nil?
       self.template_data.except!(k)
@@ -169,7 +171,7 @@ class Element < ApplicationRecord
 
   # This is the backwards association
   def associated_to_as_target
-    ElementAssociation.where(:target_id => id).includes(:source)
+    ElementAssociation.where(target_id: id).includes(:source)
       .collect(&:source)
   end
 
@@ -190,11 +192,11 @@ class Element < ApplicationRecord
     end
     notifications.each do |n|
       NotificationMailer.notify(
-        :element => self,
-        :notification => n,
-        :action_name => action_name,
-        :template => template,
-        :property => property
+        element: self,
+        notification: n,
+        action_name: action_name,
+        template: template,
+        property: property
       ).deliver_now
     end
   end
@@ -209,16 +211,16 @@ class Element < ApplicationRecord
 
   def to_hash(options = {})
     response = {
-      :id => id,
-      :title => title,
-      :slug => slug,
-      :template_name => template_name,
-      :publish_at => publish_at,
-      :created_at => created_at,
-      :updated_at => updated_at,
+      id: id,
+      title: title,
+      slug: slug,
+      template_name: template_name,
+      publish_at: publish_at,
+      created_at: created_at,
+      updated_at: updated_at,
     }
     return response unless template?
-    template_data.each do |k,v|
+    template_data.each do |k, v|
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
     end
@@ -234,7 +236,7 @@ class Element < ApplicationRecord
   def as_json(options = {})
     return to_hash(options) unless SapwoodCache.enabled?
     ext = ''
-    options.each { |k,v| ext += "_#{k}_#{v}" }
+    options.each { |k, v| ext += "_#{k}_#{v}" }
     Rails.cache.fetch("_p#{property_id}_e#{id}_as_json#{ext}") do
       Rails.logger.info "REBUILD CACHE: [_p#{property_id}_e#{id}_as_json#{ext}]"
       to_hash(options)
@@ -252,7 +254,7 @@ class Element < ApplicationRecord
           return associated_elements
             .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
           associated_elements
             .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
@@ -267,7 +269,7 @@ class Element < ApplicationRecord
           end
           return elements
         end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
           elements = []
           element_ids.each do |id|
             el = associated_elements.select { |e| e.id == id }[0]
@@ -294,7 +296,7 @@ class Element < ApplicationRecord
           .select { |e| e.template_data[association.field].split(',')
               .collect(&:to_i).include?(id) }
       end
-      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
         property
           .elements.by_title.with_template(association.template)
           .reject { |e| e.template_data[association.field].blank? }
@@ -308,7 +310,7 @@ class Element < ApplicationRecord
 
     def trigger_webhook
       return false unless template?
-      Webhook.delay.call(:element => self) if template.webhook?
+      Webhook.delay.call(element: self) if template.webhook?
     end
 
 end

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateCollections < ActiveRecord::Migration
+
   def change
     create_table :collections do |t|
       t.string :title
@@ -8,4 +11,5 @@ class CreateCollections < ActiveRecord::Migration
       t.timestamps null: false
     end
   end
+
 end

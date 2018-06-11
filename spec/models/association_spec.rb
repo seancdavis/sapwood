@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe Association, :type => :model do
+describe Association, type: :model do
 
   before(:each) do
     @property = property_with_templates

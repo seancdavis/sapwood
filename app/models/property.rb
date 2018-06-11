@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Property < ApplicationRecord
 
   # ---------------------------------------- Attributes
@@ -6,27 +8,27 @@ class Property < ApplicationRecord
 
   # ---------------------------------------- Associations
 
-  has_many :elements, :dependent => :destroy
-  has_many :notifications, :dependent => :destroy
-  has_many :property_users, :dependent => :destroy
-  has_many :responses, :dependent => :destroy
+  has_many :elements, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many :property_users, dependent: :destroy
+  has_many :responses, dependent: :destroy
 
-  has_many :users, :through => :property_users
+  has_many :users, through: :property_users
 
   # ---------------------------------------- Validations
 
-  validates :title, :presence => true
+  validates :title, presence: true
 
   # ---------------------------------------- Scopes
 
-  scope :alpha, -> { order(:title => :asc) }
+  scope :alpha, -> { order(title: :asc) }
 
   # ---------------------------------------- Callbacks
 
   after_create :generate_api_key!
 
   def generate_api_key!
-    update_columns(:api_key => SecureRandom.hex(25))
+    update_columns(api_key: SecureRandom.hex(25))
   end
 
   after_save :expire_caches

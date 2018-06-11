@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Users', :js => true do
+feature 'Users', js: true do
 
   context 'as an admin' do
     background do
@@ -91,7 +93,7 @@ feature 'Users', :js => true do
       end
       scenario 'is automatically added to the current property' do
         email = Faker::Internet.email
-        fill_in 'user[email]', :with => email
+        fill_in 'user[email]', with: email
         click_button 'Save'
         expect(page).to have_content(email)
       end

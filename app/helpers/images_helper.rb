@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ImagesHelper
 
   def image_thumb_url(document)

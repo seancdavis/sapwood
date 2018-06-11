@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe PropertiesController do
@@ -38,7 +40,7 @@ describe PropertiesController do
           sign_in @user
         end
         it 'returns 200' do
-          get :show, params: { :id => @property.id }
+          get :show, params: { id: @property.id }
           expect(response.status).to eq(200)
         end
       end
@@ -48,7 +50,7 @@ describe PropertiesController do
           sign_in @user
         end
         it 'returns 404' do
-          expect { get :show, params: { :id => @property.id } }
+          expect { get :show, params: { id: @property.id } }
             .to raise_error(ActionController::RoutingError)
         end
       end
@@ -61,7 +63,7 @@ describe PropertiesController do
           sign_in @user
         end
         it 'returns 200' do
-          get :show, params: { :id => @property.id }
+          get :show, params: { id: @property.id }
           expect(response.status).to eq(200)
         end
       end
@@ -73,7 +75,7 @@ describe PropertiesController do
           sign_in @user
         end
         it 'returns 200' do
-          get :show, params: { :id => @property.id }
+          get :show, params: { id: @property.id }
           expect(response.status).to eq(200)
         end
       end
@@ -83,7 +85,7 @@ describe PropertiesController do
           sign_in @user
         end
         it 'returns 404' do
-          expect { get :show, params: { :id => '123' } }
+          expect { get :show, params: { id: '123' } }
             .to raise_error(ActionController::RoutingError)
         end
       end
@@ -101,16 +103,16 @@ describe PropertiesController do
       end
       it 'returns 200 with a correct screen' do
         %w{general config keys}.each do |screen|
-          get :edit, params: { :id => @property.id, :screen => screen }
+          get :edit, params: { id: @property.id, screen: screen }
           expect(response.status).to eq(200)
         end
       end
       it 'raises error without a screen' do
-        expect { get :edit, params: { :id => @property.id } }
+        expect { get :edit, params: { id: @property.id } }
           .to raise_error(ActionController::UrlGenerationError)
       end
       it 'raises error with an incorrect screen' do
-        expect { get :edit, params: { :id => @property.id, :screen => 'blah' } }
+        expect { get :edit, params: { id: @property.id, screen: 'blah' } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -121,7 +123,7 @@ describe PropertiesController do
         @user.make_admin_in_properties!(@property)
         sign_in @user
         %w{general config keys}.each do |screen|
-          get :edit, params: { :id => @property.id, :screen => screen }
+          get :edit, params: { id: @property.id, screen: screen }
           expect(response.status).to eq(200)
         end
       end
@@ -134,7 +136,7 @@ describe PropertiesController do
       end
       it 'returns 404' do
         %w{general config keys}.each do |screen|
-          expect { get :edit, params: { :id => @property.id, :screen => screen } }
+          expect { get :edit, params: { id: @property.id, screen: screen } }
             .to raise_error(ActionController::RoutingError)
         end
       end
@@ -148,13 +150,13 @@ describe PropertiesController do
     it 'returns 200 as an admin' do
       user = create(:admin)
       sign_in user
-      get :import, params: { :property_id => @property.id }
+      get :import, params: { property_id: @property.id }
       expect(response.status).to eq(200)
     end
     it 'returns 404 as a user without acess' do
       user = create(:user)
       sign_in user
-      expect { get :import, params: { :property_id => @property.id } }
+      expect { get :import, params: { property_id: @property.id } }
         .to raise_error(ActionController::RoutingError)
     end
     it 'returns 200 for a property admin' do
@@ -162,14 +164,14 @@ describe PropertiesController do
       user.properties << @property
       user.make_admin_in_properties!(@property)
       sign_in user
-      get :import, params: { :property_id => @property.id }
+      get :import, params: { property_id: @property.id }
       expect(response.status).to eq(200)
     end
     it 'returns 404 as a property user' do
       user = create(:user)
       user.properties << @property
       sign_in user
-      expect { get :import, params: { :property_id => @property.id } }
+      expect { get :import, params: { property_id: @property.id } }
         .to raise_error(ActionController::RoutingError)
     end
   end

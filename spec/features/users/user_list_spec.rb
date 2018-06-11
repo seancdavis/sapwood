@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User List', :js => true do
+feature 'User List', js: true do
 
   context 'as an admin' do
     background do

@@ -4,7 +4,7 @@ class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
 
-  include Presenter, PgSearch
+  include PgSearch, ElementDecorator
 
   has_superslug :title, :slug, context: :property
 

@@ -18,13 +18,13 @@ feature 'User List', js: true do
       click_link 'Users'
     end
     scenario 'does not contain users that do not have access' do
-      expect(page).to have_no_content(@user_01.p.name)
+      expect(page).to have_no_content(@user_01.display_name)
     end
     scenario 'contains users that have access' do
-      expect(page).to have_content(@user_02.p.name)
+      expect(page).to have_content(@user_02.display_name)
     end
     scenario 'contains admins' do
-      expect(page).to have_content(@admin.p.name)
+      expect(page).to have_content(@admin.display_name)
     end
   end
 

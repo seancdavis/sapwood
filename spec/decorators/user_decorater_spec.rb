@@ -9,10 +9,10 @@ RSpec.describe User, type: :model do
   describe '#name' do
     it 'returns the email when the name is blank' do
       user = create(:user, name: nil)
-      expect(user.p.name).to eq(user.email)
+      expect(user.display_name).to eq(user.email)
     end
     it 'returns the name when present' do
-      expect(user.p.name).to eq(user.name)
+      expect(user.display_name).to eq(user.name)
     end
   end
 

@@ -21,9 +21,9 @@
             <dt>Slug:</dt>
             <dd><%= current_element.slug %></dd>
             <dt>Created:</dt>
-            <dd><%= current_element.p.created_at %></dd>
+            <dd><%= current_element.formatted_date(:created_at) %></dd>
             <dt>Last Modified:</dt>
-            <dd><%= current_element.p.updated_at %></dd>
+            <dd><%= current_element.formatted_date(:updated_at) %></dd>
           <% end %>
           <% if current_template.document? %>
             <dt>URL:</dt>

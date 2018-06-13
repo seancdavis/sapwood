@@ -3,7 +3,7 @@
     <span class="template">
       <%= element.template_name %>
       &nbsp;|&nbsp;
-      <%= element.p.send(date_col) %>
+      <%= element.formatted_date(date_col) %>
     </span>
     <span class="title"><%= element.title %></span>
   <% end %>

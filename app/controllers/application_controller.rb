@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
         else
           current_property.users - User.admins
         end
-        users.sort_by { |u| u.p.name }
+        users.sort_by { |u| u.display_name }
       end
     end
 

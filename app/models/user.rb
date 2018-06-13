@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   # ---------------------------------------- Plugins
 
-  include Presenter
+  include UserDecorator
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :validatable

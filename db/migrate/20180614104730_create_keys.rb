@@ -14,6 +14,18 @@ class CreateKeys < ActiveRecord::Migration[5.2]
 
     Property.all.each do |property|
       Key.create!(property: property, value: property.api_key)
+
+      property.templates.each do |tmpl|
+        allow = tmpl.try(:security).try(:create).try(:allow)
+        key = tmpl.try(:security).try(:create).try(:secret)
+        next unless allow.present? && key.present?
+        Key.create!(
+          property: property,
+          value: property.api_key,
+          writeable: true,
+          template_names: [tmpl.title]
+        )
+      end
     end
 
     # remove_column :properties, :api_key

@@ -1,0 +1,9 @@
+<%= page_header title: @key.title %>
+
+<section class="body">
+  <div class="block">
+    <%= @key.title %>
+  </div>
+
+  <%= link_to 'Delete Key', [current_property, @key], class: 'button delete', method: :destroy, data: { confirm: 'Are you sure?' } %>
+</section>

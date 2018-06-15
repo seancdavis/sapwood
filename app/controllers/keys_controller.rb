@@ -1,6 +1,8 @@
 class KeysController < ApplicationController
 
   before_action :verify_property_access
+  before_action :set_key, only: %i[show edit update destroy]
+
 
   def index
     @keys = current_property.keys.order(:title)
@@ -14,13 +16,20 @@ class KeysController < ApplicationController
     @key = Key.new(key_params.merge(property: current_property))
     @key.generate_value!
     if @key.save
-      redirect_to [current_property, :keys], notice: 'Key created successfully!'
+      redirect_to [current_property, @key], notice: 'Key created successfully!'
     else
       render 'new'
     end
   end
 
+  def show; end
+
   private
+
+  def set_key
+    @key = current_property.keys.find_by(id: params[:id])
+    not_found if @key.blank?
+  end
 
   def key_params
     params.require(:key).permit(:title, :writeable, :template_names)

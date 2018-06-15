@@ -13,7 +13,7 @@
       </em></p>
       <div class="input multiselect">
         <label>Templates</label>
-        <select data-multi-select="#key_template_names">
+        <select id="key_template_selector" data-multi-select="#key_template_names">
           <option></option>
           <%== current_property.templates.collect(&:title).sort.map { |t| "<option value=\"#{t}\">#{t}</option>" }.join('') %>
         </select>

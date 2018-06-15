@@ -14,6 +14,14 @@ class Key < ApplicationRecord
 
   # ---------------------------------------- | Instance Methods
 
+  def generate_value!
+    self.value = SecureRandom.hex(32)
+  end
+
+  def readable?
+    !writeable?
+  end
+
   def value
     @value ||= begin
       return nil if encrypted_value.blank? || crypt.blank?
@@ -23,10 +31,6 @@ class Key < ApplicationRecord
 
   def value=(v)
     @value = v
-  end
-
-  def generate_value!
-    self.value = SecureRandom.hex(32)
   end
 
   # ---------------------------------------- | Private Methods

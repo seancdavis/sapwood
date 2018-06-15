@@ -32,7 +32,8 @@ class KeysController < ApplicationController
   end
 
   def key_params
-    params.require(:key).permit(:title, :writeable, :template_names)
+    template_names = params[:key][:template_names].split(',')
+    params.require(:key).permit(:title, :writeable).merge(template_names: template_names)
   end
 
   def verify_property_access

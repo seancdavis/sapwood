@@ -1,8 +1,11 @@
 FactoryBot.define do
   factory :key do
-    property_id 1
-    writeable false
-    template_names ""
-    encrypted_value "MyString"
+    property
+    value { SecureRandom.hex(24) }
+
+    trait :writeable do
+      writeable true
+      template_names { ['Default'] }
+    end
   end
 end

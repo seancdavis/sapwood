@@ -4,6 +4,7 @@ class CreateKeys < ActiveRecord::Migration[5.2]
 
   def up
     create_table :keys do |t|
+      t.string :title
       t.integer :property_id
       t.boolean :writeable, default: false
       t.text :template_names, array: true, default: []
@@ -13,13 +14,14 @@ class CreateKeys < ActiveRecord::Migration[5.2]
     end
 
     Property.all.each do |property|
-      Key.create!(property: property, value: property.api_key)
+      Key.create!(title: "#{property.title} Read Key", property: property, value: property.api_key)
 
       property.templates.each do |tmpl|
         allow = tmpl.try(:security).try(:create).try(:allow)
         key = tmpl.try(:security).try(:create).try(:secret)
         next unless allow.present? && key.present?
         Key.create!(
+          title: "#{tmpl.title} Write Key",
           property: property,
           value: property.api_key,
           writeable: true,

@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2018_06_14_104730) do
   end
 
   create_table "keys", force: :cascade do |t|
+    t.string "title"
     t.integer "property_id"
     t.boolean "writeable", default: false
     t.text "template_names", default: [], array: true

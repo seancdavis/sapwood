@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :key do
+    title { Faker::Book.title }
     property
     value { SecureRandom.hex(24) }
 

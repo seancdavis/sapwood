@@ -6,7 +6,7 @@ class Key < ApplicationRecord
 
   # ---------------------------------------- | Validations
 
-  validates_presence_of :encrypted_value
+  validates_presence_of :title, :encrypted_value
 
   # ---------------------------------------- | Callbacks
 

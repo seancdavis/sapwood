@@ -26,12 +26,6 @@ class Property < ApplicationRecord
 
   # ---------------------------------------- Callbacks
 
-  after_create :generate_api_key!
-
-  def generate_api_key!
-    update_columns(api_key: SecureRandom.hex(25))
-  end
-
   after_save :expire_caches
 
   def expire_caches(force = false)

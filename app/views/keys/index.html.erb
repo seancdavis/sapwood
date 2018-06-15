@@ -1,14 +1,23 @@
-<%= page_header :title => "API Key" %>
+<%= page_header(
+  :title => 'API Keys',
+  :button => {
+    :label => 'New Key',
+    :path => new_property_key_path(current_property),
+    :options => { :class => 'new button' }
+  }) %>
 
 <section class="body">
-  <%= minimal_form_for current_property do |f| %>
-    <div class="block">
-      <h3>API Key</h3>
-      <p>
-        <code><%= current_property.api_key %></code>
-      </p>
-      <p><em>This property's API key is what enables you to retrieve data from
-      the property.</em></p>
-    <%#= f.submit 'Save Changes' %>
-  <% end %>
+  <div class="block">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody class="keys">
+        <%= render @keys.present? ? @keys : 'empty' %>
+      </tbody>
+    </table>
+  </div>
 </section>

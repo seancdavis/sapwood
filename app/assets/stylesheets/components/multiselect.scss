@@ -1,6 +1,7 @@
 div.input.multiselect {
 
-  .selected-options li {
+  .selected-options li,
+  .selected-container li {
     > span, > a {
       display: inline-block;
       margin-right: $small-spacing;

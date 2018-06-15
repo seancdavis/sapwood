@@ -1,0 +1,25 @@
+<section class="body">
+  <%= simple_form_for [current_property, @key] do |f| %>
+    <div class="block">
+      <%= f.input :title %>
+
+      <h2>Writeable Key</h2>
+      <p><em>
+        Keys are readable by default and can not write to the database. Writeable keys can create, update, and delete elements via the API. <strong>They can not read from the API.</strong>
+      </em></p>
+      <%= f.input :writeable %>
+      <p><em>
+        If you choose for this key to be writeable (by checking the box above), you can limit it to only writing specific templates. If you do not choose a template, it will be able to write any template.
+      </em></p>
+      <div class="input multiselect">
+        <label>Templates</label>
+        <select data-multi-select="#key_template_names">
+          <option></option>
+          <%== current_property.templates.collect(&:title).sort.map { |t| "<option value=\"#{t}\">#{t}</option>" }.join('') %>
+        </select>
+      </div>
+      <%= f.input :template_names, as: :hidden %>
+    </div>
+    <%= f.submit 'Save Key' %>
+  <% end %>
+</section>

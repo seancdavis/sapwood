@@ -25,6 +25,10 @@ class Key < ApplicationRecord
     @value = v
   end
 
+  def generate_value!
+    self.value = SecureRandom.hex(32)
+  end
+
   # ---------------------------------------- | Private Methods
 
   private

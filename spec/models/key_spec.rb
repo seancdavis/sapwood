@@ -17,4 +17,11 @@ RSpec.describe Key, type: :model do
     expect(Key.first.value).to eq('hello-world')
   end
 
+  it 'can generate a value if explicitly instructed' do
+    key = Key.new(property: property_with_templates)
+    expect(key.value).to eq(nil)
+    key.generate_value!
+    expect(key.value).to_not eq(nil)
+  end
+
 end

@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     get 'tools/import' => 'properties#import', :as => :import
     patch 'tools/import' => 'properties#process_import', :as => :process_import
     get 'settings/:screen' => 'properties#edit', :as => :edit, :on => :member
-    resources :keys
+    resources :keys, except: %i[show]
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 

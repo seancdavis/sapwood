@@ -16,13 +16,26 @@ class KeysController < ApplicationController
     @key = Key.new(key_params.merge(property: current_property))
     @key.generate_value!
     if @key.save
-      redirect_to [current_property, @key], notice: 'Key created successfully!'
+      redirect_to [:edit, current_property, @key], notice: 'Key created successfully!'
     else
       render 'new'
     end
   end
 
-  def show; end
+  def edit; end
+
+  def update
+    if @key.update(key_params)
+      redirect_to [:edit, current_property, @key], notice: 'Key updated successfully!'
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @key.destroy
+    redirect_to [current_property, :keys], notice: 'Key deleted successfully!'
+  end
 
   private
 
@@ -32,7 +45,7 @@ class KeysController < ApplicationController
   end
 
   def key_params
-    template_names = params[:key][:template_names].split(',')
+    template_names = params[:key][:writeable].to_bool ? params[:key][:template_names].split(',') : []
     params.require(:key).permit(:title, :writeable).merge(template_names: template_names)
   end
 

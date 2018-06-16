@@ -50,20 +50,20 @@ describe KeysController do
     end
   end
 
-  # ---------------------------------------- | Show
+  # ---------------------------------------- | Edit
 
-  describe '#show' do
+  describe '#edit' do
     context 'as an admin' do
       it 'returns 200' do
         sign_in admin
-        get :show, params: { property_id: property.id, id: key.id }
+        get :edit, params: { property_id: property.id, id: key.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 when the key belongs to a different property' do
         key = create(:key)
         sign_in admin
         expect {
-          get :show, params: { property_id: property.id, id: key.id }
+          get :edit, params: { property_id: property.id, id: key.id }
         }.to raise_error(ActionController::RoutingError)
       end
     end
@@ -71,7 +71,7 @@ describe KeysController do
       it 'returns 404' do
         sign_in user
         expect {
-          get :show, params: { property_id: property.id, id: key.id }
+          get :edit, params: { property_id: property.id, id: key.id }
         }.to raise_error(ActionController::RoutingError)
       end
     end

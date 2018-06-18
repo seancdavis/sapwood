@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 class CreateKeys < ActiveRecord::Migration[5.2]
 
   def up
@@ -32,7 +30,7 @@ class CreateKeys < ActiveRecord::Migration[5.2]
       end
     end
 
-    # remove_column :properties, :api_key
+    remove_column :properties, :api_key
   end
 
   def down

@@ -23,7 +23,7 @@ class CreateKeys < ActiveRecord::Migration[5.2]
         Key.create!(
           title: "#{tmpl.title} Write Key",
           property: property,
-          value: property.api_key,
+          value: key,
           writeable: true,
           template_names: [tmpl.title]
         )

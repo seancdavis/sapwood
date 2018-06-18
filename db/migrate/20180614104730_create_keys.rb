@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pry'
 
 class CreateKeys < ActiveRecord::Migration[5.2]

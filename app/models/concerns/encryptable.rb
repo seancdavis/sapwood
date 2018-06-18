@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Encryptable
 
   extend ActiveSupport::Concern
@@ -25,10 +27,10 @@ module Encryptable
 
     private
 
-    def set_encrypted_value
-      return false unless self.class.encryptable? && value.present?
-      self.encrypted_value = self.class.encrypt_value(value)
-    end
+      def set_encrypted_value
+        return false unless self.class.encryptable? && value.present?
+        self.encrypted_value = self.class.encrypt_value(value)
+      end
 
   end
 

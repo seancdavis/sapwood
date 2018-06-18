@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::ElementsController do
+describe Api::ElementsController do
 
   before(:each) { @property = property_with_templates }
 

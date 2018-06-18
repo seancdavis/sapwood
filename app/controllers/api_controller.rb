@@ -10,6 +10,8 @@ class ApiController < ActionController::Base
 
   helper_method :current_property
 
+  before_action :set_default_response_format
+
   def options
     render nothing: true
   end
@@ -30,7 +32,11 @@ class ApiController < ActionController::Base
       q
     end
 
-  private
+    private
+
+    def set_default_response_format
+      request.format = :json unless params[:format]
+    end
 
     def forbidden
       raise ActionController::RoutingError.new('Forbidden')
@@ -44,8 +50,15 @@ class ApiController < ActionController::Base
       forbidden unless current_property.present?
     end
 
+    def current_api_key
+      @current_api_key ||= begin
+        return nil if params[:api_key].blank?
+        Key.decrypt_and_find(params[:api_key])
+      end
+    end
+
     def current_property
-      @current_property ||= Property.find_by_api_key(params[:api_key])
+      @current_property ||= current_api_key.try(:property)
     end
 
     def allow_cors

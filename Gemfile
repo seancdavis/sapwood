@@ -46,6 +46,7 @@ gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'encryptor'
 gem 'heartwood-decorator', github: 'seancdavis/heartwood-decorator'
 # TODO: What is this for?
 gem 'highline'

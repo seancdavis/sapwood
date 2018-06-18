@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::ElementsController < ApiController
+class Api::ElementsController < ApiController
 
   def index
     respond_to do |f|

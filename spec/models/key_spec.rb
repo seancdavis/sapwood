@@ -24,4 +24,9 @@ RSpec.describe Key, type: :model do
     expect(key.value).to_not eq(nil)
   end
 
+  it 'can retrieve the correct key from the database using unencrypted value' do
+    key
+    expect(Key.find_by_value(key.value)).to eq(key)
+  end
+
 end

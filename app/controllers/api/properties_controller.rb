@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::PropertiesController < ApiController
+class Api::PropertiesController < ApiController
 
   def show
     respond_to do |f|

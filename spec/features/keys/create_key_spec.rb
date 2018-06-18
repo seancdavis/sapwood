@@ -27,9 +27,9 @@ feature 'Create API Key', js: true do
     expect(key.readable?).to eq(true)
   end
 
-  scenario 'create a writeable key' do
+  scenario 'create a writable key' do
     fill_in 'Title', with: 'My First Key'
-    first('#key_writeable').set(true)
+    first('#key_writable').set(true)
     select 'Default', from: 'key_template_selector'
     click_button 'Save Key'
     key = Key.first
@@ -38,7 +38,7 @@ feature 'Create API Key', js: true do
     expect(page).to have_css('p', text: key.value)
     # Check database just to be sure.
     expect(key.title).to eq('My First Key')
-    expect(key.writeable?).to eq(true)
+    expect(key.writable?).to eq(true)
     expect(key.template_names).to match_array(['Default'])
   end
 

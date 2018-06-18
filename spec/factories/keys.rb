@@ -4,8 +4,8 @@ FactoryBot.define do
     property
     value { SecureRandom.hex(24) }
 
-    trait :writeable do
-      writeable true
+    trait :writable do
+      writable true
       template_names { ['Default'] }
     end
   end

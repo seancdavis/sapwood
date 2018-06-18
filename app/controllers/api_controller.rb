@@ -50,15 +50,29 @@ class ApiController < ActionController::Base
       forbidden unless current_property.present?
     end
 
+    def authenticate_writable_api_key!
+      # Key must be readable and match current property.
+      authenticate_api_user!
+      # Key must be writable.
+      forbidden unless current_api_key.writable?
+      # Key must be able to write the template. (Currently all writable
+      # requests require a template param.)
+      forbidden unless current_api_key.template_names.include?(params[:template])
+    end
+
     def current_api_key
       @current_api_key ||= begin
         return nil if params[:api_key].blank?
-        Key.decrypt_and_find(params[:api_key])
+        Key.find_by_value(params[:api_key])
       end
     end
 
     def current_property
-      @current_property ||= current_api_key.try(:property)
+      @current_property ||= begin
+        property = current_api_key.try(:property)
+        current_property_id = (params[:property_id] || params[:id]).to_i
+        property.present? && property.id == current_property_id ? property : nil
+      end
     end
 
     def allow_cors

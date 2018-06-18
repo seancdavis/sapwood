@@ -31,12 +31,12 @@ feature 'Update API Key', js: true do
     expect(key.title).to eq(title)
   end
 
-  scenario 'undoing writeable removes template_names' do
-    key = create(:key, property: property, writeable: true, template_names: ['Default'])
+  scenario 'undoing writable removes template_names' do
+    key = create(:key, property: property, writable: true, template_names: ['Default'])
     expect(Key.first.template_names).to match_array(['Default'])
     visit(current_path)
     click_link key.title
-    first('#key_writeable').set(false)
+    first('#key_writable').set(false)
     click_button 'Save Key'
     expect(Key.first.template_names.blank?).to eq(true)
   end

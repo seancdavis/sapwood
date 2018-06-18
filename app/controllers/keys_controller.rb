@@ -45,8 +45,8 @@ class KeysController < ApplicationController
   end
 
   def key_params
-    template_names = params[:key][:writeable].to_bool ? params[:key][:template_names].split(',') : []
-    params.require(:key).permit(:title, :writeable).merge(template_names: template_names)
+    template_names = params[:key][:writable].to_bool ? params[:key][:template_names].split(',') : []
+    params.require(:key).permit(:title, :writable).merge(template_names: template_names)
   end
 
   def verify_property_access

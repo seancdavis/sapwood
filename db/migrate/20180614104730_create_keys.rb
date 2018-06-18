@@ -6,7 +6,7 @@ class CreateKeys < ActiveRecord::Migration[5.2]
     create_table :keys do |t|
       t.string :title
       t.integer :property_id
-      t.boolean :writeable, default: false
+      t.boolean :writable, default: false
       t.text :template_names, array: true, default: []
       t.string :encrypted_value
 
@@ -24,7 +24,7 @@ class CreateKeys < ActiveRecord::Migration[5.2]
           title: "#{tmpl.title} Write Key",
           property: property,
           value: key,
-          writeable: true,
+          writable: true,
           template_names: [tmpl.title]
         )
       end

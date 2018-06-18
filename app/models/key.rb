@@ -19,7 +19,7 @@ class Key < ApplicationRecord
   end
 
   def readable?
-    !writeable?
+    !writable?
   end
 
 end

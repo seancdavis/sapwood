@@ -58,7 +58,7 @@ class Key < ApplicationRecord
 
   def value
     @value ||= begin
-      return nil if encrypted_value.blank? || !encryptable?
+      return nil if encrypted_value.blank? || !Key.encryptable?
       Encryptor.decrypt(
         value: Base64.decode64(encrypted_value),
         key: Key.encryption_key,

@@ -88,7 +88,7 @@ Layout/SpaceBeforeComma:
   Enabled: true
 
 Layout/SpaceBeforeFirstArg:
-    Enabled: true
+  Enabled: true
 
 Style/DefWithParentheses:
   Enabled: true
@@ -100,6 +100,8 @@ Style/MethodDefParentheses:
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
+  Exclude:
+    - db/schema.rb
 
 # Use `foo {}` not `foo{}`.
 Layout/SpaceBeforeBlockBraces:
@@ -120,6 +122,8 @@ Layout/SpaceInsideParens:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
+  Exclude:
+    - db/schema.rb
 
 # Detect hard tabs, no hard tabs.
 Layout/Tab:

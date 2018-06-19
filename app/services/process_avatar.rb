@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'aws-sdk'
 require 'rmagick'
 
@@ -6,7 +8,7 @@ class ProcessAvatar
   include Magick
 
   def initialize(options = {})
-    raise "You must provide a user." if options[:user].blank?
+    raise 'You must provide a user.' if options[:user].blank?
     @user = options[:user]
   end
 
@@ -20,7 +22,7 @@ class ProcessAvatar
     resize_image
     upload_image
     delete_image
-    @user.update_columns(:avatar_url => dest_url)
+    @user.update_columns(avatar_url: dest_url)
     true
   end
 
@@ -29,24 +31,15 @@ class ProcessAvatar
     # ---------------------------------------- AWS Setup / Credentials
 
     def key
-      @key ||= begin
-        return ENV['aws_access_key_id'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.access_key_id
-      end
+      @key ||= ENV['AWS_ACCESS_KEY_ID']
     end
 
     def secret
-      @secret ||= begin
-        return ENV['aws_secret_access_key'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.secret_access_key
-      end
+      @secret ||= ENV['AWS_SECRET_ACCESS_KEY']
     end
 
     def bucket
-      @bucket ||= begin
-        return ENV['aws_bucket'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.bucket
-      end
+      @bucket ||= ENV['AWS_BUCKET']
     end
 
     def region
@@ -58,9 +51,9 @@ class ProcessAvatar
     end
 
     def s3
-      @s3 ||= Aws::S3::Client.new :region => region,
-                                  :access_key_id => key,
-                                  :secret_access_key => secret
+      @s3 ||= Aws::S3::Client.new region: region,
+                                  access_key_id: key,
+                                  secret_access_key: secret
     end
 
     # ---------------------------------------- File References
@@ -119,8 +112,8 @@ class ProcessAvatar
     # ---------------------------------------- Actions
 
     def download_file
-      s3.get_object :response_target => temp_file_path,
-                    :bucket => bucket, :key => s3_file_path
+      s3.get_object response_target: temp_file_path,
+                    bucket: bucket, key: s3_file_path
     end
 
     def orient_image
@@ -134,8 +127,8 @@ class ProcessAvatar
 
     def upload_image
       File.open(temp_resized_path, 'rb') do |file|
-        s3.put_object :bucket => bucket, :key => s3_file_dest, :body => file,
-                      :acl => 'public-read'
+        s3.put_object bucket: bucket, key: s3_file_dest, body: file,
+                      acl: 'public-read'
       end
     end
 

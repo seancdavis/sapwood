@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'My Profile', :js => true do
+feature 'My Profile', js: true do
 
   background do
     @property = create(:property)
-    @user = create(:user, :name => nil)
+    @user = create(:user, name: nil)
     @user.properties << @property
     sign_in @user
   end
@@ -25,9 +27,9 @@ feature 'My Profile', :js => true do
     expect(page).to have_content('You need to complete your profile.')
     # Fill in name and passwords, then save and and REGULAR USER is redirected
     # to first property.
-    fill_in 'user[name]', :with => Faker::Name.name
-    fill_in 'user[password]', :with => 'hello_world'
-    fill_in 'user[password_confirmation]', :with => 'hello_world'
+    fill_in 'user[name]', with: Faker::Name.name
+    fill_in 'user[password]', with: 'hello_world'
+    fill_in 'user[password_confirmation]', with: 'hello_world'
     click_button 'Save'
     expect(current_path).to eq(property_path(@property))
   end

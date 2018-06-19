@@ -14,10 +14,10 @@
 .DS_Store
 
 # Custom config files
-/config/database.yml
+.env
+.env.*
 /config/sapwood*yml
 !/config/sapwood.default.yml
-config/unicorn.rb
 
 # Uploads
 public/assets/

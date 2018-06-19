@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Elements', :js => true do
+feature 'Elements', js: true do
 
   scenario 'can be deleted' do
     property = property_with_templates
     @user = create(:admin)
-    element = create(:element, :property => property)
+    element = create(:element, property: property)
     sign_in @user
     visit property_template_elements_path(property, 'default')
     expect(page).to have_content(element.title)

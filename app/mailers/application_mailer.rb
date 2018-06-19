@@ -1,15 +1,9 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
 
-  default :from => Sapwood.config.default_from
+  default from: ENV['DEFAULT_FROM_EMAIL']
 
   layout 'mailer'
-
-  before_filter :reload_sapwood
-
-  private
-
-    def reload_sapwood
-      Sapwood.reload!
-    end
 
 end

@@ -1,34 +1,10 @@
-# == Schema Information
-#
-# Table name: properties
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  templates_raw :text
-#  api_key       :string
-#
+# frozen_string_literal: true
 
 require 'rails_helper'
 
-RSpec.describe Property, :type => :model do
+RSpec.describe Property, type: :model do
 
   let(:property) { create(:property) }
-
-  describe '#generate_api_key' do
-    it 'generates an api key on create' do
-      p = create(:property, :api_key => nil)
-      expect(p.api_key).to_not eq(nil)
-    end
-    it 'does not update the api key on update' do
-      key = property.api_key
-      property.update(:title => Faker::Company.bs)
-      property.reload
-      expect(property.api_key).to eq(key)
-    end
-  end
 
   # ---------------------------------------- Templates
 
@@ -41,7 +17,7 @@ RSpec.describe Property, :type => :model do
       expect(property.templates).to eq([])
     end
     context 'when there are templates' do
-      before(:each) { property.update!(:templates_raw => @raw_templates) }
+      before(:each) { property.update!(templates_raw: @raw_templates) }
       it 'returns an array' do
         expect(property.templates.class).to eq(Array)
       end
@@ -60,11 +36,11 @@ RSpec.describe Property, :type => :model do
       expect(property.valid_templates?).to eq(true)
     end
     it 'returns an error message when the JSON is malformed' do
-      property.update!(:templates_raw => "#{@raw_templates}]]")
+      property.update!(templates_raw: "#{@raw_templates}]]")
       expect(property.valid_templates?).to eq(false)
     end
     it 'returns an array for valid JSON' do
-      property.update!(:templates_raw => @raw_templates)
+      property.update!(templates_raw: @raw_templates)
       expect(property.valid_templates?).to eq(true)
     end
   end
@@ -73,7 +49,7 @@ RSpec.describe Property, :type => :model do
     before(:each) do
       file = File.expand_path('../../support/template_config.json', __FILE__)
       @raw_templates = File.read(file)
-      property.update!(:templates_raw => @raw_templates)
+      property.update!(templates_raw: @raw_templates)
     end
     it 'can find a template by its title' do
       expect(property.find_template('Default').class).to eq(Template)

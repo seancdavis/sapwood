@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Importing Elements', :js => true do
+feature 'Importing Elements', js: true do
 
   background do
     @property = property_with_templates
@@ -13,7 +15,7 @@ feature 'Importing Elements', :js => true do
 
   scenario 'can be done via csv' do
     attach_file 'property_csv', "#{Rails.root}/spec/support/import.csv"
-    select 'All Options', :from => 'property_template_name'
+    select 'All Options', from: 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('3 elements imported')
     click_link 'All Options'
@@ -22,7 +24,7 @@ feature 'Importing Elements', :js => true do
 
   scenario 'rescues from a bad column name' do
     attach_file 'property_csv', "#{Rails.root}/spec/support/import_bad_col.csv"
-    select 'All Options', :from => 'property_template_name'
+    select 'All Options', from: 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('one of your column headings does not match')
     click_link 'All Options'
@@ -30,7 +32,7 @@ feature 'Importing Elements', :js => true do
 
   scenario 'rescues from a bad column name' do
     attach_file 'property_csv', "#{Rails.root}/spec/support/import_bad_data.csv"
-    select 'All Options', :from => 'property_template_name'
+    select 'All Options', from: 'property_template_name'
     click_button 'Import Elements'
     expect(page).to have_content('Data in one of your rows is not valid')
     # Check that it rolls back the entire transaction.
@@ -40,7 +42,7 @@ feature 'Importing Elements', :js => true do
 
   scenario 'requires file to import' do
     expect(page).to have_css('input#property_csv[required]')
-    select 'All Options', :from => 'property_template_name'
+    select 'All Options', from: 'property_template_name'
     click_button 'Import Elements'
     expect(current_path).to eq(property_import_path(@property))
   end

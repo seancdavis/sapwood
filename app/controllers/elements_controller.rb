@@ -1,24 +1,8 @@
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
+# frozen_string_literal: true
 
 class ElementsController < ApplicationController
 
-  before_filter :verify_property_access
+  before_action :verify_property_access
 
   def index
     not_found if current_template.nil? && params[:template_id] != '__all'
@@ -67,7 +51,7 @@ class ElementsController < ApplicationController
   def new
     not_found if current_template.blank?
     @current_element = current_property.elements
-      .build(:template_name => current_template.name)
+      .build(template_name: current_template.name)
   end
 
   def create
@@ -75,7 +59,7 @@ class ElementsController < ApplicationController
     if current_element.save!
       send_notifications!
       redirect_to template_redirect_path,
-                  :notice => "#{current_template.title} saved successfully!"
+                  notice: "#{current_template.title} saved successfully!"
     else
       render 'new'
     end
@@ -89,7 +73,7 @@ class ElementsController < ApplicationController
     if current_element.update(element_params)
       send_notifications!
       redirect_to template_redirect_path,
-                  :notice => "#{current_template.title} saved successfully!"
+                  notice: "#{current_template.title} saved successfully!"
     else
       render 'edit'
     end
@@ -106,7 +90,7 @@ class ElementsController < ApplicationController
       params
         .require(:element)
         .permit(:title, :template_name,
-                :template_data => current_template.fields.collect(&:name))
+                template_data: current_template.fields.collect(&:name))
     end
 
     def send_notifications!

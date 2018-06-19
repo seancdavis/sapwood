@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Property', :js => true do
+feature 'Property', js: true do
 
   background do
     @property = property_with_templates
@@ -17,8 +19,8 @@ feature 'Property', :js => true do
   context 'with elements' do
     background do
       (@titles = %w{Pick Picking Picker Picnic Farts}).each do |title|
-        create(:element, :property => @property,
-               :template_data => { :name => title })
+        create(:element, property: @property,
+               template_data: { name: title })
       end
     end
     scenario 'adds newest created items only to newest list' do
@@ -32,7 +34,7 @@ feature 'Property', :js => true do
     end
     scenario 'last updated are those where updated_at does not match' do
       el = Element.find_by_title('Farts')
-      el.update!(:slug => 'hello-world')
+      el.update!(slug: 'hello-world')
       click_link @property.title
       within(first('.block.half')) do
         expect(page).to have_content('Farts')
@@ -40,7 +42,7 @@ feature 'Property', :js => true do
     end
     scenario 'does not show elements without a template' do
       el = @property.elements.find_by_title('Picnic')
-      el.update(:template_name => 'Wrong Template Name!')
+      el.update(template_name: 'Wrong Template Name!')
       click_link @property.title
       expect(page).to have_no_content('Picnic')
     end
@@ -51,9 +53,9 @@ feature 'Property', :js => true do
       # There should be no results
       within('.quiet.search') { expect(page).to have_no_css('li') }
       # But will render matches.
-      fill_in 'search', :with => 'pick'
+      fill_in 'search', with: 'pick'
       wait_for_ajax
-      within('.quiet.search') { expect(page).to have_css('li', :count => 3) }
+      within('.quiet.search') { expect(page).to have_css('li', count: 3) }
     end
   end
 

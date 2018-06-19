@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'aws-sdk'
 require 'rmagick'
 
@@ -6,7 +8,7 @@ class ProcessImages
   include Magick
 
   def initialize(options = {})
-    raise "You must provide a document." if options[:document].blank?
+    raise 'You must provide a document.' if options[:document].blank?
     @document = options[:document]
   end
 
@@ -29,24 +31,15 @@ class ProcessImages
     # ---------------------------------------- AWS Setup / Credentials
 
     def key
-      @key ||= begin
-        return ENV['aws_access_key_id'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.access_key_id
-      end
+      @key ||= ENV['AWS_ACCESS_KEY_ID']
     end
 
     def secret
-      @secret ||= begin
-        return ENV['aws_secret_access_key'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.secret_access_key
-      end
+      @secret ||= ENV['AWS_SECRET_ACCESS_KEY']
     end
 
     def bucket
-      @bucket ||= begin
-        return ENV['aws_bucket'] if Sapwood.config.amazon_aws.blank?
-        Sapwood.config.amazon_aws.bucket
-      end
+      @bucket ||= ENV['AWS_BUCKET']
     end
 
     def region
@@ -58,9 +51,9 @@ class ProcessImages
     end
 
     def s3
-      @s3 ||= Aws::S3::Client.new :region => region,
-                                  :access_key_id => key,
-                                  :secret_access_key => secret
+      @s3 ||= Aws::S3::Client.new region: region,
+                                  access_key_id: key,
+                                  secret_access_key: secret
     end
 
     # ---------------------------------------- File References
@@ -85,12 +78,12 @@ class ProcessImages
     end
 
     def temp_version_path(name)
-      filename = "#{temp_filename_no_ext}_#{name.to_s}.#{@document.file_ext}"
+      filename = "#{temp_filename_no_ext}_#{name}.#{@document.file_ext}"
       Rails.root.join('tmp', 'sapwood', filename)
     end
 
     def temp_cropped_version_path(name)
-      f = "#{temp_filename_no_ext}_#{name.to_s}_crop.#{@document.file_ext}"
+      f = "#{temp_filename_no_ext}_#{name}_crop.#{@document.file_ext}"
       Rails.root.join('tmp', 'sapwood', f)
     end
 
@@ -109,11 +102,11 @@ class ProcessImages
 
     def image_versions
       @image_versions ||= {
-        :xsmall => 50,
-        :small => 200,
-        :medium => 450,
-        :large => 800,
-        :xlarge => 1400
+        xsmall: 50,
+        small: 200,
+        medium: 450,
+        large: 800,
+        xlarge: 1400
       }
     end
 
@@ -121,7 +114,7 @@ class ProcessImages
       paths = { temp_file_path => s3_file_path }
       image_versions.each do |name, dim|
         paths[temp_version_path(name)] = s3_file_path(name.to_s)
-        paths[temp_cropped_version_path(name)] = s3_file_path("#{name.to_s}_crop")
+        paths[temp_cropped_version_path(name)] = s3_file_path("#{name}_crop")
       end
       paths
     end
@@ -129,8 +122,8 @@ class ProcessImages
     # ---------------------------------------- Actions
 
     def download_file
-      s3.get_object :response_target => temp_file_path,
-                    :bucket => bucket, :key => s3_file_path
+      s3.get_object response_target: temp_file_path,
+                    bucket: bucket, key: s3_file_path
     end
 
     def orient_image
@@ -148,8 +141,8 @@ class ProcessImages
     def upload_files
       upload_paths.each do |temp_path, s3_path|
         File.open(temp_path, 'rb') do |file|
-          s3.put_object :bucket => bucket, :key => s3_path, :body => file,
-                        :acl => 'public-read'
+          s3.put_object bucket: bucket, key: s3_path, body: file,
+                        acl: 'public-read'
         end
       end
     end

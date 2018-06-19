@@ -1,0 +1,23 @@
+<%= page_header(
+  title: 'API Keys',
+  button: {
+    label: 'New API Key',
+    path: new_property_key_path(current_property),
+    options: { class: 'new button' }
+  }) %>
+
+<section class="body">
+  <div class="block">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody class="keys">
+        <%= render @keys.present? ? @keys : 'empty' %>
+      </tbody>
+    </table>
+  </div>
+</section>

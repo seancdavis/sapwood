@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Property Settings', :js => true do
+feature 'Property Settings', js: true do
 
   background do
     @property = property_with_templates

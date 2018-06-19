@@ -1,20 +1,8 @@
-# == Schema Information
-#
-# Table name: documents
-#
-#  id          :integer          not null, primary key
-#  title       :string
-#  url         :string
-#  property_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  archived    :boolean          default(FALSE)
-#  processed   :boolean          default(FALSE)
-#
+# frozen_string_literal: true
 
 class DocumentsController < ApplicationController
 
-  before_filter :verify_property_access
+  before_action :verify_property_access
 
   def index
     not_found if current_template.nil?
@@ -31,11 +19,11 @@ class DocumentsController < ApplicationController
         .by_title.page(params[:page] || 1).per(12)
     end
     @elements = @documents
-    render :partial => 'list' if request.xhr?
+    render partial: 'list' if request.xhr?
   end
 
   def new
-    render :layout => false
+    render layout: false
   end
 
   def create
@@ -48,8 +36,8 @@ class DocumentsController < ApplicationController
 
     def create_params
       params.require(:document).permit(:url)
-            .merge(:property => current_property,
-                   :template_name => current_template.name)
+            .merge(property: current_property,
+                   template_name: current_template.name)
     end
 
 end

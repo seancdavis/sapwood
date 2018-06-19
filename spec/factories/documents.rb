@@ -1,18 +1,6 @@
-# == Schema Information
-#
-# Table name: documents
-#
-#  id          :integer          not null, primary key
-#  title       :string
-#  url         :string
-#  property_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  archived    :boolean          default(FALSE)
-#  processed   :boolean          default(FALSE)
-#
+# frozen_string_literal: true
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :document do
     title { nil }
     url 'https://s-media-cache-ak0.pinimg.com/custom_covers/30x30/178947853882959841_1454569459.jpg'

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'New Users', :js => true do
+feature 'New Users', js: true do
 
   context 'as an admin' do
     background do
@@ -17,10 +19,10 @@ feature 'New Users', :js => true do
       expect(page).to have_no_css('#user_name')
     end
     scenario 'can make a new user an admin' do
-      fill_in 'user[email]', :with => Faker::Internet.email
+      fill_in 'user[email]', with: Faker::Internet.email
       first("label[for='user_is_admin']").click
       click_button 'Save'
-      expect(User.order(:id => :desc).first.is_admin).to eq(true)
+      expect(User.order(id: :desc).first.is_admin).to eq(true)
     end
   end
 

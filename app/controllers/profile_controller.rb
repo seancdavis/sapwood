@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ProfileController < ApplicationController
 
-  skip_before_filter :verify_profile_completion
+  skip_before_action :verify_profile_completion
 
   def edit
   end
@@ -8,9 +10,9 @@ class ProfileController < ApplicationController
   def update
     if current_user.update(profile_params)
       if changing_password?
-        sign_in(current_user, :bypass => true)
+        bypass_sign_in(current_user)
       end
-      redirect_to redirect_path, :notice => 'Profile updated successfully!'
+      redirect_to redirect_path, notice: 'Profile updated successfully!'
     else
       render 'edit'
     end
@@ -21,7 +23,7 @@ class ProfileController < ApplicationController
     def profile_params
       params.require(:user)
             .permit(:name, :avatar_url, :password, :password_confirmation)
-            .reject { |k,v| v.blank? }
+            .reject { |k, v| v.blank? }
     end
 
     def changing_password?
@@ -31,7 +33,7 @@ class ProfileController < ApplicationController
 
     def redirect_path
       return deck_path unless current_property
-      edit_profile_path(:property_id => params[:property_id])
+      edit_profile_path(property_id: params[:property_id])
     end
 
 end

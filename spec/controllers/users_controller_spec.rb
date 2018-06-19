@@ -1,25 +1,4 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  is_admin               :boolean          default(FALSE)
-#  name                   :string
-#  sign_in_key            :string
-#  avatar_url             :string
-#
+# frozen_string_literal: true
 
 require 'rails_helper'
 
@@ -33,13 +12,13 @@ describe UsersController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :index, :property_id => @property.id }
+        expect { get :index, params: { property_id: @property.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -47,7 +26,7 @@ describe UsersController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 200 for a property admin' do
@@ -55,14 +34,14 @@ describe UsersController do
         @user.properties << @property
         @user.make_admin_in_properties!(@property)
         sign_in @user
-        get :index, :property_id => @property.id
+        get :index, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        expect { get :index, :property_id => @property.id }
+        expect { get :index, params: { property_id: @property.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -70,7 +49,7 @@ describe UsersController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :index, :property_id => '123456' }
+        expect { get :index, params: { property_id: '123456' } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -84,13 +63,13 @@ describe UsersController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :new, :property_id => @property.id
+        get :new, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         sign_in @user
-        expect { get :new, :property_id => @property.id }
+        expect { get :new, params: { property_id: @property.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -98,7 +77,7 @@ describe UsersController do
       it 'returns 200 for an admin' do
         @user = create(:admin)
         sign_in @user
-        get :new, :property_id => @property.id
+        get :new, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 200 for a property admin' do
@@ -106,14 +85,14 @@ describe UsersController do
         @user.properties << @property
         @user.make_admin_in_properties!(@property)
         sign_in @user
-        get :new, :property_id => @property.id
+        get :new, params: { property_id: @property.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user' do
         @user = create(:user)
         @user.properties << @property
         sign_in @user
-        expect { get :new, :property_id => @property.id }
+        expect { get :new, params: { property_id: @property.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -121,7 +100,7 @@ describe UsersController do
       it 'returns 404 for an admin' do
         @user = create(:admin)
         sign_in @user
-        expect { get :new, :property_id => '123' }
+        expect { get :new, params: { property_id: '123' } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -129,8 +108,6 @@ describe UsersController do
 
   # ---------------------------------------- Create
 
-# expect { create(:task_with_assignee) }
-        # .to change { ActionMailer::Base.deliveries.count }.by(2)
   describe '#create' do
     before(:each) do
       @property = create(:property)
@@ -140,14 +117,14 @@ describe UsersController do
     it 'sends a notification when creating a new user' do
       email = Faker::Internet.email
       expect {
-        post :create, :property_id => @property.id, :user => { :email => email }
+        post :create, params: { property_id: @property.id, user: { email: email } }
       }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
     it 'does not send a notification when creating an existing user' do
       user = create(:user)
       email = user.email
       expect {
-        post :create, :property_id => @property.id, :user => { :email => email }
+        post :create, params: { property_id: @property.id, user: { email: email } }
       }.to change { ActionMailer::Base.deliveries.count }.by(0)
     end
   end
@@ -166,13 +143,13 @@ describe UsersController do
       it 'returns 200 for an admin' do
         user = create(:admin)
         sign_in user
-        get :edit, :property_id => @property.id, :id => @user.id
+        get :edit, params: { property_id: @property.id, id: @user.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user without property access' do
         user = create(:user)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 404 for a property admin' do
@@ -180,14 +157,14 @@ describe UsersController do
         user.properties << @property
         user.make_admin_in_properties!(@property)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 404 for a user with property access' do
         user = create(:user)
         user.properties << @property
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -197,7 +174,7 @@ describe UsersController do
       property = create(:property)
       user = create(:admin)
       sign_in user
-      expect { get :edit, :property_id => property.id, :id => '123' }
+      expect { get :edit, params: { property_id: property.id, id: '123' } }
         .to raise_error(ActionController::RoutingError)
     end
 
@@ -207,7 +184,7 @@ describe UsersController do
       property = create(:property)
       user = create(:admin)
       sign_in user
-      expect { get :edit, :property_id => '123', :id => user.id }
+      expect { get :edit, params: { property_id: '123', id: user.id } }
         .to raise_error(ActionController::RoutingError)
     end
 
@@ -221,13 +198,13 @@ describe UsersController do
       it 'returns 200 for an admin' do
         user = create(:admin)
         sign_in user
-        get :edit, :property_id => @property.id, :id => @user.id
+        get :edit, params: { property_id: @property.id, id: @user.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user without property access' do
         user = create(:user)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 200 for a property admin' do
@@ -235,14 +212,14 @@ describe UsersController do
         user.properties << @property
         user.make_admin_in_properties!(@property)
         sign_in user
-        get :edit, :property_id => @property.id, :id => @user.id
+        get :edit, params: { property_id: @property.id, id: @user.id }
         expect(response.status).to eq(200)
       end
       it 'returns 404 for a user with property access' do
         user = create(:user)
         user.properties << @property
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end
@@ -256,13 +233,13 @@ describe UsersController do
       it 'returns 404 for an admin' do
         user = create(:admin)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 404 for a user without property access' do
         user = create(:user)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 404 for a property admin' do
@@ -270,14 +247,14 @@ describe UsersController do
         user.properties << @property
         user.make_admin_in_properties!(@property)
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
       it 'returns 404 for a user with property access' do
         user = create(:user)
         user.properties << @property
         sign_in user
-        expect { get :edit, :property_id => @property.id, :id => @user.id }
+        expect { get :edit, params: { property_id: @property.id, id: @user.id } }
           .to raise_error(ActionController::RoutingError)
       end
     end

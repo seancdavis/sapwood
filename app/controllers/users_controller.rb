@@ -1,30 +1,9 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  is_admin               :boolean          default(FALSE)
-#  name                   :string
-#  sign_in_key            :string
-#  avatar_url             :string
-#
+# frozen_string_literal: true
 
 class UsersController < ApplicationController
 
-  before_filter :verify_property_access
-  before_filter :verify_property_admin_access
+  before_action :verify_property_access
+  before_action :verify_property_admin_access
 
   def index
   end
@@ -41,7 +20,7 @@ class UsersController < ApplicationController
         UserMailer.welcome(focused_user).deliver_now
         focused_user.properties << current_property unless focused_user.is_admin?
         redirect_to property_users_path(current_property),
-                    :notice => 'User added successfully!'
+                    notice: 'User added successfully!'
       else
         @properties = Property.alpha.to_a - [current_property]
         render 'new'
@@ -49,7 +28,7 @@ class UsersController < ApplicationController
     else
       focused_user.properties << current_property
       redirect_to property_users_path(current_property),
-                  :notice => 'User added successfully!'
+                  notice: 'User added successfully!'
     end
   end
 
@@ -81,7 +60,7 @@ class UsersController < ApplicationController
         focused_user.make_admin_in_properties!(admin_ids)
       end
       redirect_to property_users_path(current_property),
-                  :notice => 'User updated successfully!'
+                  notice: 'User updated successfully!'
     else
       @properties = Property.alpha
       render 'edit'
@@ -95,7 +74,7 @@ class UsersController < ApplicationController
     end
 
     def user_params_with_password
-      user_params.merge(:password => SecureRandom.hex(32))
+      user_params.merge(password: SecureRandom.hex(32))
     end
 
     def verify_property_admin_access

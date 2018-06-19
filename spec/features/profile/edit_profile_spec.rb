@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'My Profile', :js => true do
+feature 'My Profile', js: true do
 
   background do
     @property = create(:property)
@@ -19,7 +21,7 @@ feature 'My Profile', :js => true do
   scenario 'lets me change my name' do
     click_link @property.title
     within('header.main') { click_link('Profile') }
-    fill_in 'user[name]', :with => (name = Faker::Name.name)
+    fill_in 'user[name]', with: (name = Faker::Name.name)
     click_button 'Save'
     within('header.main') { expect(page).to have_content(name) }
   end

@@ -1,17 +1,6 @@
-# == Schema Information
-#
-# Table name: properties
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  color         :string
-#  templates_raw :text
-#  api_key       :string
-#
+# frozen_string_literal: true
 
-class Property < ActiveRecord::Base
+class Property < ApplicationRecord
 
   # ---------------------------------------- Attributes
 
@@ -19,30 +8,23 @@ class Property < ActiveRecord::Base
 
   # ---------------------------------------- Associations
 
-  has_many :collections, :dependent => :destroy
-  has_many :documents, :dependent => :destroy
-  has_many :elements, :dependent => :destroy
-  has_many :notifications, :dependent => :destroy
-  has_many :property_users, :dependent => :destroy
-  has_many :responses, :dependent => :destroy
+  has_many :elements, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many :property_users, dependent: :destroy
+  has_many :responses, dependent: :destroy
+  has_many :keys, dependent: :destroy
 
-  has_many :users, :through => :property_users
+  has_many :users, through: :property_users
 
   # ---------------------------------------- Validations
 
-  validates :title, :presence => true
+  validates :title, presence: true
 
   # ---------------------------------------- Scopes
 
-  scope :alpha, -> { order(:title => :asc) }
+  scope :alpha, -> { order(title: :asc) }
 
   # ---------------------------------------- Callbacks
-
-  after_create :generate_api_key!
-
-  def generate_api_key!
-    update_columns(:api_key => SecureRandom.hex(25))
-  end
 
   after_save :expire_caches
 

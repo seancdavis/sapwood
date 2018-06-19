@@ -23,6 +23,8 @@ window.App =
   Routers: {}
   Views: {}
 
+window.Sapwood = {}
+
 $(document).ready ->
   new App.Routers.Router
 

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateElementAssociations < ActiveRecord::Migration
+
   def change
     create_table :element_associations do |t|
       t.integer :source_id
@@ -7,6 +10,7 @@ class CreateElementAssociations < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    Element.all.each { |e| e.update!(:skip_geocode => true) }
+    Element.all.each { |e| e.update! }
   end
+
 end

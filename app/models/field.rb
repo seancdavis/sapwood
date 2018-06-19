@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Field
 
   include ActionView::Helpers
@@ -26,7 +28,7 @@ class Field
   # Whether or not we should fallback to method_missing for this particular
   # field.
   def sendable?
-    document? || documents? || element? || elements? || boolean? || geocode?
+    document? || documents? || element? || elements? || boolean?
   end
 
   def format

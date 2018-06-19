@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'An admin', :js => true do
+feature 'An admin', js: true do
 
   context 'when editing a property user' do
     background do
@@ -16,10 +18,10 @@ feature 'An admin', :js => true do
       click_link @user.name
     end
     scenario 'can not change their name' do
-      expect(page).to have_selector('#user_name[disabled]', :count => 1)
+      expect(page).to have_selector('#user_name[disabled]', count: 1)
     end
     scenario 'can not change their email' do
-      expect(page).to have_selector('#user_email[disabled]', :count => 1)
+      expect(page).to have_selector('#user_email[disabled]', count: 1)
     end
   end
 

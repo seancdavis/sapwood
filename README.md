@@ -4,7 +4,6 @@ Sapwood 2
 [![Build Status](https://travis-ci.org/seancdavis/sapwood.svg?branch=master)](https://travis-ci.org/seancdavis/sapwood)
 [![GitHub tag](https://img.shields.io/github/tag/seancdavis/sapwood.svg?maxAge=2592000)](https://github.com/seancdavis/sapwood/releases)
 [![Code Climate](https://codeclimate.com/github/seancdavis/sapwood/badges/gpa.svg)](https://codeclimate.com/github/seancdavis/sapwood)
-[![Test Coverage](https://codeclimate.com/github/seancdavis/sapwood/badges/coverage.svg)](https://codeclimate.com/github/seancdavis/sapwood/coverage)
 
 Sapwood doesn't judge. It's not that it's aloof. It cares about you very much.
 It wants to be the content mechanism behind your next great idea. But it lets

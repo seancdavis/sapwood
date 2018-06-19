@@ -1,67 +1,43 @@
-# == Schema Information
-#
-# Table name: elements
-#
-#  id            :integer          not null, primary key
-#  title         :string
-#  slug          :string
-#  property_id   :integer
-#  template_name :string
-#  template_data :json             default({})
-#  publish_at    :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  url           :string
-#  archived      :boolean          default(FALSE)
-#  processed     :boolean          default(FALSE)
-#
+# frozen_string_literal: true
 
-class Element < ActiveRecord::Base
+class Element < ApplicationRecord
 
   # ---------------------------------------- Plugins
 
-  include Presenter, PgSearch
+  include PgSearch, ElementDecorator
 
-  has_superslug :title, :slug, :context => :property
+  has_superslug :title, :slug, context: :property
 
   pg_search_scope :search_by_title,
-                  :against => :title,
-                  :using => {
-                    :tsearch => { :prefix => true, :dictionary => "english" }
+                  against: :title,
+                  using: {
+                    tsearch: { prefix: true, dictionary: 'english' }
                   }
-
-  # ---------------------------------------- Attributes
-
-  attr_accessor :skip_geocode
 
   # ---------------------------------------- Associations
 
   belongs_to :property
 
-  has_many :element_associations, :foreign_key => 'source_id',
-           :dependent => :destroy
-  has_many :associated_elements, :through => :element_associations,
-           :source => 'target'
+  has_many :element_associations, foreign_key: 'source_id',
+           dependent: :destroy
+  has_many :associated_elements, through: :element_associations,
+           source: 'target'
 
   # ---------------------------------------- Scopes
 
   scope :with_associations, -> { includes(:property, :associated_elements) }
-  scope :with_template, ->(name) { where(:template_name => name.split(',')) }
-  scope :by_title, -> { order(:title => :asc) }
+  scope :with_template, ->(name) { where(template_name: name.split(',')) }
+  scope :by_title, -> { order(title: :asc) }
   scope :by_field, ->(f, d = 'ASC') {
     return order("#{f} #{d}") if column_names.include?(f)
-    if f.split(':').size > 1
-      order("template_data #>> '{#{f.split(':').join(', ')}}' #{d}")
-    else
-      order("template_data ->> '#{f}' #{d}")
-    end
+    order(Arel.sql("template_data ->> '#{f}' #{d}"))
   }
   scope :starting_with, ->(letter) { where('title like ?', "#{letter}%") }
   scope :starting_with_number, -> { where('title ~* ?', '^\d(.*)?') }
   scope :last_updated, -> {
-    where('updated_at != created_at').order(:updated_at => :desc)
+    where('updated_at != created_at').order(updated_at: :desc)
   }
-  scope :last_created, -> { order(:created_at => :desc) }
+  scope :last_created, -> { order(created_at: :desc) }
   scope :floating, -> {
     where('updated_at <= ?', DateTime.now - 1.week).to_a
       .select { |el| el.template.blank? }
@@ -69,34 +45,9 @@ class Element < ActiveRecord::Base
 
   # ---------------------------------------- Validations
 
-  validates :title, :template_name, :presence => true
+  validates :title, :template_name, presence: true
 
   # ---------------------------------------- Callbacks
-
-  after_save :geocode_addresses
-
-  def geocode_addresses
-    return unless template? && skip_geocode.blank?
-    template.geocode_fields.each do |field|
-      val = template_data[field.name]
-      if val.blank?
-        template_data[field.name] = { :raw => nil }
-        next
-      end
-      begin
-        val = val[:raw] if val.is_a?(Hash) && val[:raw].present?
-        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-          .geocode(val).to_hash.merge(:raw => val)
-      rescue
-        # If we hit too many queries, we can sleep for a second and then try
-        # again.
-        sleep 1
-        template_data[field.name] = Geokit::Geocoders::GoogleGeocoder
-          .geocode(val).to_hash.merge(:raw => val)
-      end
-    end
-    update_columns(:template_data => template_data)
-  end
 
   before_validation :set_title
 
@@ -109,13 +60,6 @@ class Element < ActiveRecord::Base
     self.title = self.send(template.primary_field.name)
   end
 
-  after_create :process_images!, :if => :public_document?
-
-  def process_images!
-    return nil if Rails.env.test?
-    ProcessImages.delay.call(:document => self) if image? && !processed?
-  end
-
   after_save :update_associations
 
   def update_associations
@@ -125,7 +69,7 @@ class Element < ActiveRecord::Base
     element_fields.collect(&:name).each do |f|
       ids += (template_data[f] || '').split(',').map(&:to_i)
     end
-    self.associated_elements = property.elements.where(:id => ids)
+    self.associated_elements = property.elements.where(id: ids)
     SapwoodCache.rebuild_element(self)
   end
 
@@ -134,11 +78,11 @@ class Element < ActiveRecord::Base
     trigger_webhook
   end
 
-  before_validation 'strip_template_data'
+  before_validation :strip_template_data
 
   def strip_template_data
     return true if template.nil?
-    template_data.each do |k,v|
+    template_data.each do |k, v|
       field = template.find_field(k.to_s)
       next unless field.nil?
       self.template_data.except!(k)
@@ -160,7 +104,7 @@ class Element < ActiveRecord::Base
 
   def title_from_filename
     return nil unless document?
-    url.split('/').last.split('.').first.titleize
+    File.basename(url.to_s, '.*').titleize
   end
 
   def document?
@@ -172,62 +116,23 @@ class Element < ActiveRecord::Base
     public? && document?
   end
 
-  def filename
-    return nil unless document?
-    url.split('/').last
+  def url
+    return nil unless document? && super.present?
+    URI.parse(URI.encode(super))
   end
 
-  def filename_no_ext
-    return nil unless document?
-    filename.split('.')[0..-2].join('.')
-  end
-
-  def file_ext
-    return nil unless document?
-    url.split('.').last.downcase
-  end
-
-  def safe_url
-    return nil unless document?
-    URI.encode(url)
-  end
-
-  def uri
-    return nil unless document?
-    URI.parse(safe_url)
-  end
-
-  def s3_base
-    return nil unless document?
-    "#{uri.scheme}://#{uri.host}"
-  end
-
-  def s3_dir
-    return nil unless document?
-    uri.path.split('/').reject(&:blank?)[0..-2].join('/')
-  end
-
-  def version(name, crop = false)
-    return nil unless document?
-    return safe_url.to_s if !processed? || !image?
-    alt = crop ? '_crop' : nil
-    filename = "#{filename_no_ext}_#{name.to_s}#{alt}.#{file_ext}"
-    URI.encode("#{s3_base}/#{s3_dir}/#{filename}")
+  def path
+    url.present? ? url.path : nil
   end
 
   def image?
     return false unless document?
-    %(jpeg jpg png gif svg).include?(file_ext)
+    %(jpeg jpg png gif svg).include?(File.extname(path).remove('.'))
   end
 
   def archive!
     return false unless document?
-    update(:archived => true, :skip_geocode => true)
-  end
-
-  def processed!
-    return false unless document?
-    update(:processed => true, :skip_geocode => true)
+    update(archived: true)
   end
 
   def private?
@@ -266,7 +171,7 @@ class Element < ActiveRecord::Base
 
   # This is the backwards association
   def associated_to_as_target
-    ElementAssociation.where(:target_id => id).includes(:source)
+    ElementAssociation.where(target_id: id).includes(:source)
       .collect(&:source)
   end
 
@@ -287,11 +192,11 @@ class Element < ActiveRecord::Base
     end
     notifications.each do |n|
       NotificationMailer.notify(
-        :element => self,
-        :notification => n,
-        :action_name => action_name,
-        :template => template,
-        :property => property
+        element: self,
+        notification: n,
+        action_name: action_name,
+        template: template,
+        property: property
       ).deliver_now
     end
   end
@@ -306,33 +211,20 @@ class Element < ActiveRecord::Base
 
   def to_hash(options = {})
     response = {
-      :id => id,
-      :title => title,
-      :slug => slug,
-      :template_name => template_name,
-      :publish_at => publish_at,
-      :created_at => created_at,
-      :updated_at => updated_at,
+      id: id,
+      title: title,
+      slug: slug,
+      template_name: template_name,
+      publish_at: publish_at,
+      created_at: created_at,
+      updated_at: updated_at,
     }
     return response unless template?
-    template_data.each do |k,v|
+    template_data.each do |k, v|
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
-      # TODO: Quick fix for geocode fields -- need a test for this
-      if response[k.to_sym].is_a?(OpenStruct)
-        response[k.to_sym] = response[k.to_sym].marshal_dump
-      end
     end
-    if document? && public?
-      response[:url] = url
-      if image? && processed?
-        response[:versions] = {}
-        %w(xsmall small medium large xlarge).each do |v|
-          response[:versions][:"#{v}"] = version(v, false)
-          response[:versions][:"#{v}_crop"] = version(v, true)
-        end
-      end
-    end
+    response[:url] = ActionController::Base.helpers.ix_image_url(path) if document? && public?
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)
@@ -344,7 +236,7 @@ class Element < ActiveRecord::Base
   def as_json(options = {})
     return to_hash(options) unless SapwoodCache.enabled?
     ext = ''
-    options.each { |k,v| ext += "_#{k}_#{v}" }
+    options.each { |k, v| ext += "_#{k}_#{v}" }
     Rails.cache.fetch("_p#{property_id}_e#{id}_as_json#{ext}") do
       Rails.logger.info "REBUILD CACHE: [_p#{property_id}_e#{id}_as_json#{ext}]"
       to_hash(options)
@@ -362,7 +254,7 @@ class Element < ActiveRecord::Base
           return associated_elements
             .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
           associated_elements
             .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
         end
@@ -377,7 +269,7 @@ class Element < ActiveRecord::Base
           end
           return elements
         end
-        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
           elements = []
           element_ids.each do |id|
             el = associated_elements.select { |e| e.id == id }[0]
@@ -385,9 +277,6 @@ class Element < ActiveRecord::Base
           end
           return elements
         end
-      when 'geocode'
-        geo = template_data[method.to_s]
-        geo.is_a?(Hash) ? geo.to_ostruct : geo
       when 'boolean'
         # puts '---'
         # puts 'boolean'
@@ -407,7 +296,7 @@ class Element < ActiveRecord::Base
           .select { |e| e.template_data[association.field].split(',')
               .collect(&:to_i).include?(id) }
       end
-      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method.to_s}") do
+      Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
         property
           .elements.by_title.with_template(association.template)
           .reject { |e| e.template_data[association.field].blank? }
@@ -421,7 +310,7 @@ class Element < ActiveRecord::Base
 
     def trigger_webhook
       return false unless template?
-      Webhook.delay.call(:element => self) if template.webhook?
+      Webhook.delay.call(element: self) if template.webhook?
     end
 
 end

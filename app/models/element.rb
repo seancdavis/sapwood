@@ -278,11 +278,6 @@ class Element < ApplicationRecord
           return elements
         end
       when 'boolean'
-        # puts '---'
-        # puts 'boolean'
-        # puts template_data[method.to_s]
-        # puts template_data[method.to_s].class
-        # puts template_data[method.to_s].to_bool
         template_data[method.to_s].to_bool
       else
         template_data[method.to_s]

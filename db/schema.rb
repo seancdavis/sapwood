@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_14_104730) do
+ActiveRecord::Schema.define(version: 2018_06_19_111803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
@@ -85,13 +85,6 @@ ActiveRecord::Schema.define(version: 2018_06_14_104730) do
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.boolean 'is_admin', default: false
-  end
-
-  create_table 'responses', id: :serial, force: :cascade do |t|
-    t.integer 'property_id'
-    t.json 'data'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
   end
 
   create_table 'users', id: :serial, force: :cascade do |t|

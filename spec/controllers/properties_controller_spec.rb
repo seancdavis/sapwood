@@ -102,7 +102,7 @@ describe PropertiesController do
         sign_in @user
       end
       it 'returns 200 with a correct screen' do
-        %w{general config keys}.each do |screen|
+        %w{general config}.each do |screen|
           get :edit, params: { id: @property.id, screen: screen }
           expect(response.status).to eq(200)
         end
@@ -122,7 +122,7 @@ describe PropertiesController do
         @user.properties << @property
         @user.make_admin_in_properties!(@property)
         sign_in @user
-        %w{general config keys}.each do |screen|
+        %w{general config}.each do |screen|
           get :edit, params: { id: @property.id, screen: screen }
           expect(response.status).to eq(200)
         end
@@ -135,7 +135,7 @@ describe PropertiesController do
         sign_in @user
       end
       it 'returns 404' do
-        %w{general config keys}.each do |screen|
+        %w{general config}.each do |screen|
           expect { get :edit, params: { id: @property.id, screen: screen } }
             .to raise_error(ActionController::RoutingError)
         end

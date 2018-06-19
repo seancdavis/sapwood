@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_11_110526) do
+ActiveRecord::Schema.define(version: 2018_06_14_104730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 2018_06_11_110526) do
     t.datetime 'updated_at', null: false
     t.string 'url'
     t.boolean 'archived', default: false
+  end
+
+  create_table 'keys', force: :cascade do |t|
+    t.string 'title'
+    t.integer 'property_id'
+    t.boolean 'writable', default: false
+    t.text 'template_names', default: [], array: true
+    t.string 'encrypted_value'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
   create_table 'notifications', id: :serial, force: :cascade do |t|

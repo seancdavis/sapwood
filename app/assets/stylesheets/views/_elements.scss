@@ -1,7 +1,8 @@
 body.collections.index,
 body.documents.index,
 body.elements.index,
-body.users.index {
+body.users.index,
+body.keys.index, {
 
   th {
     padding: rem(5);
@@ -26,7 +27,7 @@ body.users.index {
     vertical-align: top;
   }
 
-  .elements, .folders, .users {
+  .elements, .folders, .users, .keys {
     td {
       font-size: 0.8em;
       font-weight: 200;

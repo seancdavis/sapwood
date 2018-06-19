@@ -708,6 +708,7 @@ GEM
       execjs
     eco-source (1.1.0.rc.1)
     ejs (1.1.1)
+    encryptor (3.0.0)
     erubi (1.7.1)
     execjs (2.7.0)
     factory_bot (4.10.0)
@@ -969,6 +970,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   dotenv-rails
+  encryptor
   factory_bot_rails
   faker
   guard-rspec

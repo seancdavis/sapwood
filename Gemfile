@@ -46,6 +46,7 @@ gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'encryptor'
 gem 'heartwood-decorator', github: 'seancdavis/heartwood-decorator'
 # TODO: What is this for?
 gem 'highline'
@@ -57,7 +58,7 @@ gem 'kaminari'
 gem 'pg_search'
 # TODO: Unnecessary if we go to imgix, right?
 gem 'rmagick'
-gem 'rubocop', groups: [:development], require: false
+gem 'rubocop', groups: [:development, :test], require: false
 gem 'simple_form'
 # TODO: Can remove after slug becomes a field.
 gem 'superslug'

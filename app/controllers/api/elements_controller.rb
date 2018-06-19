@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Api::V1::ElementsController < ApiController
+class Api::ElementsController < ApiController
+
+  before_action :authenticate_writable_api_key!, only: %i[create update destroy]
 
   def index
     respond_to do |f|
@@ -37,10 +39,6 @@ class Api::V1::ElementsController < ApiController
 
   def create
     @template = current_property.find_template(params[:template])
-    forbidden if (
-      @template.try(:security).try(:create).try(:allow).blank? ||
-      @template.try(:security).try(:create).try(:secret) != params[:secret]
-    )
     @element = Element.new(template_data: element_params.to_hash)
     @element.property = current_property
     @element.template_name = @template.name

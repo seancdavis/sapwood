@@ -13,12 +13,6 @@
     "title": "All Options",
     "webhook_url": "http://localhost:3000/webhook",
     "page_length": 50,
-    "security": {
-      "create": {
-        "allow": true,
-        "secret": "b89b279213b15fa53c4a22f9"
-      }
-    },
     "list": {
       "order": {
         "by": "description"
@@ -104,11 +98,6 @@
   {
     "title": "More Options",
     // And show an example of missing a secret.
-    "security": {
-      "create": {
-        "allow": true
-      }
-    },
     "list": {
       "order": {
         "by": "name",
@@ -157,12 +146,6 @@
   {
     "title": "Image",
     "type": "document",
-    "security":{
-      "create": {
-        "allow": true,
-        "secret": "031a742e4f188cedae3f1873"
-      }
-    },
     "fields": {
       "name": { "primary": true }
     }

@@ -13,13 +13,11 @@ Rails.application.routes.draw do
   # ---------------------------------------- API
 
   namespace :api do
-    namespace :v1 do
-      resources :properties, only: [:show] do
-        resources :elements, only: [:index, :show, :create] do
-          post 'webhook', on: :collection if Rails.env.development?
-        end
-        post 'generate_url' => 'elements#generate_url'
+    resources :properties, only: [:show] do
+      resources :elements, only: [:index, :show, :create] do
+        post 'webhook', on: :collection if Rails.env.development?
       end
+      post 'generate_url' => 'elements#generate_url'
     end
   end
 
@@ -41,6 +39,7 @@ Rails.application.routes.draw do
     get 'tools/import' => 'properties#import', :as => :import
     patch 'tools/import' => 'properties#process_import', :as => :process_import
     get 'settings/:screen' => 'properties#edit', :as => :edit, :on => :member
+    resources :keys, except: %i[show]
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 

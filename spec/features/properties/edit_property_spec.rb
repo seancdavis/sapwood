@@ -30,11 +30,6 @@ feature 'Property', js: true do
       click_button 'Save Changes'
       expect(page).to have_css('aside li', text: 'Template 1')
     end
-
-    scenario 'displays the API key' do
-      within('aside') { click_link('API Key') }
-      expect(page).to have_content(@property.api_key)
-    end
   end
 
   context 'as a regular user' do

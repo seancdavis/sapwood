@@ -41,11 +41,9 @@ class ElementsController < ApplicationController
   end
 
   def search
-    not_found unless params[:q]
-    @elements = current_property.elements.search_by_title(params[:q]).limit(10)
-    respond_to do |format|
-      format.json
-    end
+    not_found unless params[:search] && params[:search][:q]
+    # @elements.collect { |e| e.template.columns.collect(&:name) }.inject(:&)
+    @elements = current_property.elements.search_by_title(params[:search][:q]).limit(10)
   end
 
   def new

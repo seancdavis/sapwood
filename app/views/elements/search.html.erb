@@ -1,0 +1,32 @@
+<%= page_header(title: 'Search Results') %>
+
+<section class="body">
+  <% if @elements.present? %>
+    <div class="block">
+      <table>
+        <thead>
+          <tr>
+            <th class="icon"></th>
+            <th>Title</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+        <tbody class="elements">
+          <% @elements.each do |element| %>
+            <tr class="element">
+              <td class="icon"><i class="icon-file"></i></td>
+              <td class="primary">
+                <%= link_to element.title, [:edit, current_property, element.template, element] %>
+              </td>
+              <td>
+                <%= element.formatted_date(:updated_at) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
+</section>

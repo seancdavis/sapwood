@@ -1,3 +1,3 @@
-<input type="text" placeholder="search" id="search"
-       data-url="<%= property_search_path(current_property) %>">
-<ul class="results"></ul>
+<%= simple_form_for :search, url: property_search_path(current_property), method: :get do |f| %>
+  <%= f.input :q, placeholder: 'search', label: false, wrapper: false %>
+<% end %>

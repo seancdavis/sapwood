@@ -56,6 +56,7 @@ gem 'jbuilder'
 gem 'jquery-fileupload-rails'
 gem 'kaminari'
 gem 'pg_search'
+gem 'pry-rails'
 # TODO: Unnecessary if we go to imgix, right?
 gem 'rmagick'
 gem 'rubocop', groups: [:development, :test], require: false

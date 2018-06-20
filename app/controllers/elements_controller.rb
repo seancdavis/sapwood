@@ -41,9 +41,20 @@ class ElementsController < ApplicationController
   end
 
   def search
-    not_found unless params[:search] && params[:search][:q]
-    # @elements.collect { |e| e.template.columns.collect(&:name) }.inject(:&)
-    @elements = current_property.elements.search_by_title(params[:search][:q]).limit(10)
+    not_found unless params[:search] && (q = params[:search][:q])
+    # TODO: Move this into a service object
+    template_names = []
+    q.scan(/(template:[\w,:-]+)/i).flatten.each do |match|
+      template_names << match.split(':')[1..-1].join(':').split(',')
+      q = q.remove(match).gsub(/\ +/, ' ')
+    end
+
+    @elements = current_property.elements
+    @elements = @elements.search_by_title(q) if q.present?
+
+    if template_names.flatten!.present?
+      @elements = @elements.select { |el| template_names.include?(el.template.name) }
+    end
   end
 
   def new

@@ -826,6 +826,8 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    pry-rails (0.3.6)
+      pry (>= 0.10.4)
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
@@ -990,6 +992,7 @@ DEPENDENCIES
   pg_search
   pickadate-rails
   poltergeist
+  pry-rails
   puma
   rails (~> 5.2.0)
   rails-console-tweaks

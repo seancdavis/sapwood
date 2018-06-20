@@ -13,6 +13,7 @@ class Property < ApplicationRecord
   has_many :property_users, dependent: :destroy
   has_many :responses, dependent: :destroy
   has_many :keys, dependent: :destroy
+  has_many :views, dependent: :destroy
 
   has_many :users, through: :property_users
 

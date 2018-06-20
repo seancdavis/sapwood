@@ -48,6 +48,7 @@ gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'encryptor'
 gem 'heartwood-decorator', github: 'seancdavis/heartwood-decorator'
+gem 'heartwood-service', github: 'seancdavis/heartwood-service'
 # TODO: What is this for?
 gem 'highline'
 gem 'imgix-rails'

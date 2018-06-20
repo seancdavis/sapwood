@@ -5,6 +5,13 @@ GIT
     heartwood-decorator (0.1.0)
       rails (~> 5.0)
 
+GIT
+  remote: git://github.com/seancdavis/heartwood-service.git
+  revision: 9296a3477c2dfdd0773147500460001e14eed9a9
+  specs:
+    heartwood-service (0.1.0)
+      rails (~> 5.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -977,6 +984,7 @@ DEPENDENCIES
   faker
   guard-rspec
   heartwood-decorator!
+  heartwood-service!
   highline
   hirb
   imgix-rails

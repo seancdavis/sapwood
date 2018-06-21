@@ -48,14 +48,21 @@ feature 'Property', js: true do
     end
     scenario 'has a functioning search box' do
       click_link @property.title
-      # The sidebar should not have a search box.
-      expect(page).to have_no_css('aside .search input')
-      # There should be no results
-      within('.quiet.search') { expect(page).to have_no_css('li') }
-      # But will render matches.
-      fill_in 'search', with: 'pick'
-      wait_for_ajax
-      within('.quiet.search') { expect(page).to have_css('li', count: 3) }
+      # Checking that heading changes, indicating we've moved location.
+      expect(page).to have_no_css('h1', text: 'Search Results')
+      # Fill out search form.
+      within('.quiet.search') do
+        fill_in 'search[q]', with: 'farts'
+        first('#search_q').native.send_keys(:enter)
+      end
+      # Now we should be on the right page.
+      expect(page).to have_css('h1', text: 'Search Results')
+      # The element is on the page.
+      expect(page).to have_css('td.primary', text: 'Farts')
+      # The template name is also listed.
+      expect(page).to have_css('td', text: 'Default')
+      # The form value is still filled in.
+      expect(page).to have_css("input#search_q[value='farts']")
     end
   end
 

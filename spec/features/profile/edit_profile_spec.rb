@@ -34,7 +34,7 @@ feature 'My Profile', js: true do
     property = create(:property)
     click_link @property.title
     within('header.main') { click_link('Profile') }
-    within('form') do
+    within('form.edit_user') do
       expect(page).to have_content(@property.title)
       expect(page).to have_no_content(property.title)
     end

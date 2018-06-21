@@ -32,11 +32,10 @@ feature 'Elements', js: true do
     end
   end
 
-  context 'using AllOptions template' do
+  context 'using All Options template' do
     background do
-      @element = create(:element, property: @property,
-                        template_name: 'AllOptions')
-      click_link 'AllOptions'
+      @element = create(:element, property: @property, template_name: 'All Options')
+      click_link 'All Options'
       click_link @element.title
     end
     scenario 'can add an existing image for its image' do
@@ -49,21 +48,18 @@ feature 'Elements', js: true do
         click_link document.title
       end
       sleep 0.35
-      within('form') do
+      within('form.edit_element') do
         expect(page).to have_content(document.title, wait: 5)
       end
       # Let's see if it persisted.
-      click_button 'Save AllOptions'
+      click_button 'Save All Options'
       click_link @element.title
       expect(page).to have_content(document.title)
     end
     scenario 'can add multiple existing images for its image' do
-      document_01 = create(:element, :document, property: @property,
-                           title: Faker::Company.bs.titleize)
-      document_02 = create(:element, :document, property: @property,
-                           title: Faker::Company.bs.titleize)
-      document_03 = create(:element, :document, property: @property,
-                           title: Faker::Company.bs.titleize)
+      document_01 = create(:element, :document, property: @property, title: Faker::Company.bs.titleize)
+      document_02 = create(:element, :document, property: @property, title: Faker::Company.bs.titleize)
+      document_03 = create(:element, :document, property: @property, title: Faker::Company.bs.titleize)
       click_link 'Choose Existing Files'
       wait_for_ajax
       sleep 0.35
@@ -78,15 +74,15 @@ feature 'Elements', js: true do
         click_link 'Save & Close'
       end
       sleep 0.35
-      within('form') do
+      within('form.edit_element') do
         expect(page).to have_content(document_02.title, wait: 5)
         expect(page).to have_content(document_03.title)
         expect(page).to have_no_content(document_01.title)
       end
       # Let's see if it persisted.
-      click_button 'Save AllOptions'
+      click_button 'Save All Options'
       click_link @element.title
-      within('form') do
+      within('form.edit_element') do
         expect(page).to have_content(document_02.title, wait: 5)
         expect(page).to have_content(document_03.title)
         expect(page).to have_no_content(document_01.title)
@@ -100,8 +96,7 @@ feature 'Elements', js: true do
       expect(page).to have_css('section.uploader > form', visible: false)
     end
     scenario 'can remove an uploaded document' do
-      doc = create(:element, :document, property: @property,
-                   title: Faker::Company.bs.titleize)
+      doc = create(:element, :document, property: @property, title: Faker::Company.bs.titleize)
       td = @element.template_data
       @element.update!(template_data: td.merge(image: doc.id.to_s))
       visit current_path
@@ -109,14 +104,13 @@ feature 'Elements', js: true do
         expect(page).to have_content(doc.title)
         click_link 'REMOVE'
       end
-      click_button 'Save AllOptions'
+      click_button 'Save All Options'
       expect(@element.reload.image).to eq(nil)
       click_link @element.title
       expect(page).to have_no_content(doc.title)
     end
     scenario 'has a textarea' do
-      expect(page).to have_css('textarea#element_template_data_comments',
-                               visible: false)
+      expect(page).to have_css('textarea#element_template_data_comments', visible: false)
       expect(page).to have_css('div.trumbowyg-box')
     end
   end

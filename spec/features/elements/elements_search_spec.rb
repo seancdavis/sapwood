@@ -7,8 +7,7 @@ feature 'Elements Search', js: true do
   background do
     @property = property_with_templates
     %w{pick picking picker picnic}.each do |title|
-      create(:element, property: @property,
-             template_data: { name: title })
+      create(:element, property: @property, template_data: { name: title })
     end
     sign_in (@user = create(:admin))
     click_link @property.title

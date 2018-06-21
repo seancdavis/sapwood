@@ -26,7 +26,7 @@ feature 'Property Setup Wizard' do
       .to eq(JSON.parse(File.read(template_config_file)))
     within('aside') do
       expect(page).to have_content('Defaults')
-      expect(page).to have_content('All Options')
+      expect(page).to have_content('AllOptions')
       expect(page).to have_content('More Options')
     end
   end

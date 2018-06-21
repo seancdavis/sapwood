@@ -40,7 +40,7 @@ feature 'Elements List', js: true do
     expect(page).to have_css(:th, text: 'LAST MODIFIED')
     # And the custom layout.
     element_01 = create(:element, :with_options, property: @property)
-    click_link 'All Options'
+    click_link 'AllOptions'
     expect(page).to have_css(:th, text: 'NAME')
     expect(page).to have_css(:th, text: 'DESCRIPTION')
     expect(page).to have_css(:th, text: 'DATE LAST MODIFIED')
@@ -67,13 +67,13 @@ feature 'Elements List', js: true do
   end
 
   scenario 'sorts by custom attr in ascending order when order is missing' do
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello You', description: 'B' })
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello Me', description: 'A' })
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello I', description: 'C' })
-    click_link 'All Options'
+    click_link 'AllOptions'
     expect(find('tr.element:nth-child(1)')).to have_content('A')
     expect(find('tr.element:nth-child(2)')).to have_content('B')
     expect(find('tr.element:nth-child(3)')).to have_content('C')
@@ -93,14 +93,14 @@ feature 'Elements List', js: true do
   end
 
   scenario 'can sort manually when clicked' do
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello You', description: 'B' })
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello Me', description: 'A' })
-    create(:element, template_name: 'All Options', property: @property,
+    create(:element, template_name: 'AllOptions', property: @property,
            template_data: { name: 'Hello I', description: 'C' })
 
-    click_link 'All Options'
+    click_link 'AllOptions'
 
     # Check the default icon on description, pointing up.
     within(find('th:nth-child(2)')) do
@@ -154,12 +154,12 @@ feature 'Elements List', js: true do
 
   scenario 'can have a specified page length' do
     el = create(:element, property: @property,
-      template_name: 'All Options', template_data: { name: 'ZZZ' })
-    click_link 'All Options'
+      template_name: 'AllOptions', template_data: { name: 'ZZZ' })
+    click_link 'AllOptions'
     within('table') { find('th a', text: 'NAME').trigger('click') }
     expect(page).to have_content(el.title)
     create_list(:element, 75, :with_options, property: @property)
-    click_link 'All Options'
+    click_link 'AllOptions'
     within('table') { find('th a', text: 'NAME').trigger('click') }
     expect(page).to have_no_content(el.title)
   end

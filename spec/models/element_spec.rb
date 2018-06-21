@@ -11,7 +11,7 @@ RSpec.describe Element, type: :model do
 
   describe '#template' do
     before(:each) do
-      @element = create(:element, template_name: 'All Options',
+      @element = create(:element, template_name: 'AllOptions',
                         property: @property)
     end
     it 'returns a Template object' do
@@ -21,7 +21,7 @@ RSpec.describe Element, type: :model do
 
   describe '#template?' do
     it 'returns true when there is a template' do
-      element = create(:element, template_name: 'All Options',
+      element = create(:element, template_name: 'AllOptions',
                        property: @property)
       expect(element.template?).to eq(true)
     end
@@ -33,7 +33,7 @@ RSpec.describe Element, type: :model do
 
   describe '#field_names' do
     it 'returns an array of field names' do
-      element = create(:element, template_name: 'All Options',
+      element = create(:element, template_name: 'AllOptions',
                        property: @property)
       field_names = %w{name description image images many_things
                        comments one_thing mixed_bag mixed_bags uneditable
@@ -48,7 +48,7 @@ RSpec.describe Element, type: :model do
 
   describe '#has_field?' do
     before(:each) do
-      @element = create(:element, template_name: 'All Options',
+      @element = create(:element, template_name: 'AllOptions',
                         property: @property)
     end
     it 'returns true for a field it has' do
@@ -66,7 +66,7 @@ RSpec.describe Element, type: :model do
         create_list(:element, 5, :document, property: @property)
         @element = create(
           :element,
-          template_name: 'All Options',
+          template_name: 'AllOptions',
           property: @property,
           template_data: {
             description: 'This is a description',
@@ -90,12 +90,12 @@ RSpec.describe Element, type: :model do
         expect(@element.image).to eq(@image)
       end
       it 'returns nil when the element is missing' do
-        element = create(:element, template_name: 'All Options',
+        element = create(:element, template_name: 'AllOptions',
                          property: @property)
         expect(element.image).to eq(nil)
       end
       it 'returns nil when the element does not exist' do
-        element = create(:element, template_name: 'All Options',
+        element = create(:element, template_name: 'AllOptions',
                          property: @property,
                          template_data: { image: '123' })
         expect(element.image).to eq(nil)
@@ -104,12 +104,12 @@ RSpec.describe Element, type: :model do
         expect(@element.images).to match_array(@images)
       end
       it 'returns an empty array when the elements are missing' do
-        element = create(:element, template_name: 'All Options',
+        element = create(:element, template_name: 'AllOptions',
                          property: @property)
         expect(element.images).to eq([])
       end
       it 'returns an empty array when the elements do not exist' do
-        element = create(:element, template_name: 'All Options',
+        element = create(:element, template_name: 'AllOptions',
                          property: @property,
                          template_data: { images: '123' })
         expect(element.images).to eq([])
@@ -135,7 +135,7 @@ RSpec.describe Element, type: :model do
       expect(el.as_json.present?).to eq(true)
     end
     it 'skips bad attrs and fills in missing ones' do
-      element = create(:element, template_name: 'All Options',
+      element = create(:element, template_name: 'AllOptions',
                        property: @property,
                        template_data: {
                         'name' => 'Hello World', 'balls' => 'no_thanks' })
@@ -183,7 +183,7 @@ RSpec.describe Element, type: :model do
       expect(json[:id]).to eq(element.id)
       expect(json[:title]).to eq(element.title)
       expect(json[:slug]).to eq(element.slug)
-      expect(json[:template_name]).to eq('All Options')
+      expect(json[:template_name]).to eq('AllOptions')
       expect(json[:created_at]).to eq(element.created_at)
       expect(json[:updated_at]).to eq(element.updated_at)
       # Custom template_data is brought to the top level.

@@ -40,21 +40,21 @@ describe Api::ElementsController do
         expect(response.body).to eq('[]')
       end
       it 'returns an array of elements when template exists' do
-        # Create an element without the All Options template
+        # Create an element without the AllOptions template
         create(:element, property: property)
         response = get :index, params: { property_id: property.id,
-                       template: 'All Options',
+                       template: 'AllOptions',
                        api_key: api_key.value, format: :json }
-        elements = property.elements.with_template('All Options').by_title
+        elements = property.elements.with_template('AllOptions').by_title
         expect(response.body).to eq(elements.to_json)
       end
       it "can return multiple templates' elements at once" do
         create(:element, property: property)
         response = get :index, params: { property_id: property.id,
-                       template: 'All Options,Default',
+                       template: 'AllOptions,Default',
                        api_key: api_key.value, format: :json }
         elements = (
-          property.elements.with_template('All Options') +
+          property.elements.with_template('AllOptions') +
           property.elements.with_template('Default')
         ).sort_by(&:title)
         expect(response.body).to eq(elements.to_json)
@@ -63,7 +63,7 @@ describe Api::ElementsController do
     describe 'including associations' do
       before(:each) do
         @base_el = create(:element, property: property,
-                          template_name: 'All Options')
+                          template_name: 'AllOptions')
         @els = []
         3.times do
           @els << create(:element, property: property,
@@ -93,7 +93,7 @@ describe Api::ElementsController do
       end
       it 'will include the association if specified with a template' do
         response = get :index, params: { property_id: property.id,
-                       includes: 'options', template: 'All Options',
+                       includes: 'options', template: 'AllOptions',
                        api_key: api_key.value, format: :json }
         el = JSON.parse(response.body).select { |e| e['id'] == @base_el.id }[0]
         els = [JSON.parse(@els[0].to_json), JSON.parse(@els[1].to_json)]
@@ -155,7 +155,7 @@ describe Api::ElementsController do
     describe 'including associations' do
       before(:each) do
         @base_el = create(:element, property: property,
-                          template_name: 'All Options')
+                          template_name: 'AllOptions')
         @els = []
         3.times do
           @els << create(:element, property: property,
@@ -177,7 +177,7 @@ describe Api::ElementsController do
       end
       it 'will include the association if specified with a template' do
         response = get :show, params: { property_id: property.id, id: @base_el.id,
-                       includes: 'options', template: 'All Options',
+                       includes: 'options', template: 'AllOptions',
                        api_key: api_key.value, format: :json }
         els = [JSON.parse(@els[0].to_json), JSON.parse(@els[1].to_json)]
         expect(JSON.parse(response.body)['options']).to match_array(els)
@@ -279,17 +279,17 @@ describe Api::ElementsController do
       expect {
         post :create, params: { property_id: property.id,
              api_key: api_key.value,
-             name: Faker::Lorem.sentence, template: 'All Options' }
+             name: Faker::Lorem.sentence, template: 'AllOptions' }
       }.to raise_error(ActionController::RoutingError)
     end
     it 'returns validation errors if there are any' do
-      writable_api_key.update(template_names: ['All Options'])
+      writable_api_key.update(template_names: ['AllOptions'])
       response = post :create, params: {
         property_id: property.id,
         api_key: writable_api_key.value,
 
         name1: 'BLAH BLAH',
-        template: 'All Options'
+        template: 'AllOptions'
       }
       expect(response.body).to eq({ "title": ["can't be blank"] }.to_json)
     end
@@ -300,14 +300,14 @@ describe Api::ElementsController do
       # This does not belong to the property.
       create(:notification, user: user)
       # This does not belong to the user or the correct template.
-      create(:notification, property: property, user: user, template_name: 'All Options')
+      create(:notification, property: property, user: user, template_name: 'AllOptions')
 
-      writable_api_key.update(template_names: ['All Options'])
+      writable_api_key.update(template_names: ['AllOptions'])
 
       expect {
         post(:create, params: {
           property_id: property.id,
-          template: 'All Options',
+          template: 'AllOptions',
           api_key: writable_api_key.value,
           name: (name = Faker::Lorem.sentence) })
       }.to change { ActionMailer::Base.deliveries.size }.by(1)

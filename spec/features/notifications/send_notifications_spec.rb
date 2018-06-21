@@ -11,7 +11,7 @@ feature 'Notifications', js: true do
     @other_user = create(:admin)
     create(:notification, user: @other_user, property: @property)
     # Create a few other notifications that shouldn't be affected.
-    create(:notification, user: @other_user, template_name: 'All Options')
+    create(:notification, user: @other_user, template_name: 'AllOptions')
     create(:notification, user: @other_user)
     create(:notification)
 

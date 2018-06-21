@@ -39,10 +39,10 @@ feature 'Elements', js: true do
     end
   end
 
-  context 'using All Options template' do
+  context 'using AllOptions template' do
     background do
-      click_link 'All Options'
-      click_link 'New All Options'
+      click_link 'AllOptions'
+      click_link 'New AllOptions'
     end
     scenario 'can add an existing image for its image' do
       document = create(:element, :document, property: @property)
@@ -60,7 +60,7 @@ feature 'Elements', js: true do
         expect(page).to have_content(document.title, wait: 5)
       end
       fill_in 'element[template_data][name]', with: @title
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       # Let's see if it persisted.
       click_link @title
       expect(page).to have_content(document.title)
@@ -81,7 +81,7 @@ feature 'Elements', js: true do
         "select#element_template_data_one_thing option[value='#{default_element.id}']")
       fill_in 'element[template_data][name]', with: @title
       select element.title, from: 'element[template_data][one_thing]'
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       expect(Element.all.order(:id).last.one_thing).to eq(element)
     end
     scenario 'can select multiple elements of another template' do
@@ -125,7 +125,7 @@ feature 'Elements', js: true do
       end
 
       fill_in 'element[template_data][name]', with: (title = Faker::Lorem.word)
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       click_link title
 
       within('.multiselect.many_things .selected-options') do
@@ -146,7 +146,7 @@ feature 'Elements', js: true do
     scenario 'supports select fields with a specified set of options' do
       select 'Option 1', from: 'element[template_data][dropdown_menu]'
       fill_in 'element[template_data][name]', with: @title
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
 
       el = Element.find_by_title(@title)
       expect(el.dropdown_menu).to eq('Option 1')
@@ -165,7 +165,7 @@ feature 'Elements', js: true do
       first('.picker__button--today').click
 
       fill_in 'element[template_data][name]', with: @title
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
 
       el = Element.find_by_title(@title)
       expect(el.date).to eq(Date.today().strftime('%Y-%m-%d'))
@@ -174,7 +174,7 @@ feature 'Elements', js: true do
     scenario 'can check a boolean field' do
       fill_in 'element[template_data][name]', with: @title
       find_field('element[template_data][complete]').set(true)
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       expect(Element.find_by_title(@title).complete).to eq(true)
       click_link @title
       expect(find_field('element[template_data][complete]')).to be_checked

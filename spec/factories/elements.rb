@@ -10,7 +10,7 @@ FactoryBot.define do
     }}
     # publish_at "2016-01-16 16:15:28"
     trait :with_options do
-      template_name 'All Options'
+      template_name 'AllOptions'
       template_data { {
         'name' => Faker::Lorem.words(4).join(' ').titleize,
         'comments' => Faker::Lorem.paragraph,

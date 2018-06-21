@@ -223,7 +223,7 @@ describe ElementsController do
       create(:notification, user: user)
       # This does not belong to the user or the correct template.
       create(:notification, property: @property, user: user,
-             template_name: 'All Options')
+             template_name: 'AllOptions')
 
       data = {
         template_data: { name: Faker::Lorem.words(4).join(' ') },

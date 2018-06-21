@@ -18,7 +18,7 @@ describe Template, type: :model do
 
   describe '#webhook?' do
     it 'is true when it has the option' do
-      expect(property.find_template('All Options').webhook?).to eq(true)
+      expect(property.find_template('AllOptions').webhook?).to eq(true)
     end
     it 'is false when it does not have the option' do
       expect(property.find_template('Default').webhook?).to eq(false)

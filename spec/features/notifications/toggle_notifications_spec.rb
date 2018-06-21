@@ -20,7 +20,7 @@ feature 'Notifications', js: true do
     expect(Notification.count).to eq(1)
 
     # Check a different template
-    click_link 'All Options'
+    click_link 'AllOptions'
     expect(page).to have_css('a.notification-toggle')
     expect(page).to have_no_css('a.notification-toggle.on')
 

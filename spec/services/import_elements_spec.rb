@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ImportElements do
 
   let(:property) { property_with_templates }
-  let(:template_name) { 'All Options' }
+  let(:template_name) { 'AllOptions' }
   let(:csv) { File.read("#{Rails.root}/spec/support/import.csv") }
 
   it 'requires csv as an argument' do

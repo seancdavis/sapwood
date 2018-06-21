@@ -32,11 +32,11 @@ feature 'Elements', js: true do
     end
   end
 
-  context 'using All Options template' do
+  context 'using AllOptions template' do
     background do
       @element = create(:element, property: @property,
-                        template_name: 'All Options')
-      click_link 'All Options'
+                        template_name: 'AllOptions')
+      click_link 'AllOptions'
       click_link @element.title
     end
     scenario 'can add an existing image for its image' do
@@ -53,7 +53,7 @@ feature 'Elements', js: true do
         expect(page).to have_content(document.title, wait: 5)
       end
       # Let's see if it persisted.
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       click_link @element.title
       expect(page).to have_content(document.title)
     end
@@ -84,7 +84,7 @@ feature 'Elements', js: true do
         expect(page).to have_no_content(document_01.title)
       end
       # Let's see if it persisted.
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       click_link @element.title
       within('form') do
         expect(page).to have_content(document_02.title, wait: 5)
@@ -109,7 +109,7 @@ feature 'Elements', js: true do
         expect(page).to have_content(doc.title)
         click_link 'REMOVE'
       end
-      click_button 'Save All Options'
+      click_button 'Save AllOptions'
       expect(@element.reload.image).to eq(nil)
       click_link @element.title
       expect(page).to have_no_content(doc.title)

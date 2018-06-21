@@ -46,7 +46,9 @@ class SearchElementsService < Heartwood::Service::Base
     #
     def filter_elements_by_template
       return elements if template_names.blank?
-      self.elements = elements.select { |el| template_names.include?(el.template.name) }
+      self.elements = elements.select do |el|
+        template_names.include?(el.template.name) || template_names.include?(el.template.slug)
+      end
     end
 
 end

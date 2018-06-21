@@ -56,7 +56,7 @@ feature 'Elements', js: true do
         click_link document.title
       end
       sleep 0.35
-      within('form') do
+      within('form.new_element') do
         expect(page).to have_content(document.title, wait: 5)
       end
       fill_in 'element[template_data][name]', with: @title

@@ -48,6 +48,7 @@ gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'encryptor'
 gem 'heartwood-decorator', github: 'seancdavis/heartwood-decorator'
+gem 'heartwood-service', github: 'seancdavis/heartwood-service'
 # TODO: What is this for?
 gem 'highline'
 gem 'imgix-rails'
@@ -56,6 +57,7 @@ gem 'jbuilder'
 gem 'jquery-fileupload-rails'
 gem 'kaminari'
 gem 'pg_search'
+gem 'pry-rails'
 # TODO: Unnecessary if we go to imgix, right?
 gem 'rmagick'
 gem 'rubocop', groups: [:development, :test], require: false

@@ -41,11 +41,8 @@ class ElementsController < ApplicationController
   end
 
   def search
-    not_found unless params[:q]
-    @elements = current_property.elements.search_by_title(params[:q]).limit(10)
-    respond_to do |format|
-      format.json
-    end
+    not_found unless params[:search] && (q = params[:search][:q])
+    @elements = SearchElementsService.call(property: current_property, q: q)
   end
 
   def new

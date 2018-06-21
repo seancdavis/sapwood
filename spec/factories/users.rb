@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :user do
-    name { Faker::Name.name }
+    name { Faker::Name.name.gsub(/\'/, '') }
     email { Faker::Internet.email }
     password 'password'
     factory :admin do

@@ -10,7 +10,7 @@
   // Demonstrates all the options on any particular template. Most of the
   // following templates are built to serve this example.
   {
-    "title": "All Options",
+    "title": "AllOptions",
     "webhook_url": "http://localhost:3000/webhook",
     "page_length": 50,
     "list": {
@@ -114,7 +114,7 @@
       },
       "option": {
         "type": "element",
-        "templates": ["All Options"]
+        "templates": ["AllOptions"]
       }
     }
   },
@@ -127,14 +127,14 @@
       "subtitle": { "required": true }
     }
   },
-  // The other side of a belongs_to on All Options.
+  // The other side of a belongs_to on AllOptions.
   {
     "title": "One Thing",
     "fields": {
       "name": {}
     }
   },
-  // The other side of a has_many on All Options.
+  // The other side of a has_many on AllOptions.
   {
     "title": "Many Things",
     "fields": {

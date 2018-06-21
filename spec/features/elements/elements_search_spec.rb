@@ -4,49 +4,32 @@ require 'rails_helper'
 
 feature 'Elements Search', js: true do
 
+  let(:property) { property_with_templates }
+  let(:element) { create(:element, property: property, template_data: { name: 'Hello World' }) }
+
   background do
-    @property = property_with_templates
-    %w{pick picking picker picnic}.each do |title|
-      create(:element, property: @property, template_data: { name: title })
-    end
+    element
     sign_in (@user = create(:admin))
-    click_link @property.title
+    click_link property.title
     click_link 'Defaults'
   end
 
-  scenario 'shows nothing by default' do
-    within('aside.main div.search') { expect(page).to have_no_css('li') }
-  end
-
-  scenario 'shows nothing when only two characters are typed' do
-    fill_in 'search', with: 'pi'
-    wait_for_ajax
-    within('aside.main div.search') { expect(page).to have_no_css('li') }
-  end
-
-  scenario 'supports partial matches' do
-    fill_in 'search', with: 'pic'
-    wait_for_ajax
-    within('aside.main div.search') do
-      expect(page).to have_css('li', count: 4)
+  scenario 'returns results in a list' do
+    # Checking that heading changes, indicating we've moved location.
+    expect(page).to have_no_css('h1', text: 'Search Results')
+    # Fill out search form.
+    within('form.search') do
+      fill_in 'search[q]', with: 'hello'
+      first('#search_q').native.send_keys(:enter)
     end
-  end
-
-  scenario 'returns correct results, with stemming' do
-    fill_in 'search', with: 'pick'
-    wait_for_ajax
-    within('aside.main div.search') do
-      expect(page).to have_css('li', count: 3)
-    end
-  end
-
-  scenario 'gives feedback when there are no matches' do
-    fill_in 'search', with: 'hello'
-    wait_for_ajax
-    within('aside.main div.search') do
-      expect(page).to have_css('li.no-results')
-      expect(page).to have_css('li', count: 1)
-    end
+    # Now we should be on the right page.
+    expect(page).to have_css('h1', text: 'Search Results')
+    # The element is on the page.
+    expect(page).to have_css('td.primary', text: 'Hello World')
+    # The template name is also listed.
+    expect(page).to have_css('td', text: 'Default')
+    # The form value is still filled in.
+    expect(page).to have_css("input#search_q[value='hello']")
   end
 
 end

@@ -37,6 +37,34 @@ describe SearchElementsService do
     end
   end
 
+  # ---------------------------------------- | Sorting
+
+  context '[Sorting]' do
+    %w{a b c d}.each do |desc|
+      let("#{desc.downcase}_el".to_sym) do
+        create(:element, property: property, template_name: 'All Options', template_data: { name: Faker::Book.title, description: desc })
+      end
+    end
+    let(:elements) { [b_el, d_el, a_el, c_el] }
+
+    before(:each) { elements }
+
+    it 'can sort by a field' do
+      res = SearchElementsService.call(property: property, q: 'template:all-options sort:description')
+      expect(res).to eq(elements.sort_by(&:description))
+    end
+
+    it 'can sort in descending order' do
+      res = SearchElementsService.call(property: property, q: 'template:all-options sort:description,desc')
+      expect(res).to eq(elements.sort_by(&:description).reverse)
+    end
+
+    it 'ignores fields that do not exist' do
+      res = SearchElementsService.call(property: property, q: 'template:all-options sort:blahblah')
+      expect(res).to eq(elements.sort_by(&:id))
+    end
+  end
+
   # ---------------------------------------- | Template Filtering
 
   context '[Template Filtering]' do

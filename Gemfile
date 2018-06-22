@@ -8,6 +8,9 @@ gem 'rails', '~> 5.2.0'
 gem 'puma'
 gem 'pg'
 
+# TEMP: Fix for security vulnerability
+gem 'sprockets', '~> 3.7.2'
+
 # ------------------------------------------ Assets
 
 # stylesheets helpers

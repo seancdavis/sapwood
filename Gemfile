@@ -28,11 +28,6 @@ gem 'actionpack-action_caching'
 # TODO: Replace with heartwood-uploader. (#244)
 gem 'aws-sdk'
 
-# ------------------------------------------ Temp
-
-# TEMP: Fix for security vulnerability
-gem 'sprockets', '~> 3.7.2'
-
 # ------------------------------------------ Base
 
 gem 'rails', '~> 5.2.0'

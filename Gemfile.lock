@@ -978,7 +978,6 @@ DEPENDENCIES
   sass-rails
   sendgrid
   simple_form
-  sprockets (~> 3.7.2)
   superslug
   uglifier
 

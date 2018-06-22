@@ -68,9 +68,8 @@ Rails.application.configure do
 
   ActiveRecordQueryTrace.enabled = false
 
-  config.after_initialize do
-    Bullet.enable = true
-    # Bullet.rails_logger = true
-    Bullet.add_footer = true
-  end
+  config.action_mailer.default_url_options = { host: ENV['URL'], port: 3000 }
+
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 end

@@ -3,10 +3,8 @@ class CreateViews < ActiveRecord::Migration[5.2]
     create_table :views do |t|
       t.string :title
       t.integer :property_id
-      t.string :sort_by, default: 'updated_at'
-      t.string :sort_in, default: 'desc'
+      t.string :q
       t.integer :nav_position, default: 0
-      t.text :template_names, array: true, default: []
       t.jsonb :column_config, default: {}
 
       t.timestamps
@@ -16,7 +14,7 @@ class CreateViews < ActiveRecord::Migration[5.2]
       property.views.create(title: 'Recent')
 
       property.templates.sort_by(&:title).each_with_index do |tmpl, idx|
-        property.views.create(title: tmpl.title, nav_position: idx + 1, template_names: [tmpl.title])
+        property.views.create(title: tmpl.title, nav_position: idx + 1, q: "template:#{tmpl.title}")
       end
     end
   end

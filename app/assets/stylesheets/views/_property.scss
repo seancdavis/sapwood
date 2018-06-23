@@ -29,21 +29,6 @@ body.properties.show {
       border: none;
       font-size: rem(32);
     }
-
-    ul.results {
-      background: $light;
-      padding: rem(10) rem(20);
-      &:empty {
-        display: none;
-      }
-
-      li {
-        font-size: 125%;
-      }
-      li a {
-        color: $lt-blue;
-      }
-    }
   }
 }
 

@@ -2,6 +2,32 @@
 
 source 'https://rubygems.org'
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> To Remove / Replace
+
+# TODO: Remove after slug becomes a field. (#248)
+gem 'superslug'
+
+# TODO: Remove and install heartwood-uploader (#244)
+gem 'jquery-fileupload-rails'
+
+# TODO: Replace this with Bootstrap? (#237)
+gem 'bourbon', '~> 4.2.6'
+
+# TODO: Replace backbone and use es6 when refactoring JS. (#272)
+gem 'backbone-on-rails'
+gem 'coffee-rails'
+
+# TODO: Replaced with redis when deploying to Heroku. (#236)
+gem 'daemons'
+gem 'delayed_job_active_record'
+
+# TODO: We may have to replace with fragment and low-level caching when moving
+# to Heroku. (#236)
+gem 'actionpack-action_caching'
+
+# TODO: Replace with heartwood-uploader. (#244)
+gem 'aws-sdk'
+
 # ------------------------------------------ Base
 
 gem 'rails', '~> 5.2.0'
@@ -10,92 +36,36 @@ gem 'pg'
 
 # ------------------------------------------ Assets
 
-# stylesheets helpers
+# stylesheets
 gem 'sass-rails'
 gem 'uglifier'
-# TODO: Replace this with Bootstrap eventually.
-gem 'bourbon', '~> 4.2.6'
 gem 'neat', '~> 1.7.2'
 gem 'normalize-rails'
 
-# javascripts helpers
-# TODO: Backbone isn't necessary.
-gem 'backbone-on-rails'
-# TODO: Replace with es6
-gem 'coffee-rails'
+# javascripts
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 5.0.5'
 gem 'pickadate-rails'
 
 # ------------------------------------------ Utilities
 
-# TODO: If this is necessary, it can be development only.
-gem 'active_record_query_trace'
-# TODO: Replace with fragment caching (using memcached).
-gem 'actionpack-action_caching'
-# TODO: Is this really necessary?
-gem 'ancestry'
-# TODO: Will heartwood-uploader take care of this?
-gem 'aws-sdk'
+gem 'active_record_query_trace', group: :development
 gem 'bootsnap'
-# TODO: Replace with heartwood-uploader.
-# gem 'carrierwave_direct'
-# TODO: What is this for?
-gem 'daemons'
-# TODO: Can this be replaced with redis when deploying to Heroku?
-gem 'delayed_job_active_record'
 gem 'devise'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'encryptor'
+gem 'hirb', group: :development
 gem 'heartwood-decorator', github: 'seancdavis/heartwood-decorator'
-# TODO: What is this for?
-gem 'highline'
+gem 'heartwood-service', github: 'seancdavis/heartwood-service'
 gem 'imgix-rails'
 gem 'jbuilder'
-# TODO: heartwood-uploader will take care of this.
-gem 'jquery-fileupload-rails'
 gem 'kaminari'
+gem 'letter_opener', group: :development
 gem 'pg_search'
-# TODO: Unnecessary if we go to imgix, right?
-gem 'rmagick'
+gem 'pry-rails'
 gem 'rubocop', groups: [:development, :test], require: false
 gem 'simple_form'
-# TODO: Can remove after slug becomes a field.
-gem 'superslug'
-
-group :development do
-  # TODO: Do we still need this?
-  gem 'bullet'
-
-  # TODO: Add this back. Does it have to be forked to work with Rails 5+,
-  # or is there a better approach rather than using a gem? This:
-  # https://github.com/ryanb/letter_opener ???
-  # gem 'mailcatcher'
-end
-
-group :production do
-  gem 'sendgrid'
-end
-
-# ------------------------------------------ Console
-
-# TODO: Which of these console tweaks are necessary?
-gem 'rails-console-tweaks'
-
-group :console do
-  gem 'wirb'
-  gem 'hirb'
-  gem 'awesome_print'
-end
-
-# ------------------------------------------ Errors
-
-# TODO: Which of these are necessary with Rails 5?
-group :development do
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  gem 'web-console'
-end
+gem 'sendgrid', group: :production
 
 # ------------------------------------------ Testing
 

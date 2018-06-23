@@ -61,8 +61,10 @@ gem 'imgix-rails'
 gem 'jbuilder'
 gem 'kaminari'
 gem 'letter_opener', group: :development
+gem 'oj', '~> 2.16' # This is for Rollbar and JSON serialization
 gem 'pg_search'
 gem 'pry-rails'
+gem 'rollbar'
 gem 'rubocop', groups: [:development, :test], require: false
 gem 'simple_form'
 gem 'sendgrid', group: :production

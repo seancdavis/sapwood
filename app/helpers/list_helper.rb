@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ListHelper
 
   def list_sort_path(col)

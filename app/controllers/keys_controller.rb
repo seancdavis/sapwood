@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KeysController < ApplicationController
 
   before_action :verify_property_access

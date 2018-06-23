@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SearchElementsService < Heartwood::Service::Base
 
   required_attr :property, :q

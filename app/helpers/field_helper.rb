@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FieldHelper
 
   def field_string_html(form_obj, field, object)

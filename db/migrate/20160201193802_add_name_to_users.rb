@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddNameToUsers < ActiveRecord::Migration
 
   def change

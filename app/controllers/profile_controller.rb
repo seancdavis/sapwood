@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProfileController < ApplicationController
 
   skip_before_action :verify_profile_completion

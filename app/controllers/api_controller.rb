@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiController < ActionController::Base
 
   before_action :allow_cors

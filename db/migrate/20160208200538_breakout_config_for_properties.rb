@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BreakoutConfigForProperties < ActiveRecord::Migration
 
   def change

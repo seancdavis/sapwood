@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFolders < ActiveRecord::Migration
 
   def change

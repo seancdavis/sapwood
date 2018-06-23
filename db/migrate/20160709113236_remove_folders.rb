@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveFolders < ActiveRecord::Migration
 
   def up

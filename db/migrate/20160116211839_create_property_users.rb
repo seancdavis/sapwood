@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePropertyUsers < ActiveRecord::Migration
 
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UploadHelper
 
   def document_upload_key

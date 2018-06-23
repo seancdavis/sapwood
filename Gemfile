@@ -59,10 +59,12 @@ gem 'jbuilder'
 # TODO: heartwood-uploader will take care of this.
 gem 'jquery-fileupload-rails'
 gem 'kaminari'
+gem 'oj', '~> 2.16' # This is for Rollbar and JSON serialization
 gem 'pg_search'
 gem 'pry-rails'
 # TODO: Unnecessary if we go to imgix, right?
 gem 'rmagick'
+gem 'rollbar'
 gem 'rubocop', groups: [:development, :test], require: false
 gem 'simple_form'
 # TODO: Can remove after slug becomes a field.

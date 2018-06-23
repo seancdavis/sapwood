@@ -63,6 +63,11 @@ describe SearchElementsService do
       res = SearchElementsService.call(property: property, q: 'template:all-options sort:blahblah')
       expect(res).to eq(elements.sort_by(&:id))
     end
+
+    it 'sorts by updated_at/desc by default' do
+      res = SearchElementsService.call(property: property, q: 'template:all-options')
+      expect(res).to eq(elements.sort_by(&:updated_at).reverse)
+    end
   end
 
   # ---------------------------------------- | Template Filtering

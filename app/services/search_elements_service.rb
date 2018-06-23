@@ -41,14 +41,22 @@ class SearchElementsService < Heartwood::Service::Base
       # self.template_names = []
       q.scan(/(sort:[\w,:-]+)/i).flatten.each do |match|
         sort_parts = match.split(':').last.split(',')
-        # sort_in is the first argument before the comma, which would separate
+        # sort_by is the first argument before the comma, which would separate
         # the field from the direction.
         self.sort_by = sort_parts.first
-        # The direction is ascending unless told to be descending.
-        self.sort_in = (sort_parts.last.downcase == 'desc') ? 'desc' : 'asc'
+        # sort_in is the argument after the comma.
+        self.sort_in = sort_parts[1].try(:downcase)
         # Remove the template argument from query string.
         self.q = q.remove(match).gsub(/\ +/, ' ')
       end
+      # If we have no sort_by and/or sort_in, we set them here. If sort_by is
+      # nil, it defaults to `updated_at` and sets sort_in to desc. Otherwise,
+      # sort_in assumes asc order.
+      self.sort_by ||= begin
+        self.sort_in ||= 'desc'
+        'updated_at'
+      end
+      self.sort_in ||= 'asc'
     end
 
     # At this point, "q" is expected to be the plain query string that can be used
@@ -73,6 +81,7 @@ class SearchElementsService < Heartwood::Service::Base
 
     # Sort elements if the argument was passed. Otherwise give them back in the
     # order returned by the search result.
+    #
     def sort_elements
       return elements unless sort_by.present?
       elements.sort_by!(&sort_by.to_sym)

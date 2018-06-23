@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FeatureHelpers
 
   def sign_in(user, password = 'password')

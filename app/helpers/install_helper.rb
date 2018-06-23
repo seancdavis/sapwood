@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module InstallHelper
 
   def install_progress

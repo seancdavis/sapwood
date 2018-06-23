@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FormHelper
 
   def minimal_form_for(object, *args, &block)

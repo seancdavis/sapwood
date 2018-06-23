@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddAvatarUrlToUsers < ActiveRecord::Migration
 
   def change

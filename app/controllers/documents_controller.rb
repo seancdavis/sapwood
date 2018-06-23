@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DocumentsController < ApplicationController
 
   before_action :verify_property_access

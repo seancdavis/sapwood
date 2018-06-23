@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Api::ElementsController < ApiController
 
   before_action :authenticate_writable_api_key!, only: %i[create update destroy]

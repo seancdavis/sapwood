@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ApplicationHelper
 
   def can_view_deck?

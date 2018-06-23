@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DeckController < ApplicationController
 
   def show

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ElementsController < ApplicationController
 
   before_action :verify_property_access

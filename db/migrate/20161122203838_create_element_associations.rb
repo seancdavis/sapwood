@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateElementAssociations < ActiveRecord::Migration
 
   def change

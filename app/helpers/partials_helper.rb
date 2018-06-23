@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module PartialsHelper
 
   def render_partial(name, options = {})

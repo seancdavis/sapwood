@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddArchivedToDocuments < ActiveRecord::Migration
 
   def change

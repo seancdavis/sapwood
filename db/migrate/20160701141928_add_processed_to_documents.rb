@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddProcessedToDocuments < ActiveRecord::Migration
 
   def change

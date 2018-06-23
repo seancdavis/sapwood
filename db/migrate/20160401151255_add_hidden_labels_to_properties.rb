@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddHiddenLabelsToProperties < ActiveRecord::Migration
 
   def change

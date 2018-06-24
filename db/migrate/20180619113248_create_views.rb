@@ -2,6 +2,7 @@ class CreateViews < ActiveRecord::Migration[5.2]
   def up
     create_table :views do |t|
       t.string :title
+      t.string :slug
       t.integer :property_id
       t.string :q
       t.integer :nav_position, default: 0

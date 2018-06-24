@@ -1,10 +1,8 @@
 FactoryBot.define do
   factory :view do
-    title "MyString"
-    property_id 1
-    sort_by "MyString"
-    sort_in "MyString"
-    nav_position 1
-    column_config ""
+    title { Faker::Book.title }
+    property
+    nav_position { rand(0..100) }
+    # column_config ""
   end
 end

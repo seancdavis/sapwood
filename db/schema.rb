@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_113248) do
 
   create_table "views", force: :cascade do |t|
     t.string "title"
+    t.string "slug"
     t.integer "property_id"
     t.string "q"
     t.integer "nav_position", default: 0

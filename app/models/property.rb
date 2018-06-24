@@ -47,7 +47,7 @@ class Property < ApplicationRecord
       JSON.parse(templates_raw).each do |t|
         templates << Template.new(t)
       end
-      templates
+      templates.sort_by(&:title)
     rescue
       return []
     end

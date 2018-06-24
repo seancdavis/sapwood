@@ -44,7 +44,10 @@ Rails.application.routes.draw do
     get 'search' => 'elements#search', :as => 'search'
 
     resources :views
-    resources :elements
+    # resources :elements, except: %i[new]
+    resources :templates, only: [], path: 'elements' do
+      resources :elements, path: ''
+    end
     resources :templates, only: [], path: 'documents' do
       resources :documents, path: ''
     end

@@ -7,6 +7,7 @@ class App.Routers.Router extends Backbone.Router
     new App.Components.SidebarToggle
     new App.Components.Dropdown
     new App.Components.Menu
+    new App.Views.Elements
 
   routes:
     'properties/:property_id': 'propertyDash'

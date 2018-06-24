@@ -62,6 +62,11 @@ class ElementsController < ApplicationController
     end
   end
 
+  def show
+    not_found if current_element.blank?
+    redirect_to [:edit, current_property, current_element.template, current_element]
+  end
+
   def edit
     not_found if current_element.blank?
   end

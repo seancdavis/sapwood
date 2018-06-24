@@ -1,0 +1,9 @@
+<nav class="dropdown template-list">
+  <ul>
+    <% current_property.templates.each do |tmpl| %>
+      <li>
+        <%= link_to tmpl.title, [:new, current_property, tmpl, :element] %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

@@ -1,4 +1,12 @@
-<%= page_header(title: current_view.try(:title) || 'Search Results') %>
+<%= page_header(
+  title: current_view.try(:title) || 'Search Results',
+  button: {
+    label: 'New Element',
+    path: nil,
+    options: { class: 'new button dropdown-trigger', data: { trigger_dropdown: '.template-list' } }
+  },
+  dropdown: 'elements/template_list'
+) %>
 
 <section class="body">
   <% if @elements.present? %>
@@ -17,7 +25,7 @@
             <tr class="element">
               <td class="icon"><i class="icon-file"></i></td>
               <td class="primary">
-                <%= link_to element.title, [:edit, current_property, element] %>
+                <%= link_to element.title, [:edit, current_property, element.template, element] %>
               </td>
               <td>
                 <%= element.template.name %>

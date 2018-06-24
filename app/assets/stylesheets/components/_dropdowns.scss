@@ -17,6 +17,7 @@
     box-shadow: $box-shadow;
     border-radius: $base-border-radius;
     background: $light;
+    min-width: 200px;
 
     li {
       display: block;

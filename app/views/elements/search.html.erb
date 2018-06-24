@@ -1,4 +1,4 @@
-<%= page_header(title: 'Search Results') %>
+<%= page_header(title: current_view.try(:title) || 'Search Results') %>
 
 <section class="body">
   <% if @elements.present? %>
@@ -17,7 +17,7 @@
             <tr class="element">
               <td class="icon"><i class="icon-file"></i></td>
               <td class="primary">
-                <%= link_to element.title, [:edit, current_property, element.template, element] %>
+                <%= link_to element.title, [:edit, current_property, element] %>
               </td>
               <td>
                 <%= element.template.name %>

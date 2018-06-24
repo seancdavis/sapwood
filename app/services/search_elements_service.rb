@@ -2,7 +2,9 @@
 
 class SearchElementsService < Heartwood::Service::Base
 
-  required_attr :property, :q
+  required_attr :property
+
+  attr_with_default :q, ''
 
   attr_accessor :elements, :sort_by, :sort_in, :template_names
 
@@ -66,7 +68,7 @@ class SearchElementsService < Heartwood::Service::Base
     def search_elements
       self.elements = property.elements
       self.elements = elements.search_by_title(q) if q.present?
-      elements
+      self.elements = elements.to_a
     end
 
     # If there were templates in the search query, remove any without those

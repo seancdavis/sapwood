@@ -1,4 +1,7 @@
 <li>
-  <%= link_to item.menu_label, send(item.path_method, current_property, item),
-              :class => ('active' if current_template && current_template.name == item.name) %>
+  <%= link_to(
+    sidebar_item.title,
+    [current_property, sidebar_item],
+    # class: ('active' if current_view && current_template.name == sidebar_item.name)
+  ) %>
 </li>

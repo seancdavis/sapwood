@@ -35,6 +35,11 @@ describe SearchElementsService do
       res = SearchElementsService.call(property: property, q: 'pick')
       expect(res).to match_array([pick_el, picking_el, picker_el])
     end
+
+    it 'returns all elements when q is nil' do
+      res = SearchElementsService.call(property: property)
+      expect(res).to match_array(elements)
+    end
   end
 
   # ---------------------------------------- | Sorting

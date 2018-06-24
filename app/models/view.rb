@@ -17,6 +17,12 @@ class View < ApplicationRecord
   before_validation :create_slug, on: :create
   after_create :verify_slug_uniqueness
 
+  # ---------------------------------------- | Instance Methods
+
+  def to_param
+    slug
+  end
+
   # ---------------------------------------- | Private Methods
 
   private

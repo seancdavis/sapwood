@@ -68,6 +68,7 @@ gem 'rollbar'
 gem 'rubocop', groups: [:development, :test], require: false
 gem 'simple_form'
 gem 'sendgrid', group: :production
+gem 'web-console', group: [:development]
 
 # ------------------------------------------ Testing
 

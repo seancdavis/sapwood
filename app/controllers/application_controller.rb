@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
                 :current_property_documents,
                 :current_template,
                 :focused_user,
+                :current_view,
                 :not_found,
                 :my_properties,
                 :visible_property_users
@@ -91,6 +92,10 @@ class ApplicationController < ActionController::Base
 
     def current_template
       @current_template ||= current_property.find_template(params[:template_id])
+    end
+
+    def current_view
+      @current_view ||= current_property.views.find_by(slug: params[:view_id] || params[:id])
     end
 
     # ------------------------------------------ Elements

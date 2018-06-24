@@ -2,6 +2,6 @@
   <%= link_to(
     sidebar_item.title,
     [current_property, sidebar_item],
-    # class: ('active' if current_view && current_template.name == sidebar_item.name)
+    class: ('active' if current_view == sidebar_item)
   ) %>
 </li>

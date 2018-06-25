@@ -29,10 +29,7 @@ class Property < ApplicationRecord
 
   after_save :expire_caches
 
-  def expire_caches(force = false)
-    return true unless force || (SapwoodCache.enabled? && templates_raw_changed?)
-    SapwoodCache.rebuild_property(self)
-  end
+  after_create :create_recent_view
 
   # ---------------------------------------- Instance Methods
 
@@ -74,5 +71,18 @@ class Property < ApplicationRecord
   def users_with_access
     (users + User.admins).flatten.uniq
   end
+
+  def expire_caches(force = false)
+    return true unless force || (SapwoodCache.enabled? && templates_raw_changed?)
+    SapwoodCache.rebuild_property(self)
+  end
+
+  # ---------------------------------------- | Private Methods
+
+  private
+
+    def create_recent_view
+      views.create(title: 'Recent')
+    end
 
 end

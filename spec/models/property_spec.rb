@@ -6,6 +6,16 @@ RSpec.describe Property, type: :model do
 
   let(:property) { create(:property) }
 
+  # ---------------------------------------- Views
+
+  describe '[views]' do
+    it 'creates a "Recent" view when a property is created' do
+      view = property.views.first
+      expect(view.title).to eq('Recent')
+      expect(view.q).to eq(nil)
+    end
+  end
+
   # ---------------------------------------- Templates
 
   describe '#templates' do

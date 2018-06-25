@@ -43,6 +43,7 @@ class ElementsController < ApplicationController
   def search
     not_found unless params[:search] && (q = params[:search][:q])
     @elements = SearchElementsService.call(property: current_property, q: q)
+    @elements = Kaminari.paginate_array(@elements).page(params[:page] || 1).per(20)
   end
 
   def new

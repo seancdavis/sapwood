@@ -1,6 +1,7 @@
 class ViewsController < ApplicationController
 
   before_action :verify_current_property
+  before_action :verify_current_view, only: %i[edit update destroy]
 
   def new
     @view = current_property.views.new(q: params[:q])
@@ -22,10 +23,19 @@ class ViewsController < ApplicationController
     render 'elements/search'
   end
 
+  def destroy
+    current_view.destroy
+    redirect_to [current_property, current_property.views.first], notice: 'View deleted successfully.'
+  end
+
   private
 
     def verify_current_property
       not_found unless current_property
+    end
+
+    def verify_current_view
+      not_found unless current_view
     end
 
     def view_params

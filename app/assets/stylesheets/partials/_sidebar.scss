@@ -138,6 +138,17 @@ aside.main {
         margin-bottom: rem(15);
       }
     }
+    .hidden-list-action {
+      color: $dk-grey;
+      display: none;
+      font-size: .75rem;
+      float: right;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    li:hover .hidden-list-action {
+      display: inline-block;
+    }
   }
 
 

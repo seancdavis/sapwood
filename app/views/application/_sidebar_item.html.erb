@@ -1,5 +1,12 @@
 <li>
   <%= link_to(
+    'Delete',
+    [current_property, sidebar_item],
+    method: :delete,
+    class: 'hidden-list-action',
+    data: { confirm: 'Are you sure?' }
+  ) %>
+  <%= link_to(
     sidebar_item.title,
     [current_property, sidebar_item],
     class: ('active' if current_view == sidebar_item)

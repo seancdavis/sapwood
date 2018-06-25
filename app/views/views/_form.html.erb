@@ -1,0 +1,11 @@
+<section class="body">
+  <%= simple_form_for [current_property, @view] do |f| %>
+    <div class="block">
+      <%= f.input :title %>
+      <%= f.input :q, label: 'Elements Query' %>
+    </div>
+    <div class="form-actions">
+      <%= f.button :submit, 'Save View' %>
+    </div>
+  <% end %>
+</section>

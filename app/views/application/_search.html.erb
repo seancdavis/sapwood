@@ -1,3 +1,7 @@
 <%= simple_form_for :search, url: property_search_path(current_property), method: :get do |f| %>
   <%= f.input :q, placeholder: 'search', label: false, wrapper: false, input_html: { value: (params[:search][:q] if params[:search]) } %>
 <% end %>
+
+<% if params[:search].present? && params[:search][:q].present? %>
+  <%= link_to 'Save As View', [:new, current_property, :view, q: params[:search][:q]], class: 'button' %>
+<% end %>

@@ -62,7 +62,7 @@
     </div>
   </div>
   <nav>
-    <ul>
+    <ul data-view-sorter="<%= property_reorder_views_path(current_property) %>">
       <%= render partial: 'sidebar_item', collection: current_property.views.select(&:persisted?) %>
     </ul>
   </nav>

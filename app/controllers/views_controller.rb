@@ -35,6 +35,22 @@ class ViewsController < ApplicationController
     end
   end
 
+  # TODO: Move this to a service? To reorder something based on a
+  # comma-delimited id list?
+
+  def reorder
+    not_found unless request.xhr? && params[:view_ids]
+    view_ids = params[:view_ids].split(',').map(&:to_i)
+    views = current_property.views.where(id: view_ids)
+    view_ids.each_with_index do |id, idx|
+      view = views.select { |v| v.id == id }.first
+      view.update_columns(nav_position: idx) if view
+    end
+    render json: { success: true }
+  rescue
+    render json: { success: false }
+  end
+
   def destroy
     current_view.destroy
     redirect_to [current_property, current_property.views.first], notice: 'View deleted successfully.'

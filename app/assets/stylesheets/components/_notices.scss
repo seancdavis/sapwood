@@ -12,6 +12,9 @@ p.notice, p.alert {
   &.active {
     display: block;
   }
+  &.error {
+    background-color: $error;
+  }
 }
 
 p.empty {

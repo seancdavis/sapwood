@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 
+    post 'views/reorder' => 'views#reorder', as: 'reorder_views'
     resources :views
     # resources :elements, except: %i[new]
     resources :templates, only: [], path: 'elements' do

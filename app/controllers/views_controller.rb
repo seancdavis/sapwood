@@ -23,6 +23,18 @@ class ViewsController < ApplicationController
     render 'elements/search'
   end
 
+  def edit
+    @view = current_view
+  end
+
+  def update
+    if current_view.update(view_params)
+      redirect_to [current_property, current_view], notice: 'View updated successfully!'
+    else
+      render 'edit'
+    end
+  end
+
   def destroy
     current_view.destroy
     redirect_to [current_property, current_property.views.first], notice: 'View deleted successfully.'

@@ -6,6 +6,7 @@
     class: 'hidden-list-action',
     data: { confirm: 'Are you sure?' }
   ) %>
+  <%= link_to 'Edit', [:edit, current_property, sidebar_item], class: 'hidden-list-action' %>
   <%= link_to(
     sidebar_item.title,
     [current_property, sidebar_item],

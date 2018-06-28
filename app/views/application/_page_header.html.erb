@@ -5,6 +5,9 @@
                 (options[:button][:options] || {}) if options[:button] %>
     <%= render options[:dropdown] if options[:dropdown] %>
   </div>
+  <% if params[:search].present? && params[:search][:q].present? %>
+    <%= link_to 'Save As View', [:new, current_property, :view, q: params[:search][:q]], class: 'button secondary' %>
+  <% end %>
   <% if options[:notifications] %>
     <%= link_to '', notification_toggle_path(options[:notifications]),
                 :method => :post,

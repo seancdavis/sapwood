@@ -37,4 +37,15 @@
   &.delete {
     background-color: $error;
   }
+
+  &.secondary {
+    background-color: $dk-grey;
+    color: lighten($dark, 20%);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $md-grey;
+    }
+  }
 }

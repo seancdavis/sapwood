@@ -5,39 +5,48 @@ class ElementsController < ApplicationController
   before_action :verify_property_access
 
   def index
-    not_found if current_template.nil? && params[:template_id] != '__all'
-    @elements = if params[:template_id] == '__all'
-      current_property.elements.by_title
-    elsif params[:sort_by] && params[:sort_in]
-      current_property.elements.with_template(current_template.name)
-                      .by_field(params[:sort_by], params[:sort_in])
-    elsif current_template.list['order']
-      order = current_template.list['order']
-      params[:sort_by] = order['by']
-      params[:sort_in] = order['in'] || 'asc'
-      current_property.elements.with_template(current_template.name)
-                      .by_field(order['by'], order['in'].try(:upcase))
+    not_found if current_template.blank?
+    q = "template:#{current_template.name}"
+    view = current_property.views.find_by(q: q)
+    if view.present?
+      redirect_to [current_property, view]
     else
-      params[:sort_by] = current_template.primary_field.name
-      params[:sort_in] = 'asc'
-      current_property.elements.by_title.with_template(current_template.name)
+      redirect_to property_search_path(current_property, search: { q: q })
     end
-    unless current_template.blank?
-      @elements = @elements.page(params[:page] || 1)
-                           .per(current_template.page_length)
-    end
-    respond_to do |format|
-      format.html do
-        if current_template && current_template.document?
-          redirect_to [current_property, current_template, :documents]
-        elsif current_template &&
-              current_template.type == 'single_element' &&
-              @elements.size == 1
-          redirect_to [:edit, current_property, current_template, @elements[0]]
-        end
-      end
-      format.json
-    end
+
+    # not_found if current_template.nil? && params[:template_id] != '__all'
+    # @elements = if params[:template_id] == '__all'
+    #   current_property.elements.by_title
+    # elsif params[:sort_by] && params[:sort_in]
+    #   current_property.elements.with_template(current_template.name)
+    #                   .by_field(params[:sort_by], params[:sort_in])
+    # elsif current_template.list['order']
+    #   order = current_template.list['order']
+    #   params[:sort_by] = order['by']
+    #   params[:sort_in] = order['in'] || 'asc'
+    #   current_property.elements.with_template(current_template.name)
+    #                   .by_field(order['by'], order['in'].try(:upcase))
+    # else
+    #   params[:sort_by] = current_template.primary_field.name
+    #   params[:sort_in] = 'asc'
+    #   current_property.elements.by_title.with_template(current_template.name)
+    # end
+    # unless current_template.blank?
+    #   @elements = @elements.page(params[:page] || 1)
+    #                        .per(current_template.page_length)
+    # end
+    # respond_to do |format|
+    #   format.html do
+    #     if current_template && current_template.document?
+    #       redirect_to [current_property, current_template, :documents]
+    #     elsif current_template &&
+    #           current_template.type == 'single_element' &&
+    #           @elements.size == 1
+    #       redirect_to [:edit, current_property, current_template, @elements[0]]
+    #     end
+    #   end
+    #   format.json
+    # end
   end
 
   def search

@@ -130,11 +130,6 @@ class Element < ApplicationRecord
     %(jpeg jpg png gif svg).include?(File.extname(path).remove('.'))
   end
 
-  def archive!
-    return false unless document?
-    update(archived: true)
-  end
-
   def private?
     return false unless template?
     template.private?

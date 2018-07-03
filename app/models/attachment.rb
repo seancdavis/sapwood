@@ -20,7 +20,7 @@ class Attachment < ApplicationRecord
   end
 
   def image?
-    IMAGE_EXTENSIONS.include?(File.extname(url))
+    IMAGE_EXTENSIONS.include?(File.extname(url).downcase.remove('.'))
   end
 
   def as_json(options = {})

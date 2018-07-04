@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     resources :users
     get 'search' => 'elements#search', :as => 'search'
 
-    resources :templates, only: [], path: 'elements' do
+    resources :templates, only: %i[index], path: 'elements' do
       resources :elements, path: ''
     end
     resources :templates, only: [], path: 'documents' do

@@ -99,9 +99,6 @@ Style/MethodDefParentheses:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
-  EnforcedStyle: always
-  Exclude:
-    - db/schema.rb
 
 # Use `foo {}` not `foo{}`.
 Layout/SpaceBeforeBlockBraces:

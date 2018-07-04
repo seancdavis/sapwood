@@ -113,15 +113,4 @@ ActiveRecord::Schema.define(version: 2018_07_03_113440) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "views", force: :cascade do |t|
-    t.string "title"
-    t.string "slug"
-    t.integer "property_id"
-    t.string "q"
-    t.integer "nav_position", default: 0
-    t.jsonb "column_config", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
 end

@@ -44,13 +44,11 @@ class App.Components.Uploader extends Backbone.View
           data.context.append """
             <p class="success">Uploaded successfully!</p>
           """
-          window.location.reload() if $('div.progress').length == 0
         .fail (response) =>
           data.context.find('.progress').remove()
           data.context.append """
             <p class="error">There was an error with this upload.</p>
           """
-          window.location.reload() if $('div.progress').length == 0
 
       fail: (e, data) ->
         $('div.upload').remove()

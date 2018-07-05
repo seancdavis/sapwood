@@ -1,5 +1,9 @@
 class Attachment < ApplicationRecord
 
+  # ---------------------------------------- | Plugins
+
+  include AttachmentDecorator
+
   # ---------------------------------------- | Associations
 
   belongs_to :property, touch: true
@@ -14,14 +18,6 @@ class Attachment < ApplicationRecord
   after_save :set_title_if_blank
 
   # ---------------------------------------- | Instance Methods
-
-  def filename(ext = true)
-    File.basename(url, ext ? '' : '.*')
-  end
-
-  def image?
-    IMAGE_EXTENSIONS.include?(File.extname(url).downcase.remove('.'))
-  end
 
   def as_json(options = {})
     { id: id, title: title, url: url }

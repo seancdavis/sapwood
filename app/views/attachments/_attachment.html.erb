@@ -1,0 +1,18 @@
+<article class="document <%= attachment.image? ? 'img' : 'doc' %>"
+         data-id="<%= attachment.id %>" data-title="<%= attachment.title %>"
+         data-url="<%= image_thumb_url(attachment.path) if attachment.image? %>"
+         data-image="<%= attachment.image? %>"
+         style="background-image: url('<%= ix_image_url(attachment.path, h: 400, auto: 'format,compress') if attachment.image? %>')">
+  <%= link_to [:edit, current_property, attachment] do %>
+    <span class="title">
+      <%= attachment.title %>
+    </span>
+    <span class="thumb hidden">
+      <% if attachment.image? %>
+        <%= ix_image_tag(attachment.path, auto: 'format,compress', w: 400, h: 400, fit: 'crop', sizes: '200px') %>
+      <% else %>
+        <%= image_tag('attachment.png') %>
+      <% end %>
+    </span>
+  <% end %>
+</article>

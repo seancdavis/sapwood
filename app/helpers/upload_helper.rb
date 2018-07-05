@@ -3,8 +3,11 @@
 module UploadHelper
 
   def document_upload_key
-    key  = "#{Rails.env}/properties/#{current_property.id}/"
-    key += "#{DateTime.now.strftime("%y%m%d-%H%M%S")}/${filename}"
+    attachment_upload_key
+  end
+
+  def attachment_upload_key
+    "#{Rails.env}/properties/#{current_property.id}/#{DateTime.now.strftime("%y%m%d-%H%M%S")}/${filename}"
   end
 
   def avatar_upload_key

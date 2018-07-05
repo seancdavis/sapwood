@@ -9,6 +9,7 @@ class Property < ApplicationRecord
   # ---------------------------------------- Associations
 
   has_many :elements, dependent: :destroy
+  has_many :attachments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :property_users, dependent: :destroy
   has_many :responses, dependent: :destroy

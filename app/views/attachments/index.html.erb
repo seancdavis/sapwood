@@ -1,0 +1,39 @@
+<%= page_header(
+  title: 'Attachments',
+  button: {
+    label: 'Upload',
+    path: [:new, current_property, :attachment],
+    options: { class: 'new button' }
+  }
+) %>
+
+<section class="batch-uploader active">
+  <%= s3_uploader_form(
+    post: property_attachments_path(current_property),
+    key: attachment_upload_key,
+    html: { multipart: true },
+    as: "attachment[url]"
+  ) do %>
+    <%= file_field_tag :file, multiple: true %>
+  <% end %>
+
+  <script id="template-upload" type="text/x-tmpl">
+  <div class="embedded upload">
+    <div class="content">
+      <h3>{%=o.name%}</h3>
+      <div class="progress"><div class="bar" style="width: 0%"></div></div>
+    </div>
+    <p class="waiting">Waiting patiently in line ...</p>
+  </div>
+  </script>
+</section>
+
+<section class="body">
+  <% if @attachments.present? %>
+    <div class="document-tiles">
+      <%= render @attachments %>
+    </div>
+  <% else %>
+    <%= render 'empty' %>
+  <% end %>
+</section>

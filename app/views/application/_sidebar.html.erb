@@ -16,10 +16,7 @@
             <% end %>
             <% if current_property %>
               <li>
-                <%= link_to(
-                  'Profile',
-                  edit_profile_path(:property_id => current_property.id)
-                ) %>
+                <%= link_to 'Profile', edit_profile_path(:property_id => current_property.id) %>
               </li>
             <% end %>
             <li>
@@ -28,10 +25,17 @@
             </li>
           </ul>
         </div>
-        <% if is_property_admin? %>
-          <div class="dropdown right">
-            <a href="#" class="trigger"><i class="icon-settings"></i></a>
-            <ul>
+        <div class="dropdown right">
+          <a href="#" class="trigger"><i class="icon-arrow-down-circle"></i></a>
+          <ul>
+            <li><h3>Content</h3></li>
+            <li>
+              <%= link_to 'Elements', [current_property, :templates] %>
+            </li>
+            <li>
+              <%= link_to 'Attachments', [current_property, :attachments] %>
+            </li>
+            <% if is_property_admin? %>
               <li><h3>Settings</h3></li>
               <li>
                 <%= link_to 'General',
@@ -54,9 +58,9 @@
                 <%= link_to 'Import Elements',
                             property_import_path(current_property) %>
               </li>
-            </ul>
-          </div>
-        <% end %>
+            <% end %>
+          </ul>
+        </div>
       </span>
     </div>
     <div class="search">

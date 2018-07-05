@@ -1,15 +1,16 @@
-$icon-notification: "\e90b";
-$icon-arrow-down: "\e900";
-$icon-arrow-up: "\e901";
-$icon-briefcase: "\e903";
-$icon-delete: "\e902";
-$icon-file: "\e904";
-$icon-folder: "\e905";
-$icon-image: "\e906";
-$icon-location: "\e90a";
-$icon-search: "\e907";
-$icon-settings: "\e908";
-$icon-user: "\e909";
+$icon-arrow-down-circle: "\e900";
+$icon-arrow-down: "\e901";
+$icon-arrow-up: "\e902";
+$icon-delete: "\e903";
+$icon-briefcase: "\e904";
+$icon-file: "\e905";
+$icon-folder: "\e906";
+$icon-image: "\e907";
+$icon-search: "\e908";
+$icon-settings: "\e909";
+$icon-user: "\e90a";
+$icon-location: "\e90b";
+$icon-notification: "\e90c";
 
 @font-face {
     font-family: 'justicons';
@@ -41,6 +42,7 @@ $icon-user: "\e909";
 }
 
 .icon-notification:before { content: $icon-notification; }
+.icon-arrow-down-circle:before { content: $icon-arrow-down-circle; }
 .icon-arrow-down:before { content: $icon-arrow-down; }
 .icon-arrow-up:before { content: $icon-arrow-up; }
 .icon-briefcase:before { content: $icon-briefcase; }

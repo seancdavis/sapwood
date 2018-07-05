@@ -1,6 +1,7 @@
 class AttachmentsController < ApplicationController
 
   before_action :verify_property_access
+  before_action :verify_current_attachment, only: %i[edit update destroy]
 
   def index
     @attachments = current_property.attachments.alpha.page(params[:page] || 1).per(24)
@@ -24,10 +25,19 @@ class AttachmentsController < ApplicationController
     end
   end
 
+  def destroy
+    current_attachment.destroy
+    redirect_to [current_property, :attachments], notice: 'Attachment deleted successfully!'
+  end
+
   private
 
     def attachment_params
       params.require(:attachment).permit(:title, :url)
+    end
+
+    def verify_current_attachment
+      not_found if current_attachment.blank?
     end
 
 end

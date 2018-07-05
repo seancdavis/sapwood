@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   before_action :verify_profile_completion, except: [:auth]
 
   helper_method :is_property_admin?,
+                :current_attachment,
+                :current_attachment?,
                 :current_document,
                 :current_element,
                 :current_element?,
@@ -103,6 +105,18 @@ class ApplicationController < ActionController::Base
 
     def current_element?
       current_element && current_element.id.present?
+    end
+
+    # ------------------------------------------ Attachment
+
+    def current_attachment
+      @current_attachment ||= begin
+        current_property.attachments.find_by_id(params[:attachment_id] || params[:id])
+      end
+    end
+
+    def current_attachment?
+      current_attachment && current_attachment.id.present?
     end
 
     # ------------------------------------------ Documents

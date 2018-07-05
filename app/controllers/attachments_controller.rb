@@ -9,15 +9,25 @@ class AttachmentsController < ApplicationController
   def create
     respond_to do |format|
       format.json do
-        @attachment = current_property.attachments.create!(create_params)
+        @attachment = current_property.attachments.create!(attachment_params)
       end
+    end
+  end
+
+  def edit; end
+
+  def update
+    if current_attachment.update(attachment_params)
+      redirect_to [current_property, :attachments], notice: 'Attachment updated successfully!'
+    else
+      render 'edit'
     end
   end
 
   private
 
-    def create_params
-      params.require(:attachment).permit(:url)
+    def attachment_params
+      params.require(:attachment).permit(:title, :url)
     end
 
 end

@@ -1,0 +1,31 @@
+<section class="body">
+  <%= simple_form_for [current_property, current_attachment] do |f| %>
+
+    <div class="block aside">
+
+      <%= f.input :title %>
+
+      <aside>
+        <h3>Info</h3>
+        <dl>
+          <dt>ID:</dt>
+          <dd><%= current_attachment.id %></dd>
+          <dt>Created:</dt>
+          <dd><%= current_attachment.formatted_date(:created_at) %></dd>
+          <dt>Last Modified:</dt>
+          <dd><%= current_attachment.formatted_date(:updated_at) %></dd>
+          <dt>URL:</dt>
+          <dd>
+            <%= link_to current_attachment.url.to_s, current_attachment.url.to_s %>
+          </dd>
+        </dl>
+      </aside>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Save Attachment' %>
+      <%= link_to 'Delete Attachment', [current_property, current_attachment],
+                  class: 'button delete', method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  <% end %>
+</section>

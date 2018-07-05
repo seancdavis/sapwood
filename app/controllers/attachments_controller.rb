@@ -3,7 +3,7 @@ class AttachmentsController < ApplicationController
   before_action :verify_property_access
 
   def index
-    @attachments = current_property.attachments
+    @attachments = current_property.attachments.alpha.page(params[:page] || 1).per(24)
   end
 
   def create

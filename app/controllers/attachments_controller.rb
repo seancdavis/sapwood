@@ -11,6 +11,7 @@ class AttachmentsController < ApplicationController
     not_found unless params[:search] && params[:search][:q]
     @attachments = current_property.attachments
       .search_by_title(params[:search][:q]).page(params[:page] || 1).per(24)
+    @page_title = 'Search Results'
     render 'index'
   end
 

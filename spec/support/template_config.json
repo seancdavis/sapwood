@@ -45,13 +45,11 @@
         "label": "Comments"
       },
       "image": {
-        "type": "element",
-        "templates": ["Image"],
+        "type": "attachment",
         "label": "Image"
       },
       "images": {
-        "type": "elements",
-        "templates": ["Image"],
+        "type": "attachments",
         "label": "Image"
       },
       "mixed_bag": {

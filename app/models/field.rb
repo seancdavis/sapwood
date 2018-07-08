@@ -28,7 +28,7 @@ class Field
   # Whether or not we should fallback to method_missing for this particular
   # field.
   def sendable?
-    document? || documents? || element? || elements? || boolean?
+    attachment? || attachments? || element? || elements? || boolean?
   end
 
   def format

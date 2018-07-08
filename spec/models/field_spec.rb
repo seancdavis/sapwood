@@ -21,10 +21,9 @@ describe Field, type: :model do
   describe '#type, #method_missing(?), #sendable?' do
     it 'returns the type, and assumes string when not set' do
       expect(@name.type).to eq('string')
-      expect(@image.type).to eq('element')
       expect(@comments.type).to eq('wysiwyg')
-      expect(@image.type).to eq('element')
-      expect(@images.type).to eq('elements')
+      expect(@image.type).to eq('attachment')
+      expect(@images.type).to eq('attachments')
       expect(@one_thing.type).to eq('element')
       expect(@many_things.type).to eq('elements')
       expect(@complete.type).to eq('boolean')
@@ -39,15 +38,17 @@ describe Field, type: :model do
       expect(@complete.boolean?).to eq(true)
       (@fields - [@complete]).each { |f| expect(f.boolean?).to eq(false) }
 
-      [@image, @one_thing].each { |f| expect(f.element?).to eq(true) }
-      (@fields - [@image, @one_thing]).each do
-        |f| expect(f.element?).to eq(false)
-      end
+      expect(@one_thing.element?).to eq(true)
+      (@fields - [@one_thing]).each { |f| expect(f.element?).to eq(false) }
 
-      [@images, @many_things].each { |f| expect(f.elements?).to eq(true) }
-      (@fields - [@images, @many_things]).each do
-        |f| expect(f.elements?).to eq(false)
-      end
+      expect(@many_things.elements?).to eq(true)
+      (@fields - [@many_things]).each { |f| expect(f.elements?).to eq(false) }
+
+      expect(@image.attachment?).to eq(true)
+      (@fields - [@image]).each { |f| expect(f.attachment?).to eq(false) }
+
+      expect(@images.attachments?).to eq(true)
+      (@fields - [@images]).each { |f| expect(f.attachments?).to eq(false) }
     end
     it 'can determine whether to send the raw value or us method_missing' do
       [@name, @comments].each { |f| expect(f.sendable?).to eq(false) }

@@ -4,15 +4,13 @@ require 'rails_helper'
 
 RSpec.describe Element, type: :model do
 
-  before(:each) do
-    @property = create(:property,
-                       templates_raw: File.read(template_config_file))
-  end
+  let(:property) { property_with_templates }
+
+  # ---------------------------------------- | Templates
 
   describe '#template' do
     before(:each) do
-      @element = create(:element, template_name: 'All Options',
-                        property: @property)
+      @element = create(:element, template_name: 'All Options', property: property)
     end
     it 'returns a Template object' do
       expect(@element.template.class).to eq(Template)
@@ -21,27 +19,27 @@ RSpec.describe Element, type: :model do
 
   describe '#template?' do
     it 'returns true when there is a template' do
-      element = create(:element, template_name: 'All Options',
-                       property: @property)
+      element = create(:element, template_name: 'All Options', property: property)
       expect(element.template?).to eq(true)
     end
     it 'returns false when the template does not exist' do
-      element = create(:element, template_name: 'A', property: @property)
+      element = create(:element, template_name: 'A', property: property)
       expect(element.template?).to eq(false)
     end
   end
 
+  # ---------------------------------------- | Fields
+
   describe '#field_names' do
     it 'returns an array of field names' do
-      element = create(:element, template_name: 'All Options',
-                       property: @property)
+      element = create(:element, template_name: 'All Options', property: property)
       field_names = %w{name description image images many_things
                        comments one_thing mixed_bag mixed_bags uneditable
                        complete date unformatted_date dropdown_menu}
       expect(element.field_names).to match_array(field_names)
     end
     it 'returns an empty array when the template does not exist' do
-      element = create(:element, template_name: 'A', property: @property)
+      element = create(:element, template_name: 'A', property: property)
       expect(element.field_names).to eq([])
     end
   end
@@ -49,7 +47,7 @@ RSpec.describe Element, type: :model do
   describe '#has_field?' do
     before(:each) do
       @element = create(:element, template_name: 'All Options',
-                        property: @property)
+                        property: property)
     end
     it 'returns true for a field it has' do
       expect(@element.has_field?('comments')).to eq(true)
@@ -59,84 +57,131 @@ RSpec.describe Element, type: :model do
     end
 
     describe '#method_missing (dynamic field responses)' do
-      before(:each) do
-        @image = create(:element, :document, property: @property)
-        @images = create_list(:element, 3, :document, property: @property)
-        # Some other records we don't want to see
-        create_list(:element, 5, :document, property: @property)
-        @element = create(
+      let(:image) { create(:attachment, property: property) }
+      let(:images) { create_list(:attachment, 3, property: property) }
+      let(:one_thing) { create(:element, property: property) }
+      let(:many_things) { create_list(:element, 3, property: property) }
+
+      let(:element) do
+        create(
           :element,
           template_name: 'All Options',
-          property: @property,
+          property: property,
           template_data: {
             description: 'This is a description',
-            image: @image.id.to_s,
-            images: @images.collect(&:id).join(',')
+            image: image.id.to_s,
+            images: images.collect(&:id).join(','),
+            one_thing: one_thing.id.to_s,
+            many_things: many_things.collect(&:id).join(','),
           }
         )
       end
+
+      before(:each) do
+        # Some other records we don't want to see
+        create_list(:attachment, 5, property: property)
+        create_list(:element, 5, property: property)
+        # Our records
+        element
+      end
+      it 'returns NoMethodError for fields that do not exist' do
+        expect { element.this_doesnt_exist }.to raise_error(NoMethodError)
+      end
       it 'returns strings as strings' do
-        expect(@element.description).to eq('This is a description')
+        expect(element.description).to eq('This is a description')
       end
       it 'returns booleans as booleans' do
         # nil
-        expect(@element.complete).to eq(false)
+        expect(element.complete).to eq(false)
         # Set to "1" and test.
-        @element.template_data = @element.template_data.merge(complete: 1)
-        @element.save
-        expect(@element.reload.complete).to eq(true)
+        element.template_data = element.template_data.merge(complete: 1)
+        element.save
+        expect(element.reload.complete).to eq(true)
       end
+      ### --- element --- ###
       it 'returns Element objects for element fields' do
-        expect(@element.image).to eq(@image)
+        expect(element.one_thing).to eq(one_thing)
       end
-      it 'returns nil when the element is missing' do
-        element = create(:element, template_name: 'All Options',
-                         property: @property)
-        expect(element.image).to eq(nil)
+      it 'returns nil when the element field is missing' do
+        element = create(:element, template_name: 'All Options', property: property)
+        expect(element.one_thing).to eq(nil)
       end
       it 'returns nil when the element does not exist' do
-        element = create(:element, template_name: 'All Options',
-                         property: @property,
-                         template_data: { image: '123' })
+        element = create(:element, template_name: 'All Options', property: property,
+          template_data: { one_thing: '123' })
+        expect(element.one_thing).to eq(nil)
+      end
+      ### --- attachment --- ###
+      it 'returns Attachment objects for attachment fields' do
+        expect(element.image).to eq(image)
+      end
+      it 'returns nil when the attachment field is missing' do
+        element = create(:element, template_name: 'All Options', property: property)
         expect(element.image).to eq(nil)
       end
+      it 'returns nil when the attachment does not exist' do
+        element = create(:element, template_name: 'All Options', property: property,
+          template_data: { image: '123' })
+        expect(element.image).to eq(nil)
+      end
+      ### --- elements --- ###
       it 'returns Element objects for elements fields' do
-        expect(@element.images).to match_array(@images)
+        expect(element.many_things).to match_array(many_things)
+      end
+      it 'returns an empty array when the elements are missing' do
+        element = create(:element, template_name: 'All Options', property: property)
+        expect(element.many_things).to eq([])
+      end
+      it 'returns an empty array when the elements do not exist' do
+        element = create(:element, template_name: 'All Options', property: property,
+            template_data: { many_things: '123' })
+        expect(element.many_things).to eq([])
+      end
+      it 'returns elements in the saved order' do
+        element_ids = many_things.collect(&:id).shuffle.join(',')
+        element.template_data.merge!(many_things: element_ids)
+        element.save
+        element_ids = element_ids.split(',').map(&:to_i)
+        3.times do |idx|
+          expect(element.reload.many_things[idx].id).to eq(element_ids[idx])
+        end
+      end
+      ### --- attachments --- ###
+      it 'returns Element objects for elements fields' do
+        expect(element.images).to match_array(images)
       end
       it 'returns an empty array when the elements are missing' do
         element = create(:element, template_name: 'All Options',
-                         property: @property)
+                         property: property)
         expect(element.images).to eq([])
       end
       it 'returns an empty array when the elements do not exist' do
-        element = create(:element, template_name: 'All Options',
-                         property: @property,
-                         template_data: { images: '123' })
+        element = create(:element, template_name: 'All Options', property: property, template_data: { images: '123' })
         expect(element.images).to eq([])
       end
       it 'returns elements in the saved order' do
-        image_ids = @images.collect(&:id).shuffle.join(',')
-        @element.template_data.merge!(images: image_ids)
-        @element.save
+        image_ids = images.collect(&:id).reverse.join(',')
+        element.template_data.merge!(images: image_ids)
+        element.save
         image_ids = image_ids.split(',').map(&:to_i)
+        # binding.pry
         3.times do |idx|
-          expect(@element.reload.images[idx].id).to eq(image_ids[idx])
+          expect(element.reload.images[idx].id).to eq(image_ids[idx])
         end
-      end
-      it 'returns NoMethodError for fields that do not exist' do
-        expect { @element.this_doesnt_exist }.to raise_error(NoMethodError)
       end
     end
   end
 
+  # ---------------------------------------- | JSON
+
   describe '#as_json' do
     it 'is still returned when the template does not exist' do
-      el = create(:element, property: @property, template_name: 'NO!')
+      el = create(:element, property: property, template_name: 'NO!')
       expect(el.as_json.present?).to eq(true)
     end
     it 'skips bad attrs and fills in missing ones' do
       element = create(:element, template_name: 'All Options',
-                       property: @property,
+                       property: property,
                        template_data: {
                         'name' => 'Hello World', 'balls' => 'no_thanks' })
       expect(element.reload.template_data.keys).to include('comments')
@@ -144,15 +189,12 @@ RSpec.describe Element, type: :model do
     end
     it 'has references to all necessary attributes' do
       # This is our element.
-      element = create(:element, :with_options, property: @property)
+      element = create(:element, :with_options, property: property)
       element[:template_data]['complete'] = '1'
       # Create elements that we can use for associated records.
-      more_options_el = create(:element, property: @property,
-                               template_name: 'More Options')
-      one_thing_el = create(:element, property: @property,
-                            template_name: 'One Thing')
-      many_things_els = create_list(:element, 3, property: @property,
-                                    template_name: 'Many Things')
+      more_options_el = create(:element, property: property, template_name: 'More Options')
+      one_thing_el = create(:element, property: property, template_name: 'One Thing')
+      many_things_els = create_list(:element, 3, property: property, template_name: 'Many Things')
       # Add the implicit has_many
       more_options_el[:template_data]['option'] = element.id.to_s
       more_options_el.save!
@@ -162,17 +204,19 @@ RSpec.describe Element, type: :model do
       bad_element = create(:element)
       element[:template_data]['many_things'] = (many_things_els + [bad_element])
         .collect(&:id).join(',')
-      # Adding has_many documents
-      documents = [create(:element, :document, property: @property),
-                   create(:element, :document, property: @property)]
-      element[:template_data]['images'] = documents.collect(&:id).join(',')
+      # Adding has_many attachments
+      attachments = [1,2].map { |x| create(:attachment, property: property) }
+      element[:template_data]['images'] = attachments.collect(&:id).join(',')
+      # Addding belongs_to attachment
+      attachment = create(:attachment, property: property)
+      element[:template_data]['image'] = attachment.id.to_s
       # And our mixed bags.
-      mixed_bag_el = create(:element, property: @property,
+      mixed_bag_el = create(:element, property: property,
                             template_name: 'One Thing')
       element[:template_data]['mixed_bag'] = mixed_bag_el.id.to_s
       mixed_bag_els = [
-        create(:element, :document, property: @property),
-        create(:element, property: @property, template_name: 'One Thing')
+        create(:element, property: property, template_name: 'Many Things'),
+        create(:element, property: property, template_name: 'One Thing')
       ]
       element[:template_data]['mixed_bags'] = mixed_bag_els.collect(&:id).join(',')
       # Save our element.
@@ -189,9 +233,9 @@ RSpec.describe Element, type: :model do
       # Custom template_data is brought to the top level.
       expect(json[:comments]).to eq(element.comments)
       expect(json[:complete]).to eq(true)
-      # Document fields should return an element object.
-      expect(json[:image][:url]).to eq(example_image_url)
-      expect(json[:images].to_a).to match_array(documents)
+      # Attachment fields should return an attachment object.
+      expect(json[:image][:url]).to eq(URI.decode(attachment.url.to_s))
+      expect(json[:images].to_a).to match_array(attachments)
       expect(json[:mixed_bag]).to eq(mixed_bag_el)
       expect(json[:mixed_bags].to_a).to match_array(mixed_bag_els)
       expect(json[:many_things].to_a).to match_array(many_things_els)
@@ -209,7 +253,7 @@ RSpec.describe Element, type: :model do
 
   describe 'that acts as a document' do
     let(:document) {
-      create(:element, :document, :from_system, property: @property)
+      create(:element, :document, :from_system, property: property)
     }
 
     describe '#set_title' do
@@ -217,12 +261,12 @@ RSpec.describe Element, type: :model do
         expect(document.title).to eq(document.template_data['name'])
       end
       it 'sets the title from the filename if primary field is missing' do
-        doc = create(:element, :document, :from_system, property: @property,
+        doc = create(:element, :document, :from_system, property: property,
                      template_data: {})
         expect(doc.title).to eq('Example')
       end
       it 'does not set the title from the filename if primary field present' do
-        doc = create(:element, :document, :from_system, property: @property,
+        doc = create(:element, :document, :from_system, property: property,
                      template_data: { name: 'Testing 123' })
         expect(doc.title).to eq('Testing 123')
       end

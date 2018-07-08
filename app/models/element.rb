@@ -246,12 +246,18 @@ class Element < ApplicationRecord
       when 'element'
         return nil if template_data[method.to_s].blank?
         unless SapwoodCache.enabled?
-          return associated_elements
-            .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
+          return associated_elements.detect { |e| e.id == template_data[method.to_s].try(:to_i) }
         end
         Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
-          associated_elements
-            .select { |e| e.id == template_data[method.to_s].try(:to_i) }[0]
+          associated_elements.detect { |e| e.id == template_data[method.to_s].try(:to_i) }
+        end
+      when 'attachment'
+        return nil if template_data[method.to_s].blank?
+        unless SapwoodCache.enabled?
+          return property.attachments.detect { |e| e.id == template_data[method.to_s].try(:to_i) }
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
+          property.attachments.detect { |e| e.id == template_data[method.to_s].try(:to_i) }
         end
       when 'elements'
         return [] if template_data[method.to_s].blank?
@@ -272,12 +278,18 @@ class Element < ApplicationRecord
           end
           return elements
         end
+      when 'attachments'
+        return [] if template_data[method.to_s].blank?
+        attachment_ids = template_data[method.to_s].split(',').collect(&:to_i)
+        unless SapwoodCache.enabled?
+          attachments = property.attachments.where(id: attachment_ids).index_by(&:id)
+          return attachment_ids.collect { |id| attachments[id] }.reject(&:blank?)
+        end
+        Rails.cache.fetch("_p#{property_id}_e#{id}_#{method}") do
+          attachments = property.attachments.where(id: attachment_ids).index_by(&:id)
+          return attachment_ids.collect { |id| attachments[id] }.reject(&:blank?)
+        end
       when 'boolean'
-        # puts '---'
-        # puts 'boolean'
-        # puts template_data[method.to_s]
-        # puts template_data[method.to_s].class
-        # puts template_data[method.to_s].to_bool
         template_data[method.to_s].to_bool
       else
         template_data[method.to_s]

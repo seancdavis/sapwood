@@ -31,9 +31,9 @@ describe AttachmentsController do
 
   describe '#new' do
     let(:make_request) { get :new, params: { property_id: property.id } }
-    it 'does not exist' do
-      expect { make_request }.to raise_error(ActionController::UrlGenerationError)
-    end
+    let(:bad_request) { get :new, params: { property_id: 0 } }
+
+    it_behaves_like 'request_requires_property_access'
   end
 
   # ---------------------------------------- | Create

@@ -4,7 +4,8 @@ class AttachmentsController < ApplicationController
   before_action :verify_current_attachment, only: %i[edit update destroy]
 
   def index
-    @attachments = current_property.attachments.alpha.page(params[:page] || 1).per(24)
+    @attachments = current_property.attachments.by_title.page(params[:page] || 1).per(24)
+    render partial: 'list' if request.xhr?
   end
 
   def search
@@ -13,6 +14,10 @@ class AttachmentsController < ApplicationController
       .search_by_title(params[:search][:q]).page(params[:page] || 1).per(24)
     @page_title = 'Search Results'
     render 'index'
+  end
+
+  def new
+    render layout: false
   end
 
   def create

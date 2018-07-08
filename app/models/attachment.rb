@@ -13,7 +13,7 @@ class Attachment < ApplicationRecord
 
   # ---------------------------------------- | Scopes
 
-  scope :alpha, -> { order(title: :asc) }
+  scope :by_title, -> { order(title: :asc) }
   scope :by_last_updated, -> { order(updated_at: :desc) }
 
   # ---------------------------------------- | Callbacks

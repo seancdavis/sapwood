@@ -1,0 +1,25 @@
+<% uid = SecureRandom.hex(12) %>
+
+<section class="uploader" id="uploader-<%= uid %>" data-uid="<%= uid %>">
+  <%= s3_uploader_form(
+    post: property_attachments_path(current_property),
+    key: attachment_upload_key,
+    as: "attachment[url]",
+    id: "fileupload-#{uid}",
+    html: { multipart: params[:multipart] || false }
+  ) do %>
+    <%= file_field_tag :file, multiple: params[:multipart] || false %>
+  <% end %>
+
+  <script id="template-upload" type="text/x-tmpl">
+  <div class="embedded upload">
+    <div class="content">
+      <h3>{%=o.name%}</h3>
+      <div class="progress"><div class="bar" style="width: 0%"></div></div>
+    </div>
+    <% if params[:multipart] %>
+      <p class="waiting">Waiting patiently in line ...</p>
+    <% end %>
+  </div>
+  </script>
+</section>

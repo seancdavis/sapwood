@@ -34,17 +34,9 @@ module FieldHelper
                    input_html: { data: { format: field.format } }
   end
 
-  def field_element_html(form_obj, field, object)
-    if field.respond_to?(:templates) && field.templates.present? &&
-       field.templates.size == 1 &&
-      current_property.find_template(field.templates[0]).document?
-      single_document_field(form_obj, field, object)
-    else
-      single_element_field(form_obj, field, object)
-    end
-  end
+  # ---------------------------------------- | Element
 
-  def single_element_field(form_obj, field, object)
+  def field_element_html(form_obj, field, object)
     elements = current_property.elements.by_title
     if field.respond_to?(:templates) && field.templates.present?
       elements = elements.where(template_name: field.templates)
@@ -54,47 +46,45 @@ module FieldHelper
                    readonly: field.read_only?
   end
 
-  def single_document_field(form_obj, field, object)
-    template = current_property.find_template(field.templates[0])
-    path = new_property_template_document_path(current_property, template)
-    document = object.send(field.name)
-    content_tag(:div, class: 'input document-uploader',
-                data: { uploader: path }) do
+  # ---------------------------------------- | Attachment
+
+  def field_attachment_html(form_obj, field, object)
+    path = new_property_attachment_path(current_property)
+    attachment = object.send(field.name)
+    content_tag(:div, class: 'input document-uploader', data: { uploader: path }) do
       o  = form_obj.input field.name.to_sym, as: :hidden,
                           required: field.required?,
                           readonly: field.read_only?
       o += content_tag(:label, field.label)
-      if document.present?
+      if attachment.present?
         o += content_tag(:div, class: 'document-url') do
-          link_to(document.url.to_s) do
+          link_to(attachment.url.to_s) do
             o2 = ''
-            if document.public? && document.image?
-              o2 += ix_image_tag(document.path, auto: 'format,compress', w: 100, h: 100, fit: 'crop', sizes: '50px')
+            o2 += if attachment.image?
+              ix_image_tag(attachment.path, auto: 'format,compress', w: 100, h: 100, fit: 'crop', sizes: '50px')
             else
-              o2 += image_tag('document.png')
+              image_tag('document.png')
             end
-            o2 += content_tag(:span, document.title)
+            o2 += content_tag(:span, attachment.title)
             o2 += content_tag(:a, 'REMOVE', href: '#', class: 'remove')
             o2.html_safe
           end
         end
       else
         o += content_tag(:div, class: 'document-url hidden') do
-          link_to('#') do
+          link_to('javascript:void(0)') do
             o2  = image_tag('')
             o2 += content_tag(:span, '')
           end
         end
       end
-      o += link_to(
-        'Choose Existing File',
-        property_template_documents_path(current_property, template),
-        class: 'document-chooser button'
-      )
-      o += link_to('Upload New File', '#', class: 'upload-trigger button')
+      o += link_to('Choose Existing File', [current_property, :attachments], class: 'document-chooser button')
+      o += link_to('Upload New File', 'javascript:void(0)', class: 'upload-trigger button')
       o.html_safe
     end
   end
+
+  # ---------------------------------------- | Elements
 
   def field_elements_html(form_obj, field, object)
     if field.respond_to?(:templates) && field.templates.present? &&

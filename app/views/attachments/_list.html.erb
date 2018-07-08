@@ -1,0 +1,7 @@
+<% if @attachments.present? %>
+  <div class="document-tiles">
+    <%= render @attachments %>
+  </div>
+<% else %>
+  <%= render 'empty' %>
+<% end %>

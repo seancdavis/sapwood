@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     resources :templates, only: [], path: 'documents' do
       resources :documents, path: ''
     end
-    resources :attachments, except: %i[new]
+    resources :attachments
     resources :notifications, only: [:create]
   end
 

@@ -41,8 +41,9 @@ Rails.application.routes.draw do
     get 'settings/:screen' => 'properties#edit', :as => :edit, :on => :member
     resources :keys, except: %i[show]
     resources :users
-    get 'search' => 'elements#search', :as => 'search'
 
+    get 'elements/_/search' => 'elements#search', :as => 'elements_search'
+    get 'attachments/_/search' => 'attachments#search', :as => 'attachments_search'
     resources :templates, only: %i[index], path: 'elements' do
       resources :elements, path: ''
     end

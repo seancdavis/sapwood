@@ -18,6 +18,15 @@ describe AttachmentsController do
     it_behaves_like 'request_requires_property_access'
   end
 
+  # ---------------------------------------- Index
+
+  describe '#search' do
+    let(:make_request) { get :search, params: { property_id: property.id, search: { q: 'hello' } } }
+    let(:bad_request) { get :search, params: { property_id: property.id } }
+
+    it_behaves_like 'request_requires_property_access'
+  end
+
   # ---------------------------------------- | New
 
   describe '#new' do

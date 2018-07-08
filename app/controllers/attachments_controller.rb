@@ -7,6 +7,13 @@ class AttachmentsController < ApplicationController
     @attachments = current_property.attachments.alpha.page(params[:page] || 1).per(24)
   end
 
+  def search
+    not_found unless params[:search] && params[:search][:q]
+    @attachments = current_property.attachments
+      .search_by_title(params[:search][:q]).page(params[:page] || 1).per(24)
+    render 'index'
+  end
+
   def create
     respond_to do |format|
       format.json do

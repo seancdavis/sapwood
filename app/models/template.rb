@@ -36,10 +36,6 @@ class Template
     attributes['webhook_url'].present?
   end
 
-  def document?
-    respond_to?(:type) && type == 'document'
-  end
-
   def aws_acl
     private? ? 'private' : 'public-read'
   end
@@ -53,7 +49,7 @@ class Template
   end
 
   def path_method
-    "property_template_#{document? ? 'documents' : 'elements'}_path"
+    "property_template_elements_path"
   end
 
   def menu_label

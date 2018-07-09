@@ -164,7 +164,6 @@ RSpec.describe Element, type: :model do
         element.template_data.merge!(images: image_ids)
         element.save
         image_ids = image_ids.split(',').map(&:to_i)
-        # binding.pry
         3.times do |idx|
           expect(element.reload.images[idx].id).to eq(image_ids[idx])
         end

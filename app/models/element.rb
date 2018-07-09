@@ -52,9 +52,6 @@ class Element < ApplicationRecord
   before_validation :set_title
 
   def set_title
-    if document? && self.send(template.primary_field.name).blank?
-      set_document_title
-    end
     return if template.blank? || template.primary_field.blank? ||
               self.send(template.primary_field.name).blank?
     self.title = self.send(template.primary_field.name)
@@ -89,55 +86,6 @@ class Element < ApplicationRecord
     end
     keys = template.fields.collect(&:name) - template_data.stringify_keys.keys
     keys.each { |k| self.template_data[k] = nil }
-  end
-
-  # ---------------------------------------- Document Properties
-
-  def set_document_title
-    return false unless document?
-    if title.blank? && url.present?
-      self.title = title_from_filename
-      return unless template.primary_field
-      self.template_data[template.primary_field.name.to_sym] = title_from_filename
-    end
-  end
-
-  def title_from_filename
-    return nil unless document?
-    File.basename(url.to_s, '.*').titleize
-  end
-
-  def document?
-    return false unless template?
-    template.document?
-  end
-
-  def public_document?
-    public? && document?
-  end
-
-  def url
-    return nil unless document? && super.present?
-    URI.parse(URI.encode(super))
-  end
-
-  def path
-    url.present? ? url.path : nil
-  end
-
-  def image?
-    return false unless document?
-    %(jpeg jpg png gif svg).include?(File.extname(path).remove('.'))
-  end
-
-  def private?
-    return false unless template?
-    template.private?
-  end
-
-  def public?
-    return false unless template?
-    template.public?
   end
 
   # ---------------------------------------- Instance Methods
@@ -219,7 +167,7 @@ class Element < ApplicationRecord
       field = template.find_field(k)
       response[k.to_sym] = field.present? && field.sendable? ? send(k) : v
     end
-    response[:url] = ActionController::Base.helpers.ix_image_url(path) if document? && public?
+    # response[:url] = ActionController::Base.helpers.ix_image_url(path) if document? && public?
     if options[:includes].present?
       options[:includes].split(',').each do |association|
         response[association.to_sym] = send(association)

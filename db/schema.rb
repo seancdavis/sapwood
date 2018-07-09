@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_03_113440) do
+ActiveRecord::Schema.define(version: 2018_07_09_103413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(version: 2018_07_03_113440) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "documents", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.string "url"
+    t.integer "property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "archived", default: false
+    t.boolean "processed", default: false
+  end
+
   create_table "element_associations", id: :serial, force: :cascade do |t|
     t.integer "source_id"
     t.integer "target_id"
@@ -51,10 +61,8 @@ ActiveRecord::Schema.define(version: 2018_07_03_113440) do
     t.integer "property_id"
     t.string "template_name"
     t.json "template_data", default: {}
-    t.datetime "publish_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "url"
   end
 
   create_table "keys", force: :cascade do |t|
@@ -81,7 +89,6 @@ ActiveRecord::Schema.define(version: 2018_07_03_113440) do
     t.datetime "updated_at", null: false
     t.string "color"
     t.text "templates_raw"
-    t.string "api_key"
   end
 
   create_table "property_users", id: :serial, force: :cascade do |t|
@@ -90,6 +97,13 @@ ActiveRecord::Schema.define(version: 2018_07_03_113440) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_admin", default: false
+  end
+
+  create_table "responses", id: :serial, force: :cascade do |t|
+    t.integer "property_id"
+    t.json "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

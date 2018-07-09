@@ -87,16 +87,6 @@ module FieldHelper
   # ---------------------------------------- | Elements
 
   def field_elements_html(form_obj, field, object)
-    if field.respond_to?(:templates) && field.templates.present? &&
-       field.templates.size == 1 &&
-      current_property.find_template(field.templates[0]).document?
-      multi_documents_field(form_obj, field, object)
-    else
-      multi_element_field(form_obj, field, object)
-    end
-  end
-
-  def multi_element_field(form_obj, field, object)
     content_tag(:div, class: "multiselect input #{field.name}") do
       o  = form_obj.input field.name.to_sym, as: :hidden,
                           required: field.required?,
@@ -135,25 +125,26 @@ module FieldHelper
     end
   end
 
-  def multi_documents_field(form_obj, field, object)
-    template = current_property.find_template(field.templates[0])
-    path = new_property_template_document_path(current_property, template,
-                                               multipart: true)
-    documents = object.send(field.name)
-    content_tag(:div, class: 'input bulk-document-uploader',
-                data: { uploader: path }) do
-      o  = form_obj.input field.name.to_sym, as: :hidden,
-                          required: field.required?,
-                          readonly: field.read_only?
+  # ---------------------------------------- | Attachment
+
+  def field_attachments_html(form_obj, field, object)
+    path = new_property_attachment_path(current_property, multipart: true)
+    attachments = object.send(field.name)
+    content_tag(:div, class: 'input bulk-document-uploader', data: { uploader: path }) do
+      o  = form_obj.input field.name.to_sym, as: :hidden, required: field.required?, readonly: field.read_only?
       o += content_tag(:label, field.label)
       o += content_tag(:div, nil, class: 'batch-uploader')
       o += content_tag(:ul, class: 'selected-documents') do
         o2 = ''
-        documents.each do |document|
-          o2 += content_tag(:li, class: 'document-url',
-                            data: { id: document.id }) do
-            o3 = image_tag(image_thumb_url(document))
-            o3 += link_to(document.title, document.url.to_s, class: 'filename')
+        attachments.each do |attachment|
+          o2 += content_tag(:li, class: 'document-url', data: { id: attachment.id }) do
+            o3 = ''
+            o3 += if attachment.image?
+              ix_image_tag(attachment.path, auto: 'format,compress', w: 100, h: 100, fit: 'crop', sizes: '50px')
+            else
+              image_tag('document.png')
+            end
+            o3 += link_to(attachment.title, attachment.url.to_s, class: 'filename')
             o3 += content_tag(:a, 'REMOVE', href: '#', class: 'remove')
             o3.html_safe
           end
@@ -163,7 +154,7 @@ module FieldHelper
       o += content_tag(:li, nil, class: 'document-url hidden')
       o += link_to(
         'Choose Existing Files',
-        property_template_documents_path(current_property, template),
+        property_attachments_path(current_property),
         class: 'bulk-document-chooser button'
       )
       o += link_to('Upload New Files', '#', class: 'upload-trigger button')

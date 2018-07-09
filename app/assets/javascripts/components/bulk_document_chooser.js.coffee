@@ -59,8 +59,10 @@ class App.Components.BulkDocumentChooser extends Backbone.View
 
   addBulkSaveButton: () =>
     if $('#save-bulk').length == 0
-      $('.document-filters').before """
-        <a href="#" id="save-bulk" class="button">Save & Close</a>
+      $('.document-tiles').before """
+        <div style="margin-bottom:3rem;">
+          <a href="#" id="save-bulk" class="button">Save & Close</a>
+        </div>
         """
 
   removeDocument: (e) ->

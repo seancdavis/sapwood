@@ -119,6 +119,8 @@ Layout/SpaceInsideParens:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
+  Exclude:
+    - db/schema.rb
 
 # Detect hard tabs, no hard tabs.
 Layout/Tab:

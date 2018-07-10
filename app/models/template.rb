@@ -49,7 +49,7 @@ class Template
   end
 
   def path_method
-    "property_template_elements_path"
+    'property_template_elements_path'
   end
 
   def menu_label

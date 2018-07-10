@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Attachment, type: :model do
@@ -37,11 +39,11 @@ RSpec.describe Attachment, type: :model do
       end
     end
     it 'returns false when extname is not image type' do
-      a = create(:attachment, url: "https://my.cdn/folder/filename.pdf")
+      a = create(:attachment, url: 'https://my.cdn/folder/filename.pdf')
       expect(a.image?).to eq(false)
     end
     it 'returns false when no extname' do
-      a = create(:attachment, url: "https://my.cdn/folder/filename")
+      a = create(:attachment, url: 'https://my.cdn/folder/filename')
       expect(a.image?).to eq(false)
     end
     it 'is case-insensitive' do

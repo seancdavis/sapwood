@@ -204,7 +204,7 @@ RSpec.describe Element, type: :model do
       element[:template_data]['many_things'] = (many_things_els + [bad_element])
         .collect(&:id).join(',')
       # Adding has_many attachments
-      attachments = [1,2].map { |x| create(:attachment, property: property) }
+      attachments = [1, 2].map { |x| create(:attachment, property: property) }
       element[:template_data]['images'] = attachments.collect(&:id).join(',')
       # Addding belongs_to attachment
       attachment = create(:attachment, property: property)

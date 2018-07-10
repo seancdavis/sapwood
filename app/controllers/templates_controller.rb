@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TemplatesController < ApplicationController
 
   before_action :verify_property_access

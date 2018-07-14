@@ -99,6 +99,8 @@ Style/MethodDefParentheses:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+  Exclude:
+    - db/schema.rb
 
 # Use `foo {}` not `foo{}`.
 Layout/SpaceBeforeBlockBraces:
@@ -119,6 +121,8 @@ Layout/SpaceInsideParens:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
+  Exclude:
+    - db/schema.rb
 
 # Detect hard tabs, no hard tabs.
 Layout/Tab:

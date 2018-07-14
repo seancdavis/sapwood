@@ -1,9 +1,0 @@
-[
-  {
-    "title": "Default",
-    "type": "single_element",
-    "fields": {
-      "name": { "primary": true }
-    }
-  }
-]

@@ -5,11 +5,11 @@ default: &default
 
 development:
   <<: *default
-  database: sapwood_development
+  database: sapwood_v3_development
 
 test:
   <<: *default
-  database: sapwood_test
+  database: sapwood_v3_test
 
 production:
   <<: *default

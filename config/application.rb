@@ -39,7 +39,7 @@ module App
 
     config.autoload_paths << Rails.root.join('lib')
 
-    config.active_job.queue_adapter = :delayed_job
+    # config.active_job.queue_adapter = :delayed_job
 
     config.active_support.escape_html_entities_in_json = false
 

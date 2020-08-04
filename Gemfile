@@ -15,7 +15,7 @@ gem 'sass-rails'
 gem 'uglifier'
 
 # javascripts
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 4.3.4'
 
 # ------------------------------------------ Utilities
 
